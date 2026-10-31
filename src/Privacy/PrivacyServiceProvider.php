@@ -2,25 +2,25 @@
 /**
  * Service provider for the Privacy (GDPR) domain.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Privacy;
+namespace DrPlugin\WP\ReleaseCart\Privacy;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Container;
-use DrPlugin\WP\TierMint\Core\ServiceProvider;
-use DrPlugin\WP\TierMint\Customers\CustomerRepository;
-use DrPlugin\WP\TierMint\Database\LogRepository;
-use DrPlugin\WP\TierMint\Licensing\ActivationRepository;
-use DrPlugin\WP\TierMint\Licensing\LicenseRepository;
-use DrPlugin\WP\TierMint\Licensing\LicenseService;
-use DrPlugin\WP\TierMint\Orders\OrderRepository;
-use DrPlugin\WP\TierMint\Payments\GatewayEventRepository;
+use DrPlugin\WP\ReleaseCart\Core\Container;
+use DrPlugin\WP\ReleaseCart\Core\ServiceProvider;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerRepository;
+use DrPlugin\WP\ReleaseCart\Database\LogRepository;
+use DrPlugin\WP\ReleaseCart\Licensing\ActivationRepository;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseRepository;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseService;
+use DrPlugin\WP\ReleaseCart\Orders\OrderRepository;
+use DrPlugin\WP\ReleaseCart\Payments\GatewayEventRepository;
 
 /**
  * Register privacy services as container singletons.

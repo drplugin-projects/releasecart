@@ -2,23 +2,23 @@
 /**
  * REST controller for the Customers management resource.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Customers\Customer;
-use DrPlugin\WP\TierMint\Customers\CustomerDeleteBlockedException;
-use DrPlugin\WP\TierMint\Customers\CustomerException;
-use DrPlugin\WP\TierMint\Customers\CustomerNotFoundException;
-use DrPlugin\WP\TierMint\Customers\CustomerPersistenceException;
-use DrPlugin\WP\TierMint\Customers\CustomerService;
-use DrPlugin\WP\TierMint\Customers\CustomerValidationException;
+use DrPlugin\WP\ReleaseCart\Customers\Customer;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerDeleteBlockedException;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerException;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerNotFoundException;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerPersistenceException;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerService;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerValidationException;
 use Throwable;
 use WP_Error;
 use WP_REST_Request;
@@ -230,7 +230,7 @@ final class CustomersController extends AbstractRestController {
 			return $this->invalidParams( $e->getErrors() );
 		} catch ( CustomerPersistenceException $e ) {
 			// Do not expose database details.
-			return $this->serverError( __( 'The customer could not be saved. Please try again.', 'tiermint' ) );
+			return $this->serverError( __( 'The customer could not be saved. Please try again.', 'releasecart' ) );
 		} catch ( CustomerException $e ) {
 			// Other domain errors are invalid input.
 			return $this->invalidParams( array( $e->getMessage() ) );
@@ -274,7 +274,7 @@ final class CustomersController extends AbstractRestController {
 			return $this->invalidParams( $e->getErrors() );
 		} catch ( CustomerPersistenceException $e ) {
 			// Do not expose database details.
-			return $this->serverError( __( 'The customer could not be saved. Please try again.', 'tiermint' ) );
+			return $this->serverError( __( 'The customer could not be saved. Please try again.', 'releasecart' ) );
 		} catch ( CustomerException $e ) {
 			return $this->invalidParams( array( $e->getMessage() ) );
 		}
@@ -344,14 +344,14 @@ final class CustomersController extends AbstractRestController {
 			return $this->notFound();
 		} catch ( CustomerDeleteBlockedException $e ) {
 			return $this->error(
-				'tiermint_customer_in_use',
+				'releasecart_customer_in_use',
 				$e->getMessage(),
 				409,
 				array( 'reasons' => $e->getReasons() )
 			);
 		} catch ( Throwable $e ) {
 			// Keep failure details in the log.
-			return $this->serverError( __( 'The customer could not be deleted. Please try again.', 'tiermint' ) );
+			return $this->serverError( __( 'The customer could not be deleted. Please try again.', 'releasecart' ) );
 		}
 
 		return null;
@@ -367,7 +367,7 @@ final class CustomersController extends AbstractRestController {
 	private function collectionArgs(): array {
 		return array(
 			'page'     => array(
-				'description'       => __( 'Current page of the collection.', 'tiermint' ),
+				'description'       => __( 'Current page of the collection.', 'releasecart' ),
 				'type'              => 'integer',
 				'default'           => 1,
 				'minimum'           => 1,
@@ -375,7 +375,7 @@ final class CustomersController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'per_page' => array(
-				'description'       => __( 'Maximum number of items to return per page.', 'tiermint' ),
+				'description'       => __( 'Maximum number of items to return per page.', 'releasecart' ),
 				'type'              => 'integer',
 				'default'           => 10,
 				'minimum'           => 1,
@@ -384,13 +384,13 @@ final class CustomersController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'search'   => array(
-				'description'       => __( 'Limit results to those matching an email or name.', 'tiermint' ),
+				'description'       => __( 'Limit results to those matching an email or name.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'orderby'  => array(
-				'description'       => __( 'Sort collection by customer attribute.', 'tiermint' ),
+				'description'       => __( 'Sort collection by customer attribute.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'id', 'name', 'email', 'created_at' ),
 				'default'           => 'created_at',
@@ -398,7 +398,7 @@ final class CustomersController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'order'    => array(
-				'description'       => __( 'Order sort attribute ascending or descending.', 'tiermint' ),
+				'description'       => __( 'Order sort attribute ascending or descending.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'asc', 'desc' ),
 				'default'           => 'desc',
@@ -420,20 +420,20 @@ final class CustomersController extends AbstractRestController {
 	private function writeArgs(): array {
 		return array(
 			'email'   => array(
-				'description'       => __( 'Customer email address (the primary identity).', 'tiermint' ),
+				'description'       => __( 'Customer email address (the primary identity).', 'releasecart' ),
 				'type'              => 'string',
 				'format'            => 'email',
 				'sanitize_callback' => 'sanitize_email',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'name'    => array(
-				'description'       => __( 'Customer display name.', 'tiermint' ),
+				'description'       => __( 'Customer display name.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'user_id' => array(
-				'description'       => __( 'Linked WordPress user id (0 to unlink; a guest carries no link).', 'tiermint' ),
+				'description'       => __( 'Linked WordPress user id (0 to unlink; a guest carries no link).', 'releasecart' ),
 				'type'              => 'integer',
 				'minimum'           => 0,
 				'sanitize_callback' => 'absint',
@@ -452,7 +452,7 @@ final class CustomersController extends AbstractRestController {
 	private function idArgs(): array {
 		return array(
 			'id' => array(
-				'description'       => __( 'Unique customer identifier.', 'tiermint' ),
+				'description'       => __( 'Unique customer identifier.', 'releasecart' ),
 				'type'              => 'integer',
 				'required'          => true,
 				'sanitize_callback' => 'absint',

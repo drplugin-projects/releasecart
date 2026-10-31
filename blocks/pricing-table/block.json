@@ -1,13 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "tiermint/pricing-table",
+	"name": "releasecart/pricing-table",
 	"title": "Pricing Table",
-	"category": "tiermint",
+	"category": "releasecart",
 	"icon": "editor-table",
 	"description": "A pricing table of a product's tiers with feature lists and buy buttons.",
-	"keywords": [ "pricing", "tiers", "plans", "tiermint" ],
-	"textdomain": "tiermint",
+	"keywords": [ "pricing", "tiers", "plans", "releasecart" ],
+	"textdomain": "releasecart",
 	"supports": {
 		"html": false,
 		"align": [ "wide", "full" ]

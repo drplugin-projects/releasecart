@@ -76,7 +76,7 @@ export default function SortableHeader( { column, label, sort, className } ) {
 		>
 			<button
 				type="button"
-				className="tiermint-sort"
+				className="releasecart-sort"
 				onClick={ () => sort.toggle( column ) }
 			>
 				{ label }

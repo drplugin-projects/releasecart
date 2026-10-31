@@ -2,17 +2,17 @@
 /**
  * Shared sample content for editor previews.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components\Support;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components\Support;
 
-use DrPlugin\WP\TierMint\Orders\Cart;
-use DrPlugin\WP\TierMint\Orders\CartLine;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductPrice;
+use DrPlugin\WP\ReleaseCart\Orders\Cart;
+use DrPlugin\WP\ReleaseCart\Orders\CartLine;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductPrice;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -33,7 +33,7 @@ final class SamplePreview {
 			ProductPrice::fromArray(
 				array(
 					'id'               => 1,
-					'name'             => __( 'Single site', 'tiermint' ),
+					'name'             => __( 'Single site', 'releasecart' ),
 					'amount'           => 4900,
 					'activation_limit' => 1,
 					'license_length'   => '+1 year',
@@ -45,7 +45,7 @@ final class SamplePreview {
 			ProductPrice::fromArray(
 				array(
 					'id'               => 2,
-					'name'             => __( 'Five sites', 'tiermint' ),
+					'name'             => __( 'Five sites', 'releasecart' ),
 					'amount'           => 9900,
 					'activation_limit' => 5,
 					'license_length'   => '+1 year',
@@ -59,7 +59,7 @@ final class SamplePreview {
 		return Product::fromArray(
 			array(
 				'id'     => 0,
-				'name'   => __( 'Sample product', 'tiermint' ),
+				'name'   => __( 'Sample product', 'releasecart' ),
 				'slug'   => 'sample-product',
 				'status' => 'published',
 			),
@@ -75,7 +75,7 @@ final class SamplePreview {
 	public static function cart(): Cart {
 		return new Cart(
 			array(
-				new CartLine( self::SAMPLE_PRODUCT_ID, 1, 1, 4900, __( 'Sample product', 'tiermint' ), __( 'Single site', 'tiermint' ) ),
+				new CartLine( self::SAMPLE_PRODUCT_ID, 1, 1, 4900, __( 'Sample product', 'releasecart' ), __( 'Single site', 'releasecart' ) ),
 			)
 		);
 	}

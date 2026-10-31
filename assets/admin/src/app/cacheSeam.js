@@ -16,7 +16,7 @@ import { useQueryClient } from '@tanstack/react-query';
  * app is mounted.
  *
  * @param {Object} props       Component props.
- * @param {Object} props.admin The `window.tierMint.admin` object, by reference.
+ * @param {Object} props.admin The `window.releaseCart.admin` object, by reference.
  * @return {null} Nothing is rendered.
  */
 export default function CacheSeam( { admin } ) {

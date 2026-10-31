@@ -2,14 +2,14 @@
 /**
  * Frontend asset registration and render-time enqueueing.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -27,28 +27,28 @@ class AssetManager implements Hookable {
 	 *
 	 * @var string
 	 */
-	public const TOKENS_HANDLE = 'tiermint-tokens';
+	public const TOKENS_HANDLE = 'releasecart-tokens';
 
 	/**
 	 * Shared primitives stylesheet handle.
 	 *
 	 * @var string
 	 */
-	public const BASE_HANDLE = 'tiermint-base';
+	public const BASE_HANDLE = 'releasecart-base';
 
 	/**
-	 * Handle of the classic bootstrap script carrying window.tierMint.
+	 * Handle of the classic bootstrap script carrying window.releaseCart.
 	 *
 	 * @var string
 	 */
-	public const BOOTSTRAP_HANDLE = 'tiermint-frontend';
+	public const BOOTSTRAP_HANDLE = 'releasecart-frontend';
 
 	/**
 	 * Stripe.js v3 handle, loaded only by checkout.
 	 *
 	 * @var string
 	 */
-	public const STRIPE_JS_HANDLE = 'tiermint-stripe-js';
+	public const STRIPE_JS_HANDLE = 'releasecart-stripe-js';
 
 	/**
 	 * The component registry whose assets get registered.
@@ -95,20 +95,20 @@ class AssetManager implements Hookable {
 	public function registerAssets(): void {
 		wp_register_style(
 			self::TOKENS_HANDLE,
-			TIERMINT_URL . 'assets/frontend/tiermint-tokens.css',
+			RELEASECART_URL . 'assets/frontend/releasecart-tokens.css',
 			array(),
-			TIERMINT_VERSION
+			RELEASECART_VERSION
 		);
 
 		wp_register_style(
 			self::BASE_HANDLE,
-			TIERMINT_URL . 'assets/frontend/tiermint-base.css',
+			RELEASECART_URL . 'assets/frontend/releasecart-base.css',
 			array( self::TOKENS_HANDLE ),
-			TIERMINT_VERSION
+			RELEASECART_VERSION
 		);
 
 		// This src-less handle carries data for deferred ES modules.
-		wp_register_script( self::BOOTSTRAP_HANDLE, false, array(), TIERMINT_VERSION, true );
+		wp_register_script( self::BOOTSTRAP_HANDLE, false, array(), RELEASECART_VERSION, true );
 		wp_add_inline_script( self::BOOTSTRAP_HANDLE, $this->bootstrapConfig(), 'before' );
 
 		// Stripe requires its evergreen v3 URL.
@@ -117,22 +117,22 @@ class AssetManager implements Hookable {
 		foreach ( $this->registry->all() as $slug => $component ) {
 			if ( $this->componentAssetExists( 'assets/frontend/components/' . $slug . '.css' ) ) {
 				wp_register_style(
-					'tiermint-' . $slug,
-					TIERMINT_URL . 'assets/frontend/components/' . $slug . '.css',
+					'releasecart-' . $slug,
+					RELEASECART_URL . 'assets/frontend/components/' . $slug . '.css',
 					array( self::TOKENS_HANDLE, self::BASE_HANDLE ),
-					TIERMINT_VERSION
+					RELEASECART_VERSION
 				);
 			}
 
 			if ( $this->componentAssetExists( 'assets/frontend/components/' . $slug . '.js' ) ) {
 				wp_register_script(
-					'tiermint-' . $slug,
-					TIERMINT_URL . 'assets/frontend/components/' . $slug . '.js',
+					'releasecart-' . $slug,
+					RELEASECART_URL . 'assets/frontend/components/' . $slug . '.js',
 					array( self::BOOTSTRAP_HANDLE ),
-					TIERMINT_VERSION,
+					RELEASECART_VERSION,
 					true
 				);
-				$this->moduleHandles[ 'tiermint-' . $slug ] = true;
+				$this->moduleHandles[ 'releasecart-' . $slug ] = true;
 			}
 		}
 	}
@@ -201,7 +201,7 @@ class AssetManager implements Hookable {
 	}
 
 	/**
-	 * The inline window.tierMint bootstrap: REST root always, and a REST
+	 * The inline window.releaseCart bootstrap: REST root always, and a REST
 	 * nonce only for logged-in visitors so anonymous pages stay fully
 	 * cacheable.
 	 *
@@ -209,14 +209,14 @@ class AssetManager implements Hookable {
 	 */
 	private function bootstrapConfig(): string {
 		$config = array(
-			'apiRoot' => rest_url( 'tiermint/v1/' ),
+			'apiRoot' => rest_url( 'releasecart/v1/' ),
 		);
 
 		if ( is_user_logged_in() ) {
 			$config['nonce'] = wp_create_nonce( 'wp_rest' );
 		}
 
-		return 'window.tierMint = ' . wp_json_encode( $config ) . ';';
+		return 'window.releaseCart = ' . wp_json_encode( $config ) . ';';
 	}
 
 	/**
@@ -227,6 +227,6 @@ class AssetManager implements Hookable {
 	 * @return bool
 	 */
 	protected function componentAssetExists( string $relative ): bool {
-		return file_exists( TIERMINT_PATH . $relative );
+		return file_exists( RELEASECART_PATH . $relative );
 	}
 }

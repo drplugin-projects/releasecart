@@ -2,17 +2,17 @@
 /**
  * Shared builder for the purchasable-tier selector and cart form data.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components\Support;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components\Support;
 
-use DrPlugin\WP\TierMint\Frontend\CartActionListener;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductPrice;
-use DrPlugin\WP\TierMint\Util\Money;
+use DrPlugin\WP\ReleaseCart\Frontend\CartActionListener;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductPrice;
+use DrPlugin\WP\ReleaseCart\Util\Money;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -42,10 +42,10 @@ final class ProductTierSelector {
 			'has_tiers'    => array() !== $tiers,
 			'quantity'     => self::quantityData( $tiers[0] ?? null ),
 			'product_id'   => (int) $product->id(),
-			'action_url'   => remove_query_arg( 'tiermint_cart_error' ),
+			'action_url'   => remove_query_arg( 'releasecart_cart_error' ),
 			'nonce_action' => CartActionListener::NONCE_ACTION,
 			'nonce_field'  => CartActionListener::NONCE_FIELD,
-			'add_label'    => __( 'Add to cart', 'tiermint' ),
+			'add_label'    => __( 'Add to cart', 'releasecart' ),
 		);
 	}
 

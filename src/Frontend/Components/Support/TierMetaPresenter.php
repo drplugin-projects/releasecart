@@ -2,14 +2,14 @@
 /**
  * Presenter turning a price tier into human-readable meta lines.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components\Support;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components\Support;
 
-use DrPlugin\WP\TierMint\Products\ProductPrice;
+use DrPlugin\WP\ReleaseCart\Products\ProductPrice;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -49,15 +49,15 @@ final class TierMetaPresenter {
 				'type'        => 'boolean',
 				'default'     => true,
 				'control'     => 'toggle',
-				'label'       => __( 'Show license length', 'tiermint' ),
-				'description' => __( "Show each plan's license duration.", 'tiermint' ),
+				'label'       => __( 'Show license length', 'releasecart' ),
+				'description' => __( "Show each plan's license duration.", 'releasecart' ),
 			),
 			self::SHOW_ACTIVATION_LIMIT => array(
 				'type'        => 'boolean',
 				'default'     => true,
 				'control'     => 'toggle',
-				'label'       => __( 'Show activation limit', 'tiermint' ),
-				'description' => __( 'Show how many sites each plan may activate.', 'tiermint' ),
+				'label'       => __( 'Show activation limit', 'releasecart' ),
+				'description' => __( 'Show how many sites each plan may activate.', 'releasecart' ),
 			),
 		);
 	}
@@ -124,7 +124,7 @@ final class TierMetaPresenter {
 		 * @param ProductPrice        $price The tier being described.
 		 * @param array<string, bool> $flags The resolved display flags.
 		 */
-		$lines = apply_filters( 'tiermint_tier_meta_lines', $lines, $price, $flags );
+		$lines = apply_filters( 'releasecart_tier_meta_lines', $lines, $price, $flags );
 
 		$clean = array();
 		foreach ( (array) $lines as $line ) {
@@ -146,7 +146,7 @@ final class TierMetaPresenter {
 		$raw = $price->licenseLength();
 
 		if ( null === $raw ) {
-			return __( 'Lifetime license', 'tiermint' );
+			return __( 'Lifetime license', 'releasecart' );
 		}
 
 		// Accept stored values with surrounding whitespace.
@@ -162,17 +162,17 @@ final class TierMetaPresenter {
 		switch ( strtolower( $matches[2] ) ) {
 			case 'day':
 				/* translators: %d: number of days. The plural form exists for locales that inflect the compound; English keeps the unit singular. */
-				return sprintf( _n( '%d-day license', '%d-day license', $count, 'tiermint' ), $count );
+				return sprintf( _n( '%d-day license', '%d-day license', $count, 'releasecart' ), $count );
 			case 'week':
 				/* translators: %d: number of weeks. The plural form exists for locales that inflect the compound; English keeps the unit singular. */
-				return sprintf( _n( '%d-week license', '%d-week license', $count, 'tiermint' ), $count );
+				return sprintf( _n( '%d-week license', '%d-week license', $count, 'releasecart' ), $count );
 			case 'month':
 				/* translators: %d: number of months. The plural form exists for locales that inflect the compound; English keeps the unit singular. */
-				return sprintf( _n( '%d-month license', '%d-month license', $count, 'tiermint' ), $count );
+				return sprintf( _n( '%d-month license', '%d-month license', $count, 'releasecart' ), $count );
 			case 'year':
 			default:
 				/* translators: %d: number of years. The plural form exists for locales that inflect the compound; English keeps the unit singular. */
-				return sprintf( _n( '%d-year license', '%d-year license', $count, 'tiermint' ), $count );
+				return sprintf( _n( '%d-year license', '%d-year license', $count, 'releasecart' ), $count );
 		}
 	}
 
@@ -186,10 +186,10 @@ final class TierMetaPresenter {
 		$limit = $price->activationLimit();
 
 		if ( null === $limit ) {
-			return __( 'Unlimited activations', 'tiermint' );
+			return __( 'Unlimited activations', 'releasecart' );
 		}
 
 		/* translators: %d: number of site activations the license allows. */
-		return sprintf( _n( '%d activation', '%d activations', $limit, 'tiermint' ), $limit );
+		return sprintf( _n( '%d activation', '%d activations', $limit, 'releasecart' ), $limit );
 	}
 }

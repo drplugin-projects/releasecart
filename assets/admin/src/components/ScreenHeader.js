@@ -22,11 +22,11 @@ export default function ScreenHeader( {
 	actions,
 } ) {
 	return (
-		<div className="tiermint-screen-header">
-			<div className="tiermint-screen-header__text">
+		<div className="releasecart-screen-header">
+			<div className="releasecart-screen-header__text">
 				{ backLink && (
 					<a
-						className="tiermint-screen-header__back"
+						className="releasecart-screen-header__back"
 						href={ backLink.href }
 					>
 						{ backLink.label }
@@ -34,13 +34,13 @@ export default function ScreenHeader( {
 				) }
 				<h1>{ title }</h1>
 				{ description && (
-					<p className="tiermint-screen-header__description">
+					<p className="releasecart-screen-header__description">
 						{ description }
 					</p>
 				) }
 			</div>
 			{ actions && (
-				<div className="tiermint-screen-header__actions">
+				<div className="releasecart-screen-header__actions">
 					{ actions }
 				</div>
 			) }

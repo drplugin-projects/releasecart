@@ -1,4 +1,9 @@
 node_modules/
 assets/admin/build/
 assets/blocks/build/
-vendor/
+
+# Composer's dev packages. Action Scheduler is the one committed package.
+/vendor/*
+!/vendor/woocommerce/
+/vendor/woocommerce/*
+!/vendor/woocommerce/action-scheduler/

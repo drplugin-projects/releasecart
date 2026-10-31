@@ -2,17 +2,17 @@
 /**
  * The Elementor widget render delegate.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Adapters\Elementor;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor;
 
-use DrPlugin\WP\TierMint\Frontend\AssetManager;
-use DrPlugin\WP\TierMint\Frontend\AttributeResolver;
-use DrPlugin\WP\TierMint\Frontend\ComponentRegistry;
-use DrPlugin\WP\TierMint\Frontend\RenderContextResolver;
+use DrPlugin\WP\ReleaseCart\Frontend\AssetManager;
+use DrPlugin\WP\ReleaseCart\Frontend\AttributeResolver;
+use DrPlugin\WP\ReleaseCart\Frontend\ComponentRegistry;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContextResolver;
 
 defined( 'ABSPATH' ) || exit;
 

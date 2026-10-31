@@ -1,12 +1,12 @@
 <?php
 /**
- * TierMint uninstall handler.
+ * ReleaseCart uninstall handler.
  *
  * Delete opted-in data. Check each multisite site.
  *
  * This file has no plugin autoloader.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
@@ -20,9 +20,9 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
  * On one site, stop before the sweep without explicit consent.
  */
 if ( ! is_multisite() ) {
-	$tiermint_settings = get_option( 'tiermint_settings' );
+	$releasecart_settings = get_option( 'releasecart_settings' );
 
-	if ( ! is_array( $tiermint_settings ) || empty( $tiermint_settings['delete_data_on_uninstall'] ) ) {
+	if ( ! is_array( $releasecart_settings ) || empty( $releasecart_settings['delete_data_on_uninstall'] ) ) {
 		return;
 	}
 }
@@ -30,7 +30,7 @@ if ( ! is_multisite() ) {
 /*
  * Keep this list in sync with Schema::tables().
  */
-$tiermint_tables = array(
+$releasecart_tables = array(
 	'products',
 	'product_prices',
 	'bundle_items',
@@ -51,18 +51,18 @@ $tiermint_tables = array(
 );
 
 // Inlined custom capabilities.
-$tiermint_caps = array( 'manage_tiermint', 'manage_tiermint_settings', 'view_tiermint_reports' );
+$releasecart_caps = array( 'manage_releasecart', 'manage_releasecart_settings', 'view_releasecart_reports' );
 
 // Object cache groups the plugin's classes keep rows in (their CACHE_GROUP constants).
-$tiermint_cache_groups = array(
-	'tiermint',
-	'tiermint_activations',
-	'tiermint_customers',
-	'tiermint_discounts',
-	'tiermint_licenses',
-	'tiermint_orders',
-	'tiermint_products',
-	'tiermint_terms',
+$releasecart_cache_groups = array(
+	'releasecart',
+	'releasecart_activations',
+	'releasecart_customers',
+	'releasecart_discounts',
+	'releasecart_licenses',
+	'releasecart_orders',
+	'releasecart_products',
+	'releasecart_terms',
 );
 
 /*
@@ -70,7 +70,7 @@ $tiermint_cache_groups = array(
  * An instance WordPress already set up, for example while it deletes plugins over
  * FTP, is reused only when it is direct and is never replaced.
  */
-$tiermint_direct_filesystem = static function ( string $context ) {
+$releasecart_direct_filesystem = static function ( string $context ) {
 	global $wp_filesystem;
 
 	if ( $wp_filesystem instanceof WP_Filesystem_Base ) {
@@ -93,24 +93,24 @@ $tiermint_direct_filesystem = static function ( string $context ) {
  * Process each site because its data and consent are site-specific.
  */
 if ( is_multisite() ) {
-	$tiermint_site_ids = get_sites(
+	$releasecart_site_ids = get_sites(
 		array(
 			'fields' => 'ids',
 			'number' => 0,
 		)
 	);
 } else {
-	$tiermint_site_ids = array( get_current_blog_id() );
+	$releasecart_site_ids = array( get_current_blog_id() );
 }
 
-foreach ( $tiermint_site_ids as $tiermint_site_id ) {
+foreach ( $releasecart_site_ids as $releasecart_site_id ) {
 	if ( is_multisite() ) {
-		switch_to_blog( (int) $tiermint_site_id );
+		switch_to_blog( (int) $releasecart_site_id );
 
 		// Sweep this site only after its own consent check.
-		$tiermint_settings = get_option( 'tiermint_settings' );
+		$releasecart_settings = get_option( 'releasecart_settings' );
 
-		if ( ! is_array( $tiermint_settings ) || empty( $tiermint_settings['delete_data_on_uninstall'] ) ) {
+		if ( ! is_array( $releasecart_settings ) || empty( $releasecart_settings['delete_data_on_uninstall'] ) ) {
 			restore_current_blog();
 			continue;
 		}
@@ -118,22 +118,22 @@ foreach ( $tiermint_site_ids as $tiermint_site_id ) {
 
 	global $wpdb;
 
-	foreach ( $tiermint_tables as $tiermint_base ) {
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Uninstall drops the tiermint_ tables.
-		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $wpdb->prefix . 'tiermint_' . $tiermint_base ) );
+	foreach ( $releasecart_tables as $releasecart_base ) {
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Uninstall drops the releasecart_ tables.
+		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $wpdb->prefix . 'releasecart_' . $releasecart_base ) );
 	}
 
 	/*
-	 * Drop any other table under this site's TierMint prefix, such as one an
+	 * Drop any other table under this site's ReleaseCart prefix, such as one an
 	 * extension or an older version left. Escaping keeps `_` literal, so only
-	 * this site's tiermint_ tables match.
+	 * this site's releasecart_ tables match.
 	 */
 	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Uninstall cleanup, nothing to cache.
-	$tiermint_leftovers = $wpdb->get_col( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $wpdb->prefix . 'tiermint_' ) . '%' ) );
+	$releasecart_leftovers = $wpdb->get_col( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $wpdb->prefix . 'releasecart_' ) . '%' ) );
 
-	foreach ( $tiermint_leftovers as $tiermint_table ) {
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Uninstall drops the tiermint_ tables.
-		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', (string) $tiermint_table ) );
+	foreach ( $releasecart_leftovers as $releasecart_table ) {
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Uninstall drops the releasecart_ tables.
+		$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', (string) $releasecart_table ) );
 	}
 
 	/*
@@ -144,48 +144,48 @@ foreach ( $tiermint_site_ids as $tiermint_site_id ) {
 	 * survives. The marker literal is inlined because uninstall.php has no
 	 * autoloader (see PageProvisioner::MARKER_META).
 	 */
-	$tiermint_pages = ( isset( $tiermint_settings['pages'] ) && is_array( $tiermint_settings['pages'] ) )
-		? $tiermint_settings['pages']
+	$releasecart_pages = ( isset( $releasecart_settings['pages'] ) && is_array( $releasecart_settings['pages'] ) )
+		? $releasecart_settings['pages']
 		: array();
 
-	foreach ( $tiermint_pages as $tiermint_page_id ) {
-		$tiermint_page_id = (int) $tiermint_page_id;
+	foreach ( $releasecart_pages as $releasecart_page_id ) {
+		$releasecart_page_id = (int) $releasecart_page_id;
 
-		if ( $tiermint_page_id <= 0 ) {
+		if ( $releasecart_page_id <= 0 ) {
 			continue;
 		}
 
-		// Only pages TierMint provisioned carry this marker.
-		if ( '' === (string) get_post_meta( $tiermint_page_id, '_tiermint_page', true ) ) {
+		// Only pages ReleaseCart provisioned carry this marker.
+		if ( '' === (string) get_post_meta( $releasecart_page_id, '_releasecart_page', true ) ) {
 			continue;
 		}
 
 		// Force delete so the marker meta goes with the page.
-		wp_delete_post( $tiermint_page_id, true );
+		wp_delete_post( $releasecart_page_id, true );
 	}
 
 	/*
-	 * Remove TierMint options, secrets, and transient value and timeout rows.
+	 * Remove ReleaseCart options, secrets, and transient value and timeout rows.
 	 */
-	$tiermint_like = array(
-		$wpdb->esc_like( 'tiermint_' ) . '%',
-		$wpdb->esc_like( '_transient_tiermint_' ) . '%',
-		$wpdb->esc_like( '_transient_timeout_tiermint_' ) . '%',
-		$wpdb->esc_like( '_site_transient_tiermint_' ) . '%',
-		$wpdb->esc_like( '_site_transient_timeout_tiermint_' ) . '%',
+	$releasecart_like = array(
+		$wpdb->esc_like( 'releasecart_' ) . '%',
+		$wpdb->esc_like( '_transient_releasecart_' ) . '%',
+		$wpdb->esc_like( '_transient_timeout_releasecart_' ) . '%',
+		$wpdb->esc_like( '_site_transient_releasecart_' ) . '%',
+		$wpdb->esc_like( '_site_transient_timeout_releasecart_' ) . '%',
 	);
 
 	// The rows go by raw SQL, so note their names to clear the cache below.
 	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Uninstall cleanup, nothing to cache.
-	$tiermint_option_names = $wpdb->get_col(
+	$releasecart_option_names = $wpdb->get_col(
 		$wpdb->prepare(
 			'SELECT option_name FROM %i WHERE option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s',
 			$wpdb->options,
-			$tiermint_like[0],
-			$tiermint_like[1],
-			$tiermint_like[2],
-			$tiermint_like[3],
-			$tiermint_like[4]
+			$releasecart_like[0],
+			$releasecart_like[1],
+			$releasecart_like[2],
+			$releasecart_like[3],
+			$releasecart_like[4]
 		)
 	);
 
@@ -194,138 +194,131 @@ foreach ( $tiermint_site_ids as $tiermint_site_id ) {
 		$wpdb->prepare(
 			'DELETE FROM %i WHERE option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s',
 			$wpdb->options,
-			$tiermint_like[0],
-			$tiermint_like[1],
-			$tiermint_like[2],
-			$tiermint_like[3],
-			$tiermint_like[4]
+			$releasecart_like[0],
+			$releasecart_like[1],
+			$releasecart_like[2],
+			$releasecart_like[3],
+			$releasecart_like[4]
 		)
 	);
 
 	// A cached schema version must not outlive its tables.
-	foreach ( $tiermint_option_names as $tiermint_option_name ) {
-		wp_cache_delete( (string) $tiermint_option_name, 'options' );
+	foreach ( $releasecart_option_names as $releasecart_option_name ) {
+		wp_cache_delete( (string) $releasecart_option_name, 'options' );
 	}
 	wp_cache_delete( 'alloptions', 'options' );
 	wp_cache_delete( 'notoptions', 'options' );
 
 	/*
 	 * Remove the per-user upsell dismissals. update_user_option() stores them in
-	 * usermeta under a blog-prefixed key, so the tiermint_% option sweep above
+	 * usermeta under a blog-prefixed key, so the releasecart_% option sweep above
 	 * never reaches them. The key literal mirrors Upsell\Dismissals::OPTION_KEY.
 	 */
-	$tiermint_dismiss_key = $wpdb->prefix . 'tiermint_upsell_dismissed';
+	$releasecart_dismiss_key = $wpdb->prefix . 'releasecart_upsell_dismissed';
 
 	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Uninstall cleanup, nothing to cache.
-	$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE meta_key = %s', $wpdb->usermeta, $tiermint_dismiss_key ) );
+	$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE meta_key = %s', $wpdb->usermeta, $releasecart_dismiss_key ) );
 
 	/*
-	 * Remove the TierMint Action Scheduler group only. Its tables are shared.
+	 * Remove the ReleaseCart Action Scheduler group only. Its tables are shared.
 	 */
-	$tiermint_as_actions = $wpdb->prefix . 'actionscheduler_actions';
-	$tiermint_as_groups  = $wpdb->prefix . 'actionscheduler_groups';
-	$tiermint_as_logs    = $wpdb->prefix . 'actionscheduler_logs';
+	$releasecart_as_actions = $wpdb->prefix . 'actionscheduler_actions';
+	$releasecart_as_groups  = $wpdb->prefix . 'actionscheduler_groups';
+	$releasecart_as_logs    = $wpdb->prefix . 'actionscheduler_logs';
 
 	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Uninstall cleanup, nothing to cache.
-	$tiermint_as_present = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $tiermint_as_groups ) ) );
+	$releasecart_as_present = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $releasecart_as_groups ) ) );
 
-	if ( null !== $tiermint_as_present ) {
+	if ( null !== $releasecart_as_present ) {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Uninstall cleanup, nothing to cache.
-		$tiermint_group_id = $wpdb->get_var( $wpdb->prepare( 'SELECT group_id FROM %i WHERE slug = %s', $tiermint_as_groups, 'tiermint' ) );
+		$releasecart_group_id = $wpdb->get_var( $wpdb->prepare( 'SELECT group_id FROM %i WHERE slug = %s', $releasecart_as_groups, 'releasecart' ) );
 
-		if ( null !== $tiermint_group_id ) {
-			$tiermint_group_id = (int) $tiermint_group_id;
+		if ( null !== $releasecart_group_id ) {
+			$releasecart_group_id = (int) $releasecart_group_id;
 
-			// Remove TierMint scheduler rows only.
+			// Remove ReleaseCart scheduler rows only.
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Uninstall cleanup, nothing to cache.
-			$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE action_id IN ( SELECT action_id FROM %i WHERE group_id = %d )', $tiermint_as_logs, $tiermint_as_actions, $tiermint_group_id ) );
+			$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE action_id IN ( SELECT action_id FROM %i WHERE group_id = %d )', $releasecart_as_logs, $releasecart_as_actions, $releasecart_group_id ) );
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Uninstall cleanup, nothing to cache.
-			$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE group_id = %d', $tiermint_as_actions, $tiermint_group_id ) );
+			$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE group_id = %d', $releasecart_as_actions, $releasecart_group_id ) );
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Uninstall cleanup, nothing to cache.
-			$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE group_id = %d', $tiermint_as_groups, $tiermint_group_id ) );
+			$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE group_id = %d', $releasecart_as_groups, $releasecart_group_id ) );
 
 			// Action Scheduler caches group ids by slug; drop the deleted one.
-			wp_cache_delete( 'tiermint', 'action_scheduler_groups' );
+			wp_cache_delete( 'releasecart', 'action_scheduler_groups' );
 		}
 	}
 
 	/*
-	 * Remove legacy TierMint WP-Cron events.
+	 * Remove legacy ReleaseCart WP-Cron events.
 	 */
-	$tiermint_cron = _get_cron_array();
+	$releasecart_cron = _get_cron_array();
 
-	if ( is_array( $tiermint_cron ) ) {
-		$tiermint_cron_hooks = array();
+	if ( is_array( $releasecart_cron ) ) {
+		$releasecart_cron_hooks = array();
 
-		foreach ( $tiermint_cron as $tiermint_events ) {
-			if ( ! is_array( $tiermint_events ) ) {
+		foreach ( $releasecart_cron as $releasecart_events ) {
+			if ( ! is_array( $releasecart_events ) ) {
 				continue;
 			}
 
-			foreach ( array_keys( $tiermint_events ) as $tiermint_hook ) {
-				if ( 0 === strncmp( (string) $tiermint_hook, 'tiermint_', 9 ) ) {
-					$tiermint_cron_hooks[ $tiermint_hook ] = true;
+			foreach ( array_keys( $releasecart_events ) as $releasecart_hook ) {
+				if ( str_starts_with( (string) $releasecart_hook, 'releasecart_' ) ) {
+					$releasecart_cron_hooks[ $releasecart_hook ] = true;
 				}
 			}
 		}
 
-		foreach ( array_keys( $tiermint_cron_hooks ) as $tiermint_hook ) {
-			wp_unschedule_hook( (string) $tiermint_hook );
+		foreach ( array_keys( $releasecart_cron_hooks ) as $releasecart_hook ) {
+			wp_unschedule_hook( (string) $releasecart_hook );
 		}
 	}
 
 	/*
-	 * Remove only the current site's TierMint upload directory.
+	 * Remove only the current site's ReleaseCart upload directory.
+	 *
+	 * Folders go only through the direct filesystem. Without it, the emptied folders stay.
 	 */
-	$tiermint_uploads     = wp_upload_dir();
-	$tiermint_package_dir = trailingslashit( $tiermint_uploads['basedir'] ) . 'tiermint';
+	$releasecart_uploads     = wp_upload_dir();
+	$releasecart_package_dir = trailingslashit( $releasecart_uploads['basedir'] ) . 'releasecart';
 
-	if ( is_dir( $tiermint_package_dir ) ) {
-		$tiermint_filesystem = $tiermint_direct_filesystem( $tiermint_package_dir );
-		$tiermint_files      = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator( $tiermint_package_dir, FilesystemIterator::SKIP_DOTS ),
+	if ( is_dir( $releasecart_package_dir ) ) {
+		$releasecart_filesystem = $releasecart_direct_filesystem( $releasecart_package_dir );
+		$releasecart_files      = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator( $releasecart_package_dir, FilesystemIterator::SKIP_DOTS ),
 			RecursiveIteratorIterator::CHILD_FIRST
 		);
 
-		foreach ( $tiermint_files as $tiermint_file ) {
-			if ( $tiermint_file->isDir() ) {
-				/*
-				 * Remove only confirmed empty directories. Ignore filesystem failures.
-				 */
-				$tiermint_entries = scandir( $tiermint_file->getPathname() );
+		foreach ( $releasecart_files as $releasecart_file ) {
+			if ( ! $releasecart_file->isDir() ) {
+				wp_delete_file( $releasecart_file->getPathname() );
+				continue;
+			}
 
-				if ( is_array( $tiermint_entries ) && 2 === count( $tiermint_entries ) ) {
-					if ( null !== $tiermint_filesystem ) {
-						$tiermint_filesystem->rmdir( $tiermint_file->getPathname() );
-					} else {
-						// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_rmdir -- Another filesystem method needs credentials; PHP can remove its own empty upload folders.
-						rmdir( $tiermint_file->getPathname() );
-					}
-				}
-			} else {
-				wp_delete_file( $tiermint_file->getPathname() );
+			/*
+			 * Remove only confirmed empty directories. Ignore filesystem failures.
+			 */
+			$releasecart_entries = scandir( $releasecart_file->getPathname() );
+
+			if ( null !== $releasecart_filesystem && is_array( $releasecart_entries ) && 2 === count( $releasecart_entries ) ) {
+				$releasecart_filesystem->rmdir( $releasecart_file->getPathname() );
 			}
 		}
 
-		$tiermint_entries = scandir( $tiermint_package_dir );
+		$releasecart_entries = scandir( $releasecart_package_dir );
 
-		if ( is_array( $tiermint_entries ) && 2 === count( $tiermint_entries ) ) {
-			if ( null !== $tiermint_filesystem ) {
-				$tiermint_filesystem->rmdir( $tiermint_package_dir );
-			} else {
-				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_rmdir -- Another filesystem method needs credentials; PHP can remove its own empty upload folders.
-				rmdir( $tiermint_package_dir );
-			}
+		if ( null !== $releasecart_filesystem && is_array( $releasecart_entries ) && 2 === count( $releasecart_entries ) ) {
+			$releasecart_filesystem->rmdir( $releasecart_package_dir );
 		}
 	}
 
 	/*
 	 * Remove custom capabilities.
 	 */
-	foreach ( wp_roles()->role_objects as $tiermint_role ) {
-		foreach ( $tiermint_caps as $tiermint_cap ) {
-			if ( $tiermint_role->has_cap( $tiermint_cap ) ) {
-				$tiermint_role->remove_cap( $tiermint_cap );
+	foreach ( wp_roles()->role_objects as $releasecart_role ) {
+		foreach ( $releasecart_caps as $releasecart_cap ) {
+			if ( $releasecart_role->has_cap( $releasecart_cap ) ) {
+				$releasecart_role->remove_cap( $releasecart_cap );
 			}
 		}
 	}
@@ -336,8 +329,8 @@ foreach ( $tiermint_site_ids as $tiermint_site_id ) {
 	 * external object cache, expire on their own.
 	 */
 	if ( wp_cache_supports( 'flush_group' ) ) {
-		foreach ( $tiermint_cache_groups as $tiermint_cache_group ) {
-			wp_cache_flush_group( $tiermint_cache_group );
+		foreach ( $releasecart_cache_groups as $releasecart_cache_group ) {
+			wp_cache_flush_group( $releasecart_cache_group );
 		}
 	}
 

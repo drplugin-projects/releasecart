@@ -7,10 +7,10 @@
  *
  * @type {{apiRoot: string, nonce?: string}}
  */
-const config = window.tierMint || { apiRoot: '/wp-json/tiermint/v1/' };
+const config = window.releaseCart || { apiRoot: '/wp-json/releasecart/v1/' };
 
 /**
- * Builds headers for tiermint/v1 calls.
+ * Builds headers for releasecart/v1 calls.
  *
  * @return {Object} Fetch headers.
  */
@@ -27,7 +27,7 @@ function apiHeaders() {
  *
  * @type {string}
  */
-const NOTICE_CLASS = 'tiermint-checkout__errors--notice';
+const NOTICE_CLASS = 'releasecart-checkout__errors--notice';
 
 /**
  * Delay before a totals quote.
@@ -41,7 +41,7 @@ const QUOTE_DEBOUNCE_MS = 400;
  *
  * @type {string}
  */
-const ERROR_MARKER = 'tiermint_cart_error';
+const ERROR_MARKER = 'releasecart_cart_error';
 
 /**
  * Currencies stored as whole units in the minor field.
@@ -95,7 +95,7 @@ function formatMoney( minor, currency ) {
  * @return {void}
  */
 function showError( form, message ) {
-	const region = form.querySelector( '.tiermint-checkout__errors' );
+	const region = form.querySelector( '.releasecart-checkout__errors' );
 	if ( region ) {
 		region.textContent = message;
 		region.classList.remove( NOTICE_CLASS );
@@ -113,27 +113,29 @@ function showError( form, message ) {
 function collectFields( form ) {
 	const values = {};
 
-	form.querySelectorAll( '[data-tiermint-field]' ).forEach( ( control ) => {
-		const id = control.getAttribute( 'data-tiermint-field' );
+	form.querySelectorAll( '[data-releasecart-field]' ).forEach(
+		( control ) => {
+			const id = control.getAttribute( 'data-releasecart-field' );
 
-		if ( ! id ) {
-			return;
-		}
-
-		if ( 'checkbox' === control.type ) {
-			if ( control.checked ) {
-				values[ id ] = '1';
+			if ( ! id ) {
+				return;
 			}
-			return;
-		}
 
-		const value =
-			'string' === typeof control.value ? control.value.trim() : '';
+			if ( 'checkbox' === control.type ) {
+				if ( control.checked ) {
+					values[ id ] = '1';
+				}
+				return;
+			}
 
-		if ( value ) {
-			values[ id ] = value;
+			const value =
+				'string' === typeof control.value ? control.value.trim() : '';
+
+			if ( value ) {
+				values[ id ] = value;
+			}
 		}
-	} );
+	);
 
 	return values;
 }
@@ -145,8 +147,8 @@ function collectFields( form ) {
  * @return {string} The code.
  */
 function discountCode( form ) {
-	const root = form.closest( '[data-tiermint-checkout]' ) || form;
-	const input = root.querySelector( '#tiermint-checkout-discount' );
+	const root = form.closest( '[data-releasecart-checkout]' ) || form;
+	const input = root.querySelector( '#releasecart-checkout-discount' );
 
 	return input ? input.value.trim() : '';
 }
@@ -180,7 +182,7 @@ function pollStatus( panel ) {
 			.then( ( body ) => {
 				if ( body && true === body.completed ) {
 					const status = panel.querySelector(
-						'.tiermint-checkout__confirmation-status'
+						'.releasecart-checkout__confirmation-status'
 					);
 					if ( status ) {
 						status.textContent =
@@ -211,8 +213,8 @@ function pollStatus( panel ) {
  */
 function returnUrl( uuid ) {
 	const url = new URL( window.location.href );
-	url.searchParams.delete( 'tiermint_cart_error' );
-	url.searchParams.set( 'tiermint_order', uuid );
+	url.searchParams.delete( 'releasecart_cart_error' );
+	url.searchParams.set( 'releasecart_order', uuid );
 	return url.toString();
 }
 
@@ -265,8 +267,8 @@ function readMinor( element, attribute ) {
  * @return {boolean} True when this actually moved the displayed figure.
  */
 function writeTax( root, minor, currency ) {
-	const row = root.querySelector( '[data-tiermint-tax-line]' );
-	const amount = row && row.querySelector( '[data-tiermint-tax-amount]' );
+	const row = root.querySelector( '[data-releasecart-tax-line]' );
+	const amount = row && row.querySelector( '[data-releasecart-tax-amount]' );
 
 	if ( ! row || ! amount ) {
 		return false;
@@ -290,13 +292,13 @@ function writeTax( root, minor, currency ) {
  * @return {void}
  */
 function writeDiscount( root, discount, currency ) {
-	const summary = root.querySelector( '.tiermint-checkout__summary' );
+	const summary = root.querySelector( '.releasecart-checkout__summary' );
 
 	if ( ! summary ) {
 		return;
 	}
 
-	let line = summary.querySelector( '[data-tiermint-discount-line]' );
+	let line = summary.querySelector( '[data-releasecart-discount-line]' );
 
 	const valid =
 		discount &&
@@ -313,18 +315,18 @@ function writeDiscount( root, discount, currency ) {
 
 	if ( ! line ) {
 		line = document.createElement( 'p' );
-		line.className = 'tiermint-checkout__discount-line';
-		line.setAttribute( 'data-tiermint-discount-line', '' );
+		line.className = 'releasecart-checkout__discount-line';
+		line.setAttribute( 'data-releasecart-discount-line', '' );
 		line.appendChild( document.createElement( 'span' ) );
 		const amountEl = document.createElement( 'span' );
-		amountEl.setAttribute( 'data-tiermint-discount-amount', '' );
+		amountEl.setAttribute( 'data-releasecart-discount-amount', '' );
 		line.appendChild( amountEl );
 
 		// Keep code discounts before automatic discounts and tax.
 		const anchor =
-			summary.querySelector( '[data-tiermint-auto-discount-line]' ) ||
-			summary.querySelector( '[data-tiermint-tax-line]' ) ||
-			summary.querySelector( '.tiermint-checkout__total' );
+			summary.querySelector( '[data-releasecart-auto-discount-line]' ) ||
+			summary.querySelector( '[data-releasecart-tax-line]' ) ||
+			summary.querySelector( '.releasecart-checkout__total' );
 		if ( anchor ) {
 			summary.insertBefore( line, anchor );
 		} else {
@@ -334,7 +336,7 @@ function writeDiscount( root, discount, currency ) {
 
 	line.querySelector( 'span' ).textContent =
 		'string' === typeof discount.label ? discount.label : '';
-	line.querySelector( '[data-tiermint-discount-amount]' ).textContent =
+	line.querySelector( '[data-releasecart-discount-amount]' ).textContent =
 		'-' + formatMoney( discount.amount, currency );
 	// Keep the rendered code discount for intent reconciliation.
 	line.setAttribute( 'data-discount-minor', String( discount.amount ) );
@@ -349,13 +351,13 @@ function writeDiscount( root, discount, currency ) {
  * @return {void}
  */
 function writeAutoDiscount( root, auto, currency ) {
-	const summary = root.querySelector( '.tiermint-checkout__summary' );
+	const summary = root.querySelector( '.releasecart-checkout__summary' );
 
 	if ( ! summary ) {
 		return;
 	}
 
-	let line = summary.querySelector( '[data-tiermint-auto-discount-line]' );
+	let line = summary.querySelector( '[data-releasecart-auto-discount-line]' );
 
 	const valid = auto && 'number' === typeof auto.amount && auto.amount > 0;
 
@@ -368,17 +370,17 @@ function writeAutoDiscount( root, auto, currency ) {
 
 	if ( ! line ) {
 		line = document.createElement( 'p' );
-		line.className = 'tiermint-checkout__discount-line';
-		line.setAttribute( 'data-tiermint-auto-discount-line', '' );
+		line.className = 'releasecart-checkout__discount-line';
+		line.setAttribute( 'data-releasecart-auto-discount-line', '' );
 		line.appendChild( document.createElement( 'span' ) );
 		const amountEl = document.createElement( 'span' );
-		amountEl.setAttribute( 'data-tiermint-auto-discount-amount', '' );
+		amountEl.setAttribute( 'data-releasecart-auto-discount-amount', '' );
 		line.appendChild( amountEl );
 
 		// Keep automatic discounts before tax.
 		const anchor =
-			summary.querySelector( '[data-tiermint-tax-line]' ) ||
-			summary.querySelector( '.tiermint-checkout__total' );
+			summary.querySelector( '[data-releasecart-tax-line]' ) ||
+			summary.querySelector( '.releasecart-checkout__total' );
 		if ( anchor ) {
 			summary.insertBefore( line, anchor );
 		} else {
@@ -388,8 +390,9 @@ function writeAutoDiscount( root, auto, currency ) {
 
 	line.querySelector( 'span' ).textContent =
 		'string' === typeof auto.label ? auto.label : '';
-	line.querySelector( '[data-tiermint-auto-discount-amount]' ).textContent =
-		'-' + formatMoney( auto.amount, currency );
+	line.querySelector(
+		'[data-releasecart-auto-discount-amount]'
+	).textContent = '-' + formatMoney( auto.amount, currency );
 	// Keep the rendered automatic discount for reconciliation.
 	line.setAttribute( 'data-discount-minor', String( auto.amount ) );
 }
@@ -420,7 +423,7 @@ function noticeText( notices ) {
  * @return {void}
  */
 function showNotices( form, notices, superseded ) {
-	const region = form.querySelector( '.tiermint-checkout__errors' );
+	const region = form.querySelector( '.releasecart-checkout__errors' );
 
 	if ( ! region ) {
 		return;
@@ -488,7 +491,7 @@ function isCommitted( session ) {
  * @return {void}
  */
 function wireLiveQuote( form, session ) {
-	const root = form.closest( '[data-tiermint-checkout]' );
+	const root = form.closest( '[data-releasecart-checkout]' );
 
 	if ( ! root ) {
 		return;
@@ -496,7 +499,7 @@ function wireLiveQuote( form, session ) {
 
 	// Do not quote discount codes until the buyer applies them.
 	const controls = Array.prototype.slice.call(
-		form.querySelectorAll( '[data-tiermint-field]' )
+		form.querySelectorAll( '[data-releasecart-field]' )
 	);
 
 	/**
@@ -626,7 +629,7 @@ function wireLiveQuote( form, session ) {
 /**
  * Check whether a control can affect a quote.
  *
- * @param {HTMLElement} control A [data-tiermint-field] control.
+ * @param {HTMLElement} control A [data-releasecart-field] control.
  * @return {boolean} True when the control already has a value.
  */
 function hasQuotableValue( control ) {
@@ -651,7 +654,7 @@ function reconcileTotal( form, body, session ) {
 		return;
 	}
 
-	const root = form.closest( '[data-tiermint-checkout]' );
+	const root = form.closest( '[data-releasecart-checkout]' );
 	const total = root && root.querySelector( '[data-total-minor]' );
 
 	if ( ! total ) {
@@ -682,7 +685,9 @@ function reconcileTotal( form, body, session ) {
 			? body.discount.amount
 			: 0;
 	if ( 0 === codeAmount ) {
-		const staleLine = root.querySelector( '[data-tiermint-discount-line]' );
+		const staleLine = root.querySelector(
+			'[data-releasecart-discount-line]'
+		);
 		if ( staleLine ) {
 			staleLine.remove();
 
@@ -718,7 +723,7 @@ function taxExplainsTheChange( root, body, rendered ) {
 	}
 
 	const renderedTax = readMinor(
-		root.querySelector( '[data-tiermint-tax-line]' ),
+		root.querySelector( '[data-releasecart-tax-line]' ),
 		'data-tax-minor'
 	);
 
@@ -729,11 +734,11 @@ function taxExplainsTheChange( root, body, rendered ) {
 	// Combine rendered code and automatic discounts for comparison.
 	const renderedDiscount =
 		( readMinor(
-			root.querySelector( '[data-tiermint-discount-line]' ),
+			root.querySelector( '[data-releasecart-discount-line]' ),
 			'data-discount-minor'
 		) || 0 ) +
 		( readMinor(
-			root.querySelector( '[data-tiermint-auto-discount-line]' ),
+			root.querySelector( '[data-releasecart-auto-discount-line]' ),
 			'data-discount-minor'
 		) || 0 );
 	const discountTotal =
@@ -758,7 +763,7 @@ function handleLoginRequired( form, body ) {
 		button.disabled = true;
 	} );
 
-	const region = form.querySelector( '.tiermint-checkout__errors' );
+	const region = form.querySelector( '.releasecart-checkout__errors' );
 
 	if ( ! region ) {
 		return;
@@ -779,7 +784,7 @@ function handleLoginRequired( form, body ) {
 	// Reload to render the server-side login form.
 	const link = document.createElement( 'a' );
 	link.href = window.location.href;
-	link.className = 'tiermint-checkout__login-reload';
+	link.className = 'releasecart-checkout__login-reload';
 	link.textContent = reloadText;
 	region.appendChild( link );
 }
@@ -822,19 +827,23 @@ function wireForm( form, state ) {
 	 * @return {void}
 	 */
 	function createIntent( gateway ) {
-		const email = form.querySelector( '#tiermint-checkout-email' );
+		const email = form.querySelector( '#releasecart-checkout-email' );
 
 		if ( email && ! email.reportValidity() ) {
 			return;
 		}
 
-		const firstName = form.querySelector( '#tiermint-checkout-first-name' );
-		const lastName = form.querySelector( '#tiermint-checkout-last-name' );
-		const company = form.querySelector( '#tiermint-checkout-company' );
+		const firstName = form.querySelector(
+			'#releasecart-checkout-first-name'
+		);
+		const lastName = form.querySelector(
+			'#releasecart-checkout-last-name'
+		);
+		const company = form.querySelector( '#releasecart-checkout-company' );
 		const code = discountCode( form );
 
 		state.busy = true;
-		form.classList.add( 'tiermint-checkout__form--busy' );
+		form.classList.add( 'releasecart-checkout__form--busy' );
 
 		// Core details override extension fields with matching IDs.
 		const payload = Object.assign( collectFields( form ), {
@@ -863,7 +872,7 @@ function wireForm( form, state ) {
 			.then( ( { ok, body } ) => {
 				if ( ! ok ) {
 					// Show the login-required state instead of a generic error.
-					if ( body && 'tiermint_login_required' === body.code ) {
+					if ( body && 'releasecart_login_required' === body.code ) {
 						handleLoginRequired( form, body );
 						return;
 					}
@@ -906,7 +915,7 @@ function wireForm( form, state ) {
 				} );
 				state.elements
 					.create( 'payment' )
-					.mount( '#tiermint-checkout-payment' );
+					.mount( '#releasecart-checkout-payment' );
 
 				showError( form, '' );
 				reconcileTotal( form, body, state );
@@ -914,7 +923,7 @@ function wireForm( form, state ) {
 				// Show the payment hint only when the total check left nothing to say.
 				const hint = form.getAttribute( 'data-msg-continue' );
 				const region = form.querySelector(
-					'.tiermint-checkout__errors'
+					'.releasecart-checkout__errors'
 				);
 				if ( hint && region && '' === region.textContent ) {
 					region.textContent = hint;
@@ -926,7 +935,7 @@ function wireForm( form, state ) {
 			)
 			.finally( () => {
 				state.busy = false;
-				form.classList.remove( 'tiermint-checkout__form--busy' );
+				form.classList.remove( 'releasecart-checkout__form--busy' );
 			} );
 	}
 
@@ -937,7 +946,7 @@ function wireForm( form, state ) {
 	 */
 	function confirmPayment() {
 		state.busy = true;
-		form.classList.add( 'tiermint-checkout__form--busy' );
+		form.classList.add( 'releasecart-checkout__form--busy' );
 
 		const confirmArgs = {
 			elements: state.elements,
@@ -957,7 +966,7 @@ function wireForm( form, state ) {
 			} )
 			.finally( () => {
 				state.busy = false;
-				form.classList.remove( 'tiermint-checkout__form--busy' );
+				form.classList.remove( 'releasecart-checkout__form--busy' );
 			} );
 	}
 }
@@ -974,14 +983,16 @@ function submittedGateway( event, form ) {
 		return event.submitter.getAttribute( 'data-gateway' );
 	}
 
-	const root = form.closest( '[data-tiermint-checkout]' );
+	const root = form.closest( '[data-releasecart-checkout]' );
 	const checked =
-		root && root.querySelector( '[data-tiermint-gateway-radio]:checked' );
+		root &&
+		root.querySelector( '[data-releasecart-gateway-radio]:checked' );
 	if ( checked ) {
 		return checked.value;
 	}
 
-	const region = root && root.querySelector( '.tiermint-checkout__gateway' );
+	const region =
+		root && root.querySelector( '.releasecart-checkout__gateway' );
 	return region ? region.getAttribute( 'data-gateway' ) : 'stripe';
 }
 
@@ -992,14 +1003,14 @@ function submittedGateway( event, form ) {
  * @return {void}
  */
 function wireGatewayChooser( root ) {
-	const radios = root.querySelectorAll( '[data-tiermint-gateway-radio]' );
+	const radios = root.querySelectorAll( '[data-releasecart-gateway-radio]' );
 	if ( ! radios.length ) {
 		return;
 	}
 
 	radios.forEach( ( radio ) => {
 		radio.addEventListener( 'change', () => {
-			root.querySelectorAll( '.tiermint-checkout__gateway' ).forEach(
+			root.querySelectorAll( '.releasecart-checkout__gateway' ).forEach(
 				( region ) => {
 					region.hidden =
 						region.getAttribute( 'data-gateway' ) !== radio.value;
@@ -1016,7 +1027,7 @@ function wireGatewayChooser( root ) {
  * @return {void}
  */
 function wireCompanyToggle( root ) {
-	const toggle = root.querySelector( '#tiermint-checkout-company-toggle' );
+	const toggle = root.querySelector( '#releasecart-checkout-company-toggle' );
 
 	if ( ! toggle ) {
 		return;
@@ -1024,25 +1035,26 @@ function wireCompanyToggle( root ) {
 
 	toggle.addEventListener( 'change', () => {
 		if ( toggle.checked ) {
-			const company = root.querySelector( '#tiermint-checkout-company' );
+			const company = root.querySelector(
+				'#releasecart-checkout-company'
+			);
 			if ( company ) {
 				company.focus();
 			}
 			return;
 		}
 
-		[ '#tiermint-checkout-company', '#tiermint-checkout-vat' ].forEach(
-			( selector ) => {
-				const field = root.querySelector( selector );
-				if ( field && field.value ) {
-					field.value = '';
-					// Re-price after removing the tax ID.
-					field.dispatchEvent(
-						new Event( 'change', { bubbles: true } )
-					);
-				}
+		[
+			'#releasecart-checkout-company',
+			'#releasecart-checkout-vat',
+		].forEach( ( selector ) => {
+			const field = root.querySelector( selector );
+			if ( field && field.value ) {
+				field.value = '';
+				// Re-price after removing the tax ID.
+				field.dispatchEvent( new Event( 'change', { bubbles: true } ) );
 			}
-		);
+		} );
 	} );
 }
 
@@ -1055,28 +1067,28 @@ function wireCompanyToggle( root ) {
  * @return {void}
  */
 function wireDiscount( form, session ) {
-	const root = form.closest( '[data-tiermint-checkout]' );
+	const root = form.closest( '[data-releasecart-checkout]' );
 
 	if ( ! root ) {
 		return;
 	}
 
-	const section = root.querySelector( '.tiermint-checkout__discount' );
+	const section = root.querySelector( '.releasecart-checkout__discount' );
 
 	if ( ! section ) {
 		return;
 	}
 
-	const input = section.querySelector( '#tiermint-checkout-discount' );
+	const input = section.querySelector( '#releasecart-checkout-discount' );
 	const applyButton = section.querySelector(
-		'[data-tiermint-discount-apply]'
+		'[data-releasecart-discount-apply]'
 	);
-	const row = section.querySelector( '.tiermint-checkout__discount-row' );
-	const chip = section.querySelector( '[data-tiermint-discount-chip]' );
+	const row = section.querySelector( '.releasecart-checkout__discount-row' );
+	const chip = section.querySelector( '[data-releasecart-discount-chip]' );
 	const chipLabel = section.querySelector(
-		'[data-tiermint-discount-chip-label]'
+		'[data-releasecart-discount-chip-label]'
 	);
-	const error = section.querySelector( '[data-tiermint-discount-error]' );
+	const error = section.querySelector( '[data-releasecart-discount-error]' );
 
 	if (
 		! input ||
@@ -1090,7 +1102,7 @@ function wireDiscount( form, session ) {
 	}
 
 	const removeButton = section.querySelector(
-		'[data-tiermint-discount-remove]'
+		'[data-releasecart-discount-remove]'
 	);
 	const applyForm = applyButton.closest( 'form' );
 	const removeForm = removeButton ? removeButton.closest( 'form' ) : null;
@@ -1295,10 +1307,10 @@ function wireDiscount( form, session ) {
 	}
 }
 
-const roots = document.querySelectorAll( '[data-tiermint-checkout]' );
+const roots = document.querySelectorAll( '[data-releasecart-checkout]' );
 
 roots.forEach( ( root ) => {
-	const panel = root.querySelector( '.tiermint-checkout__confirmation' );
+	const panel = root.querySelector( '.releasecart-checkout__confirmation' );
 	if ( panel ) {
 		pollStatus( panel );
 	}
@@ -1306,7 +1318,7 @@ roots.forEach( ( root ) => {
 	wireGatewayChooser( root );
 	wireCompanyToggle( root );
 
-	const form = root.querySelector( '.tiermint-checkout__form' );
+	const form = root.querySelector( '.releasecart-checkout__form' );
 	if ( form ) {
 		// Share state across quote, discount and payment handlers.
 		const session = createSession();

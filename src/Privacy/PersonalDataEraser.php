@@ -1,29 +1,29 @@
 <?php
 /**
- * GDPR personal-data eraser for TierMint customers.
+ * GDPR personal-data eraser for ReleaseCart customers.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Privacy;
+namespace DrPlugin\WP\ReleaseCart\Privacy;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Customers\CustomerRepository;
-use DrPlugin\WP\TierMint\Database\LogRepository;
-use DrPlugin\WP\TierMint\Licensing\ActivationRepository;
-use DrPlugin\WP\TierMint\Licensing\LicenseRepository;
-use DrPlugin\WP\TierMint\Licensing\LicenseService;
-use DrPlugin\WP\TierMint\Licensing\LicenseStatus;
-use DrPlugin\WP\TierMint\Orders\OrderRepository;
-use DrPlugin\WP\TierMint\Payments\GatewayEventRepository;
-use DrPlugin\WP\TierMint\REST\CheckoutController;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerRepository;
+use DrPlugin\WP\ReleaseCart\Database\LogRepository;
+use DrPlugin\WP\ReleaseCart\Licensing\ActivationRepository;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseRepository;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseService;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseStatus;
+use DrPlugin\WP\ReleaseCart\Orders\OrderRepository;
+use DrPlugin\WP\ReleaseCart\Payments\GatewayEventRepository;
+use DrPlugin\WP\ReleaseCart\REST\CheckoutController;
 
 /**
- * Anonymize TierMint data for the WordPress eraser.
+ * Anonymize ReleaseCart data for the WordPress eraser.
  *
  * Orders stay for accounting. The final page anonymizes the customer after all lookups.
  *
@@ -43,7 +43,7 @@ class PersonalDataEraser {
 	 *
 	 * @var string
 	 */
-	private const ORDER_META_TYPE = 'tiermint_order';
+	private const ORDER_META_TYPE = 'releasecart_order';
 
 	/**
 	 * Order-meta keys that carry buyer PII and are deleted on erasure.
@@ -105,11 +105,11 @@ class PersonalDataEraser {
 	 * @return string The translated eraser name.
 	 */
 	public function friendlyName(): string {
-		return __( 'TierMint store data', 'tiermint' );
+		return __( 'ReleaseCart store data', 'releasecart' );
 	}
 
 	/**
-	 * Erase (anonymize) one page of a customer's TierMint data.
+	 * Erase (anonymize) one page of a customer's ReleaseCart data.
 	 *
 	 * @since 1.0.0
 	 *
@@ -212,10 +212,10 @@ class PersonalDataEraser {
 		$this->customers->anonymize( $customerId, $anonEmail );
 		$removed = true;
 
-		$messages[] = __( 'TierMint kept your order records for tax and accounting reasons, but removed the personal data from them (email address, IP address, billing address, company name and tax ID).', 'tiermint' );
-		$messages[] = __( 'TierMint kept your license and download records for audit purposes, with the licenses revoked and all personal data (website addresses and IP addresses) removed.', 'tiermint' );
-		$messages[] = __( 'Payment notification records were kept for bookkeeping, with their personal data redacted. Your payment provider (for example Stripe) holds its own records under its own privacy policy.', 'tiermint' );
-		$messages[] = __( 'If you accepted the store terms at checkout, TierMint kept the date of that acceptance as a record of your consent. With your other personal data removed, this date no longer identifies you.', 'tiermint' );
+		$messages[] = __( 'ReleaseCart kept your order records for tax and accounting reasons, but removed the personal data from them (email address, IP address, billing address, company name and tax ID).', 'releasecart' );
+		$messages[] = __( 'ReleaseCart kept your license and download records for audit purposes, with the licenses revoked and all personal data (website addresses and IP addresses) removed.', 'releasecart' );
+		$messages[] = __( 'Payment notification records were kept for bookkeeping, with their personal data redacted. Your payment provider (for example Stripe) holds its own records under its own privacy policy.', 'releasecart' );
+		$messages[] = __( 'If you accepted the store terms at checkout, ReleaseCart kept the date of that acceptance as a record of your consent. With your other personal data removed, this date no longer identifies you.', 'releasecart' );
 
 		return array(
 			'items_removed'  => $removed,

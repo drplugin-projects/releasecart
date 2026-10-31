@@ -40,38 +40,41 @@ export default function DetailsPanel( {
 		<TextControl
 			__nextHasNoMarginBottom
 			__next40pxDefaultSize
-			label={ __( 'Slug', 'tiermint' ) }
+			label={ __( 'Slug', 'releasecart' ) }
 			value={ form.slug }
 			help={
 				isNew
 					? __(
 							'Leave empty to generate one from the name.',
-							'tiermint'
+							'releasecart'
 					  )
-					: __( 'Leave empty to keep the current slug.', 'tiermint' )
+					: __(
+							'Leave empty to keep the current slug.',
+							'releasecart'
+					  )
 			}
 			onChange={ ( value ) => update( 'slug', value ) }
 		/>
 	);
 
 	return (
-		<div className="tiermint-panel">
-			<div className="tiermint-form-stack">
+		<div className="releasecart-panel">
+			<div className="releasecart-form-stack">
 				<TextControl
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
-					label={ __( 'Name', 'tiermint' ) }
+					label={ __( 'Name', 'releasecart' ) }
 					value={ form.name }
 					onChange={ ( value ) => update( 'name', value ) }
 				/>
-				<div className="tiermint-permalink">
+				<div className="releasecart-permalink">
 					{ hasLink && (
-						<p className="tiermint-permalink__line">
-							<span className="tiermint-permalink__label">
-								{ __( 'Permalink:', 'tiermint' ) }
+						<p className="releasecart-permalink__line">
+							<span className="releasecart-permalink__label">
+								{ __( 'Permalink:', 'releasecart' ) }
 							</span>
 							<a
-								className="tiermint-permalink__url"
+								className="releasecart-permalink__url"
 								href={ permalink }
 								target="_blank"
 								rel="noreferrer"
@@ -83,22 +86,22 @@ export default function DetailsPanel( {
 									variant="link"
 									onClick={ () => setEditingSlug( true ) }
 								>
-									{ __( 'Edit', 'tiermint' ) }
+									{ __( 'Edit', 'releasecart' ) }
 								</Button>
 							) }
 						</p>
 					) }
 					{ showSlug && slugField }
 					{ ! hasLink && (
-						<p className="tiermint-permalink__note">
+						<p className="releasecart-permalink__note">
 							{ isNew
 								? __(
 										'Save the product to get a shareable link.',
-										'tiermint'
+										'releasecart'
 								  )
 								: __(
 										'Set a product details page under Settings to get a shareable link.',
-										'tiermint'
+										'releasecart'
 								  ) }
 						</p>
 					) }

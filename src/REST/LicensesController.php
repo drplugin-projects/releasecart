@@ -2,33 +2,33 @@
 /**
  * REST controller for the Licenses management resource.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use DrPlugin\WP\TierMint\Customers\Customer;
-use DrPlugin\WP\TierMint\Customers\CustomerRepository;
-use DrPlugin\WP\TierMint\Licensing\Activation;
-use DrPlugin\WP\TierMint\Licensing\ActivationNotFoundException;
-use DrPlugin\WP\TierMint\Licensing\ActivationRepository;
-use DrPlugin\WP\TierMint\Licensing\ActivationService;
-use DrPlugin\WP\TierMint\Licensing\License;
-use DrPlugin\WP\TierMint\Licensing\LicenseNotFoundException;
-use DrPlugin\WP\TierMint\Licensing\LicensePersistenceException;
-use DrPlugin\WP\TierMint\Licensing\LicenseRepository;
-use DrPlugin\WP\TierMint\Licensing\LicenseService;
-use DrPlugin\WP\TierMint\Licensing\LicenseStatus;
-use DrPlugin\WP\TierMint\Licensing\LicenseTransitionException;
-use DrPlugin\WP\TierMint\Licensing\LicenseValidationException;
-use DrPlugin\WP\TierMint\Products\ProductRepository;
+use DrPlugin\WP\ReleaseCart\Customers\Customer;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerRepository;
+use DrPlugin\WP\ReleaseCart\Licensing\Activation;
+use DrPlugin\WP\ReleaseCart\Licensing\ActivationNotFoundException;
+use DrPlugin\WP\ReleaseCart\Licensing\ActivationRepository;
+use DrPlugin\WP\ReleaseCart\Licensing\ActivationService;
+use DrPlugin\WP\ReleaseCart\Licensing\License;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseNotFoundException;
+use DrPlugin\WP\ReleaseCart\Licensing\LicensePersistenceException;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseRepository;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseService;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseStatus;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseTransitionException;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseValidationException;
+use DrPlugin\WP\ReleaseCart\Products\ProductRepository;
 use Throwable;
 use WP_Error;
 use WP_REST_Request;
@@ -318,7 +318,7 @@ final class LicensesController extends AbstractRestController {
 		// Not found, or found under a different license: one indistinguishable 404 so an admin
 		// cannot probe which activation ids exist on licenses they are not looking at.
 		if ( null === $activation || $activation->licenseId() !== $licenseId ) {
-			return $this->notFound( __( 'The requested activation was not found for this license.', 'tiermint' ) );
+			return $this->notFound( __( 'The requested activation was not found for this license.', 'releasecart' ) );
 		}
 
 		// Already deactivated: idempotent success with the current state, mirroring the public
@@ -463,7 +463,7 @@ final class LicensesController extends AbstractRestController {
 		}
 
 		if ( $e instanceof ActivationNotFoundException ) {
-			return $this->notFound( __( 'The requested activation was not found for this license.', 'tiermint' ) );
+			return $this->notFound( __( 'The requested activation was not found for this license.', 'releasecart' ) );
 		}
 
 		if ( $e instanceof LicenseValidationException ) {
@@ -474,8 +474,8 @@ final class LicensesController extends AbstractRestController {
 			// Another writer moved the license while this request was deciding. The state
 			// the caller acted on is stale, not wrong, so it reads as a conflict.
 			return $this->error(
-				'tiermint_license_conflict',
-				__( 'The license changed state while this request was running. Reload and try again.', 'tiermint' ),
+				'releasecart_license_conflict',
+				__( 'The license changed state while this request was running. Reload and try again.', 'releasecart' ),
 				409
 			);
 		}
@@ -627,7 +627,7 @@ final class LicensesController extends AbstractRestController {
 	private function collectionArgs(): array {
 		return array(
 			'page'        => array(
-				'description'       => __( 'Current page of the collection.', 'tiermint' ),
+				'description'       => __( 'Current page of the collection.', 'releasecart' ),
 				'type'              => 'integer',
 				'default'           => 1,
 				'minimum'           => 1,
@@ -635,7 +635,7 @@ final class LicensesController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'per_page'    => array(
-				'description'       => __( 'Maximum number of items to return per page.', 'tiermint' ),
+				'description'       => __( 'Maximum number of items to return per page.', 'releasecart' ),
 				'type'              => 'integer',
 				'default'           => 10,
 				'minimum'           => 1,
@@ -644,34 +644,34 @@ final class LicensesController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'status'      => array(
-				'description'       => __( 'Limit results to a license status.', 'tiermint' ),
+				'description'       => __( 'Limit results to a license status.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => $this->statusValues(),
 				'sanitize_callback' => 'sanitize_key',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'product_id'  => array(
-				'description'       => __( 'Limit results to licenses for a product.', 'tiermint' ),
+				'description'       => __( 'Limit results to licenses for a product.', 'releasecart' ),
 				'type'              => 'integer',
 				'minimum'           => 1,
 				'sanitize_callback' => 'absint',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'customer_id' => array(
-				'description'       => __( 'Limit results to licenses owned by a customer.', 'tiermint' ),
+				'description'       => __( 'Limit results to licenses owned by a customer.', 'releasecart' ),
 				'type'              => 'integer',
 				'minimum'           => 1,
 				'sanitize_callback' => 'absint',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'search'      => array(
-				'description'       => __( 'Match an exact license key or a customer email.', 'tiermint' ),
+				'description'       => __( 'Match an exact license key or a customer email.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'orderby'     => array(
-				'description'       => __( 'Sort collection by license attribute.', 'tiermint' ),
+				'description'       => __( 'Sort collection by license attribute.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'id', 'created_at', 'expires_at' ),
 				'default'           => 'created_at',
@@ -679,7 +679,7 @@ final class LicensesController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'order'       => array(
-				'description'       => __( 'Order sort attribute ascending or descending.', 'tiermint' ),
+				'description'       => __( 'Order sort attribute ascending or descending.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'asc', 'desc' ),
 				'default'           => 'desc',
@@ -699,7 +699,7 @@ final class LicensesController extends AbstractRestController {
 	private function idArgs(): array {
 		return array(
 			'id' => array(
-				'description'       => __( 'Unique license identifier.', 'tiermint' ),
+				'description'       => __( 'Unique license identifier.', 'releasecart' ),
 				'type'              => 'integer',
 				'required'          => true,
 				'sanitize_callback' => 'absint',
@@ -720,7 +720,7 @@ final class LicensesController extends AbstractRestController {
 			$this->idArgs(),
 			array(
 				'activation_id' => array(
-					'description'       => __( 'Unique activation identifier.', 'tiermint' ),
+					'description'       => __( 'Unique activation identifier.', 'releasecart' ),
 					'type'              => 'integer',
 					'required'          => true,
 					'sanitize_callback' => 'absint',

@@ -14,12 +14,12 @@ import { __ } from '@wordpress/i18n';
  */
 export default function NotFound() {
 	return (
-		<section className="tiermint-admin-screen tiermint-admin-notfound">
-			<h1>{ __( 'Page not found', 'tiermint' ) }</h1>
+		<section className="releasecart-admin-screen releasecart-admin-notfound">
+			<h1>{ __( 'Page not found', 'releasecart' ) }</h1>
 			<p>
 				{ __(
 					'The screen you requested could not be found.',
-					'tiermint'
+					'releasecart'
 				) }
 			</p>
 		</section>

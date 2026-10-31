@@ -20,17 +20,17 @@ export default function UpsellFeatures( { features, url, linkLabel } ) {
 	}
 
 	return (
-		<ul className="tiermint-upsell__features">
+		<ul className="releasecart-upsell__features">
 			{ features.map( ( feature ) => (
-				<li key={ feature.key } className="tiermint-upsell__feature">
-					<h3 className="tiermint-upsell__feature-title">
+				<li key={ feature.key } className="releasecart-upsell__feature">
+					<h3 className="releasecart-upsell__feature-title">
 						{ feature.title }
 					</h3>
-					<p className="tiermint-upsell__feature-blurb">
+					<p className="releasecart-upsell__feature-blurb">
 						{ feature.blurb }
 					</p>
 					<a
-						className="tiermint-upsell__feature-link"
+						className="releasecart-upsell__feature-link"
 						href={ url }
 						target="_blank"
 						rel="noopener noreferrer"

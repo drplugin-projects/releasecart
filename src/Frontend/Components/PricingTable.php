@@ -2,26 +2,26 @@
 /**
  * The multi-product pricing table component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver;
-use DrPlugin\WP\TierMint\Discounts\DiscountPersistenceException;
-use DrPlugin\WP\TierMint\Discounts\DiscountSettings;
-use DrPlugin\WP\TierMint\Frontend\AbstractComponent;
-use DrPlugin\WP\TierMint\Frontend\CartActionListener;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\PriceDisplay;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\SamplePreview;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\TierMetaPresenter;
-use DrPlugin\WP\TierMint\Frontend\RenderContext;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Products\ProductStatus;
-use DrPlugin\WP\TierMint\Util\Money;
+use DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountPersistenceException;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings;
+use DrPlugin\WP\ReleaseCart\Frontend\AbstractComponent;
+use DrPlugin\WP\ReleaseCart\Frontend\CartActionListener;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\PriceDisplay;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\SamplePreview;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\TierMetaPresenter;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContext;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Products\ProductStatus;
+use DrPlugin\WP\ReleaseCart\Util\Money;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -100,34 +100,34 @@ final class PricingTable extends AbstractComponent {
 				'required'    => true,
 				'control'     => 'product_select',
 				'multiple'    => true,
-				'label'       => __( 'Products', 'tiermint' ),
-				'description' => __( 'The products to show as columns, in order.', 'tiermint' ),
+				'label'       => __( 'Products', 'releasecart' ),
+				'description' => __( 'The products to show as columns, in order.', 'releasecart' ),
 			),
 			'highlight_id'  => array(
 				'type'        => 'integer',
 				'default'     => 0,
 				'control'     => 'number',
-				'label'       => __( 'Highlighted product', 'tiermint' ),
-				'description' => __( 'The product id to feature as most popular, or 0 for none.', 'tiermint' ),
+				'label'       => __( 'Highlighted product', 'releasecart' ),
+				'description' => __( 'The product id to feature as most popular, or 0 for none.', 'releasecart' ),
 			),
 			'show_features' => array(
 				'type'    => 'boolean',
 				'default' => true,
 				'control' => 'toggle',
-				'label'   => __( 'Show features', 'tiermint' ),
+				'label'   => __( 'Show features', 'releasecart' ),
 			),
 			'columns'       => array(
 				'type'    => 'enum',
 				'enum'    => array( '2', '3', '4' ),
 				'default' => '3',
 				'control' => 'select',
-				'label'   => __( 'Columns', 'tiermint' ),
+				'label'   => __( 'Columns', 'releasecart' ),
 			),
 			'button_text'   => array(
 				'type'    => 'string',
-				'default' => __( 'Buy now', 'tiermint' ),
+				'default' => __( 'Buy now', 'releasecart' ),
 				'control' => 'text',
-				'label'   => __( 'Button text', 'tiermint' ),
+				'label'   => __( 'Button text', 'releasecart' ),
 			),
 		) + TierMetaPresenter::toggleSchema();
 	}
@@ -164,8 +164,8 @@ final class PricingTable extends AbstractComponent {
 			array(
 				'columns'       => (string) $attrs['columns'],
 				'button_text'   => (string) $attrs['button_text'],
-				'popular_label' => __( 'Most popular', 'tiermint' ),
-				'action_url'    => remove_query_arg( 'tiermint_cart_error' ),
+				'popular_label' => __( 'Most popular', 'releasecart' ),
+				'action_url'    => remove_query_arg( 'releasecart_cart_error' ),
 				'nonce_action'  => CartActionListener::NONCE_ACTION,
 				'nonce_field'   => CartActionListener::NONCE_FIELD,
 				'plans'         => $this->withDiscountDisplay( $plans ),
@@ -242,10 +242,10 @@ final class PricingTable extends AbstractComponent {
 	 * @return array<string, mixed>
 	 */
 	private function sampleData( array $attrs, bool $showFeatures, array $metaFlags ): array {
-		$labels   = array( __( 'Starter', 'tiermint' ), __( 'Business', 'tiermint' ) );
+		$labels   = array( __( 'Starter', 'releasecart' ), __( 'Business', 'releasecart' ) );
 		$features = array(
-			array( __( 'Core features', 'tiermint' ), __( 'One year of updates', 'tiermint' ) ),
-			array( __( 'Everything in Starter', 'tiermint' ), __( 'Priority support', 'tiermint' ) ),
+			array( __( 'Core features', 'releasecart' ), __( 'One year of updates', 'releasecart' ) ),
+			array( __( 'Everything in Starter', 'releasecart' ), __( 'Priority support', 'releasecart' ) ),
 		);
 
 		$prices = array_values( SamplePreview::tierProduct()->prices() );
@@ -254,9 +254,9 @@ final class PricingTable extends AbstractComponent {
 		$plans = array();
 		foreach ( $prices as $index => $price ) {
 			$isHighlight = $index === $last;
-			$planClass   = 'tiermint-pricing-table__plan';
+			$planClass   = 'releasecart-pricing-table__plan';
 			if ( $isHighlight ) {
-				$planClass .= ' tiermint-pricing-table__plan--highlight';
+				$planClass .= ' releasecart-pricing-table__plan--highlight';
 			}
 
 			$plans[] = array(
@@ -278,8 +278,8 @@ final class PricingTable extends AbstractComponent {
 		return array(
 			'columns'       => (string) $attrs['columns'],
 			'button_text'   => (string) $attrs['button_text'],
-			'popular_label' => __( 'Most popular', 'tiermint' ),
-			'action_url'    => remove_query_arg( 'tiermint_cart_error' ),
+			'popular_label' => __( 'Most popular', 'releasecart' ),
+			'action_url'    => remove_query_arg( 'releasecart_cart_error' ),
 			'nonce_action'  => CartActionListener::NONCE_ACTION,
 			'nonce_field'   => CartActionListener::NONCE_FIELD,
 			'plans'         => $plans,
@@ -312,9 +312,9 @@ final class PricingTable extends AbstractComponent {
 
 		$isHighlight = $highlightId > 0 && $highlightId === $productId;
 
-		$planClass = 'tiermint-pricing-table__plan';
+		$planClass = 'releasecart-pricing-table__plan';
 		if ( $isHighlight ) {
-			$planClass .= ' tiermint-pricing-table__plan--highlight';
+			$planClass .= ' releasecart-pricing-table__plan--highlight';
 		}
 
 		return array(

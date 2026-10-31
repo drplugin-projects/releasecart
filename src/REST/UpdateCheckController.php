@@ -2,21 +2,21 @@
 /**
  * Public update-check REST endpoint.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Licensing\LicensePersistenceException;
-use DrPlugin\WP\TierMint\Products\ProductNotFoundException;
-use DrPlugin\WP\TierMint\Products\ProductPersistenceException;
-use DrPlugin\WP\TierMint\Updates\ReleasePersistenceException;
-use DrPlugin\WP\TierMint\Updates\UpdateService;
+use DrPlugin\WP\ReleaseCart\Licensing\LicensePersistenceException;
+use DrPlugin\WP\ReleaseCart\Products\ProductNotFoundException;
+use DrPlugin\WP\ReleaseCart\Products\ProductPersistenceException;
+use DrPlugin\WP\ReleaseCart\Updates\ReleasePersistenceException;
+use DrPlugin\WP\ReleaseCart\Updates\UpdateService;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -68,25 +68,25 @@ final class UpdateCheckController extends AbstractRestController {
 						'product_slug'      => array(
 							'type'              => 'string',
 							'required'          => true,
-							'description'       => __( 'The product\'s catalog slug, the same identifier the licensing endpoints match on.', 'tiermint' ),
+							'description'       => __( 'The product\'s catalog slug, the same identifier the licensing endpoints match on.', 'releasecart' ),
 							'sanitize_callback' => 'sanitize_text_field',
 						),
 						'license_key'       => array(
 							'type'              => 'string',
 							'required'          => true,
-							'description'       => __( 'The license key credential.', 'tiermint' ),
+							'description'       => __( 'The license key credential.', 'releasecart' ),
 							'sanitize_callback' => 'sanitize_text_field',
 						),
 						'site_url'          => array(
 							'type'              => 'string',
 							'required'          => false,
-							'description'       => __( 'The requesting site\'s URL; without it no package URL can be issued.', 'tiermint' ),
+							'description'       => __( 'The requesting site\'s URL; without it no package URL can be issued.', 'releasecart' ),
 							'sanitize_callback' => 'sanitize_text_field',
 						),
 						'installed_version' => array(
 							'type'              => 'string',
 							'required'          => false,
-							'description'       => __( 'The currently installed version, for the update_available verdict.', 'tiermint' ),
+							'description'       => __( 'The currently installed version, for the update_available verdict.', 'releasecart' ),
 							'sanitize_callback' => 'sanitize_text_field',
 						),
 					),
@@ -108,7 +108,7 @@ final class UpdateCheckController extends AbstractRestController {
 		$licenseKey  = trim( (string) $request->get_param( 'license_key' ) );
 
 		if ( '' === $productSlug || '' === $licenseKey ) {
-			return $this->invalidParams( array( __( 'Both product_slug and license_key are required.', 'tiermint' ) ) );
+			return $this->invalidParams( array( __( 'Both product_slug and license_key are required.', 'releasecart' ) ) );
 		}
 
 		$siteUrl   = trim( (string) $request->get_param( 'site_url' ) );

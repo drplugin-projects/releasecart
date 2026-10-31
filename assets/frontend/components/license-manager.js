@@ -1,5 +1,5 @@
 /**
- * TierMint license manager enhancement.
+ * ReleaseCart license manager enhancement.
  *
  * Add license activation controls to the server-rendered dashboard.
  */
@@ -9,7 +9,7 @@
  *
  * @type {{apiRoot: string, nonce?: string}}
  */
-const config = window.tierMint || { apiRoot: '/wp-json/tiermint/v1/' };
+const config = window.releaseCart || { apiRoot: '/wp-json/releasecart/v1/' };
 
 /**
  * Build authenticated REST request headers.
@@ -32,7 +32,7 @@ function apiHeaders() {
  * @return {void}
  */
 function announce( root, message ) {
-	const region = root.querySelector( '[data-tiermint-feedback]' );
+	const region = root.querySelector( '[data-releasecart-feedback]' );
 	if ( region ) {
 		region.textContent = message;
 	}
@@ -83,15 +83,15 @@ function deactivate( root, button ) {
 				return;
 			}
 
-			const card = button.closest( '[data-tiermint-license]' );
-			const row = button.closest( '[data-tiermint-activation]' );
+			const card = button.closest( '[data-releasecart-license]' );
+			const row = button.closest( '[data-releasecart-activation]' );
 			if ( row ) {
 				row.remove();
 			}
 
 			if ( card && 'number' === typeof body.activation_count ) {
 				const count = card.querySelector(
-					'[data-tiermint-usage-count]'
+					'[data-releasecart-usage-count]'
 				);
 				if ( count ) {
 					count.textContent = String( body.activation_count );
@@ -113,7 +113,7 @@ function deactivate( root, button ) {
  */
 function activate( root, form ) {
 	const key = form.getAttribute( 'data-license-key' );
-	const input = form.querySelector( '[data-tiermint-site-input]' );
+	const input = form.querySelector( '[data-releasecart-site-input]' );
 	if ( ! key || ! input ) {
 		return;
 	}
@@ -156,7 +156,7 @@ function activate( root, form ) {
 			if (
 				403 === status &&
 				body &&
-				'tiermint_activation_limit_reached' === body.code
+				'releasecart_activation_limit_reached' === body.code
 			) {
 				announce( root, body.message || genericError( root ) );
 			} else {
@@ -178,11 +178,11 @@ function activate( root, form ) {
 		} );
 }
 
-const roots = document.querySelectorAll( '.tiermint-license-manager' );
+const roots = document.querySelectorAll( '.releasecart-license-manager' );
 
 roots.forEach( ( root ) => {
 	root.addEventListener( 'click', ( event ) => {
-		const button = event.target.closest( '[data-tiermint-deactivate]' );
+		const button = event.target.closest( '[data-releasecart-deactivate]' );
 		if ( button && root.contains( button ) ) {
 			event.preventDefault();
 			deactivate( root, button );
@@ -190,7 +190,7 @@ roots.forEach( ( root ) => {
 	} );
 
 	root.addEventListener( 'submit', ( event ) => {
-		const form = event.target.closest( '[data-tiermint-activate-form]' );
+		const form = event.target.closest( '[data-releasecart-activate-form]' );
 		if ( form && root.contains( form ) ) {
 			event.preventDefault();
 			activate( root, form );

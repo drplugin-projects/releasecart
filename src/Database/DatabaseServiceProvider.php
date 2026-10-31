@@ -2,21 +2,21 @@
 /**
  * Service provider for the database layer (migrations runner).
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Database;
+namespace DrPlugin\WP\ReleaseCart\Database;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Container;
-use DrPlugin\WP\TierMint\Core\ServiceProvider;
-use DrPlugin\WP\TierMint\Database\Migrations\Migration_0001_CreateCoreTables;
-use DrPlugin\WP\TierMint\Database\Migrations\Migration_0002_AddReportIndexes;
-use DrPlugin\WP\TierMint\Database\Migrations\Migration_0004_AddOrderMetaKeyOrderIndex;
+use DrPlugin\WP\ReleaseCart\Core\Container;
+use DrPlugin\WP\ReleaseCart\Core\ServiceProvider;
+use DrPlugin\WP\ReleaseCart\Database\Migrations\Migration_0001_CreateCoreTables;
+use DrPlugin\WP\ReleaseCart\Database\Migrations\Migration_0002_AddReportIndexes;
+use DrPlugin\WP\ReleaseCart\Database\Migrations\Migration_0004_AddOrderMetaKeyOrderIndex;
 
 /**
  * Registers database services and runs pending migrations.

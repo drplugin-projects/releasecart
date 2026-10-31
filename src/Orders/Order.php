@@ -2,12 +2,12 @@
 /**
  * Order aggregate value object.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Orders;
+namespace DrPlugin\WP\ReleaseCart\Orders;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -231,13 +231,13 @@ final class Order {
 	) {
 		if ( false === filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new OrderException( __( 'An order must have a valid buyer email.', 'tiermint' ) );
+			throw new OrderException( __( 'An order must have a valid buyer email.', 'releasecart' ) );
 		}
 
 		// Store one uppercase three-letter currency value.
 		if ( 1 !== preg_match( '/^[A-Za-z]{3}$/', $currency ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new OrderException( __( 'An order currency must be a three-letter code.', 'tiermint' ) );
+			throw new OrderException( __( 'An order currency must be a three-letter code.', 'releasecart' ) );
 		}
 
 		// Refund orders can have negative totals.

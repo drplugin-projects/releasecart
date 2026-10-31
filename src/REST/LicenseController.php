@@ -2,33 +2,33 @@
 /**
  * Public REST controller for the licensing surface: activate, deactivate, validate.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use DrPlugin\WP\TierMint\Customers\CustomerPersistenceException;
-use DrPlugin\WP\TierMint\Customers\CustomerService;
-use DrPlugin\WP\TierMint\Licensing\Activation;
-use DrPlugin\WP\TierMint\Licensing\ActivationLimitException;
-use DrPlugin\WP\TierMint\Licensing\ActivationNotFoundException;
-use DrPlugin\WP\TierMint\Licensing\ActivationService;
-use DrPlugin\WP\TierMint\Licensing\ActivationStatus;
-use DrPlugin\WP\TierMint\Licensing\License;
-use DrPlugin\WP\TierMint\Licensing\LicensePersistenceException;
-use DrPlugin\WP\TierMint\Licensing\LicenseService;
-use DrPlugin\WP\TierMint\Licensing\LicenseStatus;
-use DrPlugin\WP\TierMint\Licensing\LicenseValidationException;
-use DrPlugin\WP\TierMint\Licensing\LicenseValidationService;
-use DrPlugin\WP\TierMint\Products\ProductPersistenceException;
-use DrPlugin\WP\TierMint\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerPersistenceException;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerService;
+use DrPlugin\WP\ReleaseCart\Licensing\Activation;
+use DrPlugin\WP\ReleaseCart\Licensing\ActivationLimitException;
+use DrPlugin\WP\ReleaseCart\Licensing\ActivationNotFoundException;
+use DrPlugin\WP\ReleaseCart\Licensing\ActivationService;
+use DrPlugin\WP\ReleaseCart\Licensing\ActivationStatus;
+use DrPlugin\WP\ReleaseCart\Licensing\License;
+use DrPlugin\WP\ReleaseCart\Licensing\LicensePersistenceException;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseService;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseStatus;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseValidationException;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseValidationService;
+use DrPlugin\WP\ReleaseCart\Products\ProductPersistenceException;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -168,7 +168,7 @@ final class LicenseController extends AbstractRestController {
 		$licenseKey = trim( (string) $request->get_param( 'license_key' ) );
 
 		if ( '' === $licenseKey ) {
-			return $this->invalidParams( array( __( 'A license_key parameter is required.', 'tiermint' ) ) );
+			return $this->invalidParams( array( __( 'A license_key parameter is required.', 'releasecart' ) ) );
 		}
 
 		$siteUrl     = trim( (string) $request->get_param( 'site_url' ) );
@@ -197,7 +197,7 @@ final class LicenseController extends AbstractRestController {
 		 * @param array<string, mixed> $payload The response payload about to be sent.
 		 * @param WP_REST_Request      $request The incoming request.
 		 */
-		$payload = (array) apply_filters( 'tiermint_license_validate_response', $payload, $request );
+		$payload = (array) apply_filters( 'releasecart_license_validate_response', $payload, $request );
 
 		return new WP_REST_Response( $payload, 200 );
 	}
@@ -277,7 +277,7 @@ final class LicenseController extends AbstractRestController {
 		 * @param Activation           $activation The activation that was claimed.
 		 * @param WP_REST_Request      $request    The incoming request.
 		 */
-		$payload = (array) apply_filters( 'tiermint_license_activate_response', $payload, $fresh, $activation, $request );
+		$payload = (array) apply_filters( 'releasecart_license_activate_response', $payload, $fresh, $activation, $request );
 
 		return new WP_REST_Response( $payload, 200 );
 	}
@@ -306,7 +306,7 @@ final class LicenseController extends AbstractRestController {
 		try {
 			$this->activations->deactivate( $license, $input['site_url'], $input['fingerprint'] );
 		} catch ( ActivationNotFoundException $e ) {
-			return $this->error( 'tiermint_activation_not_found', $e->getMessage(), 404 );
+			return $this->error( 'releasecart_activation_not_found', $e->getMessage(), 404 );
 		} catch ( LicenseValidationException $e ) {
 			return $this->invalidParams( $e->getErrors() );
 		} catch ( LicensePersistenceException $e ) {
@@ -346,11 +346,11 @@ final class LicenseController extends AbstractRestController {
 		$errors = array();
 
 		if ( '' === $licenseKey ) {
-			$errors[] = __( 'A license_key parameter is required.', 'tiermint' );
+			$errors[] = __( 'A license_key parameter is required.', 'releasecart' );
 		}
 
 		if ( '' === $siteUrl ) {
-			$errors[] = __( 'A site_url parameter is required.', 'tiermint' );
+			$errors[] = __( 'A site_url parameter is required.', 'releasecart' );
 		}
 
 		if ( array() !== $errors ) {
@@ -381,8 +381,8 @@ final class LicenseController extends AbstractRestController {
 
 		if ( null === $license ) {
 			return $this->error(
-				'tiermint_invalid_key',
-				__( 'No license matches the supplied key.', 'tiermint' ),
+				'releasecart_invalid_key',
+				__( 'No license matches the supplied key.', 'releasecart' ),
 				404
 			);
 		}
@@ -414,8 +414,8 @@ final class LicenseController extends AbstractRestController {
 		}
 
 		return $this->error(
-			'tiermint_key_mismatch',
-			__( 'The license key does not belong to the supplied product.', 'tiermint' ),
+			'releasecart_key_mismatch',
+			__( 'The license key does not belong to the supplied product.', 'releasecart' ),
 			404
 		);
 	}
@@ -427,7 +427,7 @@ final class LicenseController extends AbstractRestController {
 	 *
 	 * @param License                  $license The full license.
 	 * @param ActivationLimitException $e       The refusal, carrying the limit.
-	 * @return WP_Error The tiermint_activation_limit_reached envelope.
+	 * @return WP_Error The releasecart_activation_limit_reached envelope.
 	 */
 	private function limitReached( License $license, ActivationLimitException $e ): WP_Error {
 		$sites = array();
@@ -445,10 +445,10 @@ final class LicenseController extends AbstractRestController {
 		}
 
 		return $this->error(
-			'tiermint_activation_limit_reached',
+			'releasecart_activation_limit_reached',
 			sprintf(
 				/* translators: %d: the license's activation limit. */
-				__( 'This license key has reached its activation limit (%d sites).', 'tiermint' ),
+				__( 'This license key has reached its activation limit (%d sites).', 'releasecart' ),
 				$e->getLimit()
 			),
 			403,
@@ -478,8 +478,8 @@ final class LicenseController extends AbstractRestController {
 
 		if ( LicenseStatus::Expired === $current->status() ) {
 			return $this->error(
-				'tiermint_license_expired',
-				__( 'This license has expired. To activate new sites, buy a new license and use its key.', 'tiermint' ),
+				'releasecart_license_expired',
+				__( 'This license has expired. To activate new sites, buy a new license and use its key.', 'releasecart' ),
 				403,
 				array( 'expires_at' => $this->formatUtc( $current->expiresAt() ) )
 			);
@@ -487,8 +487,8 @@ final class LicenseController extends AbstractRestController {
 
 		if ( LicenseStatus::Disabled === $current->status() ) {
 			return $this->error(
-				'tiermint_license_disabled',
-				__( 'This license has been disabled.', 'tiermint' ),
+				'releasecart_license_disabled',
+				__( 'This license has been disabled.', 'releasecart' ),
 				403
 			);
 		}
@@ -580,7 +580,7 @@ final class LicenseController extends AbstractRestController {
 		 * @param string               $licenseKey The presented license key.
 		 * @param array<string, mixed> $payload    The canonical payload built so far.
 		 */
-		$url = apply_filters( 'tiermint_license_renewal_url', null, $licenseKey, $payload );
+		$url = apply_filters( 'releasecart_license_renewal_url', null, $licenseKey, $payload );
 
 		if ( is_string( $url ) && '' !== $url ) {
 			$payload['renewal_url'] = $url;
@@ -653,28 +653,28 @@ final class LicenseController extends AbstractRestController {
 	private function commonArgs(): array {
 		return array(
 			'license_key'  => array(
-				'description'       => __( 'The license key issued at purchase.', 'tiermint' ),
+				'description'       => __( 'The license key issued at purchase.', 'releasecart' ),
 				'type'              => 'string',
 				'maxLength'         => 64,
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'site_url'     => array(
-				'description'       => __( 'The URL of the site the license is used on.', 'tiermint' ),
+				'description'       => __( 'The URL of the site the license is used on.', 'releasecart' ),
 				'type'              => 'string',
 				'maxLength'         => 200,
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'product_slug' => array(
-				'description'       => __( 'The slug of the product the key should belong to.', 'tiermint' ),
+				'description'       => __( 'The slug of the product the key should belong to.', 'releasecart' ),
 				'type'              => 'string',
 				'maxLength'         => 200,
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'fingerprint'  => array(
-				'description'       => __( 'An opaque device fingerprint for non-web clients.', 'tiermint' ),
+				'description'       => __( 'An opaque device fingerprint for non-web clients.', 'releasecart' ),
 				'type'              => 'string',
 				'maxLength'         => 64,
 				'sanitize_callback' => 'sanitize_text_field',
@@ -693,7 +693,7 @@ final class LicenseController extends AbstractRestController {
 	private function environmentArg(): array {
 		return array(
 			'environment' => array(
-				'description'       => __( 'A flat map describing the client environment (PHP, WordPress, product version).', 'tiermint' ),
+				'description'       => __( 'A flat map describing the client environment (PHP, WordPress, product version).', 'releasecart' ),
 				'type'              => 'object',
 				'validate_callback' => 'rest_validate_request_arg',
 			),

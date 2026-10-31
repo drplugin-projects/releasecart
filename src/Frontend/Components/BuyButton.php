@@ -2,25 +2,25 @@
 /**
  * The single-product buy button component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver;
-use DrPlugin\WP\TierMint\Discounts\DiscountPersistenceException;
-use DrPlugin\WP\TierMint\Discounts\DiscountSettings;
-use DrPlugin\WP\TierMint\Frontend\AbstractComponent;
-use DrPlugin\WP\TierMint\Frontend\CartActionListener;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\PriceDisplay;
-use DrPlugin\WP\TierMint\Frontend\RenderContext;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductPrice;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Products\ProductStatus;
-use DrPlugin\WP\TierMint\Util\Money;
+use DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountPersistenceException;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings;
+use DrPlugin\WP\ReleaseCart\Frontend\AbstractComponent;
+use DrPlugin\WP\ReleaseCart\Frontend\CartActionListener;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\PriceDisplay;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContext;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductPrice;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Products\ProductStatus;
+use DrPlugin\WP\ReleaseCart\Util\Money;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -97,27 +97,27 @@ final class BuyButton extends AbstractComponent {
 				'default'     => 0,
 				'required'    => true,
 				'control'     => 'product_select',
-				'label'       => __( 'Product', 'tiermint' ),
-				'description' => __( 'The product to sell.', 'tiermint' ),
+				'label'       => __( 'Product', 'releasecart' ),
+				'description' => __( 'The product to sell.', 'releasecart' ),
 			),
 			'price_id'   => array(
 				'type'        => 'integer',
 				'default'     => 0,
 				'control'     => 'number',
-				'label'       => __( 'Price tier', 'tiermint' ),
-				'description' => __( 'A specific price tier id, or 0 for the product default tier.', 'tiermint' ),
+				'label'       => __( 'Price tier', 'releasecart' ),
+				'description' => __( 'A specific price tier id, or 0 for the product default tier.', 'releasecart' ),
 			),
 			'label'      => array(
 				'type'    => 'string',
-				'default' => __( 'Buy now', 'tiermint' ),
+				'default' => __( 'Buy now', 'releasecart' ),
 				'control' => 'text',
-				'label'   => __( 'Button label', 'tiermint' ),
+				'label'   => __( 'Button label', 'releasecart' ),
 			),
 			'show_price' => array(
 				'type'    => 'boolean',
 				'default' => true,
 				'control' => 'toggle',
-				'label'   => __( 'Show price', 'tiermint' ),
+				'label'   => __( 'Show price', 'releasecart' ),
 			),
 		);
 	}
@@ -142,7 +142,7 @@ final class BuyButton extends AbstractComponent {
 
 		return $this->renderTemplate(
 			array(
-				'action_url'   => remove_query_arg( 'tiermint_cart_error' ),
+				'action_url'   => remove_query_arg( 'releasecart_cart_error' ),
 				'product_id'   => $productId,
 				'price_id'     => (int) $price->id(),
 				'quantity'     => $price->minQuantity(),
@@ -232,7 +232,7 @@ final class BuyButton extends AbstractComponent {
 	 */
 	private function sampleData( array $attrs ): array {
 		return array(
-			'action_url'   => remove_query_arg( 'tiermint_cart_error' ),
+			'action_url'   => remove_query_arg( 'releasecart_cart_error' ),
 			'product_id'   => 0,
 			'price_id'     => 0,
 			'quantity'     => 1,

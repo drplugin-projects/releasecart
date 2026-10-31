@@ -1,101 +1,101 @@
 /* Screenshot grid and optional gallery styles. */
 
-.tiermint-product-screenshots__grid {
+.releasecart-product-screenshots__grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(min(100%, 9rem), 1fr));
-	gap: var(--tiermint-space-3);
+	gap: var(--releasecart-space-3);
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-.tiermint-product-screenshots__link {
+.releasecart-product-screenshots__link {
 	display: block;
-	border-radius: var(--tiermint-radius);
+	border-radius: var(--releasecart-radius);
 	transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 
-.tiermint-product-screenshots__link:hover {
-	box-shadow: var(--tiermint-shadow-md);
+.releasecart-product-screenshots__link:hover {
+	box-shadow: var(--releasecart-shadow-md);
 	transform: translateY(-1px);
 }
 
-.tiermint-product-screenshots__img {
+.releasecart-product-screenshots__img {
 	display: block;
 	width: 100%;
 	/* Ignore image dimensions so aspect-ratio controls the frame. */
 	height: auto;
 	aspect-ratio: 4 / 3;
 	object-fit: cover;
-	border: 1px solid var(--tiermint-color-border);
-	border-radius: var(--tiermint-radius);
+	border: 1px solid var(--releasecart-color-border);
+	border-radius: var(--releasecart-radius);
 }
 
 /* The gallery fades in after JavaScript creates it. */
-.tiermint-product-screenshots__modal {
+.releasecart-product-screenshots__modal {
 	position: fixed;
 	inset: 0;
 	z-index: 100000;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: var(--tiermint-space-6);
-	background-color: var(--tiermint-color-overlay);
+	padding: var(--releasecart-space-6);
+	background-color: var(--releasecart-color-overlay);
 	opacity: 0;
 	transition: opacity 0.15s ease;
 }
 
-.tiermint-product-screenshots__modal.is-open {
+.releasecart-product-screenshots__modal.is-open {
 	opacity: 1;
 }
 
-.tiermint-product-screenshots__modal[hidden] {
+.releasecart-product-screenshots__modal[hidden] {
 	display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.tiermint-product-screenshots__modal {
+	.releasecart-product-screenshots__modal {
 		transition: none;
 	}
 }
 
-.tiermint-product-screenshots__modal-figure {
+.releasecart-product-screenshots__modal-figure {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: var(--tiermint-space-3);
+	gap: var(--releasecart-space-3);
 	max-width: 90vw;
 	margin: 0;
 }
 
-.tiermint-product-screenshots__modal-image {
+.releasecart-product-screenshots__modal-image {
 	display: block;
 	max-width: 90vw;
 	max-height: 85vh;
-	border-radius: var(--tiermint-radius-lg);
-	box-shadow: var(--tiermint-shadow-lg);
+	border-radius: var(--releasecart-radius-lg);
+	box-shadow: var(--releasecart-shadow-lg);
 }
 
 /* Counter and caption sit beneath the image in contrast text. */
-.tiermint-product-screenshots__modal-meta {
+.releasecart-product-screenshots__modal-meta {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
 	justify-content: center;
-	gap: var(--tiermint-space-2) var(--tiermint-space-3);
-	color: var(--tiermint-color-primary-contrast);
-	font-size: var(--tiermint-font-size-sm);
+	gap: var(--releasecart-space-2) var(--releasecart-space-3);
+	color: var(--releasecart-color-primary-contrast);
+	font-size: var(--releasecart-font-size-sm);
 	text-align: center;
 }
 
-.tiermint-product-screenshots__modal-counter {
-	font-weight: var(--tiermint-font-weight-medium);
+.releasecart-product-screenshots__modal-counter {
+	font-weight: var(--releasecart-font-weight-medium);
 	opacity: 0.85;
 }
 
 /* CSS draws the labelled gallery control icons. */
-.tiermint-product-screenshots__modal-close,
-.tiermint-product-screenshots__modal-nav {
+.releasecart-product-screenshots__modal-close,
+.releasecart-product-screenshots__modal-nav {
 	position: absolute;
 	display: flex;
 	align-items: center;
@@ -103,51 +103,51 @@
 	width: 2.75rem;
 	height: 2.75rem;
 	padding: 0;
-	color: var(--tiermint-color-text);
-	background-color: var(--tiermint-color-surface);
-	border: 1px solid var(--tiermint-color-border-strong);
-	border-radius: var(--tiermint-radius-full);
-	box-shadow: var(--tiermint-shadow-md);
+	color: var(--releasecart-color-text);
+	background-color: var(--releasecart-color-surface);
+	border: 1px solid var(--releasecart-color-border-strong);
+	border-radius: var(--releasecart-radius-full);
+	box-shadow: var(--releasecart-shadow-md);
 	cursor: pointer;
 	transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
-.tiermint-product-screenshots__modal-close:hover,
-.tiermint-product-screenshots__modal-nav:hover {
-	background-color: var(--tiermint-color-surface-alt);
-	border-color: var(--tiermint-color-primary);
+.releasecart-product-screenshots__modal-close:hover,
+.releasecart-product-screenshots__modal-nav:hover {
+	background-color: var(--releasecart-color-surface-alt);
+	border-color: var(--releasecart-color-primary);
 }
 
-.tiermint-product-screenshots__modal-close:focus-visible,
-.tiermint-product-screenshots__modal-nav:focus-visible {
-	outline: 3px solid color-mix(in srgb, var(--tiermint-color-focus) 40%, transparent);
+.releasecart-product-screenshots__modal-close:focus-visible,
+.releasecart-product-screenshots__modal-nav:focus-visible {
+	outline: 3px solid color-mix(in srgb, var(--releasecart-color-focus) 40%, transparent);
 	outline-offset: 2px;
 }
 
-.tiermint-product-screenshots__modal-nav[hidden] {
+.releasecart-product-screenshots__modal-nav[hidden] {
 	display: none;
 }
 
-.tiermint-product-screenshots__modal-close {
-	top: var(--tiermint-space-5);
-	right: var(--tiermint-space-5);
+.releasecart-product-screenshots__modal-close {
+	top: var(--releasecart-space-5);
+	right: var(--releasecart-space-5);
 }
 
-.tiermint-product-screenshots__modal-prev {
+.releasecart-product-screenshots__modal-prev {
 	top: 50%;
-	left: var(--tiermint-space-5);
+	left: var(--releasecart-space-5);
 	transform: translateY(-50%);
 }
 
-.tiermint-product-screenshots__modal-next {
+.releasecart-product-screenshots__modal-next {
 	top: 50%;
-	right: var(--tiermint-space-5);
+	right: var(--releasecart-space-5);
 	transform: translateY(-50%);
 }
 
 /* The close X is two crossed bars. */
-.tiermint-product-screenshots__modal-close::before,
-.tiermint-product-screenshots__modal-close::after {
+.releasecart-product-screenshots__modal-close::before,
+.releasecart-product-screenshots__modal-close::after {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -157,16 +157,16 @@
 	background-color: currentColor;
 }
 
-.tiermint-product-screenshots__modal-close::before {
+.releasecart-product-screenshots__modal-close::before {
 	transform: translate(-50%, -50%) rotate(45deg);
 }
 
-.tiermint-product-screenshots__modal-close::after {
+.releasecart-product-screenshots__modal-close::after {
 	transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 /* The prev/next chevrons are a bordered square corner, rotated to point. */
-.tiermint-product-screenshots__modal-nav::before {
+.releasecart-product-screenshots__modal-nav::before {
 	width: 0.625rem;
 	height: 0.625rem;
 	content: "";
@@ -175,12 +175,12 @@
 	border-width: 0 2px 2px 0;
 }
 
-.tiermint-product-screenshots__modal-prev::before {
+.releasecart-product-screenshots__modal-prev::before {
 	margin-left: 0.25rem;
 	transform: rotate(135deg);
 }
 
-.tiermint-product-screenshots__modal-next::before {
+.releasecart-product-screenshots__modal-next::before {
 	margin-right: 0.25rem;
 	transform: rotate(-45deg);
 }

@@ -2,18 +2,18 @@
 /**
  * Admin notice for outbound webhook endpoints disabled by the failing policy.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Webhooks;
+namespace DrPlugin\WP\ReleaseCart\Webhooks;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Admin\SpaController;
-use DrPlugin\WP\TierMint\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Admin\SpaController;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
 
 /**
  * Shows persistent warnings for endpoints disabled after retries.
@@ -53,7 +53,7 @@ class WebhookFailureNotice implements Hookable {
 	 * @return void
 	 */
 	public function render(): void {
-		if ( ! current_user_can( \DrPlugin\WP\TierMint\Core\Capabilities::MANAGE_SETTINGS ) ) {
+		if ( ! current_user_can( \DrPlugin\WP\ReleaseCart\Core\Capabilities::MANAGE_SETTINGS ) ) {
 			return;
 		}
 
@@ -64,7 +64,7 @@ class WebhookFailureNotice implements Hookable {
 		}
 
 		echo '<div class="notice notice-warning"><p>';
-		echo esc_html__( 'TierMint has disabled the following webhook endpoints after repeated delivery failures. Fix the receivers, then re-enable the endpoints to resume deliveries:', 'tiermint' );
+		echo esc_html__( 'ReleaseCart has disabled the following webhook endpoints after repeated delivery failures. Fix the receivers, then re-enable the endpoints to resume deliveries:', 'releasecart' );
 		echo '</p><ul>';
 
 		foreach ( $failing as $endpoint ) {
@@ -72,7 +72,7 @@ class WebhookFailureNotice implements Hookable {
 		}
 
 		echo '</ul><p><a href="' . esc_url( admin_url( 'admin.php?page=' . SpaController::PAGE_SLUG . '#/settings/webhooks' ) ) . '">';
-		echo esc_html__( 'Open the webhook settings', 'tiermint' );
+		echo esc_html__( 'Open the webhook settings', 'releasecart' );
 		echo '</a></p></div>';
 	}
 }

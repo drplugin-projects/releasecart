@@ -2,12 +2,12 @@
 /**
  * Exception for a duplicate discount code.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Discounts;
+namespace DrPlugin\WP\ReleaseCart\Discounts;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -29,7 +29,7 @@ final class DuplicateDiscountCodeException extends DiscountValidationException {
 	 */
 	public static function forCode( string $code ): self {
 		/* translators: %s: the discount code. */
-		$message = sprintf( __( 'A discount with the code "%s" already exists.', 'tiermint' ), $code );
+		$message = sprintf( __( 'A discount with the code "%s" already exists.', 'releasecart' ), $code );
 
 		return self::withErrors( array( $message ) );
 	}

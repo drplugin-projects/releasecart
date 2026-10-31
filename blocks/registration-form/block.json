@@ -1,13 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "tiermint/registration-form",
+	"name": "releasecart/registration-form",
 	"title": "Registration Form",
-	"category": "tiermint",
+	"category": "releasecart",
 	"icon": "id-alt",
 	"description": "An account registration form. Customers set their password from an emailed link.",
-	"keywords": [ "register", "sign up", "account", "tiermint" ],
-	"textdomain": "tiermint",
+	"keywords": [ "register", "sign up", "account", "releasecart" ],
+	"textdomain": "releasecart",
 	"supports": {
 		"html": false
 	},

@@ -144,7 +144,7 @@ export function SelectAllHeader( { selection } ) {
 			<input
 				ref={ box }
 				type="checkbox"
-				aria-label={ __( 'Select all rows', 'tiermint' ) }
+				aria-label={ __( 'Select all rows', 'releasecart' ) }
 				checked={ selection.allSelected }
 				onChange={ ( event ) =>
 					selection.toggleAll( event.target.checked )
@@ -171,7 +171,7 @@ export function SelectRowCell( { selection, id, label } ) {
 				type="checkbox"
 				aria-label={ sprintf(
 					/* translators: %s: what the row is called, for example a product name or a discount code. */
-					__( 'Select %s', 'tiermint' ),
+					__( 'Select %s', 'releasecart' ),
 					label
 				) }
 				checked={ selection.isSelected( id ) }
@@ -192,7 +192,7 @@ export function SelectRowCell( { selection, id, label } ) {
 function countText( count ) {
 	return sprintf(
 		/* translators: %d: how many rows the merchant has ticked. */
-		_n( '%d selected', '%d selected', count, 'tiermint' ),
+		_n( '%d selected', '%d selected', count, 'releasecart' ),
 		count
 	);
 }
@@ -208,7 +208,7 @@ function countText( count ) {
 function missingRow( id ) {
 	return sprintf(
 		/* translators: %d: a numeric record id. */
-		__( '#%d', 'tiermint' ),
+		__( '#%d', 'releasecart' ),
 		id
 	);
 }
@@ -315,7 +315,7 @@ export default function BulkActionsBar( {
 
 	return (
 		<div
-			className="tiermint-bulk-actions"
+			className="releasecart-bulk-actions"
 			role="group"
 			aria-label={ label }
 		>
@@ -325,7 +325,7 @@ export default function BulkActionsBar( {
 					<span
 						id={ questionId }
 						role="alert"
-						className="tiermint-bulk-actions__confirm"
+						className="releasecart-bulk-actions__confirm"
 					>
 						{ confirming.confirmText( count ) }
 					</span>
@@ -336,28 +336,28 @@ export default function BulkActionsBar( {
 						aria-describedby={ questionId }
 						onClick={ handleConfirm }
 					>
-						{ __( 'Confirm', 'tiermint' ) }
+						{ __( 'Confirm', 'releasecart' ) }
 					</button>
 					<button
 						type="button"
 						className="button"
 						onClick={ handleCancel }
 					>
-						{ __( 'Cancel', 'tiermint' ) }
+						{ __( 'Cancel', 'releasecart' ) }
 					</button>
 				</>
 			) : (
 				<>
 					<select
-						className="tiermint-bulk-actions__select"
-						aria-label={ __( 'Select bulk action', 'tiermint' ) }
+						className="releasecart-bulk-actions__select"
+						aria-label={ __( 'Select bulk action', 'releasecart' ) }
 						value={ action }
 						onChange={ ( event ) =>
 							setAction( event.target.value )
 						}
 					>
 						<option value="">
-							{ __( 'Bulk actions', 'tiermint' ) }
+							{ __( 'Bulk actions', 'releasecart' ) }
 						</option>
 						{ actions.map( ( entry ) => (
 							<option key={ entry.value } value={ entry.value }>
@@ -376,15 +376,15 @@ export default function BulkActionsBar( {
 					>
 						{ pending && (
 							<span
-								className="tiermint-bulk-actions__spinner"
+								className="releasecart-bulk-actions__spinner"
 								aria-hidden="true"
 							/>
 						) }
-						{ __( 'Apply', 'tiermint' ) }
+						{ __( 'Apply', 'releasecart' ) }
 					</button>
 				</>
 			) }
-			<span className="tiermint-bulk-actions__count">
+			<span className="releasecart-bulk-actions__count">
 				{ countText( count ) }
 			</span>
 		</div>
@@ -423,7 +423,7 @@ export function BulkResultNotice( { summary, failed, labelFor, onDismiss } ) {
 								'%d failed:',
 								'%d failed:',
 								failed.length,
-								'tiermint'
+								'releasecart'
 							),
 							failed.length
 						) }
@@ -433,7 +433,7 @@ export function BulkResultNotice( { summary, failed, labelFor, onDismiss } ) {
 							<li key={ entry.id }>
 								{ sprintf(
 									/* translators: 1: a label, 2: its value. */
-									__( '%1$s: %2$s', 'tiermint' ),
+									__( '%1$s: %2$s', 'releasecart' ),
 									labelFor( entry.id ) ||
 										missingRow( entry.id ),
 									entry.message

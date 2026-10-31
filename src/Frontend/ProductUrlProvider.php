@@ -2,14 +2,14 @@
 /**
  * Builds the details-page URL for a product.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
-use DrPlugin\WP\TierMint\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\Product;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -27,7 +27,7 @@ class ProductUrlProvider {
 	 *
 	 * @var string
 	 */
-	public const QUERY_VAR = 'tiermint_product';
+	public const QUERY_VAR = 'releasecart_product';
 
 	/**
 	 * The resolver for the configured details page.
@@ -77,6 +77,6 @@ class ProductUrlProvider {
 		 * @param string  $url     The resolved details URL.
 		 * @param Product $product The product the URL points at.
 		 */
-		return (string) apply_filters( 'tiermint_product_url', $url, $product );
+		return (string) apply_filters( 'releasecart_product_url', $url, $product );
 	}
 }

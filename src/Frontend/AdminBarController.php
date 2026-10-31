@@ -2,14 +2,14 @@
 /**
  * Hides the front-end admin toolbar for customers.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,7 +25,7 @@ class AdminBarController implements Hookable {
 	 *
 	 * @var string
 	 */
-	private const SETTINGS_OPTION = 'tiermint_settings';
+	private const SETTINGS_OPTION = 'releasecart_settings';
 
 	/**
 	 * Register WordPress hooks.

@@ -1,19 +1,19 @@
 <?php
 /**
- * The TierMint API key authentication layer for management REST routes.
+ * The ReleaseCart API key authentication layer for management REST routes.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST\Auth;
+namespace DrPlugin\WP\ReleaseCart\REST\Auth;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Util\RateLimiter;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Util\RateLimiter;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -32,28 +32,28 @@ final class ApiKeyAuthenticator implements Hookable {
 	 *
 	 * @var string
 	 */
-	private const BEARER_PATTERN = '/^(?i:Bearer)\s+(tmk_[0-9a-f]{32}):([^\s:]+)$/';
+	private const BEARER_PATTERN = '/^(?i:Bearer)\s+(rck_[0-9a-f]{32}):([^\s:]+)$/';
 
 	/**
 	 * The cheap engage probe: does the header claim our scheme at all?
 	 *
 	 * @var string
 	 */
-	private const SCHEME_PATTERN = '/^(?i:Bearer)\s+tmk_/';
+	private const SCHEME_PATTERN = '/^(?i:Bearer)\s+rck_/';
 
 	/**
 	 * Public routes that do not use management-key limits.
 	 *
 	 * @var string
 	 */
-	private const PUBLIC_ROUTE_PATTERN = '#^/tiermint/v1/(license/|checkout/|webhooks/)#';
+	private const PUBLIC_ROUTE_PATTERN = '#^/releasecart/v1/(license/|checkout/|webhooks/)#';
 
 	/**
 	 * The routes a key may reach at all.
 	 *
 	 * @var string
 	 */
-	private const NAMESPACE_PATTERN = '#^/tiermint/v1(/|$)#';
+	private const NAMESPACE_PATTERN = '#^/releasecart/v1(/|$)#';
 
 	/**
 	 * The api-key domain service.
@@ -130,7 +130,7 @@ final class ApiKeyAuthenticator implements Hookable {
 	}
 
 	/**
-	 * Resolve a TierMint bearer credential to its owning user id.
+	 * Resolve a ReleaseCart bearer credential to its owning user id.
 	 *
 	 * @since 1.0.0
 	 *
@@ -172,8 +172,8 @@ final class ApiKeyAuthenticator implements Hookable {
 
 		if ( null !== $blocked ) {
 			$this->error = new WP_Error(
-				'tiermint_rate_limited',
-				__( 'Too many failed authentication attempts. Please wait and try again.', 'tiermint' ),
+				'releasecart_rate_limited',
+				__( 'Too many failed authentication attempts. Please wait and try again.', 'releasecart' ),
 				array(
 					'status'      => 429,
 					'retry_after' => $blocked,
@@ -195,8 +195,8 @@ final class ApiKeyAuthenticator implements Hookable {
 		} catch ( ApiKeyPersistenceException $e ) {
 			// Do not report a storage fault as invalid credentials.
 			$this->error = new WP_Error(
-				'tiermint_server_error',
-				__( 'Authentication is temporarily unavailable. Please try again.', 'tiermint' ),
+				'releasecart_server_error',
+				__( 'Authentication is temporarily unavailable. Please try again.', 'releasecart' ),
 				array( 'status' => 500 )
 			);
 
@@ -259,11 +259,11 @@ final class ApiKeyAuthenticator implements Hookable {
 			return $result;
 		}
 
-		// The key logs its owner in, so keep it off routes TierMint does not own.
+		// The key logs its owner in, so keep it off routes ReleaseCart does not own.
 		if ( 1 !== preg_match( self::NAMESPACE_PATTERN, $request->get_route() ) ) {
 			return new WP_Error(
-				'tiermint_forbidden',
-				__( 'This API key works only on TierMint routes.', 'tiermint' ),
+				'releasecart_forbidden',
+				__( 'This API key works only on ReleaseCart routes.', 'releasecart' ),
 				array( 'status' => 403 )
 			);
 		}
@@ -276,8 +276,8 @@ final class ApiKeyAuthenticator implements Hookable {
 
 		if ( ! $key->canWrite() && ! in_array( $method, array( 'GET', 'HEAD', 'OPTIONS' ), true ) ) {
 			return new WP_Error(
-				'tiermint_forbidden',
-				__( 'This API key is read-only.', 'tiermint' ),
+				'releasecart_forbidden',
+				__( 'This API key is read-only.', 'releasecart' ),
 				array( 'status' => 403 )
 			);
 		}
@@ -294,8 +294,8 @@ final class ApiKeyAuthenticator implements Hookable {
 		if ( null !== $retryAfter ) {
 			$response = new WP_REST_Response(
 				array(
-					'code'    => 'tiermint_rate_limited',
-					'message' => __( 'Too many management API requests. Please wait and try again.', 'tiermint' ),
+					'code'    => 'releasecart_rate_limited',
+					'message' => __( 'Too many management API requests. Please wait and try again.', 'releasecart' ),
 					'data'    => array( 'status' => 429 ),
 				),
 				429
@@ -365,12 +365,12 @@ final class ApiKeyAuthenticator implements Hookable {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return WP_Error The tiermint_unauthorized envelope.
+	 * @return WP_Error The releasecart_unauthorized envelope.
 	 */
 	private function unauthorized(): WP_Error {
 		return new WP_Error(
-			'tiermint_unauthorized',
-			__( 'The API credentials are not valid.', 'tiermint' ),
+			'releasecart_unauthorized',
+			__( 'The API credentials are not valid.', 'releasecart' ),
 			array( 'status' => 401 )
 		);
 	}
@@ -401,7 +401,7 @@ final class ApiKeyAuthenticator implements Hookable {
 		 *
 		 * @param array<string, array{limit: int, window: int}> $limits The limit map.
 		 */
-		$limits = apply_filters( 'tiermint_rest_rate_limits', $defaults );
+		$limits = apply_filters( 'releasecart_rest_rate_limits', $defaults );
 
 		$effective = array();
 
@@ -425,7 +425,7 @@ final class ApiKeyAuthenticator implements Hookable {
 	 */
 	private function isApiRequest(): bool {
 		/**
-		 * Filters whether a TierMint API key may authenticate this request.
+		 * Filters whether a ReleaseCart API key may authenticate this request.
 		 *
 		 * Keys work on REST requests only, like Application Passwords.
 		 *
@@ -433,7 +433,7 @@ final class ApiKeyAuthenticator implements Hookable {
 		 *
 		 * @param bool $isApiRequest Whether this is a REST request.
 		 */
-		return (bool) apply_filters( 'tiermint_api_key_is_api_request', wp_is_serving_rest_request() );
+		return (bool) apply_filters( 'releasecart_api_key_is_api_request', wp_is_serving_rest_request() );
 	}
 
 	/**
@@ -444,7 +444,7 @@ final class ApiKeyAuthenticator implements Hookable {
 	 * @return string The header value, or an empty string.
 	 */
 	private function authorizationHeader(): string {
-		// Keys are tmk_ plus hex and secrets tms_ plus base64url, so sanitizing keeps them intact.
+		// Keys are rck_ plus hex and secrets rcs_ plus base64url, so sanitizing keeps them intact.
 		if ( ! empty( $_SERVER['HTTP_AUTHORIZATION'] ) ) {
 			return sanitize_text_field( wp_unslash( $_SERVER['HTTP_AUTHORIZATION'] ) );
 		}

@@ -2,33 +2,33 @@
 /**
  * The checkout component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Frontend\AbstractComponent;
-use DrPlugin\WP\TierMint\Frontend\AssetManager;
-use DrPlugin\WP\TierMint\Frontend\CheckoutFieldSettings;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\SamplePreview;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\TierMetaPresenter;
-use DrPlugin\WP\TierMint\Discounts\DiscountComposer;
-use DrPlugin\WP\TierMint\Discounts\DiscountService;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\StoredDiscountPreview;
-use DrPlugin\WP\TierMint\Frontend\PageResolver;
-use DrPlugin\WP\TierMint\Frontend\RenderContext;
-use DrPlugin\WP\TierMint\Licensing\LicenseService;
-use DrPlugin\WP\TierMint\Orders\Cart;
-use DrPlugin\WP\TierMint\Orders\CartService;
-use DrPlugin\WP\TierMint\Orders\OrderService;
-use DrPlugin\WP\TierMint\Payments\GatewayRegistry;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductPrice;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Products\ProductStatus;
-use DrPlugin\WP\TierMint\Util\Money;
+use DrPlugin\WP\ReleaseCart\Frontend\AbstractComponent;
+use DrPlugin\WP\ReleaseCart\Frontend\AssetManager;
+use DrPlugin\WP\ReleaseCart\Frontend\CheckoutFieldSettings;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\SamplePreview;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\TierMetaPresenter;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountComposer;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountService;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\StoredDiscountPreview;
+use DrPlugin\WP\ReleaseCart\Frontend\PageResolver;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContext;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseService;
+use DrPlugin\WP\ReleaseCart\Orders\Cart;
+use DrPlugin\WP\ReleaseCart\Orders\CartService;
+use DrPlugin\WP\ReleaseCart\Orders\OrderService;
+use DrPlugin\WP\ReleaseCart\Payments\GatewayRegistry;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductPrice;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Products\ProductStatus;
+use DrPlugin\WP\ReleaseCart\Util\Money;
 use Throwable;
 
 defined( 'ABSPATH' ) || exit;
@@ -182,52 +182,52 @@ class Checkout extends AbstractComponent {
 		return array(
 			'title'             => array(
 				'type'        => 'string',
-				'default'     => __( 'Checkout', 'tiermint' ),
-				'label'       => __( 'Title', 'tiermint' ),
-				'description' => __( 'Heading above the checkout. Empty hides it.', 'tiermint' ),
+				'default'     => __( 'Checkout', 'releasecart' ),
+				'label'       => __( 'Title', 'releasecart' ),
+				'description' => __( 'Heading above the checkout. Empty hides it.', 'releasecart' ),
 				'control'     => 'text',
 			),
 			'button_text'       => array(
 				'type'        => 'string',
-				'default'     => __( 'Pay now', 'tiermint' ),
-				'label'       => __( 'Button text', 'tiermint' ),
-				'description' => __( 'Label of the payment button.', 'tiermint' ),
+				'default'     => __( 'Pay now', 'releasecart' ),
+				'label'       => __( 'Button text', 'releasecart' ),
+				'description' => __( 'Label of the payment button.', 'releasecart' ),
 				'control'     => 'text',
 			),
 			'show_summary'      => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show order summary', 'tiermint' ),
-				'description' => __( 'Display the cart contents beside the payment form.', 'tiermint' ),
+				'label'       => __( 'Show order summary', 'releasecart' ),
+				'description' => __( 'Display the cart contents beside the payment form.', 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'editable_summary'  => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Editable order summary', 'tiermint' ),
-				'description' => __( 'Let buyers change quantities and remove lines from the order summary.', 'tiermint' ),
+				'label'       => __( 'Editable order summary', 'releasecart' ),
+				'description' => __( 'Let buyers change quantities and remove lines from the order summary.', 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'show_plan_details' => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show plan details', 'tiermint' ),
-				'description' => __( "Repeat each line's license length and activation limit in the order summary.", 'tiermint' ),
+				'label'       => __( 'Show plan details', 'releasecart' ),
+				'description' => __( "Repeat each line's license length and activation limit in the order summary.", 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'show_discount'     => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show discount code field', 'tiermint' ),
-				'description' => __( 'Let buyers enter a discount code before paying.', 'tiermint' ),
+				'label'       => __( 'Show discount code field', 'releasecart' ),
+				'description' => __( 'Let buyers enter a discount code before paying.', 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'layout'            => array(
 				'type'        => 'enum',
 				'enum'        => array( 'two-column', 'single' ),
 				'default'     => 'two-column',
-				'label'       => __( 'Layout', 'tiermint' ),
-				'description' => __( 'Two columns (form beside a sticky summary) where there is room, or a single stacked column.', 'tiermint' ),
+				'label'       => __( 'Layout', 'releasecart' ),
+				'description' => __( 'Two columns (form beside a sticky summary) where there is room, or a single stacked column.', 'releasecart' ),
 				'control'     => 'select',
 			),
 		);
@@ -239,7 +239,7 @@ class Checkout extends AbstractComponent {
 	 * @return array<string, string[]>
 	 */
 	public function assets(): array {
-		$scripts = array( 'tiermint-checkout' );
+		$scripts = array( 'releasecart-checkout' );
 
 		if ( array_key_exists( 'stripe', $this->availableGateways() ) ) {
 			array_unshift( $scripts, AssetManager::STRIPE_JS_HANDLE );
@@ -247,7 +247,7 @@ class Checkout extends AbstractComponent {
 
 		// LoginForm renders directly here, so include its style handle.
 		return array(
-			'styles'  => array( 'tiermint-checkout', 'tiermint-login-form' ),
+			'styles'  => array( 'releasecart-checkout', 'releasecart-login-form' ),
 			'scripts' => $scripts,
 		);
 	}
@@ -310,7 +310,7 @@ class Checkout extends AbstractComponent {
 			'layout'            => $layout,
 			'renewal'           => $renewal,
 			'cart_error'        => $this->cartErrorMessage(),
-			'action_url'        => remove_query_arg( 'tiermint_cart_error' ),
+			'action_url'        => remove_query_arg( 'releasecart_cart_error' ),
 			'tax_label'         => $this->taxLabel(),
 		);
 
@@ -400,7 +400,7 @@ class Checkout extends AbstractComponent {
 			return null;
 		}
 
-		return __( 'We will create an account for you when your purchase completes, so your orders and downloads are saved to it. You will get an email with a link to set a password.', 'tiermint' );
+		return __( 'We will create an account for you when your purchase completes, so your orders and downloads are saved to it. You will get an email with a link to set a password.', 'releasecart' );
 	}
 
 	/**
@@ -464,9 +464,9 @@ class Checkout extends AbstractComponent {
 			array(
 				'show'        => $collectVat,
 				'value'       => '',
-				'label'       => __( 'VAT, GST, or tax ID (optional)', 'tiermint' ),
-				'help'        => __( 'Buying as a business? Enter your VAT, GST, or tax registration number.', 'tiermint' ),
-				'placeholder' => __( 'For example DE123456789', 'tiermint' ),
+				'label'       => __( 'VAT, GST, or tax ID (optional)', 'releasecart' ),
+				'help'        => __( 'Buying as a business? Enter your VAT, GST, or tax registration number.', 'releasecart' ),
+				'placeholder' => __( 'For example DE123456789', 'releasecart' ),
 			),
 			'vat_number'
 		);
@@ -481,16 +481,16 @@ class Checkout extends AbstractComponent {
 					'required'    => false,
 					'options'     => $collectCountry ? $this->collection->countryOptions() : array(),
 					'value'       => '',
-					'label'       => __( 'Country', 'tiermint' ),
+					'label'       => __( 'Country', 'releasecart' ),
 					'help'        => '',
-					'placeholder' => __( 'Select your country', 'tiermint' ),
+					'placeholder' => __( 'Select your country', 'releasecart' ),
 				),
 				'billing_country'
 			),
 			'company' => array(
 				'show'        => $collectCompany,
 				'value'       => '',
-				'label'       => __( 'Company name', 'tiermint' ),
+				'label'       => __( 'Company name', 'releasecart' ),
 				'reveal_open' => $revealOpen,
 			),
 			'vat'     => $vat,
@@ -530,7 +530,7 @@ class Checkout extends AbstractComponent {
 		 * @param array<string, mixed> $field The field view data.
 		 * @param string               $key   The field key (`billing_country` or `vat_number`).
 		 */
-		$refined = apply_filters( 'tiermint_checkout_billing_field', $field, $key );
+		$refined = apply_filters( 'releasecart_checkout_billing_field', $field, $key );
 
 		if ( ! is_array( $refined ) ) {
 			return $field;
@@ -558,7 +558,7 @@ class Checkout extends AbstractComponent {
 	 * @return string The label, stripped of tags; "Tax" when a listener returns nothing usable.
 	 */
 	private function taxLabel(): string {
-		$default = __( 'Tax', 'tiermint' );
+		$default = __( 'Tax', 'releasecart' );
 
 		/**
 		 * Filters the label of the checkout summary's tax row.
@@ -570,7 +570,7 @@ class Checkout extends AbstractComponent {
 		 *
 		 * @param string $label The label. Default "Tax".
 		 */
-		$label = apply_filters( 'tiermint_checkout_tax_label', $default );
+		$label = apply_filters( 'releasecart_checkout_tax_label', $default );
 		$label = is_string( $label ) ? wp_strip_all_tags( $label ) : '';
 
 		return '' === $label ? $default : $label;
@@ -582,11 +582,11 @@ class Checkout extends AbstractComponent {
 	 * @return string|null
 	 */
 	private function returnedOrderUuid(): ?string {
-		if ( ! isset( $_GET['tiermint_order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only display of the payment-return marker; no state change.
+		if ( ! isset( $_GET['releasecart_order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only display of the payment-return marker; no state change.
 			return null;
 		}
 
-		$raw = sanitize_text_field( wp_unslash( $_GET['tiermint_order'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only display of the payment-return marker; no state change.
+		$raw = sanitize_text_field( wp_unslash( $_GET['releasecart_order'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only display of the payment-return marker; no state change.
 
 		if ( 1 !== preg_match( '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $raw ) ) {
 			return null;
@@ -602,11 +602,11 @@ class Checkout extends AbstractComponent {
 	 * @return array<string, mixed>|null Banner data, or null.
 	 */
 	private function renewalBanner( Cart $cart ): ?array {
-		if ( ! isset( $_GET['tiermint_renew'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only: a renewal link carries the license key to show a renewal banner; nothing is written.
+		if ( ! isset( $_GET['releasecart_renew'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only: a renewal link carries the license key to show a renewal banner; nothing is written.
 			return null;
 		}
 
-		$key = sanitize_text_field( wp_unslash( $_GET['tiermint_renew'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only: the key is looked up for the banner; nothing is written.
+		$key = sanitize_text_field( wp_unslash( $_GET['releasecart_renew'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only: the key is looked up for the banner; nothing is written.
 
 		if ( 1 !== preg_match( '/^[A-Za-z0-9][A-Za-z0-9\-]{14,62}[A-Za-z0-9]$/', $key ) ) {
 			return null;
@@ -671,17 +671,17 @@ class Checkout extends AbstractComponent {
 	 * @return string|null
 	 */
 	private function cartErrorMessage(): ?string {
-		if ( ! isset( $_GET['tiermint_cart_error'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only display of a redirect marker; no state change.
+		if ( ! isset( $_GET['releasecart_cart_error'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only display of a redirect marker; no state change.
 			return null;
 		}
 
-		$code = sanitize_key( wp_unslash( $_GET['tiermint_cart_error'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only display of a redirect marker; no state change.
+		$code = sanitize_key( wp_unslash( $_GET['releasecart_cart_error'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only display of a redirect marker; no state change.
 
 		switch ( $code ) {
 			case 'invalid':
-				return __( 'That item could not be added to the cart.', 'tiermint' );
+				return __( 'That item could not be added to the cart.', 'releasecart' );
 			case 'failed':
-				return __( 'Something went wrong updating your cart. Please try again.', 'tiermint' );
+				return __( 'Something went wrong updating your cart. Please try again.', 'releasecart' );
 			default:
 				return null;
 		}
@@ -712,7 +712,7 @@ class Checkout extends AbstractComponent {
 		 *
 		 * @param array<string, string> $available The configured gateways, id to label.
 		 */
-		$available = apply_filters( 'tiermint_checkout_gateways', $available );
+		$available = apply_filters( 'releasecart_checkout_gateways', $available );
 
 		return is_array( $available ) ? $available : array();
 	}
@@ -732,7 +732,7 @@ class Checkout extends AbstractComponent {
 		 * @param array<int, array<string, mixed>> $fields Field definitions, none by default.
 		 * @param RenderContext                    $ctx    Per-request customer state (customer, if known).
 		 */
-		$fields = apply_filters( 'tiermint_checkout_fields', array(), $ctx );
+		$fields = apply_filters( 'releasecart_checkout_fields', array(), $ctx );
 
 		if ( ! is_array( $fields ) ) {
 			return array();

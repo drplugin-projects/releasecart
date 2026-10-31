@@ -2,29 +2,29 @@
 /**
  * REST controller for the Products management resource.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Frontend\ProductUrlProvider;
-use DrPlugin\WP\TierMint\Products\BundleItem;
-use DrPlugin\WP\TierMint\Products\Fields\ProductFieldRegistry;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductException;
-use DrPlugin\WP\TierMint\Products\ProductNotFoundException;
-use DrPlugin\WP\TierMint\Products\ProductPersistenceException;
-use DrPlugin\WP\TierMint\Products\ProductPrice;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Products\ProductTaxonomy;
-use DrPlugin\WP\TierMint\Products\ProductValidationException;
-use DrPlugin\WP\TierMint\Products\Term;
-use DrPlugin\WP\TierMint\Products\TermService;
+use DrPlugin\WP\ReleaseCart\Frontend\ProductUrlProvider;
+use DrPlugin\WP\ReleaseCart\Products\BundleItem;
+use DrPlugin\WP\ReleaseCart\Products\Fields\ProductFieldRegistry;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductException;
+use DrPlugin\WP\ReleaseCart\Products\ProductNotFoundException;
+use DrPlugin\WP\ReleaseCart\Products\ProductPersistenceException;
+use DrPlugin\WP\ReleaseCart\Products\ProductPrice;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Products\ProductTaxonomy;
+use DrPlugin\WP\ReleaseCart\Products\ProductValidationException;
+use DrPlugin\WP\ReleaseCart\Products\Term;
+use DrPlugin\WP\ReleaseCart\Products\TermService;
 use Throwable;
 use WP_Error;
 use WP_REST_Request;
@@ -243,7 +243,7 @@ final class ProductsController extends AbstractRestController {
 			return $this->invalidParams( $e->getErrors() );
 		} catch ( ProductPersistenceException $e ) {
 			// Do not expose database details.
-			return $this->serverError( __( 'The product could not be saved. Please try again.', 'tiermint' ) );
+			return $this->serverError( __( 'The product could not be saved. Please try again.', 'releasecart' ) );
 		} catch ( ProductException $e ) {
 			// Other domain errors are invalid input.
 			return $this->invalidParams( array( $e->getMessage() ) );
@@ -287,7 +287,7 @@ final class ProductsController extends AbstractRestController {
 			return $this->invalidParams( $e->getErrors() );
 		} catch ( ProductPersistenceException $e ) {
 			// Do not expose database details.
-			return $this->serverError( __( 'The product could not be saved. Please try again.', 'tiermint' ) );
+			return $this->serverError( __( 'The product could not be saved. Please try again.', 'releasecart' ) );
 		} catch ( ProductException $e ) {
 			return $this->invalidParams( array( $e->getMessage() ) );
 		}
@@ -393,7 +393,7 @@ final class ProductsController extends AbstractRestController {
 	private function applyBatchAction( int $id, string $action ): ?WP_Error {
 		if ( ! array_key_exists( $action, self::BATCH_ACTIONS ) ) {
 			// Keep a stale route schema from reaching the delete branch.
-			return $this->invalidParams( array( __( 'That bulk action is not available for products.', 'tiermint' ) ) );
+			return $this->invalidParams( array( __( 'That bulk action is not available for products.', 'releasecart' ) ) );
 		}
 
 		$status = self::BATCH_ACTIONS[ $action ];
@@ -411,8 +411,8 @@ final class ProductsController extends AbstractRestController {
 		} catch ( ProductPersistenceException $e ) {
 			return $this->serverError(
 				'delete' === $action
-					? __( 'The product could not be deleted. Please try again.', 'tiermint' )
-					: __( 'The product could not be updated. Please try again.', 'tiermint' )
+					? __( 'The product could not be deleted. Please try again.', 'releasecart' )
+					: __( 'The product could not be updated. Please try again.', 'releasecart' )
 			);
 		} catch ( ProductException $e ) {
 			return $this->invalidParams( array( $e->getMessage() ) );
@@ -507,7 +507,7 @@ final class ProductsController extends AbstractRestController {
 	private function collectionArgs(): array {
 		return array(
 			'page'             => array(
-				'description'       => __( 'Current page of the collection.', 'tiermint' ),
+				'description'       => __( 'Current page of the collection.', 'releasecart' ),
 				'type'              => 'integer',
 				'default'           => 1,
 				'minimum'           => 1,
@@ -515,7 +515,7 @@ final class ProductsController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'per_page'         => array(
-				'description'       => __( 'Maximum number of items to return per page.', 'tiermint' ),
+				'description'       => __( 'Maximum number of items to return per page.', 'releasecart' ),
 				'type'              => 'integer',
 				'default'           => 10,
 				'minimum'           => 1,
@@ -524,20 +524,20 @@ final class ProductsController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'search'           => array(
-				'description'       => __( 'Limit results to those matching a name, slug, overview, or description.', 'tiermint' ),
+				'description'       => __( 'Limit results to those matching a name, slug, overview, or description.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'status'           => array(
-				'description'       => __( 'Limit results to a single lifecycle status.', 'tiermint' ),
+				'description'       => __( 'Limit results to a single lifecycle status.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'draft', 'published', 'archived' ),
 				'sanitize_callback' => 'sanitize_key',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'orderby'          => array(
-				'description'       => __( 'Sort collection by product attribute.', 'tiermint' ),
+				'description'       => __( 'Sort collection by product attribute.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'id', 'name', 'created_at' ),
 				'default'           => 'created_at',
@@ -545,7 +545,7 @@ final class ProductsController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'order'            => array(
-				'description'       => __( 'Order sort attribute ascending or descending.', 'tiermint' ),
+				'description'       => __( 'Order sort attribute ascending or descending.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'asc', 'desc' ),
 				'default'           => 'desc',
@@ -553,19 +553,19 @@ final class ProductsController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'category'         => array(
-				'description'       => __( 'Limit results to one or more category slugs (comma-separated).', 'tiermint' ),
+				'description'       => __( 'Limit results to one or more category slugs (comma-separated).', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'tag'              => array(
-				'description'       => __( 'Limit results to one or more tag slugs (comma-separated).', 'tiermint' ),
+				'description'       => __( 'Limit results to one or more tag slugs (comma-separated).', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'include_children' => array(
-				'description'       => __( 'Whether a category filter also matches descendant categories.', 'tiermint' ),
+				'description'       => __( 'Whether a category filter also matches descendant categories.', 'releasecart' ),
 				'type'              => 'boolean',
 				'default'           => true,
 				'sanitize_callback' => 'rest_sanitize_boolean',
@@ -586,79 +586,79 @@ final class ProductsController extends AbstractRestController {
 	private function writeArgs(): array {
 		return array(
 			'name'         => array(
-				'description'       => __( 'Product display name.', 'tiermint' ),
+				'description'       => __( 'Product display name.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'slug'         => array(
-				'description'       => __( 'Product URL slug.', 'tiermint' ),
+				'description'       => __( 'Product URL slug.', 'releasecart' ),
 				'type'              => 'string',
 				// REST passes extra callback arguments, so wrap sanitize_title().
 				'sanitize_callback' => static fn ( $value ): string => sanitize_title( (string) $value ),
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'status'       => array(
-				'description'       => __( 'Product lifecycle status.', 'tiermint' ),
+				'description'       => __( 'Product lifecycle status.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'draft', 'published', 'archived' ),
 				'sanitize_callback' => 'sanitize_key',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'type'         => array(
-				'description'       => __( 'Product type.', 'tiermint' ),
+				'description'       => __( 'Product type.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'digital', 'bundle' ),
 				'sanitize_callback' => 'sanitize_key',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'overview'     => array(
-				'description'       => __( 'Short rich-text overview.', 'tiermint' ),
+				'description'       => __( 'Short rich-text overview.', 'releasecart' ),
 				'type'              => 'string',
 				// Keep rich-text sanitization when an extension removes the field.
 				'sanitize_callback' => static fn ( $value ): string => wp_kses_post( is_string( $value ) ? $value : '' ),
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'description'  => array(
-				'description'       => __( 'Long rich-text product description.', 'tiermint' ),
+				'description'       => __( 'Long rich-text product description.', 'releasecart' ),
 				'type'              => 'string',
 				// Description uses the rich-text sanitizer.
 				'sanitize_callback' => static fn ( $value ): string => wp_kses_post( is_string( $value ) ? $value : '' ),
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'is_licensed'  => array(
-				'description'       => __( 'Whether a purchase mints a license.', 'tiermint' ),
+				'description'       => __( 'Whether a purchase mints a license.', 'releasecart' ),
 				'type'              => 'boolean',
 				'sanitize_callback' => 'rest_sanitize_boolean',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'update_slug'  => array(
-				'description'       => __( 'Slug clients send to the update-check endpoint.', 'tiermint' ),
+				'description'       => __( 'Slug clients send to the update-check endpoint.', 'releasecart' ),
 				'type'              => 'string',
 				// REST passes extra callback arguments, so wrap sanitize_title().
 				'sanitize_callback' => static fn ( $value ): string => sanitize_title( (string) $value ),
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'files'        => array(
-				'description'       => __( 'Downloadable file references (storage pointers).', 'tiermint' ),
+				'description'       => __( 'Downloadable file references (storage pointers).', 'releasecart' ),
 				'type'              => 'array',
 				'sanitize_callback' => array( $this, 'sanitizeDeep' ),
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'settings'     => array(
-				'description'       => __( 'Per-product settings blob.', 'tiermint' ),
+				'description'       => __( 'Per-product settings blob.', 'releasecart' ),
 				'type'              => 'object',
 				'sanitize_callback' => array( $this, 'sanitizeSettings' ),
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'prices'       => array(
-				'description'       => __( 'Product price tiers.', 'tiermint' ),
+				'description'       => __( 'Product price tiers.', 'releasecart' ),
 				'type'              => 'array',
 				'sanitize_callback' => array( $this, 'sanitizeDeep' ),
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'bundle_items' => array(
-				'description'       => __( 'Bundle composition (child products).', 'tiermint' ),
+				'description'       => __( 'Bundle composition (child products).', 'releasecart' ),
 				'type'              => 'array',
 				'sanitize_callback' => array( $this, 'sanitizeDeep' ),
 				'validate_callback' => 'rest_validate_request_arg',
@@ -676,14 +676,14 @@ final class ProductsController extends AbstractRestController {
 	private function termArgs(): array {
 		return array(
 			'categories' => array(
-				'description'       => __( 'Category term ids to assign to the product.', 'tiermint' ),
+				'description'       => __( 'Category term ids to assign to the product.', 'releasecart' ),
 				'type'              => 'array',
 				'items'             => array( 'type' => 'integer' ),
 				'sanitize_callback' => array( $this, 'sanitizeDeep' ),
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'tags'       => array(
-				'description'       => __( 'Tag term ids to assign to the product.', 'tiermint' ),
+				'description'       => __( 'Tag term ids to assign to the product.', 'releasecart' ),
 				'type'              => 'array',
 				'items'             => array( 'type' => 'integer' ),
 				'sanitize_callback' => array( $this, 'sanitizeDeep' ),
@@ -702,7 +702,7 @@ final class ProductsController extends AbstractRestController {
 	private function idArgs(): array {
 		return array(
 			'id' => array(
-				'description'       => __( 'Unique product identifier.', 'tiermint' ),
+				'description'       => __( 'Unique product identifier.', 'releasecart' ),
 				'type'              => 'integer',
 				'required'          => true,
 				'sanitize_callback' => 'absint',
@@ -874,7 +874,7 @@ final class ProductsController extends AbstractRestController {
 		 * @param ProductPrice         $price   The tier.
 		 * @param Product              $product The product the tier belongs to.
 		 */
-		$filtered = apply_filters( 'tiermint_rest_product_price', $data, $price, $product );
+		$filtered = apply_filters( 'releasecart_rest_product_price', $data, $price, $product );
 
 		return is_array( $filtered ) ? $filtered : $data;
 	}

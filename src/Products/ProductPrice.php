@@ -2,12 +2,12 @@
 /**
  * Product price tier value object.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Products;
+namespace DrPlugin\WP\ReleaseCart\Products;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -124,33 +124,33 @@ final class ProductPrice {
 	) {
 		if ( '' === trim( $name ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new ProductException( __( 'A price tier must have a non-empty name.', 'tiermint' ) );
+			throw new ProductException( __( 'A price tier must have a non-empty name.', 'releasecart' ) );
 		}
 
 		if ( $amount < 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new ProductException( __( 'A price amount cannot be negative.', 'tiermint' ) );
+			throw new ProductException( __( 'A price amount cannot be negative.', 'releasecart' ) );
 		}
 
 		// Reject values that unsigned columns would silently change to zero.
 		if ( null !== $activationLimit && $activationLimit < 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new ProductException( __( 'An activation limit cannot be negative.', 'tiermint' ) );
+			throw new ProductException( __( 'An activation limit cannot be negative.', 'releasecart' ) );
 		}
 
 		if ( $sortOrder < 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new ProductException( __( 'A sort order cannot be negative.', 'tiermint' ) );
+			throw new ProductException( __( 'A sort order cannot be negative.', 'releasecart' ) );
 		}
 
 		if ( $minQuantity < 1 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new ProductException( __( 'A minimum quantity must be at least 1.', 'tiermint' ) );
+			throw new ProductException( __( 'A minimum quantity must be at least 1.', 'releasecart' ) );
 		}
 
 		if ( null !== $maxQuantity && $maxQuantity < $minQuantity ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new ProductException( __( 'A maximum quantity cannot be less than the minimum quantity.', 'tiermint' ) );
+			throw new ProductException( __( 'A maximum quantity cannot be less than the minimum quantity.', 'releasecart' ) );
 		}
 
 		$this->id              = $id;
@@ -198,7 +198,7 @@ final class ProductPrice {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param object $row A `tiermint_product_prices` row.
+	 * @param object $row A `releasecart_product_prices` row.
 	 * @return self
 	 *
 	 * @throws ProductException When the row violates a tier invariant.
@@ -310,13 +310,13 @@ final class ProductPrice {
 
 		// A plain number is not a meaningful date interval.
 		if ( 1 === preg_match( '/^-?\d+$/', $length ) ) {
-			return __( 'A license length needs a unit, for example "+1 year". A plain number is not accepted; leave it blank for a lifetime license.', 'tiermint' );
+			return __( 'A license length needs a unit, for example "+1 year". A plain number is not accepted; leave it blank for a lifetime license.', 'releasecart' );
 		}
 
 		// Valid when PHP's date parser reads it without errors. date_parse() never warns.
 		if ( 0 < date_parse( $length )['error_count'] ) {
 			/* translators: %s: the submitted license length value. */
-			return sprintf( __( '"%s" is not a valid license length. Use a value like "+1 year", or leave it blank for a lifetime license.', 'tiermint' ), $length );
+			return sprintf( __( '"%s" is not a valid license length. Use a value like "+1 year", or leave it blank for a lifetime license.', 'releasecart' ), $length );
 		}
 
 		return null;

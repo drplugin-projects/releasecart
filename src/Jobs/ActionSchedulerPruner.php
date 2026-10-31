@@ -2,27 +2,27 @@
 /**
  * Daily job that keeps the bundled Action Scheduler tables from growing without bound.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Jobs;
+namespace DrPlugin\WP\ReleaseCart\Jobs;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 use ActionScheduler;
 use ActionScheduler_Store;
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
 use Exception;
 use Throwable;
 
 /**
- * Daily job that prunes TierMint's own rows from the Action Scheduler queue.
+ * Daily job that prunes ReleaseCart's own rows from the Action Scheduler queue.
  *
- * Other plugins share the queue, so only the `tiermint` group is touched.
+ * Other plugins share the queue, so only the `releasecart` group is touched.
  *
  * @since 1.0.0
  */
@@ -33,7 +33,7 @@ final class ActionSchedulerPruner implements Hookable {
 	 *
 	 * @var string
 	 */
-	public const PRUNE_HOOK = 'tiermint_job_prune_action_scheduler';
+	public const PRUNE_HOOK = 'releasecart_job_prune_action_scheduler';
 
 	/**
 	 * How long finished actions are kept, in seconds (seven days).
@@ -87,16 +87,16 @@ final class ActionSchedulerPruner implements Hookable {
 	 * @return void
 	 */
 	public function scheduleJobs(): void {
-		if ( false === as_next_scheduled_action( self::PRUNE_HOOK, array(), 'tiermint' ) ) {
+		if ( false === as_next_scheduled_action( self::PRUNE_HOOK, array(), 'releasecart' ) ) {
 			// The trailing `true` asks Action Scheduler to enforce uniqueness at
 			// claim time, so two concurrent first requests cannot both schedule
 			// the recurring prune.
-			as_schedule_recurring_action( time(), 86400, self::PRUNE_HOOK, array(), 'tiermint', true );
+			as_schedule_recurring_action( time(), 86400, self::PRUNE_HOOK, array(), 'releasecart', true );
 		}
 	}
 
 	/**
-	 * Prune TierMint's completed and canceled actions older than the retention.
+	 * Prune ReleaseCart's completed and canceled actions older than the retention.
 	 *
 	 * Stop at the batch cap. Log failures instead of stopping cron.
 	 *
@@ -118,7 +118,7 @@ final class ActionSchedulerPruner implements Hookable {
 
 					$ids = $store->query_actions(
 						array(
-							'group'            => 'tiermint',
+							'group'            => 'releasecart',
 							'status'           => $status,
 							'modified'         => $cutoff,
 							'modified_compare' => '<=',

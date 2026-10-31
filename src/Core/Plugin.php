@@ -2,12 +2,12 @@
 /**
  * Plugin bootstrap orchestrator.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Core;
+namespace DrPlugin\WP\ReleaseCart\Core;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -92,7 +92,7 @@ final class Plugin implements Hookable {
 		}
 
 		/**
-		 * Fires after TierMint core boots.
+		 * Fires after ReleaseCart core boots.
 		 *
 		 * Add-ons register service providers here.
 		 *
@@ -100,7 +100,7 @@ final class Plugin implements Hookable {
 		 *
 		 * @param Container $container The shared plugin container.
 		 */
-		do_action( 'tiermint_loaded', $this->container );
+		do_action( 'releasecart_loaded', $this->container );
 	}
 
 	/**

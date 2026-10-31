@@ -1,19 +1,19 @@
 <?php
 /**
- * The TierMint custom capability model.
+ * The ReleaseCart custom capability model.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Core;
+namespace DrPlugin\WP\ReleaseCart\Core;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 /**
- * TierMint capabilities for store work, settings and reports.
+ * ReleaseCart capabilities for store work, settings and reports.
  *
  * Check them at init so an administrator cannot lose access through role drift.
  *
@@ -26,24 +26,24 @@ final class Capabilities {
 	 *
 	 * @var string
 	 */
-	public const MANAGE = 'manage_tiermint';
+	public const MANAGE = 'manage_releasecart';
 
 	/**
 	 * Settings management capability.
 	 *
 	 * @var string
 	 */
-	public const MANAGE_SETTINGS = 'manage_tiermint_settings';
+	public const MANAGE_SETTINGS = 'manage_releasecart_settings';
 
 	/**
 	 * Read-only reports capability.
 	 *
 	 * @var string
 	 */
-	public const VIEW_REPORTS = 'view_tiermint_reports';
+	public const VIEW_REPORTS = 'view_releasecart_reports';
 
 	/**
-	 * Get every TierMint capability.
+	 * Get every ReleaseCart capability.
 	 *
 	 * @since 1.0.0
 	 *
@@ -75,7 +75,7 @@ final class Capabilities {
 	}
 
 	/**
-	 * Remove TierMint capabilities from all roles.
+	 * Remove ReleaseCart capabilities from all roles.
 	 *
 	 * Deactivation keeps role mappings. The opt-in uninstall removes them.
 	 *

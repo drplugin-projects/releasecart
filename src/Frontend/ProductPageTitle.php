@@ -2,15 +2,15 @@
 /**
  * Reconciles the theme page title with the block heading on the product page.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Products\Product;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Products\Product;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -28,7 +28,7 @@ class ProductPageTitle implements Hookable {
 	 *
 	 * @var string
 	 */
-	private const SETTINGS_OPTION = 'tiermint_settings';
+	private const SETTINGS_OPTION = 'releasecart_settings';
 
 	/**
 	 * The shared request context supplying the routed product.

@@ -2,63 +2,63 @@
 /**
  * Service provider for the frontend component layer.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Container;
-use DrPlugin\WP\TierMint\Core\ServiceProvider;
-use DrPlugin\WP\TierMint\Customers\CustomerService;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Blocks\BlockAttributes;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Blocks\Patterns;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Blocks\Registrar as BlocksRegistrar;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\ControlMap;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\ControlOptions;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\ElementorSettings;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Registrar as ElementorRegistrar;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\StyleControlMap;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Tags\TagValues;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\WidgetRenderer;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Shortcodes\Registrar;
-use DrPlugin\WP\TierMint\Frontend\Components\AccountDashboard;
-use DrPlugin\WP\TierMint\Frontend\Components\BuyButton;
-use DrPlugin\WP\TierMint\Frontend\Components\CartSummary;
-use DrPlugin\WP\TierMint\Frontend\Components\Checkout;
-use DrPlugin\WP\TierMint\Frontend\Components\DownloadsList;
-use DrPlugin\WP\TierMint\Frontend\Components\LicenseManager;
-use DrPlugin\WP\TierMint\Frontend\Components\LoginForm;
-use DrPlugin\WP\TierMint\Frontend\Components\PricingTable;
-use DrPlugin\WP\TierMint\Frontend\Components\ProductDescription;
-use DrPlugin\WP\TierMint\Frontend\Components\ProductDetails;
-use DrPlugin\WP\TierMint\Frontend\Components\ProductGrid;
-use DrPlugin\WP\TierMint\Frontend\Components\ProductImages;
-use DrPlugin\WP\TierMint\Frontend\Components\ProductOverview;
-use DrPlugin\WP\TierMint\Frontend\Components\ProductChangelog;
-use DrPlugin\WP\TierMint\Frontend\Components\ProductMeta;
-use DrPlugin\WP\TierMint\Frontend\Components\ProductPricingTiers;
-use DrPlugin\WP\TierMint\Frontend\Components\ProductScreenshots;
-use DrPlugin\WP\TierMint\Frontend\Components\PasswordResetForm;
-use DrPlugin\WP\TierMint\Frontend\Components\PurchaseConfirmation;
-use DrPlugin\WP\TierMint\Frontend\Components\RegistrationForm;
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Licensing\ActivationService;
-use DrPlugin\WP\TierMint\Licensing\LicenseService;
-use DrPlugin\WP\TierMint\Orders\CartService;
-use DrPlugin\WP\TierMint\Orders\OrderService;
-use DrPlugin\WP\TierMint\Payments\GatewayRegistry;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Products\TermService;
-use DrPlugin\WP\TierMint\Updates\ChangelogRenderer;
-use DrPlugin\WP\TierMint\Updates\CustomerDownloads;
-use DrPlugin\WP\TierMint\Updates\ReleaseRepository;
-use DrPlugin\WP\TierMint\Util\Money;
-use DrPlugin\WP\TierMint\Util\RateLimiter;
+use DrPlugin\WP\ReleaseCart\Core\Container;
+use DrPlugin\WP\ReleaseCart\Core\ServiceProvider;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerService;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Blocks\BlockAttributes;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Blocks\Patterns;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Blocks\Registrar as BlocksRegistrar;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\ControlMap;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\ControlOptions;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\ElementorSettings;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Registrar as ElementorRegistrar;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\StyleControlMap;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Tags\TagValues;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\WidgetRenderer;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Shortcodes\Registrar;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\AccountDashboard;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\BuyButton;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\CartSummary;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Checkout;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\DownloadsList;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\LicenseManager;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\LoginForm;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\PricingTable;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\ProductDescription;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\ProductDetails;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\ProductGrid;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\ProductImages;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\ProductOverview;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\ProductChangelog;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\ProductMeta;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\ProductPricingTiers;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\ProductScreenshots;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\PasswordResetForm;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\PurchaseConfirmation;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\RegistrationForm;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Licensing\ActivationService;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseService;
+use DrPlugin\WP\ReleaseCart\Orders\CartService;
+use DrPlugin\WP\ReleaseCart\Orders\OrderService;
+use DrPlugin\WP\ReleaseCart\Payments\GatewayRegistry;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Products\TermService;
+use DrPlugin\WP\ReleaseCart\Updates\ChangelogRenderer;
+use DrPlugin\WP\ReleaseCart\Updates\CustomerDownloads;
+use DrPlugin\WP\ReleaseCart\Updates\ReleaseRepository;
+use DrPlugin\WP\ReleaseCart\Util\Money;
+use DrPlugin\WP\ReleaseCart\Util\RateLimiter;
 
 /**
  * Binds frontend components, adapters and request services.
@@ -203,8 +203,8 @@ class FrontendServiceProvider implements ServiceProvider {
 				$c->get( PageResolver::class ),
 				null,
 				$c->get( RateLimiter::class ),
-				$c->has( \DrPlugin\WP\TierMint\Discounts\DiscountService::class )
-					? $c->get( \DrPlugin\WP\TierMint\Discounts\DiscountService::class )
+				$c->has( \DrPlugin\WP\ReleaseCart\Discounts\DiscountService::class )
+					? $c->get( \DrPlugin\WP\ReleaseCart\Discounts\DiscountService::class )
 					: null
 			)
 		);
@@ -386,8 +386,8 @@ class FrontendServiceProvider implements ServiceProvider {
 				$c->get( ProductService::class ),
 				$c->get( Money::class ),
 				// Price a stored discount code when the optional engine is available.
-				$c->has( \DrPlugin\WP\TierMint\Discounts\DiscountService::class )
-					? $c->get( \DrPlugin\WP\TierMint\Discounts\DiscountService::class )
+				$c->has( \DrPlugin\WP\ReleaseCart\Discounts\DiscountService::class )
+					? $c->get( \DrPlugin\WP\ReleaseCart\Discounts\DiscountService::class )
 					: null,
 				self::discountComposer( $c )
 			)
@@ -459,8 +459,8 @@ class FrontendServiceProvider implements ServiceProvider {
 				$c->get( PageResolver::class ),
 				$c->get( LoginForm::class ),
 				// Price a stored code when the optional discount engine is available.
-				$c->has( \DrPlugin\WP\TierMint\Discounts\DiscountService::class )
-					? $c->get( \DrPlugin\WP\TierMint\Discounts\DiscountService::class )
+				$c->has( \DrPlugin\WP\ReleaseCart\Discounts\DiscountService::class )
+					? $c->get( \DrPlugin\WP\ReleaseCart\Discounts\DiscountService::class )
 					: null,
 				self::discountComposer( $c )
 			)
@@ -560,11 +560,11 @@ class FrontendServiceProvider implements ServiceProvider {
 	 * Get the automatic-discount resolver, if the Discounts domain is registered.
 	 *
 	 * @param Container $c The plugin container.
-	 * @return \DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver|null
+	 * @return \DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver|null
 	 */
-	private static function automaticDiscountResolver( Container $c ): ?\DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver {
-		return $c->has( \DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver::class )
-			? $c->get( \DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver::class )
+	private static function automaticDiscountResolver( Container $c ): ?\DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver {
+		return $c->has( \DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver::class )
+			? $c->get( \DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver::class )
 			: null;
 	}
 
@@ -572,11 +572,11 @@ class FrontendServiceProvider implements ServiceProvider {
 	 * Get the discount display settings, if the Discounts domain is registered.
 	 *
 	 * @param Container $c The plugin container.
-	 * @return \DrPlugin\WP\TierMint\Discounts\DiscountSettings|null
+	 * @return \DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings|null
 	 */
-	private static function discountSettings( Container $c ): ?\DrPlugin\WP\TierMint\Discounts\DiscountSettings {
-		return $c->has( \DrPlugin\WP\TierMint\Discounts\DiscountSettings::class )
-			? $c->get( \DrPlugin\WP\TierMint\Discounts\DiscountSettings::class )
+	private static function discountSettings( Container $c ): ?\DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings {
+		return $c->has( \DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings::class )
+			? $c->get( \DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings::class )
 			: null;
 	}
 
@@ -584,11 +584,11 @@ class FrontendServiceProvider implements ServiceProvider {
 	 * Get the shared discount composer, if the Discounts domain is registered.
 	 *
 	 * @param Container $c The plugin container.
-	 * @return \DrPlugin\WP\TierMint\Discounts\DiscountComposer|null
+	 * @return \DrPlugin\WP\ReleaseCart\Discounts\DiscountComposer|null
 	 */
-	private static function discountComposer( Container $c ): ?\DrPlugin\WP\TierMint\Discounts\DiscountComposer {
-		return $c->has( \DrPlugin\WP\TierMint\Discounts\DiscountComposer::class )
-			? $c->get( \DrPlugin\WP\TierMint\Discounts\DiscountComposer::class )
+	private static function discountComposer( Container $c ): ?\DrPlugin\WP\ReleaseCart\Discounts\DiscountComposer {
+		return $c->has( \DrPlugin\WP\ReleaseCart\Discounts\DiscountComposer::class )
+			? $c->get( \DrPlugin\WP\ReleaseCart\Discounts\DiscountComposer::class )
 			: null;
 	}
 }

@@ -1,13 +1,13 @@
 <?php
 /**
- * Unified append-only audit logger over the `tiermint_logs` table.
+ * Unified append-only audit logger over the `releasecart_logs` table.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Database;
+namespace DrPlugin\WP\ReleaseCart\Database;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -79,11 +79,11 @@ class Logger {
 			if ( false === $inserted ) {
 				// Keep audit failures out of the customer response.
 				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- The logs table write failed, so the PHP error log is the only place left.
-				error_log( sprintf( 'TierMint: failed to write %s log entry: %s', $type, $message ) );
+				error_log( sprintf( 'ReleaseCart: failed to write %s log entry: %s', $type, $message ) );
 			}
 		} catch ( Throwable $t ) {
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- The logs table write threw, so the PHP error log is the only place left.
-			error_log( sprintf( 'TierMint: logger failure (%s) while writing %s entry: %s', $t->getMessage(), $type, $message ) );
+			error_log( sprintf( 'ReleaseCart: logger failure (%s) while writing %s entry: %s', $t->getMessage(), $type, $message ) );
 		}
 	}
 }

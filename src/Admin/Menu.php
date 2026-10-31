@@ -1,23 +1,23 @@
 <?php
 /**
- * The TierMint admin menu.
+ * The ReleaseCart admin menu.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Admin;
+namespace DrPlugin\WP\ReleaseCart\Admin;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Capabilities;
-use DrPlugin\WP\TierMint\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Core\Capabilities;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
 
 /**
- * Registers the TierMint SPA menu and its hash-based submenus.
- * Extensions add their screens through `tiermint_admin_menu_items`.
+ * Registers the ReleaseCart SPA menu and its hash-based submenus.
+ * Extensions add their screens through `releasecart_admin_menu_items`.
  *
  * @since 1.0.0
  */
@@ -70,8 +70,8 @@ final class Menu implements Hookable {
 	 */
 	public function register(): void {
 		add_menu_page(
-			__( 'TierMint', 'tiermint' ),
-			__( 'TierMint', 'tiermint' ),
+			__( 'ReleaseCart', 'releasecart' ),
+			__( 'ReleaseCart', 'releasecart' ),
 			$this->parentCapability(),
 			SpaController::PAGE_SLUG,
 			array( $this->spa, 'render' ),
@@ -108,7 +108,7 @@ final class Menu implements Hookable {
 	 */
 	public function items(): array {
 		/**
-		 * Filters the TierMint admin menu registry.
+		 * Filters the ReleaseCart admin menu registry.
 		 *
 		 * Extensions add SPA menu items here and register matching routes.
 		 *
@@ -116,7 +116,7 @@ final class Menu implements Hookable {
 		 *
 		 * @param array<int, array<string, string>> $items The registry items.
 		 */
-		$items = apply_filters( 'tiermint_admin_menu_items', $this->coreItems() );
+		$items = apply_filters( 'releasecart_admin_menu_items', $this->coreItems() );
 
 		$clean = array();
 		foreach ( (array) $items as $item ) {
@@ -145,55 +145,55 @@ final class Menu implements Hookable {
 		return array(
 			array(
 				'id'    => 'dashboard',
-				'title' => __( 'Dashboard', 'tiermint' ),
+				'title' => __( 'Dashboard', 'releasecart' ),
 				'hash'  => '#/',
 				'cap'   => Capabilities::MANAGE,
 			),
 			array(
 				'id'    => 'products',
-				'title' => __( 'Products', 'tiermint' ),
+				'title' => __( 'Products', 'releasecart' ),
 				'hash'  => '#/products',
 				'cap'   => Capabilities::MANAGE,
 			),
 			array(
 				'id'    => 'terms',
-				'title' => __( 'Categories & Tags', 'tiermint' ),
+				'title' => __( 'Categories & Tags', 'releasecart' ),
 				'hash'  => '#/products/terms',
 				'cap'   => Capabilities::MANAGE,
 			),
 			array(
 				'id'    => 'orders',
-				'title' => __( 'Orders', 'tiermint' ),
+				'title' => __( 'Orders', 'releasecart' ),
 				'hash'  => '#/orders',
 				'cap'   => Capabilities::MANAGE,
 			),
 			array(
 				'id'    => 'customers',
-				'title' => __( 'Customers', 'tiermint' ),
+				'title' => __( 'Customers', 'releasecart' ),
 				'hash'  => '#/customers',
 				'cap'   => Capabilities::MANAGE,
 			),
 			array(
 				'id'    => 'licenses',
-				'title' => __( 'Licenses', 'tiermint' ),
+				'title' => __( 'Licenses', 'releasecart' ),
 				'hash'  => '#/licenses',
 				'cap'   => Capabilities::MANAGE,
 			),
 			array(
 				'id'    => 'discounts',
-				'title' => __( 'Discounts', 'tiermint' ),
+				'title' => __( 'Discounts', 'releasecart' ),
 				'hash'  => '#/discounts',
 				'cap'   => Capabilities::MANAGE,
 			),
 			array(
 				'id'    => 'reports',
-				'title' => __( 'Reports', 'tiermint' ),
+				'title' => __( 'Reports', 'releasecart' ),
 				'hash'  => '#/reports',
 				'cap'   => Capabilities::VIEW_REPORTS,
 			),
 			array(
 				'id'    => 'settings',
-				'title' => __( 'Settings', 'tiermint' ),
+				'title' => __( 'Settings', 'releasecart' ),
 				'hash'  => '#/settings',
 				'cap'   => Capabilities::MANAGE_SETTINGS,
 			),

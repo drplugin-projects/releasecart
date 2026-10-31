@@ -2,19 +2,19 @@
 /**
  * Activations repository: the only Licensing class that touches the activations table.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Licensing;
+namespace DrPlugin\WP\ReleaseCart\Licensing;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use DrPlugin\WP\TierMint\Database\Schema;
+use DrPlugin\WP\ReleaseCart\Database\Schema;
 
 /**
  * Activation storage with cache-backed identity lookups.
@@ -28,7 +28,7 @@ class ActivationRepository {
 	 *
 	 * @var string
 	 */
-	private const CACHE_GROUP = 'tiermint_activations';
+	private const CACHE_GROUP = 'releasecart_activations';
 
 	/**
 	 * The WordPress database abstraction.
@@ -270,7 +270,7 @@ class ActivationRepository {
 
 		// A per-row random hash keeps the unique index intact without preserving
 		// anything derived from the erased site URL.
-		$anonHash = hash( 'sha256', 'tiermint-anon-' . $id . '-' . wp_generate_uuid4() );
+		$anonHash = hash( 'sha256', 'releasecart-anon-' . $id . '-' . wp_generate_uuid4() );
 
 		$updated = $this->wpdb->update(
 			$this->table(),

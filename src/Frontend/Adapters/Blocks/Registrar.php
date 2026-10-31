@@ -1,19 +1,19 @@
 <?php
 /**
- * Auto-generates tiermint/* dynamic blocks from the component registry.
+ * Auto-generates releasecart/* dynamic blocks from the component registry.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Adapters\Blocks;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Adapters\Blocks;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Frontend\AssetManager;
-use DrPlugin\WP\TierMint\Frontend\AttributeResolver;
-use DrPlugin\WP\TierMint\Frontend\ComponentRegistry;
-use DrPlugin\WP\TierMint\Frontend\RenderContextResolver;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Frontend\AssetManager;
+use DrPlugin\WP\ReleaseCart\Frontend\AttributeResolver;
+use DrPlugin\WP\ReleaseCart\Frontend\ComponentRegistry;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContextResolver;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -27,11 +27,11 @@ defined( 'ABSPATH' ) || exit;
 class Registrar implements Hookable {
 
 	/**
-	 * The block category slug every TierMint block registers under.
+	 * The block category slug every ReleaseCart block registers under.
 	 *
 	 * @var string
 	 */
-	public const CATEGORY_SLUG = 'tiermint';
+	public const CATEGORY_SLUG = 'releasecart';
 
 	/**
 	 * The component registry to expose as blocks.
@@ -132,7 +132,7 @@ class Registrar implements Hookable {
 	/**
 	 * Check whether core has registered a block name.
 	 *
-	 * @param string $name The full block name, e.g. tiermint/buy-button.
+	 * @param string $name The full block name, e.g. releasecart/buy-button.
 	 * @return bool
 	 */
 	protected function isBlockRegistered( string $name ): bool {
@@ -141,7 +141,7 @@ class Registrar implements Hookable {
 	}
 
 	/**
-	 * Add the TierMint block category.
+	 * Add the ReleaseCart block category.
 	 *
 	 * @param array<int, array<string, mixed>> $categories Registered block categories.
 	 * @return array<int, array<string, mixed>>
@@ -155,7 +155,7 @@ class Registrar implements Hookable {
 
 		$categories[] = array(
 			'slug'  => self::CATEGORY_SLUG,
-			'title' => __( 'TierMint', 'tiermint' ),
+			'title' => __( 'ReleaseCart', 'releasecart' ),
 		);
 
 		return $categories;
@@ -199,19 +199,19 @@ class Registrar implements Hookable {
 		$asset = include $assetFile;
 
 		wp_enqueue_script(
-			'tiermint-blocks-editor',
-			TIERMINT_URL . 'assets/blocks/build/index.js',
+			'releasecart-blocks-editor',
+			RELEASECART_URL . 'assets/blocks/build/index.js',
 			$asset['dependencies'] ?? array(),
-			(string) ( $asset['version'] ?? TIERMINT_VERSION ),
+			(string) ( $asset['version'] ?? RELEASECART_VERSION ),
 			true
 		);
 
 		/* Load translations for the editor script. */
-		wp_set_script_translations( 'tiermint-blocks-editor', 'tiermint', TIERMINT_PATH . 'languages' );
+		wp_set_script_translations( 'releasecart-blocks-editor', 'releasecart', RELEASECART_PATH . 'languages' );
 
 		wp_add_inline_script(
-			'tiermint-blocks-editor',
-			'window.tierMintBlocks = ' . wp_json_encode( array( 'blocks' => $this->editorBlockData() ) ) . ';',
+			'releasecart-blocks-editor',
+			'window.releaseCartBlocks = ' . wp_json_encode( array( 'blocks' => $this->editorBlockData() ) ) . ';',
 			'before'
 		);
 	}
@@ -263,7 +263,7 @@ class Registrar implements Hookable {
 	 * @return string
 	 */
 	protected function editorAssetPath(): string {
-		return TIERMINT_PATH . 'assets/blocks/build/index.asset.php';
+		return RELEASECART_PATH . 'assets/blocks/build/index.asset.php';
 	}
 
 	/**
@@ -283,7 +283,7 @@ class Registrar implements Hookable {
 
 		$name = is_array( $metadata ) ? (string) ( $metadata['name'] ?? '' ) : '';
 
-		return '' !== $name ? $name : 'tiermint/' . $slug;
+		return '' !== $name ? $name : 'releasecart/' . $slug;
 	}
 
 	/**
@@ -292,6 +292,6 @@ class Registrar implements Hookable {
 	 * @return string
 	 */
 	protected function blocksBasePath(): string {
-		return TIERMINT_PATH . 'blocks/';
+		return RELEASECART_PATH . 'blocks/';
 	}
 }

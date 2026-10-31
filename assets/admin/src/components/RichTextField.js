@@ -80,7 +80,7 @@ function slug( id ) {
  * @return {Element} The control element.
  */
 export default function RichTextField( { field, value, onChange } ) {
-	const domId = 'tiermint-rte-' + slug( field.id );
+	const domId = 'releasecart-rte-' + slug( field.id );
 	const textareaRef = useRef( null );
 	// The value we last handed to onChange (or adopted as the baseline on open).
 	// Seeded in the mount effect; the editor is only re-seeded, and onChange only
@@ -239,9 +239,9 @@ export default function RichTextField( { field, value, onChange } ) {
 	}, [ value ] );
 
 	return (
-		<div className="tiermint-rich-text-field">
+		<div className="releasecart-rich-text-field">
 			<label
-				className="tiermint-rich-text-field__label"
+				className="releasecart-rich-text-field__label"
 				htmlFor={ domId }
 			>
 				{ field.label }
@@ -249,11 +249,13 @@ export default function RichTextField( { field, value, onChange } ) {
 			<textarea
 				ref={ textareaRef }
 				id={ domId }
-				className="tiermint-rich-text-field__textarea"
+				className="releasecart-rich-text-field__textarea"
 				defaultValue={ typeof value === 'string' ? value : '' }
 			/>
 			{ field.help && (
-				<p className="tiermint-rich-text-field__help">{ field.help }</p>
+				<p className="releasecart-rich-text-field__help">
+					{ field.help }
+				</p>
 			) }
 		</div>
 	);

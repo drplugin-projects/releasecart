@@ -2,18 +2,18 @@
 /**
  * Discount domain service: validation, management CRUD, and checkout application.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Discounts;
+namespace DrPlugin\WP\ReleaseCart\Discounts;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Customers\Customer;
-use DrPlugin\WP\TierMint\Orders\OrderRepository;
+use DrPlugin\WP\ReleaseCart\Customers\Customer;
+use DrPlugin\WP\ReleaseCart\Orders\OrderRepository;
 
 /**
  * Creates and manages discounts, then applies codes to carts.
@@ -247,12 +247,12 @@ class DiscountService {
 		// A known expired code can use a specific message.
 		if ( ! $discount->isWithinWindow( $now ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw $this->reject( __( 'This discount code has expired.', 'tiermint' ) );
+			throw $this->reject( __( 'This discount code has expired.', 'releasecart' ) );
 		}
 
 		if ( ! $discount->hasUsesRemaining() ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw $this->reject( __( 'This discount code has reached its usage limit.', 'tiermint' ) );
+			throw $this->reject( __( 'This discount code has reached its usage limit.', 'releasecart' ) );
 		}
 
 		// The order minimum is measured against the whole cart, not just the scoped items.
@@ -263,7 +263,7 @@ class DiscountService {
 
 		if ( null !== $discount->minTotal() && $orderSubtotal < $discount->minTotal() ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw $this->reject( __( 'Your order total is below the minimum required for this discount code.', 'tiermint' ) );
+			throw $this->reject( __( 'Your order total is below the minimum required for this discount code.', 'releasecart' ) );
 		}
 
 		$applicable = array();
@@ -275,14 +275,14 @@ class DiscountService {
 
 		if ( array() === $applicable ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw $this->reject( __( 'This discount code does not apply to the items in your cart.', 'tiermint' ) );
+			throw $this->reject( __( 'This discount code does not apply to the items in your cart.', 'releasecart' ) );
 		}
 
 		// Guests without an id cannot be checked against prior orders.
 		if ( $discount->isOncePerCustomer() && null !== $customer && null !== $customer->id() ) {
 			if ( $this->orders->customerUsedDiscount( (int) $customer->id(), (int) $discount->id() ) ) {
 				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-				throw $this->reject( __( 'You have already used this discount code.', 'tiermint' ) );
+				throw $this->reject( __( 'You have already used this discount code.', 'releasecart' ) );
 			}
 		}
 
@@ -393,7 +393,7 @@ class DiscountService {
 		$scope = DiscountScope::tryFrom( (string) $data['scope_type'] );
 
 		if ( null === $scope ) {
-			$errors[] = __( 'The discount scope must be all, products, or categories.', 'tiermint' );
+			$errors[] = __( 'The discount scope must be all, products, or categories.', 'releasecart' );
 
 			return null !== $existing ? $existing->scopeType() : null;
 		}
@@ -476,7 +476,7 @@ class DiscountService {
 		$type = DiscountType::tryFrom( (string) $data['type'] );
 
 		if ( null === $type ) {
-			$errors[] = __( 'The discount type must be either "percent" or "fixed".', 'tiermint' );
+			$errors[] = __( 'The discount type must be either "percent" or "fixed".', 'releasecart' );
 
 			return null !== $existing ? $existing->type() : DiscountType::Percent;
 		}
@@ -502,7 +502,7 @@ class DiscountService {
 		$status = DiscountStatus::tryFrom( (string) $data['status'] );
 
 		if ( null === $status ) {
-			$errors[] = __( 'The discount status must be either "active" or "inactive".', 'tiermint' );
+			$errors[] = __( 'The discount status must be either "active" or "inactive".', 'releasecart' );
 
 			return null !== $existing ? $existing->status() : DiscountStatus::Active;
 		}
@@ -551,7 +551,7 @@ class DiscountService {
 	 * @return string The translated message.
 	 */
 	private function genericInvalidMessage(): string {
-		return __( 'That is not a valid discount code.', 'tiermint' );
+		return __( 'That is not a valid discount code.', 'releasecart' );
 	}
 
 	/**

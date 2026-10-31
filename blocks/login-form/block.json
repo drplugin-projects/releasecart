@@ -1,13 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "tiermint/login",
+	"name": "releasecart/login",
 	"title": "Login Form",
-	"category": "tiermint",
+	"category": "releasecart",
 	"icon": "admin-users",
 	"description": "A customer login form with an optional registration link.",
-	"keywords": [ "login", "account", "sign in", "tiermint" ],
-	"textdomain": "tiermint",
+	"keywords": [ "login", "account", "sign in", "releasecart" ],
+	"textdomain": "releasecart",
 	"supports": {
 		"html": false
 	},

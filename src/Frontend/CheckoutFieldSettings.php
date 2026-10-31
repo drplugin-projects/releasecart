@@ -2,16 +2,16 @@
 /**
  * Reads which optional fields the checkout collects.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Catalog\Countries;
+use DrPlugin\WP\ReleaseCart\Catalog\Countries;
 
 /**
  * Reads checkout field and account settings.
@@ -27,7 +27,7 @@ class CheckoutFieldSettings {
 	 *
 	 * @var string
 	 */
-	private const SETTINGS_OPTION = 'tiermint_settings';
+	private const SETTINGS_OPTION = 'releasecart_settings';
 
 	/**
 	 * The toggle behind each billing field the collect seam answers for.
@@ -216,7 +216,7 @@ class CheckoutFieldSettings {
 		 *
 		 * @param bool $required Whether the stored setting requires the address.
 		 */
-		$required = (bool) apply_filters( 'tiermint_checkout_address_required', $stored );
+		$required = (bool) apply_filters( 'releasecart_checkout_address_required', $stored );
 
 		return $stored || $required;
 	}
@@ -265,7 +265,7 @@ class CheckoutFieldSettings {
 		 *
 		 * @param array<string, string> $base Country code to name.
 		 */
-		$filtered = apply_filters( 'tiermint_checkout_countries', $base );
+		$filtered = apply_filters( 'releasecart_checkout_countries', $base );
 
 		if ( ! is_array( $filtered ) ) {
 			return $base;
@@ -301,7 +301,7 @@ class CheckoutFieldSettings {
 		 * @param bool   $collect Whether the merchant's toggle collects the field.
 		 * @param string $key     The field key: `billing_country` or `vat_number`.
 		 */
-		$collect = (bool) apply_filters( 'tiermint_checkout_collect_field', $stored, $key );
+		$collect = (bool) apply_filters( 'releasecart_checkout_collect_field', $stored, $key );
 
 		return $stored || $collect;
 	}

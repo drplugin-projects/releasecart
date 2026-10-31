@@ -2,12 +2,12 @@
 /**
  * Exception for deactivating a site that was never activated.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Licensing;
+namespace DrPlugin\WP\ReleaseCart\Licensing;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -33,7 +33,7 @@ final class ActivationNotFoundException extends LicenseException {
 		return new self(
 			sprintf(
 				/* translators: %s: the site URL that has no activation. */
-				__( 'The site %s is not activated for this license.', 'tiermint' ),
+				__( 'The site %s is not activated for this license.', 'releasecart' ),
 				$siteUrl
 			)
 		);

@@ -2,28 +2,28 @@
 /**
  * REST controller for the Releases management resource.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 use DateTimeImmutable;
-use DrPlugin\WP\TierMint\Products\ProductNotFoundException;
-use DrPlugin\WP\TierMint\Products\ProductRepository;
-use DrPlugin\WP\TierMint\Storage\StorageException;
-use DrPlugin\WP\TierMint\Updates\DuplicateReleaseVersionException;
-use DrPlugin\WP\TierMint\Updates\Release;
-use DrPlugin\WP\TierMint\Updates\ReleaseException;
-use DrPlugin\WP\TierMint\Updates\ReleaseNotFoundException;
-use DrPlugin\WP\TierMint\Updates\ReleasePackageName;
-use DrPlugin\WP\TierMint\Updates\ReleaseService;
-use DrPlugin\WP\TierMint\Updates\ReleaseTransitionException;
-use DrPlugin\WP\TierMint\Updates\ReleaseValidationException;
+use DrPlugin\WP\ReleaseCart\Products\ProductNotFoundException;
+use DrPlugin\WP\ReleaseCart\Products\ProductRepository;
+use DrPlugin\WP\ReleaseCart\Storage\StorageException;
+use DrPlugin\WP\ReleaseCart\Updates\DuplicateReleaseVersionException;
+use DrPlugin\WP\ReleaseCart\Updates\Release;
+use DrPlugin\WP\ReleaseCart\Updates\ReleaseException;
+use DrPlugin\WP\ReleaseCart\Updates\ReleaseNotFoundException;
+use DrPlugin\WP\ReleaseCart\Updates\ReleasePackageName;
+use DrPlugin\WP\ReleaseCart\Updates\ReleaseService;
+use DrPlugin\WP\ReleaseCart\Updates\ReleaseTransitionException;
+use DrPlugin\WP\ReleaseCart\Updates\ReleaseValidationException;
 use Throwable;
 use WP_Error;
 use WP_REST_Request;
@@ -209,7 +209,7 @@ final class ReleasesController extends AbstractRestController {
 		}
 
 		if ( array() === $file ) {
-			return $this->invalidParams( array( __( 'A package file is required. Upload it as the "package" multipart field.', 'tiermint' ) ) );
+			return $this->invalidParams( array( __( 'A package file is required. Upload it as the "package" multipart field.', 'releasecart' ) ) );
 		}
 
 		try {
@@ -399,7 +399,7 @@ final class ReleasesController extends AbstractRestController {
 		}
 
 		if ( $e instanceof DuplicateReleaseVersionException ) {
-			return $this->error( 'tiermint_duplicate_version', __( 'That version already exists for this product.', 'tiermint' ), 400 );
+			return $this->error( 'releasecart_duplicate_version', __( 'That version already exists for this product.', 'releasecart' ), 400 );
 		}
 
 		if ( $e instanceof ReleaseValidationException ) {
@@ -409,7 +409,12 @@ final class ReleasesController extends AbstractRestController {
 		}
 
 		if ( $e instanceof ReleaseTransitionException ) {
-			return $this->error( 'tiermint_conflict', __( 'The release could not be changed because its status changed. Reload and try again.', 'tiermint' ), 409 );
+			return $this->error( 'releasecart_conflict', __( 'The release could not be changed because its status changed. Reload and try again.', 'releasecart' ), 409 );
+		}
+
+		// The admin can fix this one, so say what it is.
+		if ( $e instanceof StorageException && $e->isFilesystemUnavailable() ) {
+			return $this->error( 'releasecart_filesystem_unavailable', __( 'WordPress cannot write files directly on this site, so the package cannot be stored. Ask your host to allow direct file writes for WordPress.', 'releasecart' ), 500 );
 		}
 
 		// Do not expose persistence or storage details.
@@ -455,7 +460,7 @@ final class ReleasesController extends AbstractRestController {
 		// An empty archive is 22 bytes. ZipArchive opens a 0-byte file as a new
 		// archive and deletes it on close, so refuse short files first.
 		if ( (int) filesize( $path ) < 22 || ! wp_zip_file_is_valid( $path ) ) {
-			return $this->invalidParams( array( __( 'The package must be a ZIP file.', 'tiermint' ) ) );
+			return $this->invalidParams( array( __( 'The package must be a ZIP file.', 'releasecart' ) ) );
 		}
 
 		return $package;
@@ -521,7 +526,7 @@ final class ReleasesController extends AbstractRestController {
 		 * @param array<string, mixed> $data    The release fields.
 		 * @param Release              $release The release.
 		 */
-		$filtered = apply_filters( 'tiermint_rest_release', $data, $release );
+		$filtered = apply_filters( 'releasecart_rest_release', $data, $release );
 
 		return is_array( $filtered ) ? $filtered : $data;
 	}
@@ -566,7 +571,7 @@ final class ReleasesController extends AbstractRestController {
 	private function productIdArgs(): array {
 		return array(
 			'id' => array(
-				'description'       => __( 'Unique product identifier.', 'tiermint' ),
+				'description'       => __( 'Unique product identifier.', 'releasecart' ),
 				'type'              => 'integer',
 				'required'          => true,
 				'sanitize_callback' => 'absint',
@@ -585,7 +590,7 @@ final class ReleasesController extends AbstractRestController {
 	private function itemArgs(): array {
 		return $this->productIdArgs() + array(
 			'release_id' => array(
-				'description'       => __( 'Unique release identifier.', 'tiermint' ),
+				'description'       => __( 'Unique release identifier.', 'releasecart' ),
 				'type'              => 'integer',
 				'required'          => true,
 				'sanitize_callback' => 'absint',
@@ -606,31 +611,31 @@ final class ReleasesController extends AbstractRestController {
 	private function writeArgs(): array {
 		return array(
 			'version'      => array(
-				'description'       => __( 'Release version (one to four dot-separated numbers, optional pre-release suffix).', 'tiermint' ),
+				'description'       => __( 'Release version (one to four dot-separated numbers, optional pre-release suffix).', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'changelog'    => array(
-				'description'       => __( 'Release changelog as Markdown source.', 'tiermint' ),
+				'description'       => __( 'Release changelog as Markdown source.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_textarea_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'requires_wp'  => array(
-				'description'       => __( 'Minimum required WordPress version.', 'tiermint' ),
+				'description'       => __( 'Minimum required WordPress version.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'tested_up_to' => array(
-				'description'       => __( 'Highest WordPress version tested against.', 'tiermint' ),
+				'description'       => __( 'Highest WordPress version tested against.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'requires_php' => array(
-				'description'       => __( 'Minimum required PHP version.', 'tiermint' ),
+				'description'       => __( 'Minimum required PHP version.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
@@ -648,7 +653,7 @@ final class ReleasesController extends AbstractRestController {
 	private function publishArgs(): array {
 		return array(
 			'override' => array(
-				'description'       => __( 'Bypass the version monotonicity check for a deliberate re-publish.', 'tiermint' ),
+				'description'       => __( 'Bypass the version monotonicity check for a deliberate re-publish.', 'releasecart' ),
 				'type'              => 'boolean',
 				'default'           => false,
 				'sanitize_callback' => 'rest_sanitize_boolean',

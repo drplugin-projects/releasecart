@@ -2,14 +2,14 @@
 /**
  * Sends transactional emails through wp_mail with an HTML body and plaintext alt.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Emails;
+namespace DrPlugin\WP\ReleaseCart\Emails;
 
-use DrPlugin\WP\TierMint\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
 use Throwable;
 
 // Prevent direct file access.
@@ -123,7 +123,7 @@ class Mailer {
 			 * @param string               $to      The recipient address.
 			 * @param array<string, mixed> $context The context the email was sent with.
 			 */
-			do_action( 'tiermint_email_sent', $emailId, $to, $ctx );
+			do_action( 'releasecart_email_sent', $emailId, $to, $ctx );
 
 			return true;
 		} catch ( Throwable $failure ) {
@@ -161,7 +161,7 @@ class Mailer {
 			 * @param string                    $emailId     The email id, e.g. 'purchase_receipt'.
 			 * @param array<string, mixed>      $context     The context the email is being sent with.
 			 */
-			$declared = apply_filters( 'tiermint_email_attachments', $declared, $emailId, $ctx );
+			$declared = apply_filters( 'releasecart_email_attachments', $declared, $emailId, $ctx );
 
 			if ( ! is_array( $declared ) ) {
 				$this->logAttachmentLoss( $emailId, $ctx, 'a filter callback returned something that is not a list of attachments' );

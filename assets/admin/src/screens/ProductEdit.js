@@ -297,12 +297,12 @@ function ProductFieldControl( { field, value, onChange, renderers } ) {
 			);
 		default:
 			return (
-				<p className="tiermint-product-field__unsupported">
+				<p className="releasecart-product-field__unsupported">
 					{ sprintf(
 						/* translators: %s: the field label. */
 						__(
 							'The "%s" field needs an extension that is not active.',
-							'tiermint'
+							'releasecart'
 						),
 						field.label
 					) }
@@ -506,7 +506,7 @@ export default function ProductEdit( { params, boot } ) {
 							/* translators: %d: the position of the price in the list, starting at 1. */
 							__(
 								'Price %d needs a license length. Pick Lifetime or Duration.',
-								'tiermint'
+								'releasecart'
 							),
 							index + 1
 					  )
@@ -525,11 +525,11 @@ export default function ProductEdit( { params, boot } ) {
 
 	// Details, categories and tags sit outside these tabs.
 	const tabs = [
-		{ name: 'pricing', title: __( 'Pricing', 'tiermint' ) },
+		{ name: 'pricing', title: __( 'Pricing', 'releasecart' ) },
 		...( form.type === 'bundle'
-			? [ { name: 'bundle', title: __( 'Bundle', 'tiermint' ) } ]
+			? [ { name: 'bundle', title: __( 'Bundle', 'releasecart' ) } ]
 			: [] ),
-		{ name: 'releases', title: __( 'Releases', 'tiermint' ) },
+		{ name: 'releases', title: __( 'Releases', 'releasecart' ) },
 	];
 
 	// Omit registered panels with no visible fields.
@@ -550,23 +550,23 @@ export default function ProductEdit( { params, boot } ) {
 	 */
 	const renderFieldPanels = ( groups ) =>
 		groups.length > 0 && (
-			<div className="tiermint-product-fields">
+			<div className="releasecart-product-fields">
 				{ groups.map( ( group ) => (
 					<fieldset
 						key={ group.id }
-						className="tiermint-product-fields__panel"
+						className="releasecart-product-fields__panel"
 					>
-						<legend className="tiermint-product-fields__legend">
+						<legend className="releasecart-product-fields__legend">
 							{ group.label }
 						</legend>
-						<div className="tiermint-form-stack">
+						<div className="releasecart-form-stack">
 							{ group.fields.map( ( field ) => {
 								// Column fields use form state, settings fields use the settings blob.
 								const isColumn = field.storage === 'column';
 								return (
 									<div
 										key={ field.id }
-										className="tiermint-product-field"
+										className="releasecart-product-field"
 									>
 										<ProductFieldControl
 											field={ field }
@@ -630,7 +630,7 @@ export default function ProductEdit( { params, boot } ) {
 		<Notice status="warning" isDismissible={ false }>
 			{ __(
 				'Save the product before you can manage releases.',
-				'tiermint'
+				'releasecart'
 			) }
 		</Notice>
 	) : (
@@ -638,16 +638,16 @@ export default function ProductEdit( { params, boot } ) {
 	);
 
 	return (
-		<section className="tiermint-admin-screen tiermint-product-edit">
+		<section className="releasecart-admin-screen releasecart-product-edit">
 			<ScreenHeader
 				title={
 					isNew
-						? __( 'Add product', 'tiermint' )
-						: __( 'Edit product', 'tiermint' )
+						? __( 'Add product', 'releasecart' )
+						: __( 'Edit product', 'releasecart' )
 				}
 				backLink={ {
 					href: '#/products',
-					label: __( 'Back to products', 'tiermint' ),
+					label: __( 'Back to products', 'releasecart' ),
 				} }
 			/>
 
@@ -664,7 +664,9 @@ export default function ProductEdit( { params, boot } ) {
 
 			{ saveError && (
 				<Notice status="error" isDismissible={ false }>
-					<p>{ __( 'Please fix the errors below.', 'tiermint' ) }</p>
+					<p>
+						{ __( 'Please fix the errors below.', 'releasecart' ) }
+					</p>
 					{ saveError.errors ? (
 						<ul>
 							{ Object.keys( saveError.errors ).map(
@@ -684,10 +686,10 @@ export default function ProductEdit( { params, boot } ) {
 			) }
 
 			{ ( isNew || productQuery.isSuccess ) && (
-				<div className="tiermint-product-edit__layout">
-					<div className="tiermint-product-edit__main">
+				<div className="releasecart-product-edit__layout">
+					<div className="releasecart-product-edit__main">
 						{ detailsPanel }
-						<TabPanel className="tiermint-tabs" tabs={ tabs }>
+						<TabPanel className="releasecart-tabs" tabs={ tabs }>
 							{ ( tab ) => {
 								if ( tab.name === 'bundle' ) {
 									return bundlePanel;
@@ -721,7 +723,7 @@ export default function ProductEdit( { params, boot } ) {
  */
 export const route = {
 	path: '#/products/:id',
-	title: __( 'Edit product', 'tiermint' ),
-	capability: 'manage_tiermint',
+	title: __( 'Edit product', 'releasecart' ),
+	capability: 'manage_releasecart',
 	component: ProductEdit,
 };

@@ -2,14 +2,14 @@
 /**
  * Rewrites the wp-login reset link inside WordPress password emails to the branded page.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
  * Swaps only the wp-login base of the reset link in password emails, keeping the
  * query, so the same key still works on wp-login.
  *
- * TierMint's own sends always get the reset page link. Other WordPress password
+ * ReleaseCart's own sends always get the reset page link. Other WordPress password
  * emails get it only while replace_wp_login is on, and both need a published page.
  *
  * @since 1.0.0
@@ -29,7 +29,7 @@ class PasswordResetLinks implements Hookable {
 	 *
 	 * @var string
 	 */
-	private const SETTINGS_OPTION = 'tiermint_settings';
+	private const SETTINGS_OPTION = 'releasecart_settings';
 
 	/**
 	 * Priority of the one-shot filters. It differs from the global filters, so
@@ -91,7 +91,7 @@ class PasswordResetLinks implements Hookable {
 	}
 
 	/**
-	 * Run one of TierMint's own mail sends with the reset link rewritten.
+	 * Run one of ReleaseCart's own mail sends with the reset link rewritten.
 	 *
 	 * The toggle does not apply here.
 	 *

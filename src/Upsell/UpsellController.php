@@ -2,17 +2,17 @@
 /**
  * REST route that records an upsell notice dismissal.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Upsell;
+namespace DrPlugin\WP\ReleaseCart\Upsell;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\REST\AbstractRestController;
+use DrPlugin\WP\ReleaseCart\REST\AbstractRestController;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -63,7 +63,7 @@ final class UpsellController extends AbstractRestController {
 					'permission_callback' => array( $this, 'managePermission' ),
 					'args'                => array(
 						'topic' => array(
-							'description' => __( 'The upsell notice to dismiss.', 'tiermint' ),
+							'description' => __( 'The upsell notice to dismiss.', 'releasecart' ),
 							'type'        => 'string',
 							'required'    => true,
 							'enum'        => Dismissals::TOPICS,

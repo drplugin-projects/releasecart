@@ -1,37 +1,37 @@
 <?php
 /**
- * Registers the TierMint Elementor widgets, tags, and category.
+ * Registers the ReleaseCart Elementor widgets, tags, and category.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Adapters\Elementor;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Tags\AbstractProductTag;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Tags\ProductNameTag;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Tags\ProductPriceTag;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Tags\TagValues;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Widgets\BuyButtonWidget;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Widgets\CheckoutWidget;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Widgets\ComponentWidget;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Widgets\DownloadsWidget;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Widgets\LicensesWidget;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Widgets\LoginWidget;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Widgets\PasswordResetWidget;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Widgets\PricingTableWidget;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Widgets\ProductDetailsWidget;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Widgets\ProductGridWidget;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Widgets\RegistrationWidget;
-use DrPlugin\WP\TierMint\Frontend\AssetManager;
-use DrPlugin\WP\TierMint\Frontend\ComponentRegistry;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Tags\AbstractProductTag;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Tags\ProductNameTag;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Tags\ProductPriceTag;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Tags\TagValues;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Widgets\BuyButtonWidget;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Widgets\CheckoutWidget;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Widgets\ComponentWidget;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Widgets\DownloadsWidget;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Widgets\LicensesWidget;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Widgets\LoginWidget;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Widgets\PasswordResetWidget;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Widgets\PricingTableWidget;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Widgets\ProductDetailsWidget;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Widgets\ProductGridWidget;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Widgets\RegistrationWidget;
+use DrPlugin\WP\ReleaseCart\Frontend\AssetManager;
+use DrPlugin\WP\ReleaseCart\Frontend\ComponentRegistry;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Registers TierMint widgets and tags when Elementor is active.
+ * Registers ReleaseCart widgets and tags when Elementor is active.
  *
  * Elementor hooks avoid loading Elementor classes on sites without Elementor.
  *
@@ -44,7 +44,7 @@ class Registrar implements Hookable {
 	 *
 	 * @var string
 	 */
-	public const CATEGORY_SLUG = 'tiermint';
+	public const CATEGORY_SLUG = 'releasecart';
 
 	/**
 	 * Widget classes core registers with Elementor.
@@ -139,7 +139,7 @@ class Registrar implements Hookable {
 	}
 
 	/**
-	 * Register the TierMint widget category so the widgets group together in the
+	 * Register the ReleaseCart widget category so the widgets group together in the
 	 * editor panel.
 	 *
 	 * @param \Elementor\Elements_Manager $elementsManager Elementor's elements manager.
@@ -149,7 +149,7 @@ class Registrar implements Hookable {
 		$elementsManager->add_category(
 			self::CATEGORY_SLUG,
 			array(
-				'title' => __( 'TierMint', 'tiermint' ),
+				'title' => __( 'ReleaseCart', 'releasecart' ),
 				'icon'  => 'eicon-cart-medium',
 			)
 		);
@@ -178,13 +178,13 @@ class Registrar implements Hookable {
 	public function registerTags( $tagsManager ): void {
 		AbstractProductTag::setValues( $this->tagValues );
 
-		$tagsManager->register_group( self::CATEGORY_SLUG, array( 'title' => __( 'TierMint', 'tiermint' ) ) );
+		$tagsManager->register_group( self::CATEGORY_SLUG, array( 'title' => __( 'ReleaseCart', 'releasecart' ) ) );
 		$tagsManager->register( new ProductNameTag() );
 		$tagsManager->register( new ProductPriceTag() );
 	}
 
 	/**
-	 * Pre-enqueue assets for TierMint widgets in the queried Elementor page.
+	 * Pre-enqueue assets for ReleaseCart widgets in the queried Elementor page.
 	 *
 	 * The scan runs before wp_head, where widget rendering is too late.
 	 *
@@ -217,7 +217,7 @@ class Registrar implements Hookable {
 	}
 
 	/**
-	 * Get unique TierMint widget slugs from Elementor data.
+	 * Get unique ReleaseCart widget slugs from Elementor data.
 	 *
 	 * @param string $json The raw _elementor_data meta value.
 	 * @return array<int, string> Unique component slugs.
@@ -236,7 +236,7 @@ class Registrar implements Hookable {
 	}
 
 	/**
-	 * Collect TierMint widget slugs from an Elementor element tree.
+	 * Collect ReleaseCart widget slugs from an Elementor element tree.
 	 *
 	 * @param array<int|string, mixed> $nodes The elements at this level.
 	 * @param array<int, string>       $slugs Slug accumulator, appended by reference.
@@ -250,8 +250,8 @@ class Registrar implements Hookable {
 
 			$type = isset( $node['widgetType'] ) && is_string( $node['widgetType'] ) ? $node['widgetType'] : '';
 
-			if ( str_starts_with( $type, 'tiermint-' ) ) {
-				$slugs[] = substr( $type, strlen( 'tiermint-' ) );
+			if ( str_starts_with( $type, 'releasecart-' ) ) {
+				$slugs[] = substr( $type, strlen( 'releasecart-' ) );
 			}
 
 			if ( isset( $node['elements'] ) && is_array( $node['elements'] ) ) {

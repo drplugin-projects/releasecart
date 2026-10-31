@@ -2,18 +2,18 @@
 /**
  * Rate-limit guard for the public licensing routes.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Util\RateLimiter;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Util\RateLimiter;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -34,7 +34,7 @@ final class LicenseRouteGuard implements Hookable {
 	 *
 	 * @var string
 	 */
-	private const ROUTE_PATTERN = '#^/tiermint/v1/(license/(validate|activate|deactivate)|update-check|package/download|order/download)$#i';
+	private const ROUTE_PATTERN = '#^/releasecart/v1/(license/(validate|activate|deactivate)|update-check|package/download|order/download)$#i';
 
 	/**
 	 * The transient-backed fixed-window limiter.
@@ -113,8 +113,8 @@ final class LicenseRouteGuard implements Hookable {
 
 		$response = new WP_REST_Response(
 			array(
-				'code'    => 'tiermint_rate_limited',
-				'message' => __( 'Too many licensing requests. Please wait and try again.', 'tiermint' ),
+				'code'    => 'releasecart_rate_limited',
+				'message' => __( 'Too many licensing requests. Please wait and try again.', 'releasecart' ),
 				'data'    => array( 'status' => 429 ),
 			),
 			429
@@ -150,7 +150,7 @@ final class LicenseRouteGuard implements Hookable {
 		 *
 		 * @param array<string, array{limit: int, window: int}> $limits The limit map.
 		 */
-		$limits = apply_filters( 'tiermint_rest_rate_limits', $defaults );
+		$limits = apply_filters( 'releasecart_rest_rate_limits', $defaults );
 
 		$effective = array();
 

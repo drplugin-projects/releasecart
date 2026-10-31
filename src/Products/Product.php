@@ -2,12 +2,12 @@
 /**
  * Product aggregate value object.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Products;
+namespace DrPlugin\WP\ReleaseCart\Products;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -223,7 +223,7 @@ final class Product {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param object                   $row         A `tiermint_products` row.
+	 * @param object                   $row         A `releasecart_products` row.
 	 * @param array<int, ProductPrice> $prices      The product's loaded price tiers.
 	 * @param array<int, BundleItem>   $bundleItems The product's loaded bundle items.
 	 * @return self
@@ -512,7 +512,7 @@ final class Product {
 		foreach ( $files as $file ) {
 			if ( ! is_array( $file ) ) {
 				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-				throw new ProductException( __( 'A product file must be a storage reference array, not a raw path.', 'tiermint' ) );
+				throw new ProductException( __( 'A product file must be a storage reference array, not a raw path.', 'releasecart' ) );
 			}
 
 			$provider = isset( $file['provider'] ) ? (string) $file['provider'] : '';
@@ -520,12 +520,12 @@ final class Product {
 
 			if ( '' === $provider || '' === $key ) {
 				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-				throw new ProductException( __( 'A product file reference requires both a provider and a key.', 'tiermint' ) );
+				throw new ProductException( __( 'A product file reference requires both a provider and a key.', 'releasecart' ) );
 			}
 
 			if ( $this->looksLikeRawPath( $key ) ) {
 				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-				throw new ProductException( __( 'A product file key must be a storage key, not a raw or absolute path.', 'tiermint' ) );
+				throw new ProductException( __( 'A product file key must be a storage key, not a raw or absolute path.', 'releasecart' ) );
 			}
 
 			$normalized[] = array(

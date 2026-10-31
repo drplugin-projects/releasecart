@@ -1,18 +1,18 @@
 <?php
 /**
- * Webhook idempotency ledger repository over tiermint_gateway_events.
+ * Webhook idempotency ledger repository over releasecart_gateway_events.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Payments;
+namespace DrPlugin\WP\ReleaseCart\Payments;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Database\Schema;
+use DrPlugin\WP\ReleaseCart\Database\Schema;
 
 /**
  * Stores webhook event claims and statuses.

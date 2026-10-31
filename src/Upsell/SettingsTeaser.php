@@ -1,18 +1,18 @@
 <?php
 /**
- * The "TierMint Pro" teaser tab on the Settings screen.
+ * The "ReleaseCart Pro" teaser tab on the Settings screen.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Upsell;
+namespace DrPlugin\WP\ReleaseCart\Upsell;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
 
 /**
  * Adds a settings section holding one render-only field.
@@ -65,8 +65,8 @@ final class SettingsTeaser implements Hookable {
 	 * @return void
 	 */
 	public function hooks(): void {
-		add_filter( 'tiermint_settings_sections', array( $this, 'addSection' ) );
-		add_filter( 'tiermint_settings_fields', array( $this, 'addField' ) );
+		add_filter( 'releasecart_settings_sections', array( $this, 'addSection' ) );
+		add_filter( 'releasecart_settings_fields', array( $this, 'addField' ) );
 	}
 
 	/**
@@ -84,7 +84,7 @@ final class SettingsTeaser implements Hookable {
 
 		$sections[] = array(
 			'id'    => self::SECTION_ID,
-			'title' => __( 'TierMint Pro', 'tiermint' ),
+			'title' => __( 'ReleaseCart Pro', 'releasecart' ),
 		);
 
 		return $sections;
@@ -108,7 +108,7 @@ final class SettingsTeaser implements Hookable {
 			'section'     => self::SECTION_ID,
 			'type'        => self::FIELD_TYPE,
 			'storage'     => 'none',
-			'label'       => __( 'TierMint Pro', 'tiermint' ),
+			'label'       => __( 'ReleaseCart Pro', 'releasecart' ),
 			'description' => '',
 		);
 

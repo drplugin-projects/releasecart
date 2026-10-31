@@ -2,12 +2,12 @@
 /**
  * Refund domain service: full and partial order refunds.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Orders;
+namespace DrPlugin\WP\ReleaseCart\Orders;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -105,7 +105,7 @@ class RefundService {
 		 * @param Order $order          The refunded order, reloaded in its new status.
 		 * @param int   $amountRefunded The amount refunded in this operation, in minor units.
 		 */
-		do_action( 'tiermint_order_refunded', $saved, $amount );
+		do_action( 'releasecart_order_refunded', $saved, $amount );
 
 		return $saved;
 	}
@@ -136,17 +136,17 @@ class RefundService {
 		// Refund rows are completed, but must never be refunded again.
 		if ( OrderType::Refund === $order->type() ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw OrderValidationException::withErrors( array( __( 'A refund cannot itself be refunded.', 'tiermint' ) ) );
+			throw OrderValidationException::withErrors( array( __( 'A refund cannot itself be refunded.', 'releasecart' ) ) );
 		}
 
 		if ( ! $order->isRefundable() ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw OrderValidationException::withErrors( array( __( 'Only a completed order can be refunded.', 'tiermint' ) ) );
+			throw OrderValidationException::withErrors( array( __( 'Only a completed order can be refunded.', 'releasecart' ) ) );
 		}
 
 		if ( $amount <= 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw OrderValidationException::withErrors( array( __( 'A refund amount must be greater than zero.', 'tiermint' ) ) );
+			throw OrderValidationException::withErrors( array( __( 'A refund amount must be greater than zero.', 'releasecart' ) ) );
 		}
 
 		$alreadyRefunded = $this->orders->sumRefundedForOrder( $orderId );
@@ -154,7 +154,7 @@ class RefundService {
 
 		if ( $amount > $remaining ) {
 			/* translators: 1: the requested refund amount in minor units, 2: the remaining refundable balance in minor units. */
-			$message = sprintf( __( 'The refund amount (%1$d) exceeds the remaining refundable balance (%2$d).', 'tiermint' ), $amount, $remaining );
+			$message = sprintf( __( 'The refund amount (%1$d) exceeds the remaining refundable balance (%2$d).', 'releasecart' ), $amount, $remaining );
 
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
 			throw OrderValidationException::withErrors( array( $message ) );

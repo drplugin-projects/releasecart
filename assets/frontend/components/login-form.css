@@ -2,115 +2,115 @@
  * Login form styles.
  */
 
-.tiermint-login-form {
-	color: var(--tiermint-color-text);
-	font-size: var(--tiermint-font-size-base);
+.releasecart-login-form {
+	color: var(--releasecart-color-text);
+	font-size: var(--releasecart-font-size-base);
 }
 
 /* Keep the card width independent of the theme column. */
-.tiermint-login-form__card {
+.releasecart-login-form__card {
 	display: flex;
 	flex-direction: column;
-	gap: var(--tiermint-space-4);
+	gap: var(--releasecart-space-4);
 	max-width: 26rem;
 	margin-inline: auto;
 }
 
-.tiermint-login-form #loginform {
+.releasecart-login-form #loginform {
 	display: flex;
 	flex-direction: column;
-	gap: var(--tiermint-space-5);
+	gap: var(--releasecart-space-5);
 	margin: 0;
 }
 
-.tiermint-login-form #loginform p {
+.releasecart-login-form #loginform p {
 	margin: 0;
 }
 
-.tiermint-login-form #loginform label {
+.releasecart-login-form #loginform label {
 	display: block;
-	margin-bottom: var(--tiermint-space-2);
-	color: var(--tiermint-color-text);
-	font-size: var(--tiermint-font-size-sm);
-	font-weight: var(--tiermint-font-weight-medium);
+	margin-bottom: var(--releasecart-space-2);
+	color: var(--releasecart-color-text);
+	font-size: var(--releasecart-font-size-sm);
+	font-weight: var(--releasecart-font-weight-medium);
 }
 
-.tiermint-login-form #loginform input[type='text'],
-.tiermint-login-form #loginform input[type='password'] {
+.releasecart-login-form #loginform input[type='text'],
+.releasecart-login-form #loginform input[type='password'] {
 	appearance: none;
 	width: 100%;
 	min-height: 2.75rem;
 	margin: 0;
 	padding: 0.625rem 0.75rem;
-	border: 1px solid var(--tiermint-color-border-strong);
-	border-radius: var(--tiermint-radius);
-	background-color: var(--tiermint-color-surface);
+	border: 1px solid var(--releasecart-color-border-strong);
+	border-radius: var(--releasecart-radius);
+	background-color: var(--releasecart-color-surface);
 	box-shadow: none;
-	color: var(--tiermint-color-text);
-	font-size: var(--tiermint-font-size-base);
+	color: var(--releasecart-color-text);
+	font-size: var(--releasecart-font-size-base);
 }
 
-.tiermint-login-form #loginform input[type='text']:focus,
-.tiermint-login-form #loginform input[type='password']:focus {
-	border-color: var(--tiermint-color-primary);
+.releasecart-login-form #loginform input[type='text']:focus,
+.releasecart-login-form #loginform input[type='password']:focus {
+	border-color: var(--releasecart-color-primary);
 }
 
-.tiermint-login-form #loginform .login-remember label {
+.releasecart-login-form #loginform .login-remember label {
 	display: flex;
 	align-items: center;
-	gap: var(--tiermint-space-2);
+	gap: var(--releasecart-space-2);
 	margin: 0;
-	color: var(--tiermint-color-text-muted);
+	color: var(--releasecart-color-text-muted);
 }
 
-.tiermint-login-form #loginform .login-remember input[type='checkbox'] {
+.releasecart-login-form #loginform .login-remember input[type='checkbox'] {
 	width: 1.125rem;
 	height: 1.125rem;
 	margin: 0;
-	accent-color: var(--tiermint-color-primary);
+	accent-color: var(--releasecart-color-primary);
 }
 
-.tiermint-login-form #loginform .login-submit input[type='submit'],
-.tiermint-login-form #wp-submit {
+.releasecart-login-form #loginform .login-submit input[type='submit'],
+.releasecart-login-form #wp-submit {
 	width: 100%;
 	min-height: 2.75rem;
 	padding: 0.625rem 1.25rem;
-	border: 1px solid var(--tiermint-color-primary);
-	border-radius: var(--tiermint-radius);
-	background-color: var(--tiermint-color-primary);
+	border: 1px solid var(--releasecart-color-primary);
+	border-radius: var(--releasecart-radius);
+	background-color: var(--releasecart-color-primary);
 	box-shadow: none;
-	color: var(--tiermint-color-primary-contrast);
-	font-size: var(--tiermint-font-size-sm);
-	font-weight: var(--tiermint-font-weight-semibold);
+	color: var(--releasecart-color-primary-contrast);
+	font-size: var(--releasecart-font-size-sm);
+	font-weight: var(--releasecart-font-weight-semibold);
 	cursor: pointer;
 	transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
-.tiermint-login-form #loginform .login-submit input[type='submit']:hover,
-.tiermint-login-form #wp-submit:hover {
-	border-color: var(--tiermint-color-primary-hover);
-	background-color: var(--tiermint-color-primary-hover);
+.releasecart-login-form #loginform .login-submit input[type='submit']:hover,
+.releasecart-login-form #wp-submit:hover {
+	border-color: var(--releasecart-color-primary-hover);
+	background-color: var(--releasecart-color-primary-hover);
 }
 
-.tiermint-login-form--logged-in {
+.releasecart-login-form--logged-in {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	gap: var(--tiermint-space-3);
+	gap: var(--releasecart-space-3);
 }
 
-.tiermint-login-form__greeting {
+.releasecart-login-form__greeting {
 	margin: 0;
 }
 
 /* The secondary links sit under the form as one quiet, centered stack. */
-.tiermint-login-form__register,
-.tiermint-login-form__lost-password {
+.releasecart-login-form__register,
+.releasecart-login-form__lost-password {
 	margin: 0;
-	font-size: var(--tiermint-font-size-sm);
+	font-size: var(--releasecart-font-size-sm);
 	text-align: center;
 }
 
-.tiermint-login-form__error {
+.releasecart-login-form__error {
 	margin: 0;
 }

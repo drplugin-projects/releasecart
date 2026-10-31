@@ -2,12 +2,12 @@
 /**
  * Order uuid generator.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Orders;
+namespace DrPlugin\WP\ReleaseCart\Orders;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;

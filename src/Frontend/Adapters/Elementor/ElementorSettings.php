@@ -2,12 +2,12 @@
 /**
  * Read accessor for the Elementor adapter's on/off toggle.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Adapters\Elementor;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,7 +25,7 @@ class ElementorSettings {
 	 *
 	 * @var string
 	 */
-	private const SETTINGS_OPTION = 'tiermint_settings';
+	private const SETTINGS_OPTION = 'releasecart_settings';
 
 	/**
 	 * Whether the Elementor adapter should register its widgets and tags.

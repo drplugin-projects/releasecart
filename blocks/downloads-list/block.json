@@ -1,13 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "tiermint/downloads-list",
+	"name": "releasecart/downloads-list",
 	"title": "Downloads List",
-	"category": "tiermint",
+	"category": "releasecart",
 	"icon": "download",
 	"description": "The logged-in customer's purchased files and licensed update packages.",
-	"keywords": [ "downloads", "files", "updates", "tiermint" ],
-	"textdomain": "tiermint",
+	"keywords": [ "downloads", "files", "updates", "releasecart" ],
+	"textdomain": "releasecart",
 	"supports": {
 		"html": false
 	},

@@ -2,15 +2,15 @@
 /**
  * The product main image component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Frontend\Components\Support\SamplePreview;
-use DrPlugin\WP\TierMint\Products\Product;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\SamplePreview;
+use DrPlugin\WP\ReleaseCart\Products\Product;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -73,7 +73,7 @@ final class ProductImages extends AbstractProductComponent {
 		unset( $product, $attrs );
 
 		return array(
-			'image' => SamplePreview::placeholderTile( 'tiermint-product-images__img', __( 'Sample product image', 'tiermint' ) ),
+			'image' => SamplePreview::placeholderTile( 'releasecart-product-images__img', __( 'Sample product image', 'releasecart' ) ),
 		);
 	}
 
@@ -88,7 +88,7 @@ final class ProductImages extends AbstractProductComponent {
 			return null;
 		}
 
-		$html = wp_get_attachment_image( $id, self::IMAGE_SIZE, false, array( 'class' => 'tiermint-product-images__img' ) );
+		$html = wp_get_attachment_image( $id, self::IMAGE_SIZE, false, array( 'class' => 'releasecart-product-images__img' ) );
 
 		return is_string( $html ) && '' !== $html ? $html : null;
 	}

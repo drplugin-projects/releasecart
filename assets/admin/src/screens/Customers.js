@@ -87,7 +87,7 @@ function normalizeUserId( raw ) {
 function accountLabel( name, email ) {
 	return sprintf(
 		/* translators: 1: a primary label, 2: a secondary detail shown in parentheses. */
-		__( '%1$s (%2$s)', 'tiermint' ),
+		__( '%1$s (%2$s)', 'releasecart' ),
 		name,
 		email
 	);
@@ -148,7 +148,7 @@ function userOptions( results, current, customer, picked ) {
 			selectedLabel( selected, customer, picked ) ??
 			sprintf(
 				/* translators: %s: a WordPress user id, shown when the account behind it no longer exists. */
-				__( 'User #%s', 'tiermint' ),
+				__( 'User #%s', 'releasecart' ),
 				selected
 			),
 		value: selected,
@@ -170,7 +170,7 @@ function deleteConfirmText( count ) {
 			'Delete %d customer permanently? This cannot be undone.',
 			'Delete %d customers permanently? This cannot be undone.',
 			count,
-			'tiermint'
+			'releasecart'
 		),
 		count
 	);
@@ -185,7 +185,7 @@ function bulkActions() {
 	return [
 		{
 			value: 'delete',
-			label: __( 'Delete', 'tiermint' ),
+			label: __( 'Delete', 'releasecart' ),
 			isDestructive: true,
 			confirmText: deleteConfirmText,
 		},
@@ -209,7 +209,7 @@ function bulkSummary( count ) {
 			'%d customer deleted.',
 			'%d customers deleted.',
 			count,
-			'tiermint'
+			'releasecart'
 		),
 		count
 	);
@@ -289,10 +289,10 @@ function buildPayload( customer, form ) {
  */
 function CustomerType( { customer, canEditUsers } ) {
 	if ( ! customer.user_id ) {
-		return <>{ __( 'Guest', 'tiermint' ) }</>;
+		return <>{ __( 'Guest', 'releasecart' ) }</>;
 	}
 
-	const label = __( 'Registered', 'tiermint' );
+	const label = __( 'Registered', 'releasecart' );
 
 	if ( ! canEditUsers ) {
 		return <>{ label }</>;
@@ -303,7 +303,7 @@ function CustomerType( { customer, canEditUsers } ) {
 			href={ `user-edit.php?user_id=${ customer.user_id }` }
 			aria-label={ sprintf(
 				/* translators: %s: a customer's email address. */
-				__( 'Edit the WordPress user for %s', 'tiermint' ),
+				__( 'Edit the WordPress user for %s', 'releasecart' ),
 				customer.email
 			) }
 		>
@@ -390,19 +390,19 @@ function CustomerModal( { customer, onClose } ) {
 
 	return (
 		<Modal
-			className="tiermint-modal"
+			className="releasecart-modal"
 			title={
 				customer
-					? __( 'Edit customer', 'tiermint' )
-					: __( 'Add customer', 'tiermint' )
+					? __( 'Edit customer', 'releasecart' )
+					: __( 'Add customer', 'releasecart' )
 			}
 			onRequestClose={ onClose }
 		>
-			<div className="tiermint-form-stack">
+			<div className="releasecart-form-stack">
 				<TextControl
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
-					label={ __( 'Email', 'tiermint' ) }
+					label={ __( 'Email', 'releasecart' ) }
 					type="email"
 					required
 					value={ email }
@@ -410,20 +410,20 @@ function CustomerModal( { customer, onClose } ) {
 				/>
 				{ submitted && ! isEmailValid && (
 					<Notice status="error" isDismissible={ false }>
-						{ __( 'Enter a valid email address.', 'tiermint' ) }
+						{ __( 'Enter a valid email address.', 'releasecart' ) }
 					</Notice>
 				) }
 				<TextControl
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
-					label={ __( 'Name', 'tiermint' ) }
+					label={ __( 'Name', 'releasecart' ) }
 					value={ name }
 					onChange={ setName }
 				/>
 				<ComboboxControl
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
-					label={ __( 'Assigned user', 'tiermint' ) }
+					label={ __( 'Assigned user', 'releasecart' ) }
 					value={ userId === '' ? null : userId }
 					options={ userChoices }
 					/* Puts a spinner in the field while the search is in
@@ -441,7 +441,7 @@ function CustomerModal( { customer, onClose } ) {
 					} }
 					help={ __(
 						'Search by name or email. Leave this empty to keep the customer a guest.',
-						'tiermint'
+						'releasecart'
 					) }
 				/>
 				{ mutation.isError && (
@@ -456,9 +456,9 @@ function CustomerModal( { customer, onClose } ) {
 					</Notice>
 				) }
 			</div>
-			<div className="tiermint-modal-actions">
+			<div className="releasecart-modal-actions">
 				<Button variant="tertiary" onClick={ onClose }>
-					{ __( 'Cancel', 'tiermint' ) }
+					{ __( 'Cancel', 'releasecart' ) }
 				</Button>
 				<Button
 					variant="primary"
@@ -466,7 +466,7 @@ function CustomerModal( { customer, onClose } ) {
 					isBusy={ mutation.isPending }
 					disabled={ mutation.isPending }
 				>
-					{ __( 'Save', 'tiermint' ) }
+					{ __( 'Save', 'releasecart' ) }
 				</Button>
 			</div>
 		</Modal>
@@ -599,24 +599,27 @@ export default function Customers( { boot } ) {
 	}, [ rowsKey ] );
 
 	return (
-		<section className="tiermint-admin-screen tiermint-admin-customers">
+		<section className="releasecart-admin-screen releasecart-admin-customers">
 			<ScreenHeader
-				title={ __( 'Customers', 'tiermint' ) }
+				title={ __( 'Customers', 'releasecart' ) }
 				actions={
 					<Button
 						variant="primary"
 						onClick={ () => setModalCustomer( null ) }
 					>
-						{ __( 'Add customer', 'tiermint' ) }
+						{ __( 'Add customer', 'releasecart' ) }
 					</Button>
 				}
 			/>
 
-			<div className="tiermint-toolbar">
+			<div className="releasecart-toolbar">
 				<SearchControl
 					__nextHasNoMarginBottom
-					label={ __( 'Search customers', 'tiermint' ) }
-					placeholder={ __( 'Search by name or email', 'tiermint' ) }
+					label={ __( 'Search customers', 'releasecart' ) }
+					placeholder={ __(
+						'Search by name or email',
+						'releasecart'
+					) }
 					value={ search }
 					onChange={ handleSearchChange }
 				/>
@@ -654,11 +657,11 @@ export default function Customers( { boot } ) {
 						search
 							? __(
 									'No customers match this search.',
-									'tiermint'
+									'releasecart'
 							  )
 							: __(
 									'No customers yet. A customer record is created with the first purchase.',
-									'tiermint'
+									'releasecart'
 							  )
 					}
 					action={
@@ -667,7 +670,7 @@ export default function Customers( { boot } ) {
 								variant="primary"
 								onClick={ () => setModalCustomer( null ) }
 							>
-								{ __( 'Add customer', 'tiermint' ) }
+								{ __( 'Add customer', 'releasecart' ) }
 							</Button>
 						)
 					}
@@ -676,7 +679,7 @@ export default function Customers( { boot } ) {
 
 			{ items.length > 0 && (
 				<BulkActionsBar
-					label={ __( 'Bulk actions for customers', 'tiermint' ) }
+					label={ __( 'Bulk actions for customers', 'releasecart' ) }
 					actions={ bulkActions() }
 					count={ selection.count }
 					pending={ bulkMutation.isPending }
@@ -690,33 +693,35 @@ export default function Customers( { boot } ) {
 			) }
 
 			{ items.length > 0 && (
-				<table className="tiermint-admin-table wp-list-table widefat striped">
+				<table className="releasecart-admin-table wp-list-table widefat striped">
 					<thead>
 						<tr>
 							<SelectAllHeader selection={ selection } />
 							<SortableHeader
 								column="email"
-								label={ __( 'Email', 'tiermint' ) }
+								label={ __( 'Email', 'releasecart' ) }
 								sort={ sort }
 							/>
 							<SortableHeader
 								column="name"
-								label={ __( 'Name', 'tiermint' ) }
+								label={ __( 'Name', 'releasecart' ) }
 								sort={ sort }
 							/>
-							<th scope="col">{ __( 'Type', 'tiermint' ) }</th>
+							<th scope="col">{ __( 'Type', 'releasecart' ) }</th>
 							<th scope="col">
-								{ __( 'Purchases', 'tiermint' ) }
+								{ __( 'Purchases', 'releasecart' ) }
 							</th>
 							<th scope="col">
-								{ __( 'Lifetime total', 'tiermint' ) }
+								{ __( 'Lifetime total', 'releasecart' ) }
 							</th>
 							<SortableHeader
 								column="created_at"
-								label={ __( 'Created', 'tiermint' ) }
+								label={ __( 'Created', 'releasecart' ) }
 								sort={ sort }
 							/>
-							<th scope="col">{ __( 'Actions', 'tiermint' ) }</th>
+							<th scope="col">
+								{ __( 'Actions', 'releasecart' ) }
+							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -749,7 +754,7 @@ export default function Customers( { boot } ) {
 											setModalCustomer( customer )
 										}
 									>
-										{ __( 'Edit', 'tiermint' ) }
+										{ __( 'Edit', 'releasecart' ) }
 									</Button>
 								</td>
 							</tr>
@@ -787,7 +792,7 @@ export default function Customers( { boot } ) {
  */
 export const route = {
 	path: '#/customers',
-	title: __( 'Customers', 'tiermint' ),
-	capability: 'manage_tiermint',
+	title: __( 'Customers', 'releasecart' ),
+	capability: 'manage_releasecart',
 	component: Customers,
 };

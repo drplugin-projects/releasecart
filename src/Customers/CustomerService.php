@@ -2,12 +2,12 @@
 /**
  * Customer domain service: all customer business logic and validation.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Customers;
+namespace DrPlugin\WP\ReleaseCart\Customers;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -139,7 +139,7 @@ class CustomerService {
 		// We only reach here when the buyer has no customer of their own (checked in
 		// findOrCreate), so a linked match is owned by a different account.
 		/* translators: %s: the submitted email address. */
-		$message = sprintf( __( 'The email "%s" is already associated with another account.', 'tiermint' ), $email );
+		$message = sprintf( __( 'The email "%s" is already associated with another account.', 'releasecart' ), $email );
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
 		throw CustomerValidationException::withErrors( array( $message ) );
@@ -168,7 +168,7 @@ class CustomerService {
 
 		if ( null !== $userId && $this->repository->userIdExists( $userId, null ) ) {
 			/* translators: %d: the WordPress user ID. */
-			$errors[] = sprintf( __( 'WordPress user %d is already linked to another customer.', 'tiermint' ), $userId );
+			$errors[] = sprintf( __( 'WordPress user %d is already linked to another customer.', 'releasecart' ), $userId );
 		}
 
 		if ( array() !== $errors ) {
@@ -294,9 +294,9 @@ class CustomerService {
 		 * @param array<int, string> $reasons The reasons collected so far.
 		 * @param int                $id      The customer id about to be deleted.
 		 */
-		$filtered = apply_filters( 'tiermint_customer_delete_blockers', array(), $id );
+		$filtered = apply_filters( 'releasecart_customer_delete_blockers', array(), $id );
 
-		$unnamed = array( __( 'A check on this customer could not be completed, so the delete was stopped.', 'tiermint' ) );
+		$unnamed = array( __( 'A check on this customer could not be completed, so the delete was stopped.', 'releasecart' ) );
 
 		if ( ! is_array( $filtered ) ) {
 			return $unnamed;
@@ -474,7 +474,7 @@ class CustomerService {
 		 *
 		 * @param Customer $customer The newly created customer, reloaded from storage.
 		 */
-		do_action( 'tiermint_customer_created', $saved );
+		do_action( 'releasecart_customer_created', $saved );
 
 		return $saved;
 	}
@@ -589,7 +589,7 @@ class CustomerService {
 		 *
 		 * @param Customer $customer The updated customer, reloaded from storage.
 		 */
-		do_action( 'tiermint_customer_updated', $customer );
+		do_action( 'releasecart_customer_updated', $customer );
 	}
 
 	/**
@@ -629,14 +629,14 @@ class CustomerService {
 		$email = Customer::normalizeEmail( (string) ( $value ?? '' ) );
 
 		if ( '' === $email ) {
-			$errors[] = __( 'A customer email address is required.', 'tiermint' );
+			$errors[] = __( 'A customer email address is required.', 'releasecart' );
 
 			return '';
 		}
 
 		if ( false === filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
 			/* translators: %s: the submitted email address. */
-			$errors[] = sprintf( __( '"%s" is not a valid email address.', 'tiermint' ), $email );
+			$errors[] = sprintf( __( '"%s" is not a valid email address.', 'releasecart' ), $email );
 
 			return '';
 		}
@@ -666,7 +666,7 @@ class CustomerService {
 
 		if ( $this->repository->emailExists( $email, $exceptId ) ) {
 			/* translators: %s: the customer email address. */
-			$errors[] = sprintf( __( 'A customer with the email "%s" already exists.', 'tiermint' ), $email );
+			$errors[] = sprintf( __( 'A customer with the email "%s" already exists.', 'releasecart' ), $email );
 		}
 
 		return $email;
@@ -710,7 +710,7 @@ class CustomerService {
 		// unlinking never collides.
 		if ( null !== $userId && $userId !== $existing->userId() && $this->repository->userIdExists( $userId, $id ) ) {
 			/* translators: %d: the WordPress user ID. */
-			$errors[] = sprintf( __( 'WordPress user %d is already linked to another customer.', 'tiermint' ), $userId );
+			$errors[] = sprintf( __( 'WordPress user %d is already linked to another customer.', 'releasecart' ), $userId );
 		}
 
 		return $userId;

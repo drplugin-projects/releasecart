@@ -2,20 +2,20 @@
 /**
  * Resolves the best automatic (no-code) discount for a cart.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Discounts;
+namespace DrPlugin\WP\ReleaseCart\Discounts;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Customers\Customer;
-use DrPlugin\WP\TierMint\Orders\OrderRepository;
-use DrPlugin\WP\TierMint\Products\ProductTaxonomy;
-use DrPlugin\WP\TierMint\Products\TermRelationshipRepository;
+use DrPlugin\WP\ReleaseCart\Customers\Customer;
+use DrPlugin\WP\ReleaseCart\Orders\OrderRepository;
+use DrPlugin\WP\ReleaseCart\Products\ProductTaxonomy;
+use DrPlugin\WP\ReleaseCart\Products\TermRelationshipRepository;
 
 /**
  * Selects the best automatic discount for carts and catalog prices.

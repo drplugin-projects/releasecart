@@ -2,24 +2,24 @@
 /**
  * Service provider for the Emails domain.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Emails;
+namespace DrPlugin\WP\ReleaseCart\Emails;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Container;
-use DrPlugin\WP\TierMint\Core\ServiceProvider;
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Licensing\LicenseService;
-use DrPlugin\WP\TierMint\Orders\OrderService;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Updates\CustomerDownloads;
-use DrPlugin\WP\TierMint\Util\Money;
+use DrPlugin\WP\ReleaseCart\Core\Container;
+use DrPlugin\WP\ReleaseCart\Core\ServiceProvider;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseService;
+use DrPlugin\WP\ReleaseCart\Orders\OrderService;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Updates\CustomerDownloads;
+use DrPlugin\WP\ReleaseCart\Util\Money;
 
 /**
  * Registers email services and their event listener.
@@ -44,7 +44,7 @@ final class EmailsServiceProvider implements ServiceProvider {
 
 		$container->singleton(
 			EmailRenderer::class,
-			static fn (): EmailRenderer => new EmailRenderer( TIERMINT_PATH . 'templates/emails/' )
+			static fn (): EmailRenderer => new EmailRenderer( RELEASECART_PATH . 'templates/emails/' )
 		);
 
 		$container->singleton(

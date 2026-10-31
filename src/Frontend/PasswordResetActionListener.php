@@ -2,17 +2,17 @@
 /**
  * Server-side handler for the branded lost-password and set-new-password forms.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Util\RateLimiter;
-use DrPlugin\WP\TierMint\Util\RequestUrl;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Util\RateLimiter;
+use DrPlugin\WP\ReleaseCart\Util\RequestUrl;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -37,91 +37,91 @@ class PasswordResetActionListener implements Hookable {
 	 *
 	 * @var string
 	 */
-	public const REQUEST_ACTION_FIELD = 'tiermint_reset_request';
+	public const REQUEST_ACTION_FIELD = 'releasecart_reset_request';
 
 	/**
 	 * The hidden field marking a set-new-password POST.
 	 *
 	 * @var string
 	 */
-	public const RESET_ACTION_FIELD = 'tiermint_reset_password';
+	public const RESET_ACTION_FIELD = 'releasecart_reset_password';
 
 	/**
 	 * Nonce action for the request form.
 	 *
 	 * @var string
 	 */
-	public const NONCE_REQUEST_ACTION = 'tiermint_reset_request';
+	public const NONCE_REQUEST_ACTION = 'releasecart_reset_request';
 
 	/**
 	 * Nonce action for the set form.
 	 *
 	 * @var string
 	 */
-	public const NONCE_SET_ACTION = 'tiermint_reset_password';
+	public const NONCE_SET_ACTION = 'releasecart_reset_password';
 
 	/**
 	 * Nonce field for the request form.
 	 *
 	 * @var string
 	 */
-	public const NONCE_REQUEST_FIELD = '_tiermint_reset_request_nonce';
+	public const NONCE_REQUEST_FIELD = '_releasecart_reset_request_nonce';
 
 	/**
 	 * Nonce field for the set form.
 	 *
 	 * @var string
 	 */
-	public const NONCE_SET_FIELD = '_tiermint_reset_password_nonce';
+	public const NONCE_SET_FIELD = '_releasecart_reset_password_nonce';
 
 	/**
 	 * The email-or-username field on the request form.
 	 *
 	 * @var string
 	 */
-	public const LOGIN_FIELD = 'tiermint_login';
+	public const LOGIN_FIELD = 'releasecart_login';
 
 	/**
 	 * The new-password field on the set form.
 	 *
 	 * @var string
 	 */
-	public const PASS1_FIELD = 'tiermint_pass1';
+	public const PASS1_FIELD = 'releasecart_pass1';
 
 	/**
 	 * The confirm-password field on the set form.
 	 *
 	 * @var string
 	 */
-	public const PASS2_FIELD = 'tiermint_pass2';
+	public const PASS2_FIELD = 'releasecart_pass2';
 
 	/**
 	 * The hidden reset-key field on the set form (the double-submit CSRF token).
 	 *
 	 * @var string
 	 */
-	public const KEY_FIELD = 'tiermint_rp_key';
+	public const KEY_FIELD = 'releasecart_rp_key';
 
 	/**
 	 * Honeypot field for bot detection on the request form.
 	 *
 	 * @var string
 	 */
-	public const HONEYPOT_FIELD = 'tiermint_website';
+	public const HONEYPOT_FIELD = 'releasecart_website';
 
 	/**
 	 * The query marker carrying a state (sent, set, done).
 	 *
 	 * @var string
 	 */
-	public const STATUS_MARKER = 'tiermint_reset';
+	public const STATUS_MARKER = 'releasecart_reset';
 
 	/**
 	 * The query marker carrying a whitelisted error code.
 	 *
 	 * @var string
 	 */
-	public const ERROR_MARKER = 'tiermint_reset_error';
+	public const ERROR_MARKER = 'releasecart_reset_error';
 
 	/**
 	 * Rate scope for link requests, per client IP.
@@ -523,7 +523,7 @@ class PasswordResetActionListener implements Hookable {
 		 *
 		 * @param array<string, array{limit: int, window: int}> $limits The default limits.
 		 */
-		$config = apply_filters( 'tiermint_password_reset_rate_limits', $defaults );
+		$config = apply_filters( 'releasecart_password_reset_rate_limits', $defaults );
 		$row    = is_array( $config ) && isset( $config[ $scope ] ) && is_array( $config[ $scope ] ) ? $config[ $scope ] : $defaults[ $scope ];
 
 		return array(
@@ -547,7 +547,7 @@ class PasswordResetActionListener implements Hookable {
 		 *
 		 * @param int $length The minimum number of characters.
 		 */
-		$min   = max( 1, (int) apply_filters( 'tiermint_password_reset_min_length', 8 ) );
+		$min   = max( 1, (int) apply_filters( 'releasecart_password_reset_min_length', 8 ) );
 		$typed = mb_strlen( (string) wp_unslash( $pass1 ) );
 
 		return $typed >= $min && strlen( $pass1 ) <= 4096;

@@ -13,22 +13,22 @@
 const DEFAULT_SETTINGS = { currency: 'USD' };
 
 /**
- * Read and normalize the TierMint admin boot data.
+ * Read and normalize the ReleaseCart admin boot data.
  *
  * @param {Object} [source] Explicit boot object, mainly for tests. Defaults to
- *                          `window.tierMint` when omitted.
+ *                          `window.releaseCart` when omitted.
  * @return {{apiRoot: string, nonce: string, caps: Object, settings: Object, productFields: Object, catalog: Object, listSeparator: string, pro: boolean, admin: Object}}
  *         A fully populated, safe boot object.
  */
 export function readBootData( source ) {
 	const raw =
 		source ||
-		( typeof window !== 'undefined' ? window.tierMint : undefined ) ||
+		( typeof window !== 'undefined' ? window.releaseCart : undefined ) ||
 		{};
 
 	// Keep the server's admin object by reference when it is one, so anything
 	// assigned back onto it (for example a late `registerRoute`) is visible to
-	// other bundles reading `window.tierMint.admin`.
+	// other bundles reading `window.releaseCart.admin`.
 	const admin = raw.admin && typeof raw.admin === 'object' ? raw.admin : {};
 	if ( ! Array.isArray( admin.routes ) ) {
 		admin.routes = [];

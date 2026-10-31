@@ -2,22 +2,22 @@
 /**
  * Handlers bridging verified Stripe webhook events to the Orders domain.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Payments\Stripe;
+namespace DrPlugin\WP\ReleaseCart\Payments\Stripe;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Orders\Order;
-use DrPlugin\WP\TierMint\Orders\OrderService;
-use DrPlugin\WP\TierMint\Orders\OrderStatus;
-use DrPlugin\WP\TierMint\Payments\GatewayEvent;
-use DrPlugin\WP\TierMint\Payments\RefundCoordinator;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Orders\OrderService;
+use DrPlugin\WP\ReleaseCart\Orders\OrderStatus;
+use DrPlugin\WP\ReleaseCart\Payments\GatewayEvent;
+use DrPlugin\WP\ReleaseCart\Payments\RefundCoordinator;
 
 /**
  * Handles Stripe payment and refund events for local orders.
@@ -196,8 +196,8 @@ class StripeEventHandlers {
 		$metadata = $intent['metadata'] ?? array();
 		$metadata = is_array( $metadata ) ? $metadata : array();
 
-		$orderId = (int) ( $metadata['tiermint_order_id'] ?? 0 );
-		$uuid    = trim( (string) ( $metadata['tiermint_order_uuid'] ?? '' ) );
+		$orderId = (int) ( $metadata['releasecart_order_id'] ?? 0 );
+		$uuid    = trim( (string) ( $metadata['releasecart_order_uuid'] ?? '' ) );
 
 		if ( $orderId <= 0 && '' === $uuid ) {
 			return null;

@@ -2,12 +2,12 @@
 /**
  * Release value object.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Updates;
+namespace DrPlugin\WP\ReleaseCart\Updates;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -184,29 +184,29 @@ final class Release {
 	) {
 		if ( $productId <= 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new ReleaseValidationException( __( 'A release must belong to a product.', 'tiermint' ) );
+			throw new ReleaseValidationException( __( 'A release must belong to a product.', 'releasecart' ) );
 		}
 
 		if ( '' === $version ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new ReleaseValidationException( __( 'A release must have a version.', 'tiermint' ) );
+			throw new ReleaseValidationException( __( 'A release must have a version.', 'releasecart' ) );
 		}
 
 		// The version is stored in a fixed VARCHAR(32) column, so anything longer would be
 		// truncated silently on write and never match on lookup. Reject it up front.
 		if ( strlen( $version ) > self::MAX_VERSION_LENGTH ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new ReleaseValidationException( __( 'A release version cannot be longer than 32 characters.', 'tiermint' ) );
+			throw new ReleaseValidationException( __( 'A release version cannot be longer than 32 characters.', 'releasecart' ) );
 		}
 
 		if ( '' === $storageKey ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new ReleaseValidationException( __( 'A release must have a storage key for its package.', 'tiermint' ) );
+			throw new ReleaseValidationException( __( 'A release must have a storage key for its package.', 'releasecart' ) );
 		}
 
 		if ( strlen( $storageKey ) > self::MAX_STORAGE_KEY_LENGTH ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new ReleaseValidationException( __( 'A release storage key cannot be longer than 500 characters.', 'tiermint' ) );
+			throw new ReleaseValidationException( __( 'A release storage key cannot be longer than 500 characters.', 'releasecart' ) );
 		}
 
 		$this->id              = $id;

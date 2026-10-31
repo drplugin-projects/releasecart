@@ -2,12 +2,12 @@
 /**
  * Resolves the storefront page configured for each surface.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -88,7 +88,7 @@ class PageResolver {
 	 *
 	 * @var string
 	 */
-	private const SETTINGS_OPTION = 'tiermint_settings';
+	private const SETTINGS_OPTION = 'releasecart_settings';
 
 	/**
 	 * Every page key, in display order.

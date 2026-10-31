@@ -2,19 +2,19 @@
 /**
  * Persistence for management API keys.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST\Auth;
+namespace DrPlugin\WP\ReleaseCart\REST\Auth;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use DrPlugin\WP\TierMint\Database\Schema;
+use DrPlugin\WP\ReleaseCart\Database\Schema;
 
 /**
  * Database gateway for management API keys.
@@ -98,7 +98,7 @@ class ApiKeyRepository {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $publicKey The tmk_-prefixed public key as presented.
+	 * @param string $publicKey The rck_-prefixed public key as presented.
 	 * @return ApiKey|null The key, or null when none carries it.
 	 */
 	public function findByPublicKey( string $publicKey ): ?ApiKey {

@@ -2,12 +2,12 @@
 /**
  * Locale-aware money formatting over minor-unit integers.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Util;
+namespace DrPlugin\WP\ReleaseCart\Util;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -79,7 +79,7 @@ class Money {
 	 * @return string
 	 */
 	public function storeCurrency(): string {
-		$settings = get_option( 'tiermint_settings' );
+		$settings = get_option( 'releasecart_settings' );
 		$currency = ( is_array( $settings ) && ! empty( $settings['currency'] ) ) ? (string) $settings['currency'] : 'USD';
 		$currency = strtoupper( substr( $currency, 0, 3 ) );
 

@@ -2,12 +2,12 @@
 /**
  * The product-price dynamic tag.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Tags;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Tags;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -24,7 +24,7 @@ final class ProductPriceTag extends AbstractProductTag {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return 'tiermint-product-price';
+		return 'releasecart-product-price';
 	}
 
 	/**
@@ -33,7 +33,7 @@ final class ProductPriceTag extends AbstractProductTag {
 	 * @return string
 	 */
 	public function get_title(): string {
-		return __( 'TierMint Product Price', 'tiermint' );
+		return __( 'ReleaseCart Product Price', 'releasecart' );
 	}
 
 	/**

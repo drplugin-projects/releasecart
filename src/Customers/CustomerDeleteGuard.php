@@ -1,21 +1,21 @@
 <?php
 /**
- * TierMint's own reasons a customer cannot be deleted.
+ * ReleaseCart's own reasons a customer cannot be deleted.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Customers;
+namespace DrPlugin\WP\ReleaseCart\Customers;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Licensing\LicenseRepository;
-use DrPlugin\WP\TierMint\Licensing\LicenseStatus;
-use DrPlugin\WP\TierMint\Orders\OrderRepository;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseRepository;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseStatus;
+use DrPlugin\WP\ReleaseCart\Orders\OrderRepository;
 
 /**
  * Prevents deletion while core orders or active licenses exist.
@@ -47,7 +47,7 @@ final class CustomerDeleteGuard implements Hookable {
 	 * @return void
 	 */
 	public function hooks(): void {
-		add_filter( 'tiermint_customer_delete_blockers', array( $this, 'blockers' ), 10, 2 );
+		add_filter( 'releasecart_customer_delete_blockers', array( $this, 'blockers' ), 10, 2 );
 	}
 
 	/**
@@ -69,7 +69,7 @@ final class CustomerDeleteGuard implements Hookable {
 					'This customer has %d order. Use Tools then Erase Personal Data to remove their personal details, which keeps the order record for accounting.',
 					'This customer has %d orders. Use Tools then Erase Personal Data to remove their personal details, which keeps the order records for accounting.',
 					$orders,
-					'tiermint'
+					'releasecart'
 				),
 				$orders
 			);
@@ -84,7 +84,7 @@ final class CustomerDeleteGuard implements Hookable {
 					'This customer still holds %d license that is not disabled.',
 					'This customer still holds %d licenses that are not disabled.',
 					$live,
-					'tiermint'
+					'releasecart'
 				),
 				$live
 			);

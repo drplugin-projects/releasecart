@@ -2,12 +2,12 @@
 /**
  * Duplicate release version persistence failure.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Updates;
+namespace DrPlugin\WP\ReleaseCart\Updates;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;

@@ -1,8 +1,8 @@
 <?php
 /**
- * Verify signed TierMint license verdicts offline.
+ * Verify signed ReleaseCart license verdicts offline.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 // Block direct access.
@@ -11,14 +11,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Allow another bundled copy to load first.
-if ( ! class_exists( 'TierMint_License_Verifier' ) ) {
+if ( ! class_exists( 'ReleaseCart_License_Verifier' ) ) {
 
 	/**
 	 * Verifies the signature, key, site, and age of a license verdict.
 	 *
 	 * @since 1.0.0
 	 */
-	class TierMint_License_Verifier {
+	class ReleaseCart_License_Verifier {
 
 		/**
 		 * The default freshness window: a signed verdict older than this is stale.

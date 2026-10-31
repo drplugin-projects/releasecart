@@ -42,59 +42,59 @@ export default function PublishSidebar( {
 	mediaPanels,
 } ) {
 	return (
-		<aside className="tiermint-product-edit__sidebar">
-			<div className="tiermint-panel tiermint-product-edit__box">
-				<h2>{ __( 'Publish', 'tiermint' ) }</h2>
-				<div className="tiermint-form-stack">
+		<aside className="releasecart-product-edit__sidebar">
+			<div className="releasecart-panel releasecart-product-edit__box">
+				<h2>{ __( 'Publish', 'releasecart' ) }</h2>
+				<div className="releasecart-form-stack">
 					<SelectControl
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
-						label={ __( 'Status', 'tiermint' ) }
+						label={ __( 'Status', 'releasecart' ) }
 						value={ form.status }
 						options={ [
 							{
-								label: __( 'Draft', 'tiermint' ),
+								label: __( 'Draft', 'releasecart' ),
 								value: 'draft',
 							},
 							{
-								label: __( 'Published', 'tiermint' ),
+								label: __( 'Published', 'releasecart' ),
 								value: 'published',
 							},
 							{
-								label: __( 'Archived', 'tiermint' ),
+								label: __( 'Archived', 'releasecart' ),
 								value: 'archived',
 							},
 						] }
 						onChange={ ( value ) => update( 'status', value ) }
 					/>
-					<div className="tiermint-form-actions">
+					<div className="releasecart-form-actions">
 						<Button
 							variant="primary"
 							isBusy={ isSaving }
 							disabled={ isSaving }
 							onClick={ onSave }
 						>
-							{ __( 'Save product', 'tiermint' ) }
+							{ __( 'Save product', 'releasecart' ) }
 						</Button>
 					</div>
 				</div>
 			</div>
 
-			<div className="tiermint-panel tiermint-product-edit__box">
-				<h2>{ __( 'Product type', 'tiermint' ) }</h2>
-				<div className="tiermint-form-stack">
+			<div className="releasecart-panel releasecart-product-edit__box">
+				<h2>{ __( 'Product type', 'releasecart' ) }</h2>
+				<div className="releasecart-form-stack">
 					<SelectControl
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
-						label={ __( 'Type', 'tiermint' ) }
+						label={ __( 'Type', 'releasecart' ) }
 						value={ form.type }
 						options={ [
 							{
-								label: __( 'Digital', 'tiermint' ),
+								label: __( 'Digital', 'releasecart' ),
 								value: 'digital',
 							},
 							{
-								label: __( 'Bundle', 'tiermint' ),
+								label: __( 'Bundle', 'releasecart' ),
 								value: 'bundle',
 							},
 						] }
@@ -102,7 +102,7 @@ export default function PublishSidebar( {
 					/>
 					<ToggleControl
 						__nextHasNoMarginBottom
-						label={ __( 'Licensed product', 'tiermint' ) }
+						label={ __( 'Licensed product', 'releasecart' ) }
 						checked={ form.is_licensed }
 						onChange={ ( value ) => update( 'is_licensed', value ) }
 					/>
@@ -110,11 +110,11 @@ export default function PublishSidebar( {
 						<TextControl
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
-							label={ __( 'Update slug', 'tiermint' ) }
+							label={ __( 'Update slug', 'releasecart' ) }
 							value={ form.update_slug }
 							help={ __(
 								'The plugin/theme folder slug used by update checks.',
-								'tiermint'
+								'releasecart'
 							) }
 							onChange={ ( value ) =>
 								update( 'update_slug', value )
@@ -137,7 +137,7 @@ export default function PublishSidebar( {
 			/>
 
 			{ mediaPanels && (
-				<div className="tiermint-panel tiermint-product-edit__box tiermint-product-edit__box--media">
+				<div className="releasecart-panel releasecart-product-edit__box releasecart-product-edit__box--media">
 					{ mediaPanels }
 				</div>
 			) }

@@ -2,19 +2,19 @@
 /**
  * REST controller for the basic sales report resource.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Reports\ReportPersistenceException;
-use DrPlugin\WP\TierMint\Reports\ReportService;
-use DrPlugin\WP\TierMint\Reports\ReportValidationException;
+use DrPlugin\WP\ReleaseCart\Reports\ReportPersistenceException;
+use DrPlugin\WP\ReleaseCart\Reports\ReportService;
+use DrPlugin\WP\ReleaseCart\Reports\ReportValidationException;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -106,13 +106,13 @@ final class ReportsController extends AbstractRestController {
 	private function salesArgs(): array {
 		return array(
 			'from' => array(
-				'description'       => __( 'Inclusive start date (YYYY-MM-DD, UTC). Defaults to 29 days before "to".', 'tiermint' ),
+				'description'       => __( 'Inclusive start date (YYYY-MM-DD, UTC). Defaults to 29 days before "to".', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'to'   => array(
-				'description'       => __( 'Inclusive end date (YYYY-MM-DD, UTC). Defaults to the current UTC date.', 'tiermint' ),
+				'description'       => __( 'Inclusive end date (YYYY-MM-DD, UTC). Defaults to the current UTC date.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',

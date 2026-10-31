@@ -2,12 +2,12 @@
 /**
  * Renders email templates to HTML with a shared header and footer.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Emails;
+namespace DrPlugin\WP\ReleaseCart\Emails;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -81,7 +81,7 @@ class EmailRenderer {
 	 * @return string The rendered fragment, or '' when the file does not exist.
 	 */
 	private function renderPart( array $data, string $key ): string {
-		$template = locate_template( 'tiermint/emails/' . $key . '.php' );
+		$template = locate_template( 'releasecart/emails/' . $key . '.php' );
 
 		if ( ! is_string( $template ) || '' === $template ) {
 			$template = $this->locatePluginTemplate( $key );
@@ -113,7 +113,7 @@ class EmailRenderer {
 		 *
 		 * @param array<int, string> $dirs Absolute template directories, base first.
 		 */
-		$dirs = apply_filters( 'tiermint_email_template_paths', array( $this->templatesDir ) );
+		$dirs = apply_filters( 'releasecart_email_template_paths', array( $this->templatesDir ) );
 
 		foreach ( (array) $dirs as $dir ) {
 			$candidate = rtrim( (string) $dir, '/\\' ) . '/' . $key . '.php';

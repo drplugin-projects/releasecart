@@ -2,14 +2,14 @@
 /**
  * Shared base for the free product dynamic tags.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Tags;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Tags;
 
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Registrar;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Registrar;
 use Elementor\Controls_Manager;
 use Elementor\Core\DynamicTags\Tag;
 use Elementor\Modules\DynamicTags\Module;
@@ -51,7 +51,7 @@ abstract class AbstractProductTag extends Tag {
 	 */
 	protected static function values(): TagValues {
 		if ( null === self::$values ) {
-			throw new RuntimeException( 'TierMint Elementor tags need their value delegate; the adapter sets it on register.' );
+			throw new RuntimeException( 'ReleaseCart Elementor tags need their value delegate; the adapter sets it on register.' );
 		}
 
 		return self::$values;
@@ -84,7 +84,7 @@ abstract class AbstractProductTag extends Tag {
 		$this->add_control(
 			'product_id',
 			array(
-				'label'   => __( 'Product', 'tiermint' ),
+				'label'   => __( 'Product', 'releasecart' ),
 				'type'    => Controls_Manager::NUMBER,
 				'default' => 0,
 			)

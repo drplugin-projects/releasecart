@@ -2,17 +2,17 @@
 /**
  * Product domain service: all product business logic and validation.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Products;
+namespace DrPlugin\WP\ReleaseCart\Products;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
 use Throwable;
 
 /**
@@ -92,7 +92,7 @@ class ProductService {
 		$status = $this->resolveStatus( $data['status'] ?? null, $errors );
 
 		if ( '' === $name ) {
-			$errors[] = __( 'A product name is required.', 'tiermint' );
+			$errors[] = __( 'A product name is required.', 'releasecart' );
 		}
 
 		// A bad name/type/status blocks everything downstream, so stop here.
@@ -190,7 +190,7 @@ class ProductService {
 
 		$name = array_key_exists( 'name', $data ) ? trim( (string) $data['name'] ) : $existing->name();
 		if ( '' === $name ) {
-			$errors[] = __( 'A product name cannot be empty.', 'tiermint' );
+			$errors[] = __( 'A product name cannot be empty.', 'releasecart' );
 		}
 
 		$type       = $this->resolveType( $data['type'] ?? $existing->type()->value, $errors );
@@ -304,9 +304,9 @@ class ProductService {
 			 *
 			 * @param Product $product The product as it was before the delete.
 			 */
-			do_action( 'tiermint_product_deleted', $existing );
+			do_action( 'releasecart_product_deleted', $existing );
 		} catch ( Throwable $failure ) {
-			$this->logListenerFailure( 'tiermint_product_deleted', $id, $failure );
+			$this->logListenerFailure( 'releasecart_product_deleted', $id, $failure );
 		}
 	}
 
@@ -376,7 +376,7 @@ class ProductService {
 
 		if ( null === $type ) {
 			/* translators: %s: the submitted product type value. */
-			$errors[] = sprintf( __( '"%s" is not a valid product type.', 'tiermint' ), (string) $value );
+			$errors[] = sprintf( __( '"%s" is not a valid product type.', 'releasecart' ), (string) $value );
 
 			return ProductType::Digital;
 		}
@@ -402,7 +402,7 @@ class ProductService {
 
 		if ( null === $status ) {
 			/* translators: %s: the submitted product status value. */
-			$errors[] = sprintf( __( '"%s" is not a valid product status.', 'tiermint' ), (string) $value );
+			$errors[] = sprintf( __( '"%s" is not a valid product status.', 'releasecart' ), (string) $value );
 
 			return ProductStatus::Draft;
 		}
@@ -429,14 +429,14 @@ class ProductService {
 
 		if ( null === $target ) {
 			/* translators: %s: the submitted product status value. */
-			$errors[] = sprintf( __( '"%s" is not a valid product status.', 'tiermint' ), (string) $data['status'] );
+			$errors[] = sprintf( __( '"%s" is not a valid product status.', 'releasecart' ), (string) $data['status'] );
 
 			return $current;
 		}
 
 		if ( ! $this->canTransition( $current, $target ) ) {
 			/* translators: 1: the current product status, 2: the requested product status. */
-			$errors[] = sprintf( __( 'Cannot change product status from "%1$s" to "%2$s".', 'tiermint' ), $current->value, $target->value );
+			$errors[] = sprintf( __( 'Cannot change product status from "%1$s" to "%2$s".', 'releasecart' ), $current->value, $target->value );
 
 			return $current;
 		}
@@ -527,7 +527,7 @@ class ProductService {
 
 		if ( '' !== $candidate && $this->repository->updateSlugExists( $candidate, $exceptId ) ) {
 			/* translators: %s: the submitted update slug value. */
-			$errors[] = sprintf( __( 'The update slug "%s" is already in use by another product.', 'tiermint' ), $candidate );
+			$errors[] = sprintf( __( 'The update slug "%s" is already in use by another product.', 'releasecart' ), $candidate );
 
 			return null;
 		}
@@ -553,7 +553,7 @@ class ProductService {
 
 		foreach ( $pricesData as $priceData ) {
 			if ( ! is_array( $priceData ) ) {
-				$errors[] = __( 'Each price must be provided as an object.', 'tiermint' );
+				$errors[] = __( 'Each price must be provided as an object.', 'releasecart' );
 				continue;
 			}
 
@@ -626,9 +626,9 @@ class ProductService {
 			 * @param array<int, array{price: ProductPrice, input: array<string, mixed>}> $tiers    Stored tiers with their input rows.
 			 * @param Product|null                                                        $previous The product before the save, or null on create.
 			 */
-			do_action( 'tiermint_product_saved', $saved, $tiers, $previous );
+			do_action( 'releasecart_product_saved', $saved, $tiers, $previous );
 		} catch ( Throwable $failure ) {
-			$this->logListenerFailure( 'tiermint_product_saved', (int) $saved->id(), $failure );
+			$this->logListenerFailure( 'releasecart_product_saved', (int) $saved->id(), $failure );
 		}
 	}
 
@@ -740,7 +740,7 @@ class ProductService {
 		 * @param array<int|string, mixed> $priceRows The price rows as sent, keys core does not
 		 *                                            use included. Empty when the save sends no prices.
 		 */
-		$filtered = apply_filters( 'tiermint_product_settings_before_save', $settings, $prices, $existing, $priceRows );
+		$filtered = apply_filters( 'releasecart_product_settings_before_save', $settings, $prices, $existing, $priceRows );
 
 		return is_array( $filtered ) ? $filtered : $settings;
 	}
@@ -777,7 +777,7 @@ class ProductService {
 		 * @param array<int|string, mixed> $priceRows The price rows as sent, keys core does not
 		 *                                            use included. Empty when the save sends no prices.
 		 */
-		$filtered = apply_filters( 'tiermint_product_validation_errors', $errors, $prices, $settings, $existing, $priceRows );
+		$filtered = apply_filters( 'releasecart_product_validation_errors', $errors, $prices, $settings, $existing, $priceRows );
 
 		// A non-array return keeps core's errors. Anything but a WP_Error refuses the save.
 		if ( ! is_array( $filtered ) ) {
@@ -802,7 +802,7 @@ class ProductService {
 		}
 
 		if ( $refused ) {
-			$merged[] = __( 'An extension refused this product.', 'tiermint' );
+			$merged[] = __( 'An extension refused this product.', 'releasecart' );
 		}
 
 		// A filter can add errors, never remove core's, repeats included.
@@ -841,7 +841,7 @@ class ProductService {
 
 		foreach ( $itemsData as $itemData ) {
 			if ( ! is_array( $itemData ) ) {
-				$errors[] = __( 'Each bundle item must be provided as an object.', 'tiermint' );
+				$errors[] = __( 'Each bundle item must be provided as an object.', 'releasecart' );
 				continue;
 			}
 
@@ -858,7 +858,7 @@ class ProductService {
 			// so catch it in validation before any row is written.
 			if ( in_array( $childId, $seenIds, true ) ) {
 				/* translators: %d: the product id. */
-				$errors[] = sprintf( __( 'Bundle contains product #%d more than once.', 'tiermint' ), $childId );
+				$errors[] = sprintf( __( 'Bundle contains product #%d more than once.', 'releasecart' ), $childId );
 				continue;
 			}
 
@@ -885,7 +885,7 @@ class ProductService {
 		// A bundle can never contain itself, including the request that turns a
 		// product into a bundle (where the child would still read as digital).
 		if ( null !== $ownId && $item->childProductId() === $ownId ) {
-			$errors[] = __( 'A bundle cannot contain itself.', 'tiermint' );
+			$errors[] = __( 'A bundle cannot contain itself.', 'releasecart' );
 
 			return;
 		}
@@ -894,19 +894,19 @@ class ProductService {
 
 		if ( null === $child ) {
 			/* translators: %d: the child product id. */
-			$errors[] = sprintf( __( 'Bundle child product %d does not exist.', 'tiermint' ), $item->childProductId() );
+			$errors[] = sprintf( __( 'Bundle child product %d does not exist.', 'releasecart' ), $item->childProductId() );
 
 			return;
 		}
 
 		if ( $child->isBundle() ) {
 			/* translators: %d: the child product id. */
-			$errors[] = sprintf( __( 'Bundle child product %d is itself a bundle; bundles cannot be nested.', 'tiermint' ), $item->childProductId() );
+			$errors[] = sprintf( __( 'Bundle child product %d is itself a bundle; bundles cannot be nested.', 'releasecart' ), $item->childProductId() );
 		}
 
 		if ( ProductStatus::Published !== $child->status() ) {
 			/* translators: %d: the child product id. */
-			$errors[] = sprintf( __( 'Bundle child product %d must be published to be included in a bundle.', 'tiermint' ), $item->childProductId() );
+			$errors[] = sprintf( __( 'Bundle child product %d must be published to be included in a bundle.', 'releasecart' ), $item->childProductId() );
 		}
 	}
 
@@ -957,7 +957,7 @@ class ProductService {
 			}
 		}
 
-		$errors[] = __( 'A licensed product must have at least one active price before it can be published.', 'tiermint' );
+		$errors[] = __( 'A licensed product must have at least one active price before it can be published.', 'releasecart' );
 	}
 
 	/**

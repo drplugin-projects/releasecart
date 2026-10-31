@@ -2,12 +2,12 @@
 /**
  * Site URL normalization, hashing, and local detection.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Licensing;
+namespace DrPlugin\WP\ReleaseCart\Licensing;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -38,7 +38,7 @@ class SiteUrlNormalizer {
 
 		if ( '' === $url ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseValidationException( __( 'A site URL is required.', 'tiermint' ) );
+			throw new LicenseValidationException( __( 'A site URL is required.', 'releasecart' ) );
 		}
 
 		// The parser needs an authority to find a host.
@@ -51,7 +51,7 @@ class SiteUrlNormalizer {
 
 		if ( false === $parts || empty( $parts['host'] ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseValidationException( __( 'The site URL could not be understood.', 'tiermint' ) );
+			throw new LicenseValidationException( __( 'The site URL could not be understood.', 'releasecart' ) );
 		}
 
 		$host = strtolower( $parts['host'] );
@@ -120,7 +120,7 @@ class SiteUrlNormalizer {
 		 * @param array{exact: array<int, string>, suffix: array<int, string>, prefix: array<int, string>} $patterns The default local-host patterns.
 		 */
 		$patterns = apply_filters(
-			'tiermint_local_url_patterns',
+			'releasecart_local_url_patterns',
 			array(
 				'exact'  => array( 'localhost' ),
 				'suffix' => array( '.test', '.local', '.dev' ),

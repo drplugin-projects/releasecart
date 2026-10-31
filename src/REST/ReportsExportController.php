@@ -2,26 +2,26 @@
 /**
  * REST surface returning the sales and orders reports as CSV text.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Customers\Customer;
-use DrPlugin\WP\TierMint\Orders\Order;
-use DrPlugin\WP\TierMint\Orders\OrderBuyers;
-use DrPlugin\WP\TierMint\Orders\OrderItem;
-use DrPlugin\WP\TierMint\Orders\OrderRepository;
-use DrPlugin\WP\TierMint\Reports\CsvWriter;
-use DrPlugin\WP\TierMint\Reports\ReportPersistenceException;
-use DrPlugin\WP\TierMint\Reports\ReportService;
-use DrPlugin\WP\TierMint\Reports\ReportValidationException;
-use DrPlugin\WP\TierMint\Util\Money;
+use DrPlugin\WP\ReleaseCart\Customers\Customer;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Orders\OrderBuyers;
+use DrPlugin\WP\ReleaseCart\Orders\OrderItem;
+use DrPlugin\WP\ReleaseCart\Orders\OrderRepository;
+use DrPlugin\WP\ReleaseCart\Reports\CsvWriter;
+use DrPlugin\WP\ReleaseCart\Reports\ReportPersistenceException;
+use DrPlugin\WP\ReleaseCart\Reports\ReportService;
+use DrPlugin\WP\ReleaseCart\Reports\ReportValidationException;
+use DrPlugin\WP\ReleaseCart\Util\Money;
 use Throwable;
 use WP_Error;
 use WP_REST_Request;
@@ -152,7 +152,7 @@ final class ReportsExportController extends AbstractRestController {
 		}
 
 		return $this->file(
-			'tiermint-sales-' . $report['from'] . '-to-' . $report['to'] . '.csv',
+			'releasecart-sales-' . $report['from'] . '-to-' . $report['to'] . '.csv',
 			$this->csv->write( $this->header(), $this->rows( $report ) )
 		);
 	}
@@ -194,7 +194,7 @@ final class ReportsExportController extends AbstractRestController {
 				array(
 					sprintf(
 						/* translators: %s: the maximum number of rows an orders export may hold. */
-						__( 'This range holds more than %s orders. Narrow the date range and export again.', 'tiermint' ),
+						__( 'This range holds more than %s orders. Narrow the date range and export again.', 'releasecart' ),
 						number_format_i18n( $cap )
 					),
 				)
@@ -202,7 +202,7 @@ final class ReportsExportController extends AbstractRestController {
 		}
 
 		return $this->file(
-			'tiermint-orders-' . $from . '-to-' . $to . '.csv',
+			'releasecart-orders-' . $from . '-to-' . $to . '.csv',
 			$this->csv->write( $this->ordersHeader(), $this->orderRows( $orders ) )
 		);
 	}
@@ -279,7 +279,7 @@ final class ReportsExportController extends AbstractRestController {
 		 *
 		 * @param int $cap The row cap. Raising it trades memory and request time for a larger file.
 		 */
-		$cap = (int) apply_filters( 'tiermint_reports_orders_export_max_rows', self::ORDERS_EXPORT_MAX_ROWS );
+		$cap = (int) apply_filters( 'releasecart_reports_orders_export_max_rows', self::ORDERS_EXPORT_MAX_ROWS );
 
 		return max( 1, $cap );
 	}
@@ -310,7 +310,7 @@ final class ReportsExportController extends AbstractRestController {
 		$rows   = array();
 
 		// One meta query for the whole export, not one per order.
-		update_meta_cache( 'tiermint_order', array_map( static fn ( Order $order ): int => (int) $order->id(), $orders ) );
+		update_meta_cache( 'releasecart_order', array_map( static fn ( Order $order ): int => (int) $order->id(), $orders ) );
 
 		foreach ( $orders as $order ) {
 			$buyer    = $buyers[ (int) $order->customerId() ] ?? null;
@@ -348,7 +348,7 @@ final class ReportsExportController extends AbstractRestController {
 	 * @return string The value, or '' when it is absent.
 	 */
 	private function metaCell( int $orderId, string $key ): string {
-		$value = get_metadata( 'tiermint_order', $orderId, $key, true );
+		$value = get_metadata( 'releasecart_order', $orderId, $key, true );
 
 		return is_string( $value ) ? $value : '';
 	}
@@ -362,7 +362,7 @@ final class ReportsExportController extends AbstractRestController {
 	 * @return string The filled-in parts joined by commas, or ''.
 	 */
 	private function addressCell( int $orderId ): string {
-		$address = get_metadata( 'tiermint_order', $orderId, CheckoutController::ADDRESS_META, true );
+		$address = get_metadata( 'releasecart_order', $orderId, CheckoutController::ADDRESS_META, true );
 
 		if ( ! is_array( $address ) ) {
 			return '';
@@ -413,13 +413,13 @@ final class ReportsExportController extends AbstractRestController {
 	private function rangeArgs(): array {
 		return array(
 			'from' => array(
-				'description'       => __( 'Inclusive start date (YYYY-MM-DD, UTC). Defaults to 29 days before "to".', 'tiermint' ),
+				'description'       => __( 'Inclusive start date (YYYY-MM-DD, UTC). Defaults to 29 days before "to".', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'to'   => array(
-				'description'       => __( 'Inclusive end date (YYYY-MM-DD, UTC). Defaults to the current UTC date.', 'tiermint' ),
+				'description'       => __( 'Inclusive end date (YYYY-MM-DD, UTC). Defaults to the current UTC date.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',

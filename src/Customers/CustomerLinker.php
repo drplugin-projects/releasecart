@@ -2,17 +2,17 @@
 /**
  * Wires WordPress account events to guest-customer linking.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Customers;
+namespace DrPlugin\WP\ReleaseCart\Customers;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
 
 /**
  * Links matching guest customers when an account registers or logs in.

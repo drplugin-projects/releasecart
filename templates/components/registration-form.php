@@ -2,7 +2,7 @@
 /**
  * Registration form template.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  *
  * @var array<string, mixed> $data {
  *     State-specific view data.
@@ -24,33 +24,33 @@
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<div class="tiermint-component tiermint-registration-form">
+<div class="releasecart-component releasecart-registration-form">
 	<?php // Keep the card width independent from the theme content column. ?>
-	<div class="tiermint-registration-form__card tiermint-card">
+	<div class="releasecart-registration-form__card releasecart-card">
 	<?php if ( 'signed_in' === $data['state'] ) : ?>
 
-		<div class="tiermint-registration-form__signed-in">
-			<p><?php echo esc_html__( 'You are already signed in.', 'tiermint' ); ?></p>
+		<div class="releasecart-registration-form__signed-in">
+			<p><?php echo esc_html__( 'You are already signed in.', 'releasecart' ); ?></p>
 			<?php if ( null !== $data['account_url'] ) : ?>
-				<a class="tiermint-registration-form__account" href="<?php echo esc_url( $data['account_url'] ); ?>">
-					<?php echo esc_html__( 'Go to your account', 'tiermint' ); ?>
+				<a class="releasecart-registration-form__account" href="<?php echo esc_url( $data['account_url'] ); ?>">
+					<?php echo esc_html__( 'Go to your account', 'releasecart' ); ?>
 				</a>
 			<?php endif; ?>
 		</div>
 
 	<?php elseif ( 'closed' === $data['state'] ) : ?>
 
-		<p class="tiermint-registration-form__closed">
-			<?php echo esc_html__( 'Registration is currently closed.', 'tiermint' ); ?>
+		<p class="releasecart-registration-form__closed">
+			<?php echo esc_html__( 'Registration is currently closed.', 'releasecart' ); ?>
 		</p>
 
 	<?php elseif ( 'success' === $data['state'] ) : ?>
 
-		<div class="tiermint-registration-form__success">
-			<p><?php echo esc_html__( 'Thanks for registering. Check your email for a link to set your password.', 'tiermint' ); ?></p>
+		<div class="releasecart-registration-form__success">
+			<p><?php echo esc_html__( 'Thanks for registering. Check your email for a link to set your password.', 'releasecart' ); ?></p>
 			<?php if ( null !== $data['login_url'] ) : ?>
 				<a href="<?php echo esc_url( $data['login_url'] ); ?>">
-					<?php echo esc_html__( 'Go to sign in', 'tiermint' ); ?>
+					<?php echo esc_html__( 'Go to sign in', 'releasecart' ); ?>
 				</a>
 			<?php endif; ?>
 		</div>
@@ -58,28 +58,28 @@ defined( 'ABSPATH' ) || exit;
 	<?php else : ?>
 
 		<?php if ( $data['error']['show'] ) : ?>
-			<p class="tiermint-registration-form__error tiermint-notice tiermint-notice--error" role="alert">
+			<p class="releasecart-registration-form__error releasecart-notice releasecart-notice--error" role="alert">
 				<?php echo esc_html( $data['error']['text'] ); ?>
 			</p>
 		<?php endif; ?>
 
-		<form class="tiermint-registration-form__form" method="post">
+		<form class="releasecart-registration-form__form" method="post">
 			<?php wp_nonce_field( $data['nonce_action'], $data['nonce_field'] ); ?>
 			<input type="hidden" name="<?php echo esc_attr( $data['action_field'] ); ?>" value="1" />
 
-			<p class="tiermint-registration-form__field tiermint-field">
-				<label for="tiermint-register-email"><?php echo esc_html__( 'Email address', 'tiermint' ); ?></label>
-				<input type="email" class="tiermint-input" id="tiermint-register-email" name="<?php echo esc_attr( $data['email_field'] ); ?>" required autocomplete="email" />
+			<p class="releasecart-registration-form__field releasecart-field">
+				<label for="releasecart-register-email"><?php echo esc_html__( 'Email address', 'releasecart' ); ?></label>
+				<input type="email" class="releasecart-input" id="releasecart-register-email" name="<?php echo esc_attr( $data['email_field'] ); ?>" required autocomplete="email" />
 			</p>
 
 			<?php if ( $data['show_name'] ) : ?>
-				<p class="tiermint-registration-form__field tiermint-field">
-					<label for="tiermint-register-name"><?php echo esc_html__( 'Name (optional)', 'tiermint' ); ?></label>
-					<input type="text" class="tiermint-input" id="tiermint-register-name" name="<?php echo esc_attr( $data['name_field'] ); ?>" autocomplete="name" />
+				<p class="releasecart-registration-form__field releasecart-field">
+					<label for="releasecart-register-name"><?php echo esc_html__( 'Name (optional)', 'releasecart' ); ?></label>
+					<input type="text" class="releasecart-input" id="releasecart-register-name" name="<?php echo esc_attr( $data['name_field'] ); ?>" autocomplete="name" />
 				</p>
 			<?php endif; ?>
 
-			<?php echo wp_kses( $data['core_fields'], \DrPlugin\WP\TierMint\Frontend\Kses::allowed() ); ?>
+			<?php echo wp_kses( $data['core_fields'], \DrPlugin\WP\ReleaseCart\Frontend\Kses::allowed() ); ?>
 
 			<?php
 			// The honeypot: hidden from people, tempting to bots. A real visitor
@@ -87,20 +87,20 @@ defined( 'ABSPATH' ) || exit;
 			// server-side. aria-hidden and tabindex keep it out of the a11y tree
 			// and the tab order.
 			?>
-			<div class="tiermint-registration-form__hp" aria-hidden="true">
-				<label for="tiermint-register-website"><?php echo esc_html__( 'Leave this field empty', 'tiermint' ); ?></label>
-				<input type="text" id="tiermint-register-website" name="<?php echo esc_attr( $data['honeypot_field'] ); ?>" tabindex="-1" autocomplete="off" />
+			<div class="releasecart-registration-form__hp" aria-hidden="true">
+				<label for="releasecart-register-website"><?php echo esc_html__( 'Leave this field empty', 'releasecart' ); ?></label>
+				<input type="text" id="releasecart-register-website" name="<?php echo esc_attr( $data['honeypot_field'] ); ?>" tabindex="-1" autocomplete="off" />
 			</div>
 
-			<p class="tiermint-registration-form__submit">
-				<button type="submit" class="tiermint-button tiermint-button--primary"><?php echo esc_html__( 'Create account', 'tiermint' ); ?></button>
+			<p class="releasecart-registration-form__submit">
+				<button type="submit" class="releasecart-button releasecart-button--primary"><?php echo esc_html__( 'Create account', 'releasecart' ); ?></button>
 			</p>
 		</form>
 
 		<?php if ( null !== $data['login_url'] ) : ?>
-			<p class="tiermint-registration-form__sign-in">
+			<p class="releasecart-registration-form__sign-in">
 				<a href="<?php echo esc_url( $data['login_url'] ); ?>">
-					<?php echo esc_html__( 'Already have an account? Sign in', 'tiermint' ); ?>
+					<?php echo esc_html__( 'Already have an account? Sign in', 'releasecart' ); ?>
 				</a>
 			</p>
 		<?php endif; ?>

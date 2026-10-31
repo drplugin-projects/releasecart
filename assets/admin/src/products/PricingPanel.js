@@ -74,10 +74,10 @@ export default function PricingPanel( { form, setForm, currency } ) {
 
 	// Store singular duration units but show plural labels.
 	const licenseUnitOptions = [
-		{ label: __( 'Days', 'tiermint' ), value: 'day' },
-		{ label: __( 'Weeks', 'tiermint' ), value: 'week' },
-		{ label: __( 'Months', 'tiermint' ), value: 'month' },
-		{ label: __( 'Years', 'tiermint' ), value: 'year' },
+		{ label: __( 'Days', 'releasecart' ), value: 'day' },
+		{ label: __( 'Weeks', 'releasecart' ), value: 'week' },
+		{ label: __( 'Months', 'releasecart' ), value: 'month' },
+		{ label: __( 'Years', 'releasecart' ), value: 'year' },
 	];
 
 	/**
@@ -96,14 +96,14 @@ export default function PricingPanel( { form, setForm, currency } ) {
 		// Preserve an unrecognised value until the merchant replaces it.
 		if ( parsed.mode === 'custom' && ! isPrompt ) {
 			return (
-				<div className="tiermint-license-length">
-					<span className="tiermint-license-length__label">
-						{ __( 'License length', 'tiermint' ) }
+				<div className="releasecart-license-length">
+					<span className="releasecart-license-length__label">
+						{ __( 'License length', 'releasecart' ) }
 					</span>
-					<p className="tiermint-license-length__custom">
+					<p className="releasecart-license-length__custom">
 						{ sprintf(
 							/* translators: %s: the stored license-length value. */
-							__( 'Custom: %s', 'tiermint' ),
+							__( 'Custom: %s', 'releasecart' ),
 							parsed.raw
 						) }
 					</p>
@@ -117,7 +117,7 @@ export default function PricingPanel( { form, setForm, currency } ) {
 							)
 						}
 					>
-						{ __( 'Replace', 'tiermint' ) }
+						{ __( 'Replace', 'releasecart' ) }
 					</Button>
 				</div>
 			);
@@ -128,13 +128,13 @@ export default function PricingPanel( { form, setForm, currency } ) {
 			...( isPrompt
 				? [
 						{
-							label: __( 'Select a length', 'tiermint' ),
+							label: __( 'Select a length', 'releasecart' ),
 							value: 'prompt',
 						},
 				  ]
 				: [] ),
-			{ label: __( 'Lifetime', 'tiermint' ), value: 'lifetime' },
-			{ label: __( 'Duration', 'tiermint' ), value: 'duration' },
+			{ label: __( 'Lifetime', 'releasecart' ), value: 'lifetime' },
+			{ label: __( 'Duration', 'releasecart' ), value: 'duration' },
 		];
 
 		/**
@@ -156,22 +156,22 @@ export default function PricingPanel( { form, setForm, currency } ) {
 		};
 
 		return (
-			<div className="tiermint-license-length">
+			<div className="releasecart-license-length">
 				<SelectControl
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
-					label={ __( 'License length', 'tiermint' ) }
+					label={ __( 'License length', 'releasecart' ) }
 					value={ mode }
 					options={ modeOptions }
 					onChange={ onModeChange }
 				/>
 				{ mode === 'duration' && (
-					<div className="tiermint-license-length__duration">
+					<div className="releasecart-license-length__duration">
 						<TextControl
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 							type="number"
-							label={ __( 'Length', 'tiermint' ) }
+							label={ __( 'Length', 'releasecart' ) }
 							value={ String( parsed.count ) }
 							onChange={ ( value ) =>
 								updatePrice(
@@ -187,7 +187,7 @@ export default function PricingPanel( { form, setForm, currency } ) {
 						<SelectControl
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
-							label={ __( 'Unit', 'tiermint' ) }
+							label={ __( 'Unit', 'releasecart' ) }
 							value={ parsed.unit }
 							options={ licenseUnitOptions }
 							onChange={ ( value ) =>
@@ -214,36 +214,36 @@ export default function PricingPanel( { form, setForm, currency } ) {
 				} ) )
 			}
 		>
-			{ __( 'Add price', 'tiermint' ) }
+			{ __( 'Add price', 'releasecart' ) }
 		</Button>
 	);
 
 	return (
-		<div className="tiermint-panel">
+		<div className="releasecart-panel">
 			{ form.prices.length === 0 && (
 				<EmptyState
-					className="tiermint-empty-state--panel"
+					className="releasecart-empty-state--panel"
 					message={ __(
 						'No prices yet. A product needs at least one price before it can be bought.',
-						'tiermint'
+						'releasecart'
 					) }
 					action={ addPriceButton }
 				/>
 			) }
 			{ form.prices.map( ( price, index ) => (
-				<fieldset key={ index } className="tiermint-price-row">
-					<legend className="tiermint-price-row__legend">
+				<fieldset key={ index } className="releasecart-price-row">
+					<legend className="releasecart-price-row__legend">
 						{ sprintf(
 							/* translators: %d: the position of this price in the list, starting at 1. */
-							__( 'Price %d', 'tiermint' ),
+							__( 'Price %d', 'releasecart' ),
 							index + 1
 						) }
 					</legend>
-					<div className="tiermint-form-stack">
+					<div className="releasecart-form-stack">
 						<TextControl
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
-							label={ __( 'Price name', 'tiermint' ) }
+							label={ __( 'Price name', 'releasecart' ) }
 							value={ price.name }
 							onChange={ ( value ) =>
 								updatePrice( index, 'name', value )
@@ -255,7 +255,7 @@ export default function PricingPanel( { form, setForm, currency } ) {
 							type="number"
 							label={ sprintf(
 								/* translators: %s: the store's currency code, for example USD. */
-								__( 'Amount (%s)', 'tiermint' ),
+								__( 'Amount (%s)', 'releasecart' ),
 								currency
 							) }
 							value={ price.amount }
@@ -269,7 +269,7 @@ export default function PricingPanel( { form, setForm, currency } ) {
 							type="number"
 							label={ __(
 								'Activation limit (0 = unlimited)',
-								'tiermint'
+								'releasecart'
 							) }
 							value={ String( price.activation_limit ) }
 							onChange={ ( value ) =>
@@ -285,7 +285,7 @@ export default function PricingPanel( { form, setForm, currency } ) {
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
 							type="number"
-							label={ __( 'Minimum quantity', 'tiermint' ) }
+							label={ __( 'Minimum quantity', 'releasecart' ) }
 							value={ String( price.min_quantity ) }
 							onChange={ ( value ) =>
 								updatePrice(
@@ -301,7 +301,7 @@ export default function PricingPanel( { form, setForm, currency } ) {
 							type="number"
 							label={ __(
 								'Maximum quantity (0 = unlimited)',
-								'tiermint'
+								'releasecart'
 							) }
 							value={ String( price.max_quantity ) }
 							onChange={ ( value ) =>
@@ -328,15 +328,15 @@ export default function PricingPanel( { form, setForm, currency } ) {
 						<SelectControl
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
-							label={ __( 'Price status', 'tiermint' ) }
+							label={ __( 'Price status', 'releasecart' ) }
 							value={ price.status }
 							options={ [
 								{
-									label: __( 'Active', 'tiermint' ),
+									label: __( 'Active', 'releasecart' ),
 									value: 'active',
 								},
 								{
-									label: __( 'Archived', 'tiermint' ),
+									label: __( 'Archived', 'releasecart' ),
 									value: 'archived',
 								},
 							] }
@@ -345,7 +345,7 @@ export default function PricingPanel( { form, setForm, currency } ) {
 							}
 						/>
 					</div>
-					<div className="tiermint-form-actions">
+					<div className="releasecart-form-actions">
 						<Button
 							variant="secondary"
 							isDestructive
@@ -358,13 +358,15 @@ export default function PricingPanel( { form, setForm, currency } ) {
 								} ) )
 							}
 						>
-							{ __( 'Remove price', 'tiermint' ) }
+							{ __( 'Remove price', 'releasecart' ) }
 						</Button>
 					</div>
 				</fieldset>
 			) ) }
 			{ form.prices.length > 0 && (
-				<div className="tiermint-form-actions">{ addPriceButton }</div>
+				<div className="releasecart-form-actions">
+					{ addPriceButton }
+				</div>
 			) }
 		</div>
 	);

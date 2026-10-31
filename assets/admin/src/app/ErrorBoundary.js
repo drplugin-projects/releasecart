@@ -45,7 +45,7 @@ export default class ErrorBoundary extends Component {
 				<Notice status="error" isDismissible={ false }>
 					{ __(
 						'Something went wrong while rendering this screen.',
-						'tiermint'
+						'releasecart'
 					) }
 				</Notice>
 			);

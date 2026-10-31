@@ -89,7 +89,7 @@ export function currencyOptions( currencies, current ) {
  */
 export function pageOptions( pages, current ) {
 	const options = [
-		{ value: '0', label: __( 'Not set', 'tiermint' ) },
+		{ value: '0', label: __( 'Not set', 'releasecart' ) },
 		...asArray( pages ).map( ( entry ) => ( {
 			value: String( entry.id ),
 			label: String( entry.title || entry.id ),
@@ -106,7 +106,7 @@ export function pageOptions( pages, current ) {
 			value: String( currentId ),
 			label: sprintf(
 				/* translators: %d: the page's numeric id. */
-				__( 'Page #%d', 'tiermint' ),
+				__( 'Page #%d', 'releasecart' ),
 				currentId
 			),
 		} );
@@ -222,19 +222,19 @@ export function runsByGroup( fields ) {
 export function groupLabel( group ) {
 	switch ( group ) {
 		case 'test':
-			return __( 'Test mode', 'tiermint' );
+			return __( 'Test mode', 'releasecart' );
 		case 'live':
-			return __( 'Live mode', 'tiermint' );
+			return __( 'Live mode', 'releasecart' );
 		case 'store':
-			return __( 'Store', 'tiermint' );
+			return __( 'Store', 'releasecart' );
 		case 'pages':
-			return __( 'Pages', 'tiermint' );
+			return __( 'Pages', 'releasecart' );
 		case 'frontend':
-			return __( 'Front end', 'tiermint' );
+			return __( 'Front end', 'releasecart' );
 		case 'checkout':
-			return __( 'Checkout', 'tiermint' );
+			return __( 'Checkout', 'releasecart' );
 		case 'advanced':
-			return __( 'Advanced', 'tiermint' );
+			return __( 'Advanced', 'releasecart' );
 		default:
 			return String( group );
 	}
@@ -252,7 +252,7 @@ export function gatewayLabel( group ) {
 	}
 
 	return 'general' === group.id
-		? __( 'Other', 'tiermint' )
+		? __( 'Other', 'releasecart' )
 		: String( group.id );
 }
 
@@ -299,12 +299,12 @@ export function webhookEventsLabel( events ) {
 	const count = Array.isArray( events ) ? events.length : 0;
 
 	if ( count === 0 ) {
-		return __( 'No events', 'tiermint' );
+		return __( 'No events', 'releasecart' );
 	}
 
 	return sprintf(
 		// translators: %d is the number of subscribed webhook events.
-		_n( '%d event', '%d events', count, 'tiermint' ),
+		_n( '%d event', '%d events', count, 'releasecart' ),
 		count
 	);
 }
@@ -341,5 +341,5 @@ export function toMessages( error ) {
 		return [ error.message ];
 	}
 
-	return [ __( 'Something went wrong.', 'tiermint' ) ];
+	return [ __( 'Something went wrong.', 'releasecart' ) ];
 }

@@ -2,16 +2,16 @@
 /**
  * Optional redirect of front-end sign-in requests to the custom login page.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Frontend\Components\LoginForm;
-use DrPlugin\WP\TierMint\Frontend\PasswordResetActionListener;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\LoginForm;
+use DrPlugin\WP\ReleaseCart\Frontend\PasswordResetActionListener;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -32,14 +32,14 @@ class LoginRedirector implements Hookable {
 	 *
 	 * @var string
 	 */
-	private const SETTINGS_OPTION = 'tiermint_settings';
+	private const SETTINGS_OPTION = 'releasecart_settings';
 
 	/**
 	 * The query argument that bypasses the redirect.
 	 *
 	 * @var string
 	 */
-	public const BYPASS_ARG = 'tiermint_wp_login';
+	public const BYPASS_ARG = 'releasecart_wp_login';
 
 	/**
 	 * Resolves the sign-in and registration pages.
@@ -265,7 +265,7 @@ class LoginRedirector implements Hookable {
 	/**
 	 * Point lost-password links to the reset page when enabled and one is published.
 	 *
-	 * TierMint's own sign-in form links to the reset page directly, so it keeps
+	 * ReleaseCart's own sign-in form links to the reset page directly, so it keeps
 	 * that link with the toggle off.
 	 *
 	 * @param string $url      The default lost-password URL.

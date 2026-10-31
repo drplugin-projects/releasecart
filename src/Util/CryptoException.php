@@ -2,12 +2,12 @@
 /**
  * Exception for secrets-at-rest encryption and decryption failures.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Util;
+namespace DrPlugin\WP\ReleaseCart\Util;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;

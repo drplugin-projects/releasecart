@@ -2,14 +2,14 @@
 /**
  * Combines code and automatic discounts.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Discounts;
+namespace DrPlugin\WP\ReleaseCart\Discounts;
 
-use DrPlugin\WP\TierMint\Customers\Customer;
+use DrPlugin\WP\ReleaseCart\Customers\Customer;
 
 // Block direct access.
 defined( 'ABSPATH' ) || exit;

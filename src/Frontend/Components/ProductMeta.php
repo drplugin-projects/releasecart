@@ -2,20 +2,20 @@
 /**
  * The product meta component (categories, tags, version, updated date).
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Frontend\PageResolver;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Products\ProductTaxonomy;
-use DrPlugin\WP\TierMint\Products\Term;
-use DrPlugin\WP\TierMint\Products\TermService;
-use DrPlugin\WP\TierMint\Updates\ReleaseRepository;
+use DrPlugin\WP\ReleaseCart\Frontend\PageResolver;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Products\ProductTaxonomy;
+use DrPlugin\WP\ReleaseCart\Products\Term;
+use DrPlugin\WP\ReleaseCart\Products\TermService;
+use DrPlugin\WP\ReleaseCart\Updates\ReleaseRepository;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -83,29 +83,29 @@ final class ProductMeta extends AbstractProductComponent {
 			'show_categories' => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show categories', 'tiermint' ),
-				'description' => __( "Show the product's categories, linked into the store grid.", 'tiermint' ),
+				'label'       => __( 'Show categories', 'releasecart' ),
+				'description' => __( "Show the product's categories, linked into the store grid.", 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'show_tags'       => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show tags', 'tiermint' ),
-				'description' => __( "Show the product's tags, linked into the store grid.", 'tiermint' ),
+				'label'       => __( 'Show tags', 'releasecart' ),
+				'description' => __( "Show the product's tags, linked into the store grid.", 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'show_version'    => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show version', 'tiermint' ),
-				'description' => __( 'Show the latest published version number.', 'tiermint' ),
+				'label'       => __( 'Show version', 'releasecart' ),
+				'description' => __( 'Show the latest published version number.', 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'show_updated'    => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show last updated', 'tiermint' ),
-				'description' => __( 'Show the date of the latest published release.', 'tiermint' ),
+				'label'       => __( 'Show last updated', 'releasecart' ),
+				'description' => __( 'Show the date of the latest published release.', 'releasecart' ),
 				'control'     => 'toggle',
 			),
 		);
@@ -206,21 +206,21 @@ final class ProductMeta extends AbstractProductComponent {
 		return array(
 			'categories' => $showCategories ? array(
 				array(
-					'name' => __( 'Plugins', 'tiermint' ),
+					'name' => __( 'Plugins', 'releasecart' ),
 					'url'  => null,
 				),
 				array(
-					'name' => __( 'Productivity', 'tiermint' ),
+					'name' => __( 'Productivity', 'releasecart' ),
 					'url'  => null,
 				),
 			) : array(),
 			'tags'       => $showTags ? array(
 				array(
-					'name' => __( 'New', 'tiermint' ),
+					'name' => __( 'New', 'releasecart' ),
 					'url'  => null,
 				),
 				array(
-					'name' => __( 'Popular', 'tiermint' ),
+					'name' => __( 'Popular', 'releasecart' ),
 					'url'  => null,
 				),
 			) : array(),

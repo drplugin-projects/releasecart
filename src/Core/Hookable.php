@@ -2,12 +2,12 @@
 /**
  * Contract for classes that attach to WordPress hooks.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Core;
+namespace DrPlugin\WP\ReleaseCart\Core;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;

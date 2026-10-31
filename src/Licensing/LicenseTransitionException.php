@@ -2,12 +2,12 @@
 /**
  * Exception for a forbidden license status transition.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Licensing;
+namespace DrPlugin\WP\ReleaseCart\Licensing;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -30,6 +30,6 @@ final class LicenseTransitionException extends LicenseException {
 	 */
 	public static function between( LicenseStatus $from, LicenseStatus $to ): self {
 		/* translators: 1: the license's current status, 2: the requested license status. */
-		return new self( sprintf( __( 'Cannot change license status from "%1$s" to "%2$s".', 'tiermint' ), $from->value, $to->value ) );
+		return new self( sprintf( __( 'Cannot change license status from "%1$s" to "%2$s".', 'releasecart' ), $from->value, $to->value ) );
 	}
 }

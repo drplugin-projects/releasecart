@@ -2,12 +2,12 @@
 /**
  * The curated Elementor style controls, each writing a design token.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Adapters\Elementor;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -36,32 +36,32 @@ class StyleControlMap {
 	 */
 	public function controls(): array {
 		return array(
-			'tiermint_color_primary'  => array(
-				'label'     => __( 'Primary color', 'tiermint' ),
+			'releasecart_color_primary'  => array(
+				'label'     => __( 'Primary color', 'releasecart' ),
 				'type'      => ControlMap::TYPE_COLOR,
-				'selectors' => array( '{{WRAPPER}}' => '--tiermint-color-primary: {{VALUE}};' ),
+				'selectors' => array( '{{WRAPPER}}' => '--releasecart-color-primary: {{VALUE}};' ),
 			),
-			'tiermint_color_text'     => array(
-				'label'     => __( 'Text color', 'tiermint' ),
+			'releasecart_color_text'     => array(
+				'label'     => __( 'Text color', 'releasecart' ),
 				'type'      => ControlMap::TYPE_COLOR,
-				'selectors' => array( '{{WRAPPER}}' => '--tiermint-color-text: {{VALUE}};' ),
+				'selectors' => array( '{{WRAPPER}}' => '--releasecart-color-text: {{VALUE}};' ),
 			),
-			'tiermint_color_surface'  => array(
-				'label'     => __( 'Surface color', 'tiermint' ),
+			'releasecart_color_surface'  => array(
+				'label'     => __( 'Surface color', 'releasecart' ),
 				'type'      => ControlMap::TYPE_COLOR,
-				'selectors' => array( '{{WRAPPER}}' => '--tiermint-color-surface: {{VALUE}};' ),
+				'selectors' => array( '{{WRAPPER}}' => '--releasecart-color-surface: {{VALUE}};' ),
 			),
-			'tiermint_radius'         => array(
-				'label'      => __( 'Corner radius', 'tiermint' ),
+			'releasecart_radius'         => array(
+				'label'      => __( 'Corner radius', 'releasecart' ),
 				'type'       => self::TYPE_SLIDER,
 				'size_units' => array( 'px', 'em', 'rem' ),
-				'selectors'  => array( '{{WRAPPER}}' => '--tiermint-radius: {{SIZE}}{{UNIT}};' ),
+				'selectors'  => array( '{{WRAPPER}}' => '--releasecart-radius: {{SIZE}}{{UNIT}};' ),
 			),
-			'tiermint_font_size_base' => array(
-				'label'      => __( 'Base font size', 'tiermint' ),
+			'releasecart_font_size_base' => array(
+				'label'      => __( 'Base font size', 'releasecart' ),
 				'type'       => self::TYPE_SLIDER,
 				'size_units' => array( 'px', 'em', 'rem' ),
-				'selectors'  => array( '{{WRAPPER}}' => '--tiermint-font-size-base: {{SIZE}}{{UNIT}};' ),
+				'selectors'  => array( '{{WRAPPER}}' => '--releasecart-font-size-base: {{SIZE}}{{UNIT}};' ),
 			),
 		);
 	}

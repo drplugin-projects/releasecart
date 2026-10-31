@@ -2,12 +2,12 @@
 /**
  * Issuance, verification, and revocation of management API keys.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST\Auth;
+namespace DrPlugin\WP\ReleaseCart\REST\Auth;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -36,7 +36,7 @@ class ApiKeyService {
 	 *
 	 * @var string
 	 */
-	private const DUMMY_HASH = '$P$BTierMintDummyCompare0000000000';
+	private const DUMMY_HASH = '$P$BReleaseCartDummyCompare0000000';
 
 	/**
 	 * The api-key persistence gateway.
@@ -70,10 +70,10 @@ class ApiKeyService {
 	 * @throws ApiKeyPersistenceException When the insert fails.
 	 */
 	public function issue( int $userId, string $label, ApiKeyPermission $permission = ApiKeyPermission::Read ): array {
-		$publicKey = 'tmk_' . bin2hex( random_bytes( 16 ) );
+		$publicKey = 'rck_' . bin2hex( random_bytes( 16 ) );
 
 		// 32 random bytes as unpadded base64url: 43 characters.
-		$secret = 'tms_' . sodium_bin2base64( random_bytes( 32 ), SODIUM_BASE64_VARIANT_URLSAFE_NO_PADDING );
+		$secret = 'rcs_' . sodium_bin2base64( random_bytes( 32 ), SODIUM_BASE64_VARIANT_URLSAFE_NO_PADDING );
 
 		$key = new ApiKey(
 			null,
@@ -100,8 +100,8 @@ class ApiKeyService {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string                 $publicKey The presented tmk_ public key.
-	 * @param string                 $secret    The presented tms_ secret.
+	 * @param string                 $publicKey The presented rck_ public key.
+	 * @param string                 $secret    The presented rcs_ secret.
 	 * @param DateTimeImmutable|null $now       The verification instant (tests inject; null = now).
 	 * @return ApiKey|null The authenticated key, or null on any failure.
 	 *

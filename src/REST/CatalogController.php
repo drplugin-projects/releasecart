@@ -2,18 +2,18 @@
 /**
  * REST controller for the reference catalogs (countries, currencies, pages).
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Catalog\Countries;
-use DrPlugin\WP\TierMint\Catalog\Currencies;
+use DrPlugin\WP\ReleaseCart\Catalog\Countries;
+use DrPlugin\WP\ReleaseCart\Catalog\Currencies;
 use WP_REST_Response;
 use WP_REST_Server;
 
@@ -135,7 +135,7 @@ final class CatalogController extends AbstractRestController {
 
 			$out[] = array(
 				'id'    => (int) $page->ID,
-				'title' => '' !== $title ? $title : __( '(no title)', 'tiermint' ),
+				'title' => '' !== $title ? $title : __( '(no title)', 'releasecart' ),
 			);
 		}
 

@@ -2,12 +2,12 @@
 /**
  * The shared block markup for provisioned storefront pages and starter patterns.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -26,7 +26,7 @@ final class StorefrontPageContent {
 	 * @return string Block markup.
 	 */
 	public static function store(): string {
-		return '<!-- wp:tiermint/product-grid /-->';
+		return '<!-- wp:releasecart/product-grid /-->';
 	}
 
 	/**
@@ -37,17 +37,17 @@ final class StorefrontPageContent {
 	 * @return string Block markup.
 	 */
 	public static function productDetails(): string {
-		return '<!-- wp:tiermint/product-images /-->
+		return '<!-- wp:releasecart/product-images /-->
 
-<!-- wp:tiermint/product-overview /-->
+<!-- wp:releasecart/product-overview /-->
 
-<!-- wp:tiermint/product-pricing-tiers /-->
+<!-- wp:releasecart/product-pricing-tiers /-->
 
-<!-- wp:tiermint/product-description /-->
+<!-- wp:releasecart/product-description /-->
 
-<!-- wp:tiermint/product-screenshots /-->
+<!-- wp:releasecart/product-screenshots /-->
 
-<!-- wp:tiermint/product-meta /-->';
+<!-- wp:releasecart/product-meta /-->';
 	}
 
 	/**
@@ -58,9 +58,9 @@ final class StorefrontPageContent {
 	 * @return string Block markup.
 	 */
 	public static function productDetailsTwoColumn(): string {
-		return '<!-- wp:tiermint/product-details {"align":"wide"} /-->
+		return '<!-- wp:releasecart/product-details {"align":"wide"} /-->
 
-<!-- wp:tiermint/product-meta {"align":"wide"} /-->';
+<!-- wp:releasecart/product-meta {"align":"wide"} /-->';
 	}
 
 	/**
@@ -71,9 +71,9 @@ final class StorefrontPageContent {
 	 * @return string Block markup.
 	 */
 	public static function checkout(): string {
-		return '<!-- wp:tiermint/purchase-confirmation /-->
+		return '<!-- wp:releasecart/purchase-confirmation /-->
 
-<!-- wp:tiermint/checkout {"align":"wide"} /-->';
+<!-- wp:releasecart/checkout {"align":"wide"} /-->';
 	}
 
 	/**
@@ -84,9 +84,9 @@ final class StorefrontPageContent {
 	 * @return string Block markup.
 	 */
 	public static function account(): string {
-		return '<!-- wp:tiermint/purchase-confirmation /-->
+		return '<!-- wp:releasecart/purchase-confirmation /-->
 
-<!-- wp:tiermint/account-dashboard {"align":"wide"} /-->';
+<!-- wp:releasecart/account-dashboard {"align":"wide"} /-->';
 	}
 
 	/**
@@ -97,7 +97,7 @@ final class StorefrontPageContent {
 	 * @return string Block markup.
 	 */
 	public static function login(): string {
-		return '<!-- wp:tiermint/login /-->';
+		return '<!-- wp:releasecart/login /-->';
 	}
 
 	/**
@@ -108,7 +108,7 @@ final class StorefrontPageContent {
 	 * @return string Block markup.
 	 */
 	public static function registration(): string {
-		return '<!-- wp:tiermint/registration-form /-->';
+		return '<!-- wp:releasecart/registration-form /-->';
 	}
 
 	/**
@@ -119,6 +119,6 @@ final class StorefrontPageContent {
 	 * @return string Block markup.
 	 */
 	public static function passwordReset(): string {
-		return '<!-- wp:tiermint/password-reset-form /-->';
+		return '<!-- wp:releasecart/password-reset-form /-->';
 	}
 }

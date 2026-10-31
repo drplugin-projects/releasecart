@@ -2,14 +2,14 @@
  * Product image styles.
  */
 
-.tiermint-product-images {
+.releasecart-product-images {
 	margin: 0;
 }
 
-.tiermint-product-images__img {
+.releasecart-product-images__img {
 	display: block;
 	width: 100%;
 	height: auto;
-	border: 1px solid var(--tiermint-color-border);
-	border-radius: var(--tiermint-radius-lg);
+	border: 1px solid var(--releasecart-color-border);
+	border-radius: var(--releasecart-radius-lg);
 }

@@ -56,7 +56,7 @@ const PER_PAGE = 20;
  */
 function priceSummary( prices, currency ) {
 	if ( ! Array.isArray( prices ) || prices.length === 0 ) {
-		return __( 'No price', 'tiermint' );
+		return __( 'No price', 'releasecart' );
 	}
 	return joinList(
 		prices.map( ( price ) => formatMinor( price.amount, currency ) )
@@ -72,11 +72,11 @@ function priceSummary( prices, currency ) {
 function statusLabel( status ) {
 	switch ( status ) {
 		case 'published':
-			return __( 'Published', 'tiermint' );
+			return __( 'Published', 'releasecart' );
 		case 'archived':
-			return __( 'Archived', 'tiermint' );
+			return __( 'Archived', 'releasecart' );
 		default:
-			return __( 'Draft', 'tiermint' );
+			return __( 'Draft', 'releasecart' );
 	}
 }
 
@@ -88,8 +88,8 @@ function statusLabel( status ) {
  */
 function typeLabel( type ) {
 	return type === 'bundle'
-		? __( 'Bundle', 'tiermint' )
-		: __( 'Digital', 'tiermint' );
+		? __( 'Bundle', 'releasecart' )
+		: __( 'Digital', 'releasecart' );
 }
 
 /**
@@ -105,7 +105,7 @@ function deleteConfirmText( count ) {
 			'Delete %d product permanently? This cannot be undone.',
 			'Delete %d products permanently? This cannot be undone.',
 			count,
-			'tiermint'
+			'releasecart'
 		),
 		count
 	);
@@ -118,11 +118,11 @@ function deleteConfirmText( count ) {
  */
 function bulkActions() {
 	return [
-		{ value: 'publish', label: __( 'Publish', 'tiermint' ) },
-		{ value: 'unpublish', label: __( 'Move to draft', 'tiermint' ) },
+		{ value: 'publish', label: __( 'Publish', 'releasecart' ) },
+		{ value: 'unpublish', label: __( 'Move to draft', 'releasecart' ) },
 		{
 			value: 'delete',
-			label: __( 'Delete', 'tiermint' ),
+			label: __( 'Delete', 'releasecart' ),
 			isDestructive: true,
 			confirmText: deleteConfirmText,
 		},
@@ -148,7 +148,7 @@ function bulkSummary( action, count ) {
 				'%d product published.',
 				'%d products published.',
 				count,
-				'tiermint'
+				'releasecart'
 			),
 			count
 		);
@@ -161,7 +161,7 @@ function bulkSummary( action, count ) {
 				'%d product moved to draft.',
 				'%d products moved to draft.',
 				count,
-				'tiermint'
+				'releasecart'
 			),
 			count
 		);
@@ -169,7 +169,12 @@ function bulkSummary( action, count ) {
 
 	return sprintf(
 		/* translators: %d: how many products were deleted. */
-		_n( '%d product deleted.', '%d products deleted.', count, 'tiermint' ),
+		_n(
+			'%d product deleted.',
+			'%d products deleted.',
+			count,
+			'releasecart'
+		),
 		count
 	);
 }
@@ -398,21 +403,21 @@ export default function Products( { boot } ) {
 
 	const newProductButton = (
 		<Button variant="primary" href="#/products/new">
-			{ __( 'New product', 'tiermint' ) }
+			{ __( 'New product', 'releasecart' ) }
 		</Button>
 	);
 
 	return (
-		<section className="tiermint-admin-screen">
+		<section className="releasecart-admin-screen">
 			<ScreenHeader
-				title={ __( 'Products', 'tiermint' ) }
+				title={ __( 'Products', 'releasecart' ) }
 				actions={ newProductButton }
 			/>
 
-			<div className="tiermint-toolbar">
+			<div className="releasecart-toolbar">
 				<SearchControl
 					__nextHasNoMarginBottom
-					label={ __( 'Search products', 'tiermint' ) }
+					label={ __( 'Search products', 'releasecart' ) }
 					value={ search }
 					onChange={ ( value ) => setFilter( 'search', value ) }
 				/>
@@ -420,17 +425,20 @@ export default function Products( { boot } ) {
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					hideLabelFromVision
-					label={ __( 'Status', 'tiermint' ) }
+					label={ __( 'Status', 'releasecart' ) }
 					value={ status }
 					options={ [
-						{ label: __( 'All statuses', 'tiermint' ), value: '' },
-						{ label: __( 'Draft', 'tiermint' ), value: 'draft' },
 						{
-							label: __( 'Published', 'tiermint' ),
+							label: __( 'All statuses', 'releasecart' ),
+							value: '',
+						},
+						{ label: __( 'Draft', 'releasecart' ), value: 'draft' },
+						{
+							label: __( 'Published', 'releasecart' ),
 							value: 'published',
 						},
 						{
-							label: __( 'Archived', 'tiermint' ),
+							label: __( 'Archived', 'releasecart' ),
 							value: 'archived',
 						},
 					] }
@@ -446,17 +454,20 @@ export default function Products( { boot } ) {
 						( firstReadPending( categoriesQuery ) ||
 							categoriesQuery.isError )
 					}
-					label={ __( 'Category', 'tiermint' ) }
+					label={ __( 'Category', 'releasecart' ) }
 					value={ category }
 					options={
 						! termsInHand( categoriesQuery ) &&
 						categoriesQuery.isError
 							? unavailableOptions(
-									__( 'Categories unavailable', 'tiermint' )
+									__(
+										'Categories unavailable',
+										'releasecart'
+									)
 							  )
 							: termOptions(
 									categoriesQuery.data,
-									__( 'All categories', 'tiermint' )
+									__( 'All categories', 'releasecart' )
 							  )
 					}
 					onChange={ ( value ) => setFilter( 'category', value ) }
@@ -469,16 +480,16 @@ export default function Products( { boot } ) {
 						! termsInHand( tagsQuery ) &&
 						( firstReadPending( tagsQuery ) || tagsQuery.isError )
 					}
-					label={ __( 'Tag', 'tiermint' ) }
+					label={ __( 'Tag', 'releasecart' ) }
 					value={ tag }
 					options={
 						! termsInHand( tagsQuery ) && tagsQuery.isError
 							? unavailableOptions(
-									__( 'Tags unavailable', 'tiermint' )
+									__( 'Tags unavailable', 'releasecart' )
 							  )
 							: termOptions(
 									tagsQuery.data,
-									__( 'All tags', 'tiermint' )
+									__( 'All tags', 'releasecart' )
 							  )
 					}
 					onChange={ ( value ) => setFilter( 'tag', value ) }
@@ -521,11 +532,11 @@ export default function Products( { boot } ) {
 						filtered
 							? __(
 									'No products match these filters.',
-									'tiermint'
+									'releasecart'
 							  )
 							: __(
 									'No products yet. Products you create appear here.',
-									'tiermint'
+									'releasecart'
 							  )
 					}
 					action={ filtered ? undefined : newProductButton }
@@ -534,7 +545,7 @@ export default function Products( { boot } ) {
 
 			{ items.length > 0 && (
 				<BulkActionsBar
-					label={ __( 'Bulk actions for products', 'tiermint' ) }
+					label={ __( 'Bulk actions for products', 'releasecart' ) }
 					actions={ bulkActions() }
 					count={ selection.count }
 					pending={ bulkMutation.isPending }
@@ -554,18 +565,22 @@ export default function Products( { boot } ) {
 							<SelectAllHeader selection={ selection } />
 							<SortableHeader
 								column="name"
-								label={ __( 'Name', 'tiermint' ) }
+								label={ __( 'Name', 'releasecart' ) }
 								sort={ sort }
 							/>
-							<th scope="col">{ __( 'Status', 'tiermint' ) }</th>
-							<th scope="col">{ __( 'Type', 'tiermint' ) }</th>
-							<th scope="col">{ __( 'Price', 'tiermint' ) }</th>
 							<th scope="col">
-								{ __( 'Categories', 'tiermint' ) }
+								{ __( 'Status', 'releasecart' ) }
+							</th>
+							<th scope="col">{ __( 'Type', 'releasecart' ) }</th>
+							<th scope="col">
+								{ __( 'Price', 'releasecart' ) }
+							</th>
+							<th scope="col">
+								{ __( 'Categories', 'releasecart' ) }
 							</th>
 							<SortableHeader
 								column="created_at"
-								label={ __( 'Created', 'tiermint' ) }
+								label={ __( 'Created', 'releasecart' ) }
 								sort={ sort }
 							/>
 						</tr>
@@ -624,7 +639,7 @@ export default function Products( { boot } ) {
  */
 export const route = {
 	path: '#/products',
-	title: __( 'Products', 'tiermint' ),
-	capability: 'manage_tiermint',
+	title: __( 'Products', 'releasecart' ),
+	capability: 'manage_releasecart',
 	component: Products,
 };

@@ -2,21 +2,21 @@
 /**
  * Product description template.
  *
- * Theme override: {theme}/tiermint/components/product-description.php.
+ * Theme override: {theme}/releasecart/components/product-description.php.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  *
  * @var array{description: string|null} $data View data.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$tiermint_description = ( isset( $data['description'] ) && null !== $data['description'] ) ? (string) $data['description'] : '';
+$releasecart_description = ( isset( $data['description'] ) && null !== $data['description'] ) ? (string) $data['description'] : '';
 
-if ( '' === $tiermint_description ) {
+if ( '' === $releasecart_description ) {
 	return;
 }
 ?>
-<div class="tiermint-component tiermint-product-description">
-	<?php echo wp_kses_post( $tiermint_description ); ?>
+<div class="releasecart-component releasecart-product-description">
+	<?php echo wp_kses_post( $releasecart_description ); ?>
 </div>

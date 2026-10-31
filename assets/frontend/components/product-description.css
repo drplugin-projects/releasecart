@@ -2,7 +2,7 @@
  * Product description styles.
  */
 
-.tiermint-product-description {
-	font-size: var(--tiermint-font-size-base);
-	color: var(--tiermint-color-text);
+.releasecart-product-description {
+	font-size: var(--releasecart-font-size-base);
+	color: var(--releasecart-color-text);
 }

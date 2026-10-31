@@ -2,12 +2,12 @@
 /**
  * Reads the discount combination rule and the strikethrough display flag.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Discounts;
+namespace DrPlugin\WP\ReleaseCart\Discounts;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -25,7 +25,7 @@ final class DiscountSettings {
 	 *
 	 * @var string
 	 */
-	private const SETTINGS_OPTION = 'tiermint_settings';
+	private const SETTINGS_OPTION = 'releasecart_settings';
 
 	/**
 	 * A code replaces an automatic discount by default.

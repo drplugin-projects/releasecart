@@ -2,25 +2,25 @@
 /**
  * The post-checkout purchase-confirmation (receipt) front-end component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Frontend\AbstractComponent;
-use DrPlugin\WP\TierMint\Frontend\RenderContext;
-use DrPlugin\WP\TierMint\Customers\CustomerService;
-use DrPlugin\WP\TierMint\Licensing\License;
-use DrPlugin\WP\TierMint\Licensing\LicenseService;
-use DrPlugin\WP\TierMint\Orders\Order;
-use DrPlugin\WP\TierMint\Orders\OrderService;
-use DrPlugin\WP\TierMint\Orders\OrderStatus;
-use DrPlugin\WP\TierMint\Orders\OrderType;
-use DrPlugin\WP\TierMint\Updates\CustomerDownloads;
-use DrPlugin\WP\TierMint\Util\Money;
-use DrPlugin\WP\TierMint\Util\RequestUrl;
+use DrPlugin\WP\ReleaseCart\Frontend\AbstractComponent;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContext;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerService;
+use DrPlugin\WP\ReleaseCart\Licensing\License;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseService;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Orders\OrderService;
+use DrPlugin\WP\ReleaseCart\Orders\OrderStatus;
+use DrPlugin\WP\ReleaseCart\Orders\OrderType;
+use DrPlugin\WP\ReleaseCart\Updates\CustomerDownloads;
+use DrPlugin\WP\ReleaseCart\Util\Money;
+use DrPlugin\WP\ReleaseCart\Util\RequestUrl;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -115,24 +115,24 @@ final class PurchaseConfirmation extends AbstractComponent {
 		return array(
 			'title'          => array(
 				'type'        => 'string',
-				'default'     => __( 'Thank you for your purchase', 'tiermint' ),
+				'default'     => __( 'Thank you for your purchase', 'releasecart' ),
 				'control'     => 'text',
-				'label'       => __( 'Heading', 'tiermint' ),
-				'description' => __( 'The heading shown above the receipt. Leave empty to hide it.', 'tiermint' ),
+				'label'       => __( 'Heading', 'releasecart' ),
+				'description' => __( 'The heading shown above the receipt. Leave empty to hide it.', 'releasecart' ),
 			),
 			'show_licenses'  => array(
 				'type'        => 'boolean',
 				'default'     => true,
 				'control'     => 'toggle',
-				'label'       => __( 'Show license keys', 'tiermint' ),
-				'description' => __( 'List the license keys this order generated.', 'tiermint' ),
+				'label'       => __( 'Show license keys', 'releasecart' ),
+				'description' => __( 'List the license keys this order generated.', 'releasecart' ),
 			),
 			'show_downloads' => array(
 				'type'        => 'boolean',
 				'default'     => true,
 				'control'     => 'toggle',
-				'label'       => __( 'Show download links', 'tiermint' ),
-				'description' => __( 'List the download links for the files this order includes.', 'tiermint' ),
+				'label'       => __( 'Show download links', 'releasecart' ),
+				'description' => __( 'List the download links for the files this order includes.', 'releasecart' ),
 			),
 		);
 	}
@@ -198,11 +198,11 @@ final class PurchaseConfirmation extends AbstractComponent {
 	 * @return string|null The 36-character uuid, or null.
 	 */
 	private function returnedOrderUuid(): ?string {
-		if ( ! isset( $_GET['tiermint_order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only display of the payment-return marker; no state change.
+		if ( ! isset( $_GET['releasecart_order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only display of the payment-return marker; no state change.
 			return null;
 		}
 
-		$raw = sanitize_text_field( wp_unslash( $_GET['tiermint_order'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only display of the payment-return marker; no state change.
+		$raw = sanitize_text_field( wp_unslash( $_GET['releasecart_order'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only display of the payment-return marker; no state change.
 
 		if ( 1 !== preg_match( '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $raw ) ) {
 			return null;
@@ -259,8 +259,8 @@ final class PurchaseConfirmation extends AbstractComponent {
 	 */
 	private function processingData( array $attrs, Order $order ): array {
 		$message = OrderStatus::Failed === $order->status()
-			? __( 'Your payment has not completed. If you retried the payment or your bank is still confirming it, this page will update automatically.', 'tiermint' )
-			: __( 'We are processing your payment. This page will update automatically once it is confirmed.', 'tiermint' );
+			? __( 'Your payment has not completed. If you retried the payment or your bank is still confirming it, this page will update automatically.', 'releasecart' )
+			: __( 'We are processing your payment. This page will update automatically once it is confirmed.', 'releasecart' );
 
 		return array(
 			'state'      => 'processing',
@@ -374,7 +374,7 @@ final class PurchaseConfirmation extends AbstractComponent {
 			return $itemNames[ $itemId ];
 		}
 
-		return __( 'Your purchase', 'tiermint' );
+		return __( 'Your purchase', 'releasecart' );
 	}
 
 	/**
@@ -448,7 +448,7 @@ final class PurchaseConfirmation extends AbstractComponent {
 			'date'           => (string) date_i18n( (string) get_option( 'date_format' ), 1_722_506_400 ),
 			'items'          => array(
 				array(
-					'name'       => __( 'Sample product', 'tiermint' ),
+					'name'       => __( 'Sample product', 'releasecart' ),
 					'quantity'   => 1,
 					'line_total' => $this->money->format( 4900 ),
 				),
@@ -458,16 +458,16 @@ final class PurchaseConfirmation extends AbstractComponent {
 			'show_downloads' => $showDownloads,
 			'licenses'       => $showLicenses ? array(
 				array(
-					'product_name' => __( 'Sample product', 'tiermint' ),
-					'license_key'  => 'TIERMINT-XXXX-XXXX-XXXX-XXXX',
+					'product_name' => __( 'Sample product', 'releasecart' ),
+					'license_key'  => 'RELEASECART-XXXX-XXXX-XXXX-XXXX',
 				),
 			) : array(),
 			'downloads'      => $showDownloads ? array(
 				array(
-					'product_name' => __( 'Sample product', 'tiermint' ),
+					'product_name' => __( 'Sample product', 'releasecart' ),
 					'files'        => array(
 						array(
-							'label'        => __( 'Download (.zip)', 'tiermint' ),
+							'label'        => __( 'Download (.zip)', 'releasecart' ),
 							'download_url' => '#',
 						),
 					),

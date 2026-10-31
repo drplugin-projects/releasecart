@@ -2,18 +2,18 @@
 /**
  * The product changelog component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Updates\ChangelogRenderer;
-use DrPlugin\WP\TierMint\Updates\Release;
-use DrPlugin\WP\TierMint\Updates\ReleaseRepository;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Updates\ChangelogRenderer;
+use DrPlugin\WP\ReleaseCart\Updates\Release;
+use DrPlugin\WP\ReleaseCart\Updates\ReleaseRepository;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -79,29 +79,29 @@ final class ProductChangelog extends AbstractProductComponent {
 			'releases'             => array(
 				'type'        => 'integer',
 				'default'     => 0,
-				'label'       => __( 'Releases to show', 'tiermint' ),
-				'description' => __( 'How many of the most recent releases to show. 0 shows the full history (up to 20).', 'tiermint' ),
+				'label'       => __( 'Releases to show', 'releasecart' ),
+				'description' => __( 'How many of the most recent releases to show. 0 shows the full history (up to 20).', 'releasecart' ),
 				'control'     => 'number',
 			),
 			'show_version_heading' => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show version heading', 'tiermint' ),
-				'description' => __( 'Show each release version as a heading above its notes.', 'tiermint' ),
+				'label'       => __( 'Show version heading', 'releasecart' ),
+				'description' => __( 'Show each release version as a heading above its notes.', 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'show_dates'           => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show release dates', 'tiermint' ),
-				'description' => __( 'Show the date each release was published.', 'tiermint' ),
+				'label'       => __( 'Show release dates', 'releasecart' ),
+				'description' => __( 'Show the date each release was published.', 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'show_compatibility'   => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show compatibility', 'tiermint' ),
-				'description' => __( 'Show each release\'s Requires WordPress, Tested up to, and Requires PHP.', 'tiermint' ),
+				'label'       => __( 'Show compatibility', 'releasecart' ),
+				'description' => __( 'Show each release\'s Requires WordPress, Tested up to, and Requires PHP.', 'releasecart' ),
 				'control'     => 'toggle',
 			),
 		);
@@ -191,18 +191,18 @@ final class ProductChangelog extends AbstractProductComponent {
 			array(
 				'version' => '2.1.0',
 				'stamp'   => 1_722_506_400, // 2024-08-01.
-				'notes'   => '<ul><li>' . esc_html__( 'Faster catalogue queries on large stores.', 'tiermint' ) . '</li><li>' . esc_html__( 'Fixed a rare checkout error on slow connections.', 'tiermint' ) . '</li></ul>',
+				'notes'   => '<ul><li>' . esc_html__( 'Faster catalogue queries on large stores.', 'releasecart' ) . '</li><li>' . esc_html__( 'Fixed a rare checkout error on slow connections.', 'releasecart' ) . '</li></ul>',
 				'compat'  => array(
 					array(
-						'label' => __( 'Requires WordPress', 'tiermint' ),
+						'label' => __( 'Requires WordPress', 'releasecart' ),
 						'value' => '6.5',
 					),
 					array(
-						'label' => __( 'Tested up to', 'tiermint' ),
+						'label' => __( 'Tested up to', 'releasecart' ),
 						'value' => '6.9',
 					),
 					array(
-						'label' => __( 'Requires PHP', 'tiermint' ),
+						'label' => __( 'Requires PHP', 'releasecart' ),
 						'value' => '8.1',
 					),
 				),
@@ -210,10 +210,10 @@ final class ProductChangelog extends AbstractProductComponent {
 			array(
 				'version' => '2.0.0',
 				'stamp'   => 1_719_828_000, // 2024-07-01.
-				'notes'   => '<ul><li>' . esc_html__( 'New settings screen for the storefront.', 'tiermint' ) . '</li></ul>',
+				'notes'   => '<ul><li>' . esc_html__( 'New settings screen for the storefront.', 'releasecart' ) . '</li></ul>',
 				'compat'  => array(
 					array(
-						'label' => __( 'Tested up to', 'tiermint' ),
+						'label' => __( 'Tested up to', 'releasecart' ),
 						'value' => '6.8',
 					),
 				),
@@ -252,9 +252,9 @@ final class ProductChangelog extends AbstractProductComponent {
 		$line = array();
 
 		$fields = array(
-			array( __( 'Requires WordPress', 'tiermint' ), $release->requiresWp() ),
-			array( __( 'Tested up to', 'tiermint' ), $release->testedUpTo() ),
-			array( __( 'Requires PHP', 'tiermint' ), $release->requiresPhp() ),
+			array( __( 'Requires WordPress', 'releasecart' ), $release->requiresWp() ),
+			array( __( 'Tested up to', 'releasecart' ), $release->testedUpTo() ),
+			array( __( 'Requires PHP', 'releasecart' ), $release->requiresPhp() ),
 		);
 
 		foreach ( $fields as $field ) {

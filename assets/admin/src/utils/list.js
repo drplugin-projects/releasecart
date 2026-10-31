@@ -11,7 +11,7 @@
  *                  page printed no boot payload.
  */
 export function listSeparator() {
-	const boot = typeof window !== 'undefined' ? window.tierMint : undefined;
+	const boot = typeof window !== 'undefined' ? window.releaseCart : undefined;
 
 	return boot && typeof boot.listSeparator === 'string'
 		? boot.listSeparator

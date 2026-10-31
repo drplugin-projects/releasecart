@@ -2,17 +2,17 @@
 /**
  * The customer downloads-list front-end component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Frontend\AbstractComponent;
-use DrPlugin\WP\TierMint\Frontend\RenderContext;
-use DrPlugin\WP\TierMint\Updates\CustomerDownloads;
-use DrPlugin\WP\TierMint\Util\RequestUrl;
+use DrPlugin\WP\ReleaseCart\Frontend\AbstractComponent;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContext;
+use DrPlugin\WP\ReleaseCart\Updates\CustomerDownloads;
+use DrPlugin\WP\ReleaseCart\Util\RequestUrl;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -59,15 +59,15 @@ final class DownloadsList extends AbstractComponent {
 		return array(
 			'title'        => array(
 				'type'    => 'string',
-				'default' => __( 'Your downloads', 'tiermint' ),
+				'default' => __( 'Your downloads', 'releasecart' ),
 				'control' => 'text',
-				'label'   => __( 'Title', 'tiermint' ),
+				'label'   => __( 'Title', 'releasecart' ),
 			),
 			'show_updates' => array(
 				'type'    => 'boolean',
 				'default' => true,
 				'control' => 'toggle',
-				'label'   => __( 'Show available updates', 'tiermint' ),
+				'label'   => __( 'Show available updates', 'releasecart' ),
 			),
 		);
 	}
@@ -142,10 +142,10 @@ final class DownloadsList extends AbstractComponent {
 			'login_url'    => '',
 			'downloads'    => array(
 				array(
-					'product_name' => __( 'Sample product', 'tiermint' ),
+					'product_name' => __( 'Sample product', 'releasecart' ),
 					'files'        => array(
 						array(
-							'label'        => __( 'Download (.zip)', 'tiermint' ),
+							'label'        => __( 'Download (.zip)', 'releasecart' ),
 							'download_url' => '#',
 						),
 					),
@@ -153,7 +153,7 @@ final class DownloadsList extends AbstractComponent {
 			),
 			'updates'      => $showUpdates ? array(
 				array(
-					'product_name' => __( 'Sample product', 'tiermint' ),
+					'product_name' => __( 'Sample product', 'releasecart' ),
 					'version'      => '2.1.0',
 					'download_url' => '#',
 				),

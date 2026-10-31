@@ -2,18 +2,18 @@
 /**
  * Service provider for the file storage abstraction.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Storage;
+namespace DrPlugin\WP\ReleaseCart\Storage;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Container;
-use DrPlugin\WP\TierMint\Core\ServiceProvider;
+use DrPlugin\WP\ReleaseCart\Core\Container;
+use DrPlugin\WP\ReleaseCart\Core\ServiceProvider;
 
 /**
  * Registers local storage and its manager.

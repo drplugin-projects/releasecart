@@ -2,12 +2,12 @@
 /**
  * Sales reporting service: revenue and refunds aggregated by UTC calendar day.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Reports;
+namespace DrPlugin\WP\ReleaseCart\Reports;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -15,9 +15,9 @@ defined( 'ABSPATH' ) || exit;
 use DateInterval;
 use DateTimeImmutable;
 use DateTimeZone;
-use DrPlugin\WP\TierMint\Database\Schema;
-use DrPlugin\WP\TierMint\Orders\OrderType;
-use DrPlugin\WP\TierMint\Util\Money;
+use DrPlugin\WP\ReleaseCart\Database\Schema;
+use DrPlugin\WP\ReleaseCart\Orders\OrderType;
+use DrPlugin\WP\ReleaseCart\Util\Money;
 
 /**
  * Builds the admin sales report in minor units and UTC days.
@@ -404,20 +404,20 @@ class ReportService {
 		$toDate   = $this->parseDate( $to );
 
 		if ( null === $fromDate ) {
-			$errors[] = __( 'The "from" date must be a valid date in YYYY-MM-DD format.', 'tiermint' );
+			$errors[] = __( 'The "from" date must be a valid date in YYYY-MM-DD format.', 'releasecart' );
 		}
 
 		if ( null === $toDate ) {
-			$errors[] = __( 'The "to" date must be a valid date in YYYY-MM-DD format.', 'tiermint' );
+			$errors[] = __( 'The "to" date must be a valid date in YYYY-MM-DD format.', 'releasecart' );
 		}
 
 		// Compare dates only after both format checks pass.
 		if ( null !== $fromDate && null !== $toDate ) {
 			if ( $fromDate > $toDate ) {
-				$errors[] = __( 'The "from" date must not be later than the "to" date.', 'tiermint' );
+				$errors[] = __( 'The "from" date must not be later than the "to" date.', 'releasecart' );
 			} elseif ( $this->inclusiveDays( $fromDate, $toDate ) > self::MAX_RANGE_DAYS ) {
 				/* translators: %d: the maximum number of days a report range may span. */
-				$errors[] = sprintf( __( 'The date range must not span more than %d days.', 'tiermint' ), self::MAX_RANGE_DAYS );
+				$errors[] = sprintf( __( 'The date range must not span more than %d days.', 'releasecart' ), self::MAX_RANGE_DAYS );
 			}
 		}
 

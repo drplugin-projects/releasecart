@@ -2,12 +2,12 @@
 /**
  * Exception for a forbidden release status transition.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Updates;
+namespace DrPlugin\WP\ReleaseCart\Updates;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -30,6 +30,6 @@ final class ReleaseTransitionException extends ReleaseException {
 	 */
 	public static function between( ReleaseStatus $from, ReleaseStatus $to ): self {
 		/* translators: 1: the release's current status, 2: the requested release status. */
-		return new self( sprintf( __( 'Cannot change release status from "%1$s" to "%2$s".', 'tiermint' ), $from->value, $to->value ) );
+		return new self( sprintf( __( 'Cannot change release status from "%1$s" to "%2$s".', 'releasecart' ), $from->value, $to->value ) );
 	}
 }

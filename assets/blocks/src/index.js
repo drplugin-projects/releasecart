@@ -1,5 +1,5 @@
 /**
- * Generic editor registration for every TierMint block.
+ * Generic editor registration for every ReleaseCart block.
  *
  * Build all editor controls from the server control map.
  */
@@ -31,21 +31,21 @@ import { __ } from '@wordpress/i18n';
  *
  * @type {string}
  */
-const PRODUCTS_ENDPOINT = '/tiermint/v1/editor/products';
+const PRODUCTS_ENDPOINT = '/releasecart/v1/editor/products';
 
 /**
  * The editor term-list endpoint (whole taxonomy as slug/name, edit_posts-gated).
  *
  * @type {string}
  */
-const TERMS_ENDPOINT = '/tiermint/v1/editor/terms';
+const TERMS_ENDPOINT = '/releasecart/v1/editor/terms';
 
 /**
  * The editor page-search endpoint (published id/title, edit_posts-gated).
  *
  * @type {string}
  */
-const PAGES_ENDPOINT = '/tiermint/v1/editor/pages';
+const PAGES_ENDPOINT = '/releasecart/v1/editor/pages';
 
 /**
  * Add encoded query parameters to a REST path.
@@ -264,13 +264,13 @@ function ProductPicker( { control, value, setAttributes } ) {
 			labelField="name"
 			leadingLabel={
 				control.routed
-					? __( 'Current product (from page URL)', 'tiermint' )
+					? __( 'Current product (from page URL)', 'releasecart' )
 					: null
 			}
 			placeholder={
 				control.routed
 					? undefined
-					: __( 'Select a product', 'tiermint' )
+					: __( 'Select a product', 'releasecart' )
 			}
 		/>
 	);
@@ -293,7 +293,9 @@ function PagePicker( { control, value, setAttributes } ) {
 			setAttributes={ setAttributes }
 			endpoint={ PAGES_ENDPOINT }
 			labelField="title"
-			leadingLabel={ control.zero_label || __( 'Default', 'tiermint' ) }
+			leadingLabel={
+				control.zero_label || __( 'Default', 'releasecart' )
+			}
 		/>
 	);
 }
@@ -499,7 +501,7 @@ export function controlField( control, attributes, setAttributes ) {
 				__nextHasNoMarginBottom
 				__next40pxDefaultSize
 				label={ control.label }
-				help={ help || __( 'Comma-separated list.', 'tiermint' ) }
+				help={ help || __( 'Comma-separated list.', 'releasecart' ) }
 				value={ ( value || [] ).join( ', ' ) }
 				onChange={ ( next ) =>
 					setAttributes( {
@@ -548,7 +550,7 @@ function createEdit( block ) {
 			<>
 				{ block.controls.length > 0 && (
 					<InspectorControls>
-						<PanelBody title={ __( 'Settings', 'tiermint' ) }>
+						<PanelBody title={ __( 'Settings', 'releasecart' ) }>
 							{ block.controls.map( ( control ) =>
 								controlField(
 									control,
@@ -572,7 +574,7 @@ function createEdit( block ) {
 	};
 }
 
-const config = window.tierMintBlocks || { blocks: [] };
+const config = window.releaseCartBlocks || { blocks: [] };
 
 config.blocks.forEach( ( block ) => {
 	registerBlockType( block.name, {

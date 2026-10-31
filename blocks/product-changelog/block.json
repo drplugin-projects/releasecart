@@ -1,13 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "tiermint/product-changelog",
+	"name": "releasecart/product-changelog",
 	"title": "Product Changelog",
-	"category": "tiermint",
+	"category": "releasecart",
 	"icon": "list-view",
 	"description": "A product's latest release notes, rendered from its changelog.",
-	"keywords": [ "product", "changelog", "releases", "notes", "tiermint" ],
-	"textdomain": "tiermint",
+	"keywords": [ "product", "changelog", "releases", "notes", "releasecart" ],
+	"textdomain": "releasecart",
 	"supports": {
 		"html": false,
 		"align": [ "wide", "full" ]

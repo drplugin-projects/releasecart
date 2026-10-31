@@ -2,25 +2,25 @@
 /**
  * The Stripe implementation of the payment gateway port.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Payments\Stripe;
+namespace DrPlugin\WP\ReleaseCart\Payments\Stripe;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Orders\Order;
-use DrPlugin\WP\TierMint\Payments\GatewayConfigurationException;
-use DrPlugin\WP\TierMint\Payments\GatewayEvent;
-use DrPlugin\WP\TierMint\Payments\GatewayInterface;
-use DrPlugin\WP\TierMint\Payments\GatewayRequestException;
-use DrPlugin\WP\TierMint\Payments\PaymentSession;
-use DrPlugin\WP\TierMint\Payments\RefundResult;
-use DrPlugin\WP\TierMint\Payments\RequestData;
-use DrPlugin\WP\TierMint\Payments\WebhookVerificationException;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Payments\GatewayConfigurationException;
+use DrPlugin\WP\ReleaseCart\Payments\GatewayEvent;
+use DrPlugin\WP\ReleaseCart\Payments\GatewayInterface;
+use DrPlugin\WP\ReleaseCart\Payments\GatewayRequestException;
+use DrPlugin\WP\ReleaseCart\Payments\PaymentSession;
+use DrPlugin\WP\ReleaseCart\Payments\RefundResult;
+use DrPlugin\WP\ReleaseCart\Payments\RequestData;
+use DrPlugin\WP\ReleaseCart\Payments\WebhookVerificationException;
 
 /**
  * Stripe gateway for payment intents, webhooks and refunds.
@@ -64,7 +64,7 @@ final class StripeGateway implements GatewayInterface {
 	 * @return string
 	 */
 	public function label(): string {
-		return __( 'Stripe', 'tiermint' );
+		return __( 'Stripe', 'releasecart' );
 	}
 
 	/**
@@ -105,7 +105,7 @@ final class StripeGateway implements GatewayInterface {
 
 		if ( null === $secretKey ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new GatewayConfigurationException( __( 'Stripe is not configured for the current mode. Enter your Stripe keys in the payment settings.', 'tiermint' ) );
+			throw new GatewayConfigurationException( __( 'Stripe is not configured for the current mode. Enter your Stripe keys in the payment settings.', 'releasecart' ) );
 		}
 
 		$response = $this->client->post(
@@ -116,11 +116,11 @@ final class StripeGateway implements GatewayInterface {
 				'currency'                  => strtolower( $order->currency() ),
 				'automatic_payment_methods' => array( 'enabled' => 'true' ),
 				'metadata'                  => array(
-					'tiermint_order_id'   => (string) $order->id(),
-					'tiermint_order_uuid' => $order->uuid(),
+					'releasecart_order_id'   => (string) $order->id(),
+					'releasecart_order_uuid' => $order->uuid(),
 				),
 			),
-			'tiermint-intent-' . $order->uuid()
+			'releasecart-intent-' . $order->uuid()
 		);
 
 		$id           = $response['id'] ?? null;
@@ -187,7 +187,7 @@ final class StripeGateway implements GatewayInterface {
 
 		if ( null === $secretKey ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new GatewayConfigurationException( __( 'Stripe is not configured for the current mode. Enter your Stripe keys in the payment settings.', 'tiermint' ) );
+			throw new GatewayConfigurationException( __( 'Stripe is not configured for the current mode. Enter your Stripe keys in the payment settings.', 'releasecart' ) );
 		}
 
 		$paymentIntent = $order->gatewayTxnId();
@@ -230,43 +230,43 @@ final class StripeGateway implements GatewayInterface {
 		return array(
 			array(
 				'key'   => 'mode',
-				'label' => __( 'Mode', 'tiermint' ),
+				'label' => __( 'Mode', 'releasecart' ),
 				'type'  => 'select',
 				'mode'  => null,
 			),
 			array(
 				'key'   => 'publishable_key_test',
-				'label' => __( 'Test publishable key', 'tiermint' ),
+				'label' => __( 'Test publishable key', 'releasecart' ),
 				'type'  => 'text',
 				'mode'  => 'test',
 			),
 			array(
 				'key'   => 'secret_key_test',
-				'label' => __( 'Test secret key', 'tiermint' ),
+				'label' => __( 'Test secret key', 'releasecart' ),
 				'type'  => 'password',
 				'mode'  => 'test',
 			),
 			array(
 				'key'   => 'webhook_secret_test',
-				'label' => __( 'Test webhook signing secret', 'tiermint' ),
+				'label' => __( 'Test webhook signing secret', 'releasecart' ),
 				'type'  => 'password',
 				'mode'  => 'test',
 			),
 			array(
 				'key'   => 'publishable_key_live',
-				'label' => __( 'Live publishable key', 'tiermint' ),
+				'label' => __( 'Live publishable key', 'releasecart' ),
 				'type'  => 'text',
 				'mode'  => 'live',
 			),
 			array(
 				'key'   => 'secret_key_live',
-				'label' => __( 'Live secret key', 'tiermint' ),
+				'label' => __( 'Live secret key', 'releasecart' ),
 				'type'  => 'password',
 				'mode'  => 'live',
 			),
 			array(
 				'key'   => 'webhook_secret_live',
-				'label' => __( 'Live webhook signing secret', 'tiermint' ),
+				'label' => __( 'Live webhook signing secret', 'releasecart' ),
 				'type'  => 'password',
 				'mode'  => 'live',
 			),

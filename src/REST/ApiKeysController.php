@@ -1,24 +1,24 @@
 <?php
 /**
- * Management REST controller for TierMint API keys.
+ * Management REST controller for ReleaseCart API keys.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\REST\Auth\ApiKey;
-use DrPlugin\WP\TierMint\REST\Auth\ApiKeyAuthenticator;
-use DrPlugin\WP\TierMint\REST\Auth\ApiKeyNotFoundException;
-use DrPlugin\WP\TierMint\REST\Auth\ApiKeyPermission;
-use DrPlugin\WP\TierMint\REST\Auth\ApiKeyPersistenceException;
-use DrPlugin\WP\TierMint\REST\Auth\ApiKeyService;
-use DrPlugin\WP\TierMint\REST\Auth\ApiKeyValidationException;
+use DrPlugin\WP\ReleaseCart\REST\Auth\ApiKey;
+use DrPlugin\WP\ReleaseCart\REST\Auth\ApiKeyAuthenticator;
+use DrPlugin\WP\ReleaseCart\REST\Auth\ApiKeyNotFoundException;
+use DrPlugin\WP\ReleaseCart\REST\Auth\ApiKeyPermission;
+use DrPlugin\WP\ReleaseCart\REST\Auth\ApiKeyPersistenceException;
+use DrPlugin\WP\ReleaseCart\REST\Auth\ApiKeyService;
+use DrPlugin\WP\ReleaseCart\REST\Auth\ApiKeyValidationException;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -96,7 +96,7 @@ final class ApiKeysController extends AbstractRestController {
 					'permission_callback' => array( $this, 'settingsPermission' ),
 					'args'                => array(
 						'id' => array(
-							'description'       => __( 'The API key id.', 'tiermint' ),
+							'description'       => __( 'The API key id.', 'releasecart' ),
 							'type'              => 'integer',
 							'required'          => true,
 							'sanitize_callback' => 'absint',
@@ -138,8 +138,8 @@ final class ApiKeysController extends AbstractRestController {
 		// A key cannot mint replacement credentials.
 		if ( null !== $this->authenticator->authenticatedKey() ) {
 			return $this->error(
-				'tiermint_forbidden',
-				__( 'API keys cannot be created with an API key. Sign in to create keys.', 'tiermint' ),
+				'releasecart_forbidden',
+				__( 'API keys cannot be created with an API key. Sign in to create keys.', 'releasecart' ),
 				403
 			);
 		}
@@ -217,7 +217,7 @@ final class ApiKeysController extends AbstractRestController {
 	private function createArgs(): array {
 		return array(
 			'label'       => array(
-				'description'       => __( 'A human label describing what the key is for.', 'tiermint' ),
+				'description'       => __( 'A human label describing what the key is for.', 'releasecart' ),
 				'type'              => 'string',
 				'required'          => true,
 				'maxLength'         => 200,
@@ -225,7 +225,7 @@ final class ApiKeysController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'permissions' => array(
-				'description'       => __( 'The permission tier: read (safe methods only) or write.', 'tiermint' ),
+				'description'       => __( 'The permission tier: read (safe methods only) or write.', 'releasecart' ),
 				'type'              => 'string',
 				'default'           => 'read',
 				'enum'              => array( 'read', 'write' ),

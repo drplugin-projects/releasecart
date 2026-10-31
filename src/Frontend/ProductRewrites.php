@@ -2,14 +2,14 @@
 /**
  * Registers and flushes the product details pretty rewrite.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -27,14 +27,14 @@ class ProductRewrites implements Hookable {
 	 *
 	 * @var string
 	 */
-	public const SIGNATURE_OPTION = 'tiermint_product_rewrite_signature';
+	public const SIGNATURE_OPTION = 'releasecart_product_rewrite_signature';
 
 	/**
 	 * The deferred one-time rewrite flush flag.
 	 *
 	 * @var string
 	 */
-	public const FLUSH_FLAG = 'tiermint_pending_rewrite_flush';
+	public const FLUSH_FLAG = 'releasecart_pending_rewrite_flush';
 
 	/**
 	 * The signature used when there is no published details page.
@@ -74,7 +74,7 @@ class ProductRewrites implements Hookable {
 	}
 
 	/**
-	 * Register the `tiermint_product` query var so WordPress carries the slug
+	 * Register the `releasecart_product` query var so WordPress carries the slug
 	 * through to the request context.
 	 *
 	 * @param array<int, string> $vars The registered public query vars.

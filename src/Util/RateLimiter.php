@@ -2,12 +2,12 @@
 /**
  * Fixed-window transient rate limiter.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Util;
+namespace DrPlugin\WP\ReleaseCart\Util;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -26,7 +26,7 @@ final class RateLimiter {
 	 *
 	 * @var string
 	 */
-	private const KEY_PREFIX = 'tiermint_rl_';
+	private const KEY_PREFIX = 'releasecart_rl_';
 
 	/**
 	 * Count a request and return its wait time when limited.

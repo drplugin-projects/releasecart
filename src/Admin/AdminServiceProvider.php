@@ -2,28 +2,28 @@
 /**
  * Service provider for the wp-admin surface.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Admin;
+namespace DrPlugin\WP\ReleaseCart\Admin;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Container;
-use DrPlugin\WP\TierMint\Core\ServiceProvider;
-use DrPlugin\WP\TierMint\Frontend\Appearance;
-use DrPlugin\WP\TierMint\Frontend\CheckoutFieldSettings;
-use DrPlugin\WP\TierMint\Payments\Stripe\StripeSettings;
-use DrPlugin\WP\TierMint\Upsell\Dismissals;
-use DrPlugin\WP\TierMint\Upsell\ProFeatures;
-use DrPlugin\WP\TierMint\Upsell\ProStatus;
-use DrPlugin\WP\TierMint\Webhooks\WebhookEndpoints;
+use DrPlugin\WP\ReleaseCart\Core\Container;
+use DrPlugin\WP\ReleaseCart\Core\ServiceProvider;
+use DrPlugin\WP\ReleaseCart\Frontend\Appearance;
+use DrPlugin\WP\ReleaseCart\Frontend\CheckoutFieldSettings;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeSettings;
+use DrPlugin\WP\ReleaseCart\Upsell\Dismissals;
+use DrPlugin\WP\ReleaseCart\Upsell\ProFeatures;
+use DrPlugin\WP\ReleaseCart\Upsell\ProStatus;
+use DrPlugin\WP\ReleaseCart\Webhooks\WebhookEndpoints;
 
 /**
- * Registers the TierMint admin menu, SPA and settings REST services.
+ * Registers the ReleaseCart admin menu, SPA and settings REST services.
  * It runs after the REST provider so its dependencies are available.
  *
  * @since 1.0.0

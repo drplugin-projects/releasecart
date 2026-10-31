@@ -48,7 +48,7 @@ export default function BundlePanel( {
 		( firstReadPending( productsQuery ) || productsQuery.isError );
 
 	const bundleOptions = [
-		{ label: __( 'Select a product', 'tiermint' ), value: '' },
+		{ label: __( 'Select a product', 'releasecart' ), value: '' },
 		...pickerItems
 			.filter( ( item ) => String( item.id ) !== String( productId ) )
 			.map( ( item ) => ( {
@@ -77,7 +77,7 @@ export default function BundlePanel( {
 			...bundleOptions,
 			{
 				/* translators: %d: product id. */
-				label: sprintf( __( 'Product #%d', 'tiermint' ), chosen ),
+				label: sprintf( __( 'Product #%d', 'releasecart' ), chosen ),
 				value: String( chosen ),
 			},
 		];
@@ -98,12 +98,12 @@ export default function BundlePanel( {
 				} ) )
 			}
 		>
-			{ __( 'Add bundle item', 'tiermint' ) }
+			{ __( 'Add bundle item', 'releasecart' ) }
 		</Button>
 	);
 
 	return (
-		<div className="tiermint-panel">
+		<div className="releasecart-panel">
 			{ ! pickerInHand && productsQuery.isError && (
 				<Notice status="error" isDismissible={ false }>
 					{ productsQuery.error.message }
@@ -117,21 +117,21 @@ export default function BundlePanel( {
 			{ form.bundle_items.length === 0 &&
 				! ( ! pickerInHand && firstReadPending( productsQuery ) ) && (
 					<EmptyState
-						className="tiermint-empty-state--panel"
+						className="releasecart-empty-state--panel"
 						message={ __(
 							'No bundled products yet. Add the products a buyer gets with this bundle.',
-							'tiermint'
+							'releasecart'
 						) }
 						action={ addBundleItemButton }
 					/>
 				) }
 			{ form.bundle_items.map( ( item, index ) => (
-				<div key={ index } className="tiermint-bundle-row">
+				<div key={ index } className="releasecart-bundle-row">
 					<SelectControl
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
 						disabled={ pickerUnusable }
-						label={ __( 'Bundled product', 'tiermint' ) }
+						label={ __( 'Bundled product', 'releasecart' ) }
 						value={ String( item.child_product_id || '' ) }
 						options={ bundleOptionsFor( item.child_product_id ) }
 						onChange={ ( value ) =>
@@ -161,12 +161,12 @@ export default function BundlePanel( {
 							} ) )
 						}
 					>
-						{ __( 'Remove item', 'tiermint' ) }
+						{ __( 'Remove item', 'releasecart' ) }
 					</Button>
 				</div>
 			) ) }
 			{ form.bundle_items.length > 0 && (
-				<div className="tiermint-form-actions">
+				<div className="releasecart-form-actions">
 					{ addBundleItemButton }
 				</div>
 			) }

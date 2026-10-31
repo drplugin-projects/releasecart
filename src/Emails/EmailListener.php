@@ -2,26 +2,26 @@
 /**
  * Hook listener wiring transactional emails to order and license events.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Emails;
+namespace DrPlugin\WP\ReleaseCart\Emails;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Licensing\License;
-use DrPlugin\WP\TierMint\Licensing\LicenseService;
-use DrPlugin\WP\TierMint\Orders\Order;
-use DrPlugin\WP\TierMint\Orders\OrderService;
-use DrPlugin\WP\TierMint\Orders\OrderStatus;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Updates\CustomerDownloads;
-use DrPlugin\WP\TierMint\Util\Money;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Licensing\License;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseService;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Orders\OrderService;
+use DrPlugin\WP\ReleaseCart\Orders\OrderStatus;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Updates\CustomerDownloads;
+use DrPlugin\WP\ReleaseCart\Util\Money;
 use Throwable;
 
 /**
@@ -38,42 +38,42 @@ final class EmailListener implements Hookable {
 	 *
 	 * @var string
 	 */
-	public const JOB_HOOK = 'tiermint_job_send_email';
+	public const JOB_HOOK = 'releasecart_job_send_email';
 
 	/**
-	 * The Action Scheduler group all TierMint jobs share.
+	 * The Action Scheduler group all ReleaseCart jobs share.
 	 *
 	 * @var string
 	 */
-	private const JOB_GROUP = 'tiermint';
+	private const JOB_GROUP = 'releasecart';
 
 	/**
-	 * The meta type the metadata API resolves order meta through ({@see \DrPlugin\WP\TierMint\Database\MetaTables}).
+	 * The meta type the metadata API resolves order meta through ({@see \DrPlugin\WP\ReleaseCart\Database\MetaTables}).
 	 *
 	 * @var string
 	 */
-	private const ORDER_META_TYPE = 'tiermint_order';
+	private const ORDER_META_TYPE = 'releasecart_order';
 
 	/**
 	 * Receipt marker and gate for late licence delivery.
 	 *
 	 * @var string
 	 */
-	private const RECEIPT_SENT_META = '_tiermint_receipt_sent';
+	private const RECEIPT_SENT_META = '_releasecart_receipt_sent';
 
 	/**
 	 * Licence delivery marker for queue retries.
 	 *
 	 * @var string
 	 */
-	private const DELIVERY_SENT_META = '_tiermint_delivery_sent';
+	private const DELIVERY_SENT_META = '_releasecart_delivery_sent';
 
 	/**
 	 * The metadata type mapped onto the licenses meta table.
 	 *
 	 * @var string
 	 */
-	private const LICENSE_META_TYPE = 'tiermint_license';
+	private const LICENSE_META_TYPE = 'releasecart_license';
 
 	/**
 	 * Emailed download-link lifetime in seconds, 72 hours.
@@ -116,8 +116,8 @@ final class EmailListener implements Hookable {
 	 * @return void
 	 */
 	public function hooks(): void {
-		add_action( 'tiermint_order_completed', array( $this, 'onOrderCompleted' ), 10, 1 );
-		add_action( 'tiermint_license_generated', array( $this, 'onLicenseGenerated' ), 10, 2 );
+		add_action( 'releasecart_order_completed', array( $this, 'onOrderCompleted' ), 10, 1 );
+		add_action( 'releasecart_license_generated', array( $this, 'onLicenseGenerated' ), 10, 2 );
 		add_action( self::JOB_HOOK, array( $this, 'onSendEmailJob' ), 10, 2 );
 	}
 

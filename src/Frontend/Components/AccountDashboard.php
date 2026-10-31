@@ -2,26 +2,26 @@
 /**
  * The customer account-dashboard front-end component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Customers\Customer;
-use DrPlugin\WP\TierMint\Frontend\AbstractComponent;
-use DrPlugin\WP\TierMint\Frontend\AttributeResolver;
-use DrPlugin\WP\TierMint\Frontend\Component;
-use DrPlugin\WP\TierMint\Frontend\ComponentRegistry;
-use DrPlugin\WP\TierMint\Frontend\RenderContext;
-use DrPlugin\WP\TierMint\Orders\Order;
-use DrPlugin\WP\TierMint\Orders\OrderService;
-use DrPlugin\WP\TierMint\Orders\OrderStatus;
-use DrPlugin\WP\TierMint\Orders\OrderType;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Util\Money;
-use DrPlugin\WP\TierMint\Util\RequestUrl;
+use DrPlugin\WP\ReleaseCart\Customers\Customer;
+use DrPlugin\WP\ReleaseCart\Frontend\AbstractComponent;
+use DrPlugin\WP\ReleaseCart\Frontend\AttributeResolver;
+use DrPlugin\WP\ReleaseCart\Frontend\Component;
+use DrPlugin\WP\ReleaseCart\Frontend\ComponentRegistry;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContext;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Orders\OrderService;
+use DrPlugin\WP\ReleaseCart\Orders\OrderStatus;
+use DrPlugin\WP\ReleaseCart\Orders\OrderType;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Util\Money;
+use DrPlugin\WP\ReleaseCart\Util\RequestUrl;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -46,7 +46,7 @@ final class AccountDashboard extends AbstractComponent {
 	 *
 	 * @var string
 	 */
-	public const PANELS_FILTER = 'tiermint_account_dashboard_panels';
+	public const PANELS_FILTER = 'releasecart_account_dashboard_panels';
 
 	/**
 	 * Panel keys reserved by the dashboard.
@@ -127,31 +127,31 @@ final class AccountDashboard extends AbstractComponent {
 		return array(
 			'title'          => array(
 				'type'        => 'string',
-				'default'     => __( 'My account', 'tiermint' ),
+				'default'     => __( 'My account', 'releasecart' ),
 				'control'     => 'text',
-				'label'       => __( 'Heading', 'tiermint' ),
-				'description' => __( 'The heading shown above the dashboard. Leave empty to hide it.', 'tiermint' ),
+				'label'       => __( 'Heading', 'releasecart' ),
+				'description' => __( 'The heading shown above the dashboard. Leave empty to hide it.', 'releasecart' ),
 			),
 			'show_purchases' => array(
 				'type'        => 'boolean',
 				'default'     => true,
 				'control'     => 'toggle',
-				'label'       => __( 'Show purchases', 'tiermint' ),
-				'description' => __( 'Show the purchase-history panel.', 'tiermint' ),
+				'label'       => __( 'Show purchases', 'releasecart' ),
+				'description' => __( 'Show the purchase-history panel.', 'releasecart' ),
 			),
 			'show_downloads' => array(
 				'type'        => 'boolean',
 				'default'     => true,
 				'control'     => 'toggle',
-				'label'       => __( 'Show downloads', 'tiermint' ),
-				'description' => __( 'Show the downloads panel.', 'tiermint' ),
+				'label'       => __( 'Show downloads', 'releasecart' ),
+				'description' => __( 'Show the downloads panel.', 'releasecart' ),
 			),
 			'show_licenses'  => array(
 				'type'        => 'boolean',
 				'default'     => true,
 				'control'     => 'toggle',
-				'label'       => __( 'Show licenses', 'tiermint' ),
-				'description' => __( 'Show the licenses panel.', 'tiermint' ),
+				'label'       => __( 'Show licenses', 'releasecart' ),
+				'description' => __( 'Show the licenses panel.', 'releasecart' ),
 			),
 		);
 	}
@@ -166,13 +166,13 @@ final class AccountDashboard extends AbstractComponent {
 	public function assets(): array {
 		$assets = array(
 			'styles'  => array(
-				'tiermint-account-dashboard',
-				'tiermint-downloads-list',
-				'tiermint-license-manager',
+				'releasecart-account-dashboard',
+				'releasecart-downloads-list',
+				'releasecart-license-manager',
 			),
 			'scripts' => array(
-				'tiermint-account-dashboard',
-				'tiermint-license-manager',
+				'releasecart-account-dashboard',
+				'releasecart-license-manager',
 			),
 		);
 
@@ -257,7 +257,7 @@ final class AccountDashboard extends AbstractComponent {
 	 * @return array<string, mixed>
 	 */
 	private function sampleDashboardData( array $attrs, string $title, RenderContext $ctx ): array {
-		$base = wp_unique_id( 'tiermint-account-dashboard-' );
+		$base = wp_unique_id( 'releasecart-account-dashboard-' );
 
 		// Use sample data, not store data.
 		$sampleCtx = $this->sampleContext( $ctx );
@@ -266,21 +266,21 @@ final class AccountDashboard extends AbstractComponent {
 
 		if ( (bool) $attrs['show_purchases'] ) {
 			$tabs[] = array_merge(
-				$this->tab( $base, 'purchases', __( 'Purchases', 'tiermint' ) ),
+				$this->tab( $base, 'purchases', __( 'Purchases', 'releasecart' ) ),
 				array( 'purchases' => $this->samplePurchaseRows() )
 			);
 		}
 
 		if ( (bool) $attrs['show_downloads'] && $this->registry->has( 'downloads-list' ) ) {
 			$tabs[] = array_merge(
-				$this->tab( $base, 'downloads', __( 'Downloads', 'tiermint' ) ),
+				$this->tab( $base, 'downloads', __( 'Downloads', 'releasecart' ) ),
 				array( 'html' => $this->composePanel( 'downloads-list', $sampleCtx ) )
 			);
 		}
 
 		if ( (bool) $attrs['show_licenses'] && $this->registry->has( 'license-manager' ) ) {
 			$tabs[] = array_merge(
-				$this->tab( $base, 'licenses', __( 'Licenses', 'tiermint' ) ),
+				$this->tab( $base, 'licenses', __( 'Licenses', 'releasecart' ) ),
 				array( 'html' => $this->composePanel( 'license-manager', $sampleCtx ) )
 			);
 		}
@@ -302,8 +302,8 @@ final class AccountDashboard extends AbstractComponent {
 				'avatar'   => '',
 				'greeting' => sprintf(
 					/* translators: %s: the customer's display name. */
-					__( 'Hi, %s', 'tiermint' ),
-					__( 'Sample customer', 'tiermint' )
+					__( 'Hi, %s', 'releasecart' ),
+					__( 'Sample customer', 'releasecart' )
 				),
 			),
 			'tabs'   => $tabs,
@@ -324,13 +324,13 @@ final class AccountDashboard extends AbstractComponent {
 				'date'         => (string) date_i18n( (string) get_option( 'date_format' ), 1_722_506_400 ),
 				'items'        => array(
 					array(
-						'name'     => __( 'Sample product', 'tiermint' ),
+						'name'     => __( 'Sample product', 'releasecart' ),
 						'quantity' => 1,
 					),
 				),
 				'total'        => $this->money->format( 4900 ),
 				'status_slug'  => 'completed',
-				'status_label' => __( 'Completed', 'tiermint' ),
+				'status_label' => __( 'Completed', 'releasecart' ),
 			),
 		);
 	}
@@ -372,7 +372,7 @@ final class AccountDashboard extends AbstractComponent {
 	 */
 	private function dashboardData( array $attrs, string $title, RenderContext $ctx ): array {
 		// Keep tab and panel IDs unique across dashboard instances.
-		$base = wp_unique_id( 'tiermint-account-dashboard-' );
+		$base = wp_unique_id( 'releasecart-account-dashboard-' );
 
 		$customer   = $ctx->customer();
 		$customerId = null !== $customer ? (int) $customer->id() : 0;
@@ -381,21 +381,21 @@ final class AccountDashboard extends AbstractComponent {
 
 		if ( (bool) $attrs['show_purchases'] ) {
 			$tabs[] = array_merge(
-				$this->tab( $base, 'purchases', __( 'Purchases', 'tiermint' ) ),
+				$this->tab( $base, 'purchases', __( 'Purchases', 'releasecart' ) ),
 				array( 'purchases' => $customerId > 0 ? $this->purchaseRows( $customerId ) : array() )
 			);
 		}
 
 		if ( (bool) $attrs['show_downloads'] && $this->registry->has( 'downloads-list' ) ) {
 			$tabs[] = array_merge(
-				$this->tab( $base, 'downloads', __( 'Downloads', 'tiermint' ) ),
+				$this->tab( $base, 'downloads', __( 'Downloads', 'releasecart' ) ),
 				array( 'html' => $this->composePanel( 'downloads-list', $ctx ) )
 			);
 		}
 
 		if ( (bool) $attrs['show_licenses'] && $this->registry->has( 'license-manager' ) ) {
 			$tabs[] = array_merge(
-				$this->tab( $base, 'licenses', __( 'Licenses', 'tiermint' ) ),
+				$this->tab( $base, 'licenses', __( 'Licenses', 'releasecart' ) ),
 				array( 'html' => $this->composePanel( 'license-manager', $ctx ) )
 			);
 		}
@@ -432,7 +432,7 @@ final class AccountDashboard extends AbstractComponent {
 			'avatar'   => is_string( $avatar ) ? $avatar : '',
 			'greeting' => sprintf(
 				/* translators: %s: the customer's display name. */
-				__( 'Hi, %s', 'tiermint' ),
+				__( 'Hi, %s', 'releasecart' ),
 				$name
 			),
 		);
@@ -456,7 +456,7 @@ final class AccountDashboard extends AbstractComponent {
 			'avatar'   => is_string( $avatar ) ? $avatar : '',
 			'greeting' => sprintf(
 				/* translators: %s: the customer's display name. */
-				__( 'Hi, %s', 'tiermint' ),
+				__( 'Hi, %s', 'releasecart' ),
 				$this->displayName( $customer )
 			),
 		);
@@ -546,7 +546,7 @@ final class AccountDashboard extends AbstractComponent {
 		 *
 		 * @param array<int, array{key?: string, slug: string, label: string}> $panels The contributed panels. Default none.
 		 */
-		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the constant is the literal `tiermint_account_dashboard_panels` hook name; it is a constant only because assets() applies the same filter.
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- the constant is the literal `releasecart_account_dashboard_panels` hook name; it is a constant only because assets() applies the same filter.
 		$declared = apply_filters( self::PANELS_FILTER, array() );
 
 		if ( ! is_array( $declared ) ) {
@@ -745,8 +745,8 @@ final class AccountDashboard extends AbstractComponent {
 	 */
 	private function statusLabel( OrderStatus $status ): string {
 		return match ( $status ) {
-			OrderStatus::Completed         => __( 'Completed', 'tiermint' ),
-			OrderStatus::PartiallyRefunded => __( 'Partially refunded', 'tiermint' ),
+			OrderStatus::Completed         => __( 'Completed', 'releasecart' ),
+			OrderStatus::PartiallyRefunded => __( 'Partially refunded', 'releasecart' ),
 			default                        => $status->value,
 		};
 	}

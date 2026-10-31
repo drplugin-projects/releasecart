@@ -36,7 +36,7 @@ function failureMessage( failure ) {
 
 	return failure && failure.message
 		? failure.message
-		: __( 'The export could not be downloaded.', 'tiermint' );
+		: __( 'The export could not be downloaded.', 'releasecart' );
 }
 
 /**
@@ -85,8 +85,8 @@ export default function ExportMenu( { items = [] } ) {
 
 	return (
 		<Dropdown
-			className="tiermint-export-menu"
-			contentClassName="tiermint-export-menu__content"
+			className="releasecart-export-menu"
+			contentClassName="releasecart-export-menu__content"
 			popoverProps={ { placement: 'bottom-end' } }
 			renderToggle={ ( { isOpen, onToggle } ) => (
 				<Button
@@ -94,16 +94,16 @@ export default function ExportMenu( { items = [] } ) {
 					__next40pxDefaultSize
 					onClick={ onToggle }
 					aria-expanded={ isOpen }
-					className="tiermint-export-menu__toggle"
+					className="releasecart-export-menu__toggle"
 				>
-					{ __( 'Export CSV', 'tiermint' ) }
+					{ __( 'Export CSV', 'releasecart' ) }
 				</Button>
 			) }
 			renderContent={ ( { onClose } ) => (
 				<div
 					role="menu"
-					aria-label={ __( 'Export CSV', 'tiermint' ) }
-					className="tiermint-export-menu__items"
+					aria-label={ __( 'Export CSV', 'releasecart' ) }
+					className="releasecart-export-menu__items"
 				>
 					{ items.map( ( item ) => (
 						<Button
@@ -117,14 +117,17 @@ export default function ExportMenu( { items = [] } ) {
 									download( item, onClose );
 								}
 							} }
-							className="tiermint-export-menu__item"
+							className="releasecart-export-menu__item"
 						>
 							{ item.label }
 						</Button>
 					) ) }
 
 					{ error && (
-						<p role="alert" className="tiermint-export-menu__error">
+						<p
+							role="alert"
+							className="releasecart-export-menu__error"
+						>
 							{ error }
 						</p>
 					) }

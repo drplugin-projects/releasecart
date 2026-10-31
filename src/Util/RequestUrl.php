@@ -2,12 +2,12 @@
 /**
  * Current-request URL builder for storefront redirects and sign-in links.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Util;
+namespace DrPlugin\WP\ReleaseCart\Util;
 
 defined( 'ABSPATH' ) || exit;
 

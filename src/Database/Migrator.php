@@ -2,12 +2,12 @@
 /**
  * Versioned schema migrations runner.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Database;
+namespace DrPlugin\WP\ReleaseCart\Database;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -28,14 +28,14 @@ final class Migrator {
 	 *
 	 * @var string
 	 */
-	private const VERSION_OPTION = 'tiermint_db_version';
+	private const VERSION_OPTION = 'releasecart_db_version';
 
 	/**
 	 * Default option name used as the migration mutex (autoload no).
 	 *
 	 * @var string
 	 */
-	private const LOCK_OPTION = 'tiermint_migrating';
+	private const LOCK_OPTION = 'releasecart_migrating';
 
 	/**
 	 * Seconds after which a held lock is considered stale and may be reclaimed.
@@ -209,7 +209,7 @@ final class Migrator {
 	 */
 	private function logFailure( Migration $migration, Throwable $error ): void {
 		$message = sprintf(
-			'TierMint migration to version %d (%s) failed: %s',
+			'ReleaseCart migration to version %d (%s) failed: %s',
 			$migration->version(),
 			$this->versionOption,
 			$error->getMessage()
@@ -217,7 +217,7 @@ final class Migrator {
 
 		// WPCS resolves database calls through this local alias.
 		$wpdb  = $this->wpdb;
-		$table = $wpdb->prefix . 'tiermint_logs';
+		$table = $wpdb->prefix . 'releasecart_logs';
 
 		try {
 			// Escape underscores so LIKE treats the table name literally.

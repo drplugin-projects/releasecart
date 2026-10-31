@@ -2,17 +2,17 @@
 /**
  * Verifies Stripe webhook signatures without the Stripe SDK.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Payments\Stripe;
+namespace DrPlugin\WP\ReleaseCart\Payments\Stripe;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Payments\WebhookVerificationException;
+use DrPlugin\WP\ReleaseCart\Payments\WebhookVerificationException;
 
 /**
  * Verifies Stripe webhook signatures.

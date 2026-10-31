@@ -118,40 +118,42 @@ export default function Reports( { boot } ) {
 	const excludedCodes = Object.keys( excluded );
 
 	// Order exports include customer email and need manager access.
-	const canManage = Boolean( boot && boot.caps && boot.caps.manage_tiermint );
+	const canManage = Boolean(
+		boot && boot.caps && boot.caps.manage_releasecart
+	);
 	const exports = [
 		{
 			id: 'sales',
-			label: __( 'Sales (CSV)', 'tiermint' ),
+			label: __( 'Sales (CSV)', 'releasecart' ),
 			path: '/reports/sales/export',
 			params: {
 				from: appliedFrom || undefined,
 				to: appliedTo || undefined,
 			},
-			filename: 'tiermint-sales.csv',
+			filename: 'releasecart-sales.csv',
 		},
 		canManage && {
 			id: 'orders',
-			label: __( 'Orders (CSV)', 'tiermint' ),
+			label: __( 'Orders (CSV)', 'releasecart' ),
 			path: '/reports/orders/export',
 			params: {
 				from: appliedFrom || undefined,
 				to: appliedTo || undefined,
 			},
-			filename: 'tiermint-orders.csv',
+			filename: 'releasecart-orders.csv',
 		},
 	].filter( Boolean );
 
 	return (
-		<section className="tiermint-admin-screen tiermint-admin-reports">
-			<ScreenHeader title={ __( 'Sales reports', 'tiermint' ) } />
+		<section className="releasecart-admin-screen releasecart-admin-reports">
+			<ScreenHeader title={ __( 'Sales reports', 'releasecart' ) } />
 
-			<div className="tiermint-admin-reports-filters">
-				<div className="tiermint-toolbar">
+			<div className="releasecart-admin-reports-filters">
+				<div className="releasecart-toolbar">
 					<TextControl
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
-						label={ __( 'From', 'tiermint' ) }
+						label={ __( 'From', 'releasecart' ) }
 						type="date"
 						value={ draftFrom }
 						onChange={ setDraftFrom }
@@ -159,7 +161,7 @@ export default function Reports( { boot } ) {
 					<TextControl
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
-						label={ __( 'To', 'tiermint' ) }
+						label={ __( 'To', 'releasecart' ) }
 						type="date"
 						value={ draftTo }
 						onChange={ setDraftTo }
@@ -169,15 +171,15 @@ export default function Reports( { boot } ) {
 						__next40pxDefaultSize
 						onClick={ handleApply }
 					>
-						{ __( 'Apply', 'tiermint' ) }
+						{ __( 'Apply', 'releasecart' ) }
 					</Button>
 					<ExportMenu items={ exports } />
 				</div>
 				{ /* This help applies to both date fields. */ }
-				<p className="tiermint-toolbar__help">
+				<p className="releasecart-toolbar__help">
 					{ __(
 						'Dates are UTC calendar days. Leave both fields blank for the last 30 days.',
-						'tiermint'
+						'releasecart'
 					) }
 				</p>
 			</div>
@@ -197,10 +199,10 @@ export default function Reports( { boot } ) {
 							<p>
 								{ __(
 									'These totals cover the store currency only. Orders and refunds taken in other currencies are reported separately below.',
-									'tiermint'
+									'releasecart'
 								) }
 							</p>
-							<ul className="tiermint-admin-reports-excluded">
+							<ul className="releasecart-admin-reports-excluded">
 								{ Object.entries( excluded ).map(
 									( [ code, amounts ] ) => (
 										<li key={ code }>
@@ -208,7 +210,7 @@ export default function Reports( { boot } ) {
 												/* translators: 1: currency code. 2: gross amount in that currency. 3: refunded amount in that currency. */
 												__(
 													'%1$s: %2$s gross, %3$s refunded',
-													'tiermint'
+													'releasecart'
 												),
 												code,
 												formatMinor(
@@ -227,10 +229,10 @@ export default function Reports( { boot } ) {
 						</Notice>
 					) }
 
-					<div className="tiermint-admin-reports-summary">
+					<div className="releasecart-admin-reports-summary">
 						<Card>
 							<CardBody>
-								<h2>{ __( 'Gross', 'tiermint' ) }</h2>
+								<h2>{ __( 'Gross', 'releasecart' ) }</h2>
 								<p>
 									{ formatMinor(
 										totals.gross_revenue,
@@ -241,7 +243,7 @@ export default function Reports( { boot } ) {
 						</Card>
 						<Card>
 							<CardBody>
-								<h2>{ __( 'Refunds', 'tiermint' ) }</h2>
+								<h2>{ __( 'Refunds', 'releasecart' ) }</h2>
 								<p>
 									{ formatMinor(
 										totals.refund_total,
@@ -252,7 +254,7 @@ export default function Reports( { boot } ) {
 						</Card>
 						<Card>
 							<CardBody>
-								<h2>{ __( 'Net', 'tiermint' ) }</h2>
+								<h2>{ __( 'Net', 'releasecart' ) }</h2>
 								<p>
 									{ formatMinor(
 										totals.net_revenue,
@@ -263,15 +265,15 @@ export default function Reports( { boot } ) {
 						</Card>
 					</div>
 
-					<table className="tiermint-admin-table wp-list-table widefat striped">
+					<table className="releasecart-admin-table wp-list-table widefat striped">
 						<thead>
 							<tr>
-								<th>{ __( 'Date', 'tiermint' ) }</th>
-								<th>{ __( 'Orders', 'tiermint' ) }</th>
-								<th>{ __( 'Refunds', 'tiermint' ) }</th>
-								<th>{ __( 'Gross', 'tiermint' ) }</th>
-								<th>{ __( 'Refund total', 'tiermint' ) }</th>
-								<th>{ __( 'Net', 'tiermint' ) }</th>
+								<th>{ __( 'Date', 'releasecart' ) }</th>
+								<th>{ __( 'Orders', 'releasecart' ) }</th>
+								<th>{ __( 'Refunds', 'releasecart' ) }</th>
+								<th>{ __( 'Gross', 'releasecart' ) }</th>
+								<th>{ __( 'Refund total', 'releasecart' ) }</th>
+								<th>{ __( 'Net', 'releasecart' ) }</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -305,7 +307,7 @@ export default function Reports( { boot } ) {
 									<td colSpan={ 6 }>
 										{ __(
 											'No sales in this period.',
-											'tiermint'
+											'releasecart'
 										) }
 									</td>
 								</tr>
@@ -335,7 +337,7 @@ export default function Reports( { boot } ) {
  */
 export const route = {
 	path: '#/reports',
-	title: __( 'Reports', 'tiermint' ),
-	capability: 'view_tiermint_reports',
+	title: __( 'Reports', 'releasecart' ),
+	capability: 'view_releasecart_reports',
 	component: Reports,
 };

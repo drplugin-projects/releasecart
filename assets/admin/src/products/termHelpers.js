@@ -24,7 +24,7 @@ export function errorDetail( error ) {
 	}
 	return (
 		( error && error.message ) ||
-		__( 'The term could not be saved. Please try again.', 'tiermint' )
+		__( 'The term could not be saved. Please try again.', 'releasecart' )
 	);
 }
 

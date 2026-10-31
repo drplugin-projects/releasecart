@@ -2,12 +2,12 @@
 /**
  * Exception for operations on an unknown webhook endpoint.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Webhooks;
+namespace DrPlugin\WP\ReleaseCart\Webhooks;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;

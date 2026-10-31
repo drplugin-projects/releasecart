@@ -2,16 +2,16 @@
 /**
  * Populates Elementor product/term pickers inside the editor only.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Adapters\Elementor;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor;
 
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Products\ProductTaxonomy;
-use DrPlugin\WP\TierMint\Products\TermService;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Products\ProductTaxonomy;
+use DrPlugin\WP\ReleaseCart\Products\TermService;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -161,7 +161,7 @@ class ControlOptions {
 	private function pageZeroLabel( array $definition ): string {
 		$label = (string) ( $definition['zero_label'] ?? '' );
 
-		return '' !== $label ? $label : __( 'Default', 'tiermint' );
+		return '' !== $label ? $label : __( 'Default', 'releasecart' );
 	}
 
 	/**

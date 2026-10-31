@@ -2,22 +2,22 @@
 /**
  * REST controller for the Discounts management resource.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Discounts\Discount;
-use DrPlugin\WP\TierMint\Discounts\DiscountNotFoundException;
-use DrPlugin\WP\TierMint\Discounts\DiscountPersistenceException;
-use DrPlugin\WP\TierMint\Discounts\DiscountService;
-use DrPlugin\WP\TierMint\Discounts\DiscountValidationException;
-use DrPlugin\WP\TierMint\Discounts\DuplicateDiscountCodeException;
+use DrPlugin\WP\ReleaseCart\Discounts\Discount;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountNotFoundException;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountPersistenceException;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountService;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountValidationException;
+use DrPlugin\WP\ReleaseCart\Discounts\DuplicateDiscountCodeException;
 use Throwable;
 use WP_Error;
 use WP_REST_Request;
@@ -295,7 +295,7 @@ final class DiscountsController extends AbstractRestController {
 	private function applyBatchAction( int $id, string $action ): ?WP_Error {
 		if ( ! array_key_exists( $action, self::BATCH_ACTIONS ) ) {
 			// Keep a stale route schema from reaching the delete branch.
-			return $this->invalidParams( array( __( 'That bulk action is not available for discounts.', 'tiermint' ) ) );
+			return $this->invalidParams( array( __( 'That bulk action is not available for discounts.', 'releasecart' ) ) );
 		}
 
 		$status = self::BATCH_ACTIONS[ $action ];
@@ -332,7 +332,7 @@ final class DiscountsController extends AbstractRestController {
 			$errors = $e->getErrors();
 
 			return $this->error(
-				'tiermint_duplicate_code',
+				'releasecart_duplicate_code',
 				array() === $errors ? $e->getMessage() : implode( ' ', $errors ),
 				400,
 				array( 'errors' => array_values( $errors ) )
@@ -411,7 +411,7 @@ final class DiscountsController extends AbstractRestController {
 	private function collectionArgs(): array {
 		return array(
 			'page'     => array(
-				'description'       => __( 'Current page of the collection.', 'tiermint' ),
+				'description'       => __( 'Current page of the collection.', 'releasecart' ),
 				'type'              => 'integer',
 				'default'           => 1,
 				'minimum'           => 1,
@@ -419,7 +419,7 @@ final class DiscountsController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'per_page' => array(
-				'description'       => __( 'Maximum number of items to return per page.', 'tiermint' ),
+				'description'       => __( 'Maximum number of items to return per page.', 'releasecart' ),
 				'type'              => 'integer',
 				'default'           => 10,
 				'minimum'           => 1,
@@ -428,20 +428,20 @@ final class DiscountsController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'status'   => array(
-				'description'       => __( 'Limit results to a discount status.', 'tiermint' ),
+				'description'       => __( 'Limit results to a discount status.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'active', 'inactive' ),
 				'sanitize_callback' => 'sanitize_key',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'search'   => array(
-				'description'       => __( 'Limit results to those matching a code or name.', 'tiermint' ),
+				'description'       => __( 'Limit results to those matching a code or name.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'orderby'  => array(
-				'description'       => __( 'Sort collection by discount attribute.', 'tiermint' ),
+				'description'       => __( 'Sort collection by discount attribute.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'id', 'code', 'created_at' ),
 				'default'           => 'created_at',
@@ -449,7 +449,7 @@ final class DiscountsController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'order'    => array(
-				'description'       => __( 'Order sort attribute ascending or descending.', 'tiermint' ),
+				'description'       => __( 'Order sort attribute ascending or descending.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'asc', 'desc' ),
 				'default'           => 'desc',
@@ -471,92 +471,92 @@ final class DiscountsController extends AbstractRestController {
 	private function writeArgs(): array {
 		return array(
 			'code'              => array(
-				'description'       => __( 'The discount code the buyer types.', 'tiermint' ),
+				'description'       => __( 'The discount code the buyer types.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'name'              => array(
-				'description'       => __( 'An optional admin label for the discount.', 'tiermint' ),
+				'description'       => __( 'An optional admin label for the discount.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'type'              => array(
-				'description'       => __( 'How the reduction is computed.', 'tiermint' ),
+				'description'       => __( 'How the reduction is computed.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'percent', 'fixed' ),
 				'sanitize_callback' => 'sanitize_key',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'amount_percent'    => array(
-				'description'       => __( 'The percentage off in (0, 100] for a percent discount.', 'tiermint' ),
+				'description'       => __( 'The percentage off in (0, 100] for a percent discount.', 'releasecart' ),
 				'type'              => 'number',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'amount_fixed'      => array(
-				'description'       => __( 'The flat reduction in minor units for a fixed discount.', 'tiermint' ),
+				'description'       => __( 'The flat reduction in minor units for a fixed discount.', 'releasecart' ),
 				'type'              => 'integer',
 				'sanitize_callback' => 'absint',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'auto'              => array(
-				'description'       => __( 'Whether the discount applies automatically, with no code the shopper types.', 'tiermint' ),
+				'description'       => __( 'Whether the discount applies automatically, with no code the shopper types.', 'releasecart' ),
 				'type'              => 'boolean',
 				'sanitize_callback' => 'rest_sanitize_boolean',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'scope_type'        => array(
-				'description'       => __( 'What an automatic discount is scoped to: all products, chosen products, or chosen categories.', 'tiermint' ),
+				'description'       => __( 'What an automatic discount is scoped to: all products, chosen products, or chosen categories.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'all', 'products', 'categories' ),
 				'sanitize_callback' => 'sanitize_key',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'product_ids'       => array(
-				'description'       => __( 'Product ids the discount is scoped to (omit or empty for all products).', 'tiermint' ),
+				'description'       => __( 'Product ids the discount is scoped to (omit or empty for all products).', 'releasecart' ),
 				'type'              => 'array',
 				'items'             => array( 'type' => 'integer' ),
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'category_ids'      => array(
-				'description'       => __( 'Category term ids an automatic categories-scoped discount is scoped to (omit or empty for none).', 'tiermint' ),
+				'description'       => __( 'Category term ids an automatic categories-scoped discount is scoped to (omit or empty for none).', 'releasecart' ),
 				'type'              => 'array',
 				'items'             => array( 'type' => 'integer' ),
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'min_total'         => array(
-				'description'       => __( 'The minimum order subtotal in minor units the discount requires.', 'tiermint' ),
+				'description'       => __( 'The minimum order subtotal in minor units the discount requires.', 'releasecart' ),
 				'type'              => 'integer',
 				'sanitize_callback' => 'absint',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'max_uses'          => array(
-				'description'       => __( 'The total number of times the discount may be used.', 'tiermint' ),
+				'description'       => __( 'The total number of times the discount may be used.', 'releasecart' ),
 				'type'              => 'integer',
 				'sanitize_callback' => 'absint',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'once_per_customer' => array(
-				'description'       => __( 'Whether a customer may redeem the discount only once.', 'tiermint' ),
+				'description'       => __( 'Whether a customer may redeem the discount only once.', 'releasecart' ),
 				'type'              => 'boolean',
 				'sanitize_callback' => 'rest_sanitize_boolean',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'starts_at'         => array(
-				'description'       => __( 'The UTC date and time the discount becomes valid (Y-m-d H:i:s).', 'tiermint' ),
+				'description'       => __( 'The UTC date and time the discount becomes valid (Y-m-d H:i:s).', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'expires_at'        => array(
-				'description'       => __( 'The UTC date and time the discount stops being valid (Y-m-d H:i:s).', 'tiermint' ),
+				'description'       => __( 'The UTC date and time the discount stops being valid (Y-m-d H:i:s).', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'status'            => array(
-				'description'       => __( 'Whether the discount is switched on or off.', 'tiermint' ),
+				'description'       => __( 'Whether the discount is switched on or off.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'active', 'inactive' ),
 				'sanitize_callback' => 'sanitize_key',
@@ -575,7 +575,7 @@ final class DiscountsController extends AbstractRestController {
 	private function idArgs(): array {
 		return array(
 			'id' => array(
-				'description'       => __( 'Unique discount identifier.', 'tiermint' ),
+				'description'       => __( 'Unique discount identifier.', 'releasecart' ),
 				'type'              => 'integer',
 				'required'          => true,
 				'sanitize_callback' => 'absint',

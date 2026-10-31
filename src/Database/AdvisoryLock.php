@@ -2,12 +2,12 @@
 /**
  * Generic MySQL advisory lock for serializing cross-request critical sections.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Database;
+namespace DrPlugin\WP\ReleaseCart\Database;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -85,6 +85,6 @@ class AdvisoryLock {
 	private function lockName( string $key ): string {
 		$scope = md5( (string) $this->wpdb->dbname . '|' . (string) $this->wpdb->prefix );
 
-		return substr( 'tiermint_' . $this->lockSpace . '_' . $key . '_' . $scope, 0, 64 );
+		return substr( 'releasecart_' . $this->lockSpace . '_' . $key . '_' . $scope, 0, 64 );
 	}
 }

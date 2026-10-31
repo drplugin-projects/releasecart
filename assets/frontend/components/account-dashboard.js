@@ -1,5 +1,5 @@
 /**
- * TierMint account dashboard tabs enhancement.
+ * ReleaseCart account dashboard tabs enhancement.
  *
  * Add accessible tabs to the server-rendered dashboard.
  */
@@ -80,7 +80,7 @@ function enhance( root ) {
 	function applyOrientation() {
 		const value = window
 			.getComputedStyle( tablist )
-			.getPropertyValue( '--tiermint-account-orientation' )
+			.getPropertyValue( '--releasecart-account-orientation' )
 			.trim();
 
 		orientation = 'vertical' === value ? 'vertical' : 'horizontal';
@@ -138,5 +138,5 @@ function enhance( root ) {
 }
 
 document
-	.querySelectorAll( '[data-tiermint-account-dashboard]' )
+	.querySelectorAll( '[data-releasecart-account-dashboard]' )
 	.forEach( enhance );

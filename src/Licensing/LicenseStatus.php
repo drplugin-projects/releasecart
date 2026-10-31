@@ -2,18 +2,18 @@
 /**
  * License lifecycle status enum.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Licensing;
+namespace DrPlugin\WP\ReleaseCart\Licensing;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 /**
- * License states stored in `tiermint_licenses.status`.
+ * License states stored in `releasecart_licenses.status`.
  * {@see LicenseStateMachine} controls state changes.
  *
  * @since 1.0.0

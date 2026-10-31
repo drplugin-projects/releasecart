@@ -1,21 +1,21 @@
 <?php
 /**
- * Registers TierMint's GDPR exporter and eraser with WordPress.
+ * Registers ReleaseCart's GDPR exporter and eraser with WordPress.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Privacy;
+namespace DrPlugin\WP\ReleaseCart\Privacy;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
 
 /**
- * Register TierMint privacy tools and policy text.
+ * Register ReleaseCart privacy tools and policy text.
  *
  * @since 1.0.0
  */
@@ -26,7 +26,7 @@ final class PrivacyRegistrar implements Hookable {
 	 *
 	 * @var string
 	 */
-	private const KEY = 'tiermint';
+	private const KEY = 'releasecart';
 
 	/**
 	 * Wire the registrar with the exporter and eraser.
@@ -56,12 +56,12 @@ final class PrivacyRegistrar implements Hookable {
 	}
 
 	/**
-	 * Add TierMint's exporter to the registered set.
+	 * Add ReleaseCart's exporter to the registered set.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param array<string, array<string, mixed>> $exporters The registered exporters.
-	 * @return array<string, array<string, mixed>> The exporters including TierMint's.
+	 * @return array<string, array<string, mixed>> The exporters including ReleaseCart's.
 	 */
 	public function registerExporter( array $exporters ): array {
 		$exporters[ self::KEY ] = array(
@@ -73,12 +73,12 @@ final class PrivacyRegistrar implements Hookable {
 	}
 
 	/**
-	 * Add TierMint's eraser to the registered set.
+	 * Add ReleaseCart's eraser to the registered set.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param array<string, array<string, mixed>> $erasers The registered erasers.
-	 * @return array<string, array<string, mixed>> The erasers including TierMint's.
+	 * @return array<string, array<string, mixed>> The erasers including ReleaseCart's.
 	 */
 	public function registerEraser( array $erasers ): array {
 		$erasers[ self::KEY ] = array(
@@ -91,7 +91,7 @@ final class PrivacyRegistrar implements Hookable {
 
 	/**
 	 * Contribute suggested privacy-policy text describing the personal data
-	 * TierMint stores, for the WordPress privacy-policy guide.
+	 * ReleaseCart stores, for the WordPress privacy-policy guide.
 	 *
 	 * @since 1.0.0
 	 *
@@ -104,10 +104,10 @@ final class PrivacyRegistrar implements Hookable {
 
 		$content = wp_kses_post(
 			wpautop(
-				__( 'When you buy from this store, TierMint records your email address, order details, billing address, company name, tax ID, license keys, the sites where you activate a license, and the IP address used to download files. Order records are kept for tax and accounting purposes even after an erasure request; their personal fields are removed or anonymized rather than the record being deleted.', 'tiermint' )
+				__( 'When you buy from this store, ReleaseCart records your email address, order details, billing address, company name, tax ID, license keys, the sites where you activate a license, and the IP address used to download files. Order records are kept for tax and accounting purposes even after an erasure request; their personal fields are removed or anonymized rather than the record being deleted.', 'releasecart' )
 			)
 		);
 
-		wp_add_privacy_policy_content( 'TierMint', $content );
+		wp_add_privacy_policy_content( 'ReleaseCart', $content );
 	}
 }

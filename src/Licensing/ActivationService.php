@@ -2,19 +2,19 @@
 /**
  * Activation domain service: activate, deactivate, limits, transfer.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Licensing;
+namespace DrPlugin\WP\ReleaseCart\Licensing;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use DrPlugin\WP\TierMint\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
 
 /**
  * Apply activation limits and site transfer rules.
@@ -195,7 +195,7 @@ class ActivationService {
 		 * @param License    $license The license the site was activated for.
 		 * @param Activation $fresh   The deactivated activation.
 		 */
-		do_action( 'tiermint_license_deactivated', $license, $fresh );
+		do_action( 'releasecart_license_deactivated', $license, $fresh );
 
 		$this->logger->log(
 			'license',
@@ -309,12 +309,12 @@ class ActivationService {
 	private function assertActivatable( License $license ): void {
 		if ( LicenseStatus::Expired === $license->status() ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseValidationException( __( 'This license has expired. To activate new sites, buy a new license and use its key.', 'tiermint' ) );
+			throw new LicenseValidationException( __( 'This license has expired. To activate new sites, buy a new license and use its key.', 'releasecart' ) );
 		}
 
 		if ( LicenseStatus::Disabled === $license->status() ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseValidationException( __( 'This license has been disabled and cannot be activated.', 'tiermint' ) );
+			throw new LicenseValidationException( __( 'This license has been disabled and cannot be activated.', 'releasecart' ) );
 		}
 	}
 
@@ -336,7 +336,7 @@ class ActivationService {
 		 * @param License    $license    The license the site activated against.
 		 * @param Activation $activation The active activation.
 		 */
-		do_action( 'tiermint_license_activated', $license, $activation );
+		do_action( 'releasecart_license_activated', $license, $activation );
 
 		$this->logger->log(
 			'license',

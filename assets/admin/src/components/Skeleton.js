@@ -31,10 +31,10 @@ function times( n ) {
  */
 function Region( { variant, panel, compact, children } ) {
 	const classes = [
-		'tiermint-skeleton',
-		`tiermint-skeleton--${ variant }`,
-		panel ? 'tiermint-skeleton--panel' : '',
-		compact ? `tiermint-skeleton--${ variant }-compact` : '',
+		'releasecart-skeleton',
+		`releasecart-skeleton--${ variant }`,
+		panel ? 'releasecart-skeleton--panel' : '',
+		compact ? `releasecart-skeleton--${ variant }-compact` : '',
 	]
 		.filter( Boolean )
 		.join( ' ' );
@@ -42,7 +42,7 @@ function Region( { variant, panel, compact, children } ) {
 	return (
 		<div className={ classes } role="status" data-testid="skeleton">
 			<span className="screen-reader-text">
-				{ __( 'Loading', 'tiermint' ) }
+				{ __( 'Loading', 'releasecart' ) }
 			</span>
 			{ children }
 		</div>
@@ -61,8 +61,8 @@ function lineBars( lines ) {
 			key={ i }
 			className={
 				i === lines - 1
-					? 'tiermint-skeleton__line tiermint-skeleton__line--short'
-					: 'tiermint-skeleton__line'
+					? 'releasecart-skeleton__line releasecart-skeleton__line--short'
+					: 'releasecart-skeleton__line'
 			}
 		/>
 	) );
@@ -107,17 +107,17 @@ export function SkeletonTable( { rows = 5, columns = 4 } ) {
 		times( columns ).map( ( i ) => (
 			<div
 				key={ `${ rowKey }-${ i }` }
-				className="tiermint-skeleton__cell"
+				className="releasecart-skeleton__cell"
 			/>
 		) );
 
 	return (
 		<Region variant="table">
-			<div className="tiermint-skeleton__row tiermint-skeleton__row--head">
+			<div className="releasecart-skeleton__row releasecart-skeleton__row--head">
 				{ cells( 'head' ) }
 			</div>
 			{ times( rows ).map( ( i ) => (
-				<div key={ i } className="tiermint-skeleton__row">
+				<div key={ i } className="releasecart-skeleton__row">
 					{ cells( i ) }
 				</div>
 			) ) }
@@ -136,9 +136,9 @@ export function SkeletonForm( { fields = 4 } ) {
 	return (
 		<Region variant="form">
 			{ times( fields ).map( ( i ) => (
-				<div key={ i } className="tiermint-skeleton__field">
-					<div className="tiermint-skeleton__label" />
-					<div className="tiermint-skeleton__control" />
+				<div key={ i } className="releasecart-skeleton__field">
+					<div className="releasecart-skeleton__label" />
+					<div className="releasecart-skeleton__control" />
 				</div>
 			) ) }
 		</Region>
@@ -158,9 +158,9 @@ export function SkeletonCards( { cards = 4, compact = false } ) {
 	return (
 		<Region variant="cards" compact={ compact }>
 			{ times( cards ).map( ( i ) => (
-				<div key={ i } className="tiermint-skeleton__card">
-					<div className="tiermint-skeleton__label" />
-					<div className="tiermint-skeleton__value" />
+				<div key={ i } className="releasecart-skeleton__card">
+					<div className="releasecart-skeleton__label" />
+					<div className="releasecart-skeleton__value" />
 				</div>
 			) ) }
 		</Region>

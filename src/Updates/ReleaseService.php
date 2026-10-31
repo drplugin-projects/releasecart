@@ -2,22 +2,22 @@
 /**
  * Release lifecycle service.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Updates;
+namespace DrPlugin\WP\ReleaseCart\Updates;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductNotFoundException;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Storage\StorageException;
-use DrPlugin\WP\TierMint\Storage\StorageManager;
-use DrPlugin\WP\TierMint\Storage\StoredFile;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductNotFoundException;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Storage\StorageException;
+use DrPlugin\WP\ReleaseCart\Storage\StorageManager;
+use DrPlugin\WP\ReleaseCart\Storage\StoredFile;
 
 /**
  * Release lifecycle service.
@@ -138,7 +138,7 @@ class ReleaseService {
 		$this->validateVersion( $version, $errors );
 
 		if ( ! $this->hasPackage( $file ) ) {
-			$errors[] = __( 'A release must include a package file.', 'tiermint' );
+			$errors[] = __( 'A release must include a package file.', 'releasecart' );
 		}
 
 		if ( array() !== $errors ) {
@@ -251,7 +251,7 @@ class ReleaseService {
 		 *
 		 * @param Release $published The freshly published release, reloaded with its stamped `released_at`.
 		 */
-		do_action( 'tiermint_release_published', $published );
+		do_action( 'releasecart_release_published', $published );
 
 		return $published;
 	}
@@ -304,7 +304,7 @@ class ReleaseService {
 		$release = $this->requireRelease( $releaseId );
 
 		if ( $release->isPublished() ) {
-			$messages = array( __( 'A published release cannot be deleted. Yank it first, then delete it.', 'tiermint' ) );
+			$messages = array( __( 'A published release cannot be deleted. Yank it first, then delete it.', 'releasecart' ) );
 
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
 			throw ReleaseValidationException::withErrors( $messages );
@@ -375,7 +375,7 @@ class ReleaseService {
 		}
 
 		if ( array_key_exists( 'version', $fields ) ) {
-			$messages = array( __( "A published or yanked release's version is locked. To ship a different version, yank this release and publish a new one.", 'tiermint' ) );
+			$messages = array( __( "A published or yanked release's version is locked. To ship a different version, yank this release and publish a new one.", 'releasecart' ) );
 
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
 			throw ReleaseValidationException::withErrors( $messages );
@@ -566,7 +566,7 @@ class ReleaseService {
 
 		$message = sprintf(
 			/* translators: 1: the version being published, 2: the current latest published version. */
-			__( 'Version %1$s is not newer than the current latest published version %2$s. Publish a higher version, or override to re-publish deliberately.', 'tiermint' ),
+			__( 'Version %1$s is not newer than the current latest published version %2$s. Publish a higher version, or override to re-publish deliberately.', 'releasecart' ),
 			$release->version(),
 			$latest->version()
 		);
@@ -586,14 +586,14 @@ class ReleaseService {
 	 */
 	private function validateVersion( string $version, array &$errors ): void {
 		if ( '' === $version ) {
-			$errors[] = __( 'A release version is required.', 'tiermint' );
+			$errors[] = __( 'A release version is required.', 'releasecart' );
 
 			return;
 		}
 
 		if ( 1 !== preg_match( self::VERSION_PATTERN, $version ) ) {
 			/* translators: %s: the submitted version string. */
-			$errors[] = sprintf( __( '"%s" is not a valid version. Use one to four dot-separated numbers, with an optional pre-release suffix like "-beta".', 'tiermint' ), $version );
+			$errors[] = sprintf( __( '"%s" is not a valid version. Use one to four dot-separated numbers, with an optional pre-release suffix like "-beta".', 'releasecart' ), $version );
 		}
 	}
 
@@ -617,7 +617,7 @@ class ReleaseService {
 		$zip = new \ZipArchive();
 
 		if ( true !== $zip->open( $tmpPath ) ) {
-			$messages = array( __( 'The uploaded package could not be read as a zip archive.', 'tiermint' ) );
+			$messages = array( __( 'The uploaded package could not be read as a zip archive.', 'releasecart' ) );
 
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
 			throw ReleaseValidationException::withErrors( $messages );
@@ -646,7 +646,7 @@ class ReleaseService {
 		if ( ! $matched ) {
 			$message = sprintf(
 				/* translators: %1$s: the product's expected update slug. */
-				__( 'The package does not contain a plugin header for the expected update slug "%1$s". Make sure the zip has a "%1$s/%1$s.php" (or similar) file with a "Plugin Name:" header.', 'tiermint' ),
+				__( 'The package does not contain a plugin header for the expected update slug "%1$s". Make sure the zip has a "%1$s/%1$s.php" (or similar) file with a "Plugin Name:" header.', 'releasecart' ),
 				$updateSlug
 			);
 

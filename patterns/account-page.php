@@ -4,14 +4,14 @@
  *
  * Includes the account dashboard and a checkout return receipt.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 defined( 'ABSPATH' ) || exit;
 
 return array(
-	'title'       => __( 'Account page', 'tiermint' ),
-	'description' => __( 'A complete customer account page: purchase receipt (after checkout), purchases, downloads, and license management.', 'tiermint' ),
-	'blockTypes'  => array( 'tiermint/account-dashboard', 'tiermint/purchase-confirmation' ),
-	'content'     => \DrPlugin\WP\TierMint\Frontend\StorefrontPageContent::account(),
+	'title'       => __( 'Account page', 'releasecart' ),
+	'description' => __( 'A complete customer account page: purchase receipt (after checkout), purchases, downloads, and license management.', 'releasecart' ),
+	'blockTypes'  => array( 'releasecart/account-dashboard', 'releasecart/purchase-confirmation' ),
+	'content'     => \DrPlugin\WP\ReleaseCart\Frontend\StorefrontPageContent::account(),
 );

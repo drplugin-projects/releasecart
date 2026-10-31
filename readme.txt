@@ -1,4 +1,4 @@
-=== TierMint ===
+=== ReleaseCart ===
 Contributors: drplugin
 Tags: digital downloads, sell digital products, software licensing, license keys, stripe
 Requires at least: 6.9
@@ -8,17 +8,17 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Sell plugins and digital downloads with Stripe payments, license keys and an update server. TierMint takes no commission on your sales.
+Sell plugins and digital downloads with Stripe payments, license keys and an update server. ReleaseCart takes no commission on your sales.
 
 == Description ==
 
-TierMint is a free WordPress plugin for selling plugins, themes and other digital products from your own site. It takes card payments through Stripe, issues a license key with each sale and runs an update server, so the plugins you sell get their updates on your customers' Plugins screen.
+ReleaseCart is a free WordPress plugin for selling plugins, themes and other digital products from your own site. It takes card payments through Stripe, issues a license key with each sale and runs an update server, so the plugins you sell get their updates on your customers' Plugins screen.
 
-TierMint takes no commission and needs no license key of its own. Payments go to your own Stripe account.
+ReleaseCart takes no commission and needs no license key of its own. Payments go to your own Stripe account.
 
 = License keys for the software you sell =
 
-Each pricing tier sets an activation limit and a license length, from a number of days to lifetime. When an order completes, TierMint issues a key for each licensed product in it. Customers activate and deactivate their sites from their account page. Local and staging sites, such as `localhost` or `staging.example.com`, do not count toward the activation limit.
+Each pricing tier sets an activation limit and a license length, from a number of days to lifetime. When an order completes, ReleaseCart issues a key for each licensed product in it. Customers activate and deactivate their sites from their account page. Local and staging sites, such as `localhost` or `staging.example.com`, do not count toward the activation limit.
 
 Your plugin talks to the store through a public REST API to activate, validate and deactivate a key.
 
@@ -26,7 +26,7 @@ Your plugin talks to the store through a public REST API to activate, validate a
 
 Upload a release with its version number and changelog. Sites with a valid license see it on their Plugins screen, read the changelog under View details and update like any other plugin. Every download goes through a signed link that expires, and the license key never appears in it.
 
-Add the free [update client](https://drplugin.com/docs/tiermint/licensing/update-client) to the plugin you sell to connect it to your store.
+Add the free [update client](https://drplugin.com/docs) to the plugin you sell to connect it to your store.
 
 = Store features =
 
@@ -45,38 +45,36 @@ Add the free [update client](https://drplugin.com/docs/tiermint/licensing/update
 
 Activation creates the Store, Product, Checkout, Account, Sign in and Reset password pages, plus Register when registration is open. You can swap any of them for your own page.
 
-The storefront comes as 20 blocks, each with a matching shortcode, and five block patterns for pricing, product, checkout and account pages. The blocks work in block themes and classic themes. Ten Elementor widgets work with the free Elementor plugin. Set colors, corner radius and font in the settings, or override the `--tiermint-*` CSS custom properties.
+The storefront comes as 20 blocks, each with a matching shortcode, and five block patterns for pricing, product, checkout and account pages. The blocks work in block themes and classic themes. Ten Elementor widgets work with the free Elementor plugin. Set colors, corner radius and font in the settings, or override the `--releasecart-*` CSS custom properties.
 
 = Documentation =
 
-* [Install TierMint](https://drplugin.com/docs/tiermint/getting-started/installation)
-* [License keys and activations](https://drplugin.com/docs/tiermint/licensing/licensing)
-* [Update client for your plugins](https://drplugin.com/docs/tiermint/licensing/update-client)
-* [Licensing REST API](https://drplugin.com/docs/tiermint/developers/licensing-api)
-* [All TierMint documentation](https://drplugin.com/docs/tiermint)
+Guides for setup, license keys, the update client and the licensing REST API are in the [ReleaseCart documentation](https://drplugin.com/docs).
 
-= TierMint Pro =
+= ReleaseCart Pro =
 
-[TierMint Pro](https://drplugin.com/plugins/tiermint) is a separate plugin that adds to this one, so both stay active. It adds subscriptions through Stripe and PayPal, plan changes for Stripe subscribers, failed payment reminders, abandoned cart emails, EU and UK VAT on one-time sales, PDF invoices, signed license answers, offline and team licenses, release channels, an analytics dashboard, an affiliate program and imports from other stores.
+[ReleaseCart Pro](https://drplugin.com) is a separate plugin that adds to this one, so both stay active. It adds subscriptions through Stripe and PayPal, plan changes for Stripe subscribers, failed payment reminders, abandoned cart emails, EU and UK VAT on one-time sales, PDF invoices, signed license answers, offline and team licenses, release channels, an analytics dashboard, an affiliate program and imports from other stores.
 
 = External services =
 
-TierMint connects to Stripe, and to webhook endpoints you add yourself. It makes no other outbound requests and sends no telemetry.
+ReleaseCart connects to Stripe, and to webhook endpoints you add yourself. It makes no other outbound requests and sends no telemetry.
 
-**Stripe (payments).** When you connect a Stripe account, your server calls the Stripe API at api.stripe.com to create and refund payments. It sends the amount, the currency and TierMint's order identifiers. On checkout pages the buyer's browser loads Stripe.js from js.stripe.com, so Stripe collects the card details directly. Both happen only after you add Stripe keys, and only during checkout or a refund. See the [Stripe terms of service](https://stripe.com/legal) and [privacy policy](https://stripe.com/privacy).
+**Stripe (payments).** When you connect a Stripe account, your server calls the Stripe API at api.stripe.com to create and refund payments. It sends the amount, the currency and ReleaseCart's order identifiers. On checkout pages the buyer's browser loads Stripe.js from js.stripe.com, so Stripe collects the card details directly. Both happen only after you add Stripe keys, and only during checkout or a refund. See the [Stripe terms of service](https://stripe.com/legal) and [privacy policy](https://stripe.com/privacy).
 
-**Your webhook endpoints (optional).** If you add endpoints under TierMint > Settings > Webhooks, TierMint sends signed JSON notifications about orders, refunds, licenses and new customers to those URLs. They include customer email addresses and full license keys. Nothing is sent until you add an endpoint.
+**Your webhook endpoints (optional).** If you add endpoints under ReleaseCart > Settings > Webhooks, ReleaseCart sends signed JSON notifications about orders, refunds, licenses and new customers to those URLs. They include customer email addresses and full license keys. Nothing is sent until you add an endpoint.
 
 = Source code =
 
-The JavaScript in `assets/admin/build` and `assets/blocks/build` is compiled with `@wordpress/scripts`. The source and build setup are at [github.com/drplugin-projects/tiermint](https://github.com/drplugin-projects/tiermint). To rebuild, run `npm install`, then `npm run build`.
+The JavaScript and CSS in `assets/admin/build` and `assets/blocks/build` are compiled with `@wordpress/scripts`. The source and build setup are at [github.com/drplugin-projects/releasecart](https://github.com/drplugin-projects/releasecart). To rebuild, run `npm install`, then `npm run build`.
+
+Bundled libraries: Action Scheduler 4.2.0 (GPLv3 or later), installed by Composer in `vendor/woocommerce/action-scheduler`, and TanStack Query 5.101.2 (MIT), compiled into the admin JavaScript.
 
 == Installation ==
 
-1. In WordPress, go to Plugins > Add New Plugin, search for "TierMint", then install and activate it.
-2. Open TierMint > Settings > General and set your store currency before you add products. Prices are not converted if you change it later.
-3. In your Stripe Dashboard, add a webhook endpoint at `https://your-site/wp-json/tiermint/v1/webhooks/stripe` with the events `payment_intent.succeeded`, `payment_intent.payment_failed` and `charge.refunded`. Then open TierMint > Settings > Payments, add your Stripe keys and the endpoint's signing secret, and leave Stripe mode on Test.
-4. Check the storefront pages under TierMint > Settings > General. Activation created them, and you can pick your own pages instead.
+1. In WordPress, go to Plugins > Add New Plugin, search for "ReleaseCart", then install and activate it.
+2. Open ReleaseCart > Settings > General and set your store currency before you add products. Prices are not converted if you change it later.
+3. In your Stripe Dashboard, add a webhook endpoint at `https://your-site/wp-json/releasecart/v1/webhooks/stripe` with the events `payment_intent.succeeded`, `payment_intent.payment_failed` and `charge.refunded`. Then open ReleaseCart > Settings > Payments, add your Stripe keys and the endpoint's signing secret, and leave Stripe mode on Test.
+4. Check the storefront pages under ReleaseCart > Settings > General. Activation created them, and you can pick your own pages instead.
 5. Add a product with at least one pricing tier. Turn on Licensed product if you sell software.
 6. Buy it with a Stripe test card, then check that the receipt email and the license key arrive.
 
@@ -84,13 +82,13 @@ You need WordPress 6.9 or newer, PHP 8.1 or newer, and HTTPS for live card payme
 
 == Frequently Asked Questions ==
 
-= Does TierMint charge a commission on sales? =
+= Does ReleaseCart charge a commission on sales? =
 
 No. Payments go to your own Stripe account, and you pay only Stripe's own fees. The plugin needs no license key of its own.
 
 = How do my customers get updates for the plugins I sell? =
 
-Add the TierMint update client to each plugin you sell. It asks your store for new versions, and WordPress shows them on the Plugins screen like any other update. A site with an expired or unknown license still sees the new version, but gets no download link. The client works for plugins, not themes.
+Add the ReleaseCart update client to each plugin you sell. It asks your store for new versions, and WordPress shows them on the Plugins screen like any other update. A site with an expired or unknown license still sees the new version, but gets no download link. The client works for plugins, not themes.
 
 = Can I sell themes, ebooks or templates? =
 
@@ -106,31 +104,31 @@ The update client keeps using its last good answer for up to 72 hours. After tha
 
 = Do I need a Stripe account? =
 
-Yes, for card payments. Card details go from the buyer's browser to Stripe and never reach your server. Stripe handles 3D Secure. TierMint Pro adds PayPal.
+Yes, for card payments. Card details go from the buyer's browser to Stripe and never reach your server. Stripe handles 3D Secure. ReleaseCart Pro adds PayPal.
 
 = Can buyers check out as guests? =
 
-Yes, it is on by default. When a guest later registers or signs in with the same email, TierMint links their orders and licenses to the account.
+Yes, it is on by default. When a guest later registers or signs in with the same email, ReleaseCart links their orders and licenses to the account.
 
 = Can I move my store from Easy Digital Downloads? =
 
-Yes, with TierMint Pro. It imports products, customers, orders, license keys and activations from Easy Digital Downloads 3.x, License Manager for WooCommerce and SureCart. Subscriptions, discount codes and download files are not imported.
+Yes, with ReleaseCart Pro. It imports products, customers, orders, license keys and activations from Easy Digital Downloads 3.x, License Manager for WooCommerce and SureCart. Subscriptions, discount codes and download files are not imported.
 
-= Does TierMint advertise TierMint Pro? =
+= Does ReleaseCart advertise ReleaseCart Pro? =
 
-Only on its own admin screens, and only while Pro is not active: a TierMint Pro menu item and the screen it opens, a TierMint Pro tab under Settings, and a one-line note you can dismiss. Nothing shows on other admin screens or on your site.
+Only on its own admin screens, and only while Pro is not active: a ReleaseCart Pro menu item and the screen it opens, a ReleaseCart Pro tab under Settings, and a one-line note you can dismiss. Nothing shows on other admin screens or on your site.
 
-= What happens to my data when I delete TierMint? =
+= What happens to my data when I delete ReleaseCart? =
 
-TierMint keeps it unless you turn on Delete all data on uninstall under TierMint > Settings > General before you delete the plugin. That setting removes its tables, options, capabilities, package files and the pages it created. On multisite, each site's own setting decides.
+ReleaseCart keeps it unless you turn on Delete all data on uninstall under ReleaseCart > Settings > General before you delete the plugin. That setting removes its tables, options, capabilities, package files and the pages it created. On multisite, each site's own setting decides.
 
-= How does TierMint handle personal data? =
+= How does ReleaseCart handle personal data? =
 
 Its data is in the WordPress Export Personal Data and Erase Personal Data tools. Erasing anonymizes the customer and their orders, which stay for your accounts, and disables their licenses.
 
-= Does TierMint have a REST API? =
+= Does ReleaseCart have a REST API? =
 
-Yes, under `tiermint/v1`. The licensing routes are public and take the license key. The management routes need a capability and accept a session, an Application Password or a TierMint API key.
+Yes, under `releasecart/v1`. The licensing routes are public and take the license key. The management routes need a capability and accept a session, an Application Password or a ReleaseCart API key.
 
 == Screenshots ==
 

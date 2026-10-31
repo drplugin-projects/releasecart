@@ -2,27 +2,27 @@
 /**
  * The cart-summary front-end component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Discounts\DiscountComposer;
-use DrPlugin\WP\TierMint\Discounts\DiscountService;
-use DrPlugin\WP\TierMint\Frontend\AbstractComponent;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\SamplePreview;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\StoredDiscountPreview;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\TierMetaPresenter;
-use DrPlugin\WP\TierMint\Frontend\RenderContext;
-use DrPlugin\WP\TierMint\Orders\Cart;
-use DrPlugin\WP\TierMint\Orders\CartLine;
-use DrPlugin\WP\TierMint\Orders\CartService;
-use DrPlugin\WP\TierMint\Orders\OrderService;
-use DrPlugin\WP\TierMint\Products\ProductPrice;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Util\Money;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountComposer;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountService;
+use DrPlugin\WP\ReleaseCart\Frontend\AbstractComponent;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\SamplePreview;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\StoredDiscountPreview;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\TierMetaPresenter;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContext;
+use DrPlugin\WP\ReleaseCart\Orders\Cart;
+use DrPlugin\WP\ReleaseCart\Orders\CartLine;
+use DrPlugin\WP\ReleaseCart\Orders\CartService;
+use DrPlugin\WP\ReleaseCart\Orders\OrderService;
+use DrPlugin\WP\ReleaseCart\Products\ProductPrice;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Util\Money;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -104,30 +104,30 @@ class CartSummary extends AbstractComponent {
 			'show_actions'      => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show cart actions', 'tiermint' ),
-				'description' => __( 'Show remove and quantity-update controls for each line.', 'tiermint' ),
+				'label'       => __( 'Show cart actions', 'releasecart' ),
+				'description' => __( 'Show remove and quantity-update controls for each line.', 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'checkout_page'     => array(
 				'type'        => 'integer',
 				'default'     => 0,
-				'label'       => __( 'Checkout page', 'tiermint' ),
-				'description' => __( 'The page the checkout link points to. Leave at the default to use the site-wide checkout page setting.', 'tiermint' ),
+				'label'       => __( 'Checkout page', 'releasecart' ),
+				'description' => __( 'The page the checkout link points to. Leave at the default to use the site-wide checkout page setting.', 'releasecart' ),
 				'control'     => 'page_select',
-				'zero_label'  => __( 'Default (site checkout page)', 'tiermint' ),
+				'zero_label'  => __( 'Default (site checkout page)', 'releasecart' ),
 			),
 			'title'             => array(
 				'type'        => 'string',
-				'default'     => __( 'Your cart', 'tiermint' ),
-				'label'       => __( 'Title', 'tiermint' ),
-				'description' => __( 'Heading shown above the cart. Leave empty to hide the heading.', 'tiermint' ),
+				'default'     => __( 'Your cart', 'releasecart' ),
+				'label'       => __( 'Title', 'releasecart' ),
+				'description' => __( 'Heading shown above the cart. Leave empty to hide the heading.', 'releasecart' ),
 				'control'     => 'text',
 			),
 			'show_plan_details' => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show plan details', 'tiermint' ),
-				'description' => __( "Show each line's license length and activation limit under the product name.", 'tiermint' ),
+				'label'       => __( 'Show plan details', 'releasecart' ),
+				'description' => __( "Show each line's license length and activation limit under the product name.", 'releasecart' ),
 				'control'     => 'toggle',
 			),
 		);
@@ -197,7 +197,7 @@ class CartSummary extends AbstractComponent {
 	 * @return string The label, stripped of tags; "Total" when a listener returns nothing usable.
 	 */
 	private function totalLabel(): string {
-		$default = __( 'Total', 'tiermint' );
+		$default = __( 'Total', 'releasecart' );
 
 		/**
 		 * Filters the label of the cart summary's last row.
@@ -209,7 +209,7 @@ class CartSummary extends AbstractComponent {
 		 *
 		 * @param string $label The label. Default "Total".
 		 */
-		$label = apply_filters( 'tiermint_cart_summary_total_label', $default );
+		$label = apply_filters( 'releasecart_cart_summary_total_label', $default );
 		$label = is_string( $label ) ? wp_strip_all_tags( $label ) : '';
 
 		return '' === $label ? $default : $label;
@@ -300,7 +300,7 @@ class CartSummary extends AbstractComponent {
 		$pageId = $checkoutPageAttr;
 
 		if ( $pageId <= 0 ) {
-			$settings = get_option( 'tiermint_settings' );
+			$settings = get_option( 'releasecart_settings' );
 
 			if ( is_array( $settings ) && isset( $settings['pages']['checkout'] ) ) {
 				$pageId = (int) $settings['pages']['checkout'];

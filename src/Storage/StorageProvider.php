@@ -2,12 +2,12 @@
 /**
  * Contract for a file storage backend.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Storage;
+namespace DrPlugin\WP\ReleaseCart\Storage;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;

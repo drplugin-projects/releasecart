@@ -2,15 +2,15 @@
 /**
  * Resolves the buyers of a page of orders in one batched read.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Orders;
+namespace DrPlugin\WP\ReleaseCart\Orders;
 
-use DrPlugin\WP\TierMint\Customers\Customer;
-use DrPlugin\WP\TierMint\Customers\CustomerService;
+use DrPlugin\WP\ReleaseCart\Customers\Customer;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerService;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;

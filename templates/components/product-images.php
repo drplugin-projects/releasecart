@@ -2,19 +2,19 @@
 /**
  * Product images component template.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  *
  * @var array{image: string|null} $data View data supplied by the component.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$tiermint_image = ( isset( $data['image'] ) && is_string( $data['image'] ) ) ? $data['image'] : '';
+$releasecart_image = ( isset( $data['image'] ) && is_string( $data['image'] ) ) ? $data['image'] : '';
 
-if ( '' === $tiermint_image ) {
+if ( '' === $releasecart_image ) {
 	return;
 }
 ?>
-<figure class="tiermint-component tiermint-product-images">
-	<?php echo wp_kses( $tiermint_image, \DrPlugin\WP\TierMint\Frontend\Kses::image() ); ?>
+<figure class="releasecart-component releasecart-product-images">
+	<?php echo wp_kses( $releasecart_image, \DrPlugin\WP\ReleaseCart\Frontend\Kses::image() ); ?>
 </figure>

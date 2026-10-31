@@ -2,27 +2,27 @@
 /**
  * The ProductGrid front-end component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver;
-use DrPlugin\WP\TierMint\Discounts\DiscountPersistenceException;
-use DrPlugin\WP\TierMint\Discounts\DiscountSettings;
-use DrPlugin\WP\TierMint\Frontend\AbstractComponent;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\PriceDisplay;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\SamplePreview;
-use DrPlugin\WP\TierMint\Frontend\ProductUrlProvider;
-use DrPlugin\WP\TierMint\Frontend\RenderContext;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Products\ProductTaxonomy;
-use DrPlugin\WP\TierMint\Products\Term;
-use DrPlugin\WP\TierMint\Products\TermService;
-use DrPlugin\WP\TierMint\Util\Money;
+use DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountPersistenceException;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings;
+use DrPlugin\WP\ReleaseCart\Frontend\AbstractComponent;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\PriceDisplay;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\SamplePreview;
+use DrPlugin\WP\ReleaseCart\Frontend\ProductUrlProvider;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContext;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Products\ProductTaxonomy;
+use DrPlugin\WP\ReleaseCart\Products\Term;
+use DrPlugin\WP\ReleaseCart\Products\TermService;
+use DrPlugin\WP\ReleaseCart\Util\Money;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -40,21 +40,21 @@ class ProductGrid extends AbstractComponent {
 	 *
 	 * @var string
 	 */
-	public const GET_CATEGORY = 'tiermint_category';
+	public const GET_CATEGORY = 'releasecart_category';
 
 	/**
 	 * GET key for visitor tag filters.
 	 *
 	 * @var string
 	 */
-	public const GET_TAG = 'tiermint_tag';
+	public const GET_TAG = 'releasecart_tag';
 
 	/**
 	 * The settings option holding the storefront defaults.
 	 *
 	 * @var string
 	 */
-	private const SETTINGS_OPTION = 'tiermint_settings';
+	private const SETTINGS_OPTION = 'releasecart_settings';
 
 	/**
 	 * The product service the grid queries.
@@ -143,8 +143,8 @@ class ProductGrid extends AbstractComponent {
 				'type'        => 'array',
 				'items'       => 'string',
 				'default'     => array(),
-				'label'       => __( 'Categories', 'tiermint' ),
-				'description' => __( 'Limit the grid to products in these category slugs. Leave empty to show every category.', 'tiermint' ),
+				'label'       => __( 'Categories', 'releasecart' ),
+				'description' => __( 'Limit the grid to products in these category slugs. Leave empty to show every category.', 'releasecart' ),
 				'control'     => 'term_select',
 				'taxonomy'    => 'category',
 			),
@@ -152,61 +152,61 @@ class ProductGrid extends AbstractComponent {
 				'type'        => 'array',
 				'items'       => 'string',
 				'default'     => array(),
-				'label'       => __( 'Tags', 'tiermint' ),
-				'description' => __( 'Limit the grid to products carrying these tag slugs. Leave empty to show every tag.', 'tiermint' ),
+				'label'       => __( 'Tags', 'releasecart' ),
+				'description' => __( 'Limit the grid to products carrying these tag slugs. Leave empty to show every tag.', 'releasecart' ),
 				'control'     => 'term_select',
 				'taxonomy'    => 'tag',
 			),
 			'include_children' => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Include child categories', 'tiermint' ),
-				'description' => __( 'Also show products filed under subcategories of the selected categories.', 'tiermint' ),
+				'label'       => __( 'Include child categories', 'releasecart' ),
+				'description' => __( 'Also show products filed under subcategories of the selected categories.', 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'show_filters'     => array(
 				'type'        => 'boolean',
 				'default'     => false,
-				'label'       => __( 'Show filter bar', 'tiermint' ),
-				'description' => __( 'Let visitors narrow the grid by category and tag.', 'tiermint' ),
+				'label'       => __( 'Show filter bar', 'releasecart' ),
+				'description' => __( 'Let visitors narrow the grid by category and tag.', 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'columns'          => array(
 				'type'        => 'enum',
 				'enum'        => array( '2', '3', '4' ),
 				'default'     => '3',
-				'label'       => __( 'Columns', 'tiermint' ),
-				'description' => __( 'How many products to show per row on wide screens.', 'tiermint' ),
+				'label'       => __( 'Columns', 'releasecart' ),
+				'description' => __( 'How many products to show per row on wide screens.', 'releasecart' ),
 				'control'     => 'select',
 			),
 			'per_page'         => array(
 				'type'        => 'integer',
 				'default'     => 9,
-				'label'       => __( 'Products per page', 'tiermint' ),
-				'description' => __( 'The maximum number of products to display.', 'tiermint' ),
+				'label'       => __( 'Products per page', 'releasecart' ),
+				'description' => __( 'The maximum number of products to display.', 'releasecart' ),
 				'control'     => 'number',
 			),
 			'orderby'          => array(
 				'type'        => 'enum',
 				'enum'        => array( 'created_at', 'name', 'id' ),
 				'default'     => 'created_at',
-				'label'       => __( 'Order by', 'tiermint' ),
-				'description' => __( 'Which product field to sort by.', 'tiermint' ),
+				'label'       => __( 'Order by', 'releasecart' ),
+				'description' => __( 'Which product field to sort by.', 'releasecart' ),
 				'control'     => 'select',
 			),
 			'order'            => array(
 				'type'        => 'enum',
 				'enum'        => array( 'DESC', 'ASC' ),
 				'default'     => 'DESC',
-				'label'       => __( 'Order', 'tiermint' ),
-				'description' => __( 'The sort direction.', 'tiermint' ),
+				'label'       => __( 'Order', 'releasecart' ),
+				'description' => __( 'The sort direction.', 'releasecart' ),
 				'control'     => 'select',
 			),
 			'show_price'       => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show price', 'tiermint' ),
-				'description' => __( "Display each product's starting price.", 'tiermint' ),
+				'label'       => __( 'Show price', 'releasecart' ),
+				'description' => __( "Display each product's starting price.", 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'show_buy_button'  => array(
@@ -215,22 +215,22 @@ class ProductGrid extends AbstractComponent {
 				// place; an explicit block/shortcode value still wins.
 				'type'        => 'boolean',
 				'default'     => $this->buyButtonsDefault(),
-				'label'       => __( 'Show buy buttons', 'tiermint' ),
-				'description' => __( 'Show an add-to-cart button on each card. Defaults to the storefront setting.', 'tiermint' ),
+				'label'       => __( 'Show buy buttons', 'releasecart' ),
+				'description' => __( 'Show an add-to-cart button on each card. Defaults to the storefront setting.', 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'show_thumbnails'  => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show thumbnails', 'tiermint' ),
-				'description' => __( "Show each product's thumbnail image on its card. Cards fall back to a lettered tile when off or when a product has no image.", 'tiermint' ),
+				'label'       => __( 'Show thumbnails', 'releasecart' ),
+				'description' => __( "Show each product's thumbnail image on its card. Cards fall back to a lettered tile when off or when a product has no image.", 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'link_to_details'  => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Link to product page', 'tiermint' ),
-				'description' => __( 'Link each card to its product details page.', 'tiermint' ),
+				'label'       => __( 'Link to product page', 'releasecart' ),
+				'description' => __( 'Link each card to its product details page.', 'releasecart' ),
 				'control'     => 'toggle',
 			),
 		);
@@ -238,7 +238,7 @@ class ProductGrid extends AbstractComponent {
 
 	/**
 	 * The store-wide default for card buy buttons, from
-	 * `tiermint_settings['storefront']['grid_buy_buttons']`, defaulting on.
+	 * `releasecart_settings['storefront']['grid_buy_buttons']`, defaulting on.
 	 *
 	 * @since 1.0.0
 	 *
@@ -331,9 +331,9 @@ class ProductGrid extends AbstractComponent {
 	 */
 	private function sampleCards( bool $showPrice, bool $showThumbnails ): array {
 		$samples = array(
-			array( __( 'Starter Plugin', 'tiermint' ), 4900 ),
-			array( __( 'Developer Toolkit', 'tiermint' ), 7900 ),
-			array( __( 'Premium Suite', 'tiermint' ), 12900 ),
+			array( __( 'Starter Plugin', 'releasecart' ), 4900 ),
+			array( __( 'Developer Toolkit', 'releasecart' ), 7900 ),
+			array( __( 'Premium Suite', 'releasecart' ), 12900 ),
 		);
 
 		$cards = array();
@@ -342,8 +342,8 @@ class ProductGrid extends AbstractComponent {
 			$cards[] = array(
 				'name'        => $name,
 				'monogram'    => $this->monogram( $name ),
-				'image'       => $showThumbnails ? SamplePreview::placeholderTile( 'tiermint-product-grid__image', $name ) : null,
-				'description' => __( 'A short description of what this product does and who it is for.', 'tiermint' ),
+				'image'       => $showThumbnails ? SamplePreview::placeholderTile( 'releasecart-product-grid__image', $name ) : null,
+				'description' => __( 'A short description of what this product does and who it is for.', 'releasecart' ),
 				'url'         => null,
 				// Sample prices still use the shared display helper.
 				'price_html'  => $showPrice ? PriceDisplay::render( $this->money, (int) $sample[1], null, $this->strikeEnabled() ) : null,
@@ -498,7 +498,7 @@ class ProductGrid extends AbstractComponent {
 			'medium_large',
 			false,
 			array(
-				'class'   => 'tiermint-product-grid__image',
+				'class'   => 'releasecart-product-grid__image',
 				'loading' => 'lazy',
 				'alt'     => '',
 			)

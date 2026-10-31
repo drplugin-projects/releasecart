@@ -2,12 +2,12 @@
 /**
  * Exception thrown when a service id is not bound in the container.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Core;
+namespace DrPlugin\WP\ReleaseCart\Core;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -33,7 +33,7 @@ final class ServiceNotFoundException extends InvalidArgumentException {
 	 */
 	public static function forId( string $id ): self {
 		return new self(
-			sprintf( 'Service "%s" is not bound in the TierMint container.', $id )
+			sprintf( 'Service "%s" is not bound in the ReleaseCart container.', $id )
 		);
 	}
 }

@@ -2,25 +2,25 @@
 /**
  * The admin SPA mount: page render, bundle enqueue, and boot data.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Admin;
+namespace DrPlugin\WP\ReleaseCart\Admin;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Catalog\Countries;
-use DrPlugin\WP\TierMint\Catalog\Currencies;
-use DrPlugin\WP\TierMint\Core\Capabilities;
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Products\Fields\CoreProductFields;
-use DrPlugin\WP\TierMint\Products\Fields\ProductFieldRegistry;
-use DrPlugin\WP\TierMint\Upsell\Dismissals;
-use DrPlugin\WP\TierMint\Upsell\ProFeatures;
-use DrPlugin\WP\TierMint\Upsell\ProStatus;
+use DrPlugin\WP\ReleaseCart\Catalog\Countries;
+use DrPlugin\WP\ReleaseCart\Catalog\Currencies;
+use DrPlugin\WP\ReleaseCart\Core\Capabilities;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Products\Fields\CoreProductFields;
+use DrPlugin\WP\ReleaseCart\Products\Fields\ProductFieldRegistry;
+use DrPlugin\WP\ReleaseCart\Upsell\Dismissals;
+use DrPlugin\WP\ReleaseCart\Upsell\ProFeatures;
+use DrPlugin\WP\ReleaseCart\Upsell\ProStatus;
 
 /**
  * Renders the admin SPA page and enqueues its bundle.
@@ -36,21 +36,21 @@ class SpaController implements Hookable {
 	 *
 	 * @var string
 	 */
-	public const PAGE_SLUG = 'tiermint';
+	public const PAGE_SLUG = 'releasecart';
 
 	/**
 	 * The script handle of the built SPA bundle.
 	 *
 	 * @var string
 	 */
-	public const HANDLE = 'tiermint-admin';
+	public const HANDLE = 'releasecart-admin';
 
 	/**
 	 * The admin screen hook of the SPA page.
 	 *
 	 * @var string
 	 */
-	private const PAGE_HOOK = 'toplevel_page_tiermint';
+	private const PAGE_HOOK = 'toplevel_page_releasecart';
 
 	/**
 	 * The Pro-presence seam.
@@ -113,9 +113,9 @@ class SpaController implements Hookable {
 		/*
 		 * App.js adds the shell inside this node. Do not duplicate its class.
 		 */
-		echo '<div id="tiermint-admin-root"></div>';
+		echo '<div id="releasecart-admin-root"></div>';
 		echo '<noscript><div class="notice notice-error"><p>';
-		echo esc_html__( 'The TierMint admin requires JavaScript. Please enable it to manage your store.', 'tiermint' );
+		echo esc_html__( 'The ReleaseCart admin requires JavaScript. Please enable it to manage your store.', 'releasecart' );
 		echo '</p></div></noscript>';
 	}
 
@@ -134,11 +134,11 @@ class SpaController implements Hookable {
 
 		$asset = $this->buildAsset();
 		if ( null !== $asset ) {
-			$version = (string) ( $asset['version'] ?? TIERMINT_VERSION );
+			$version = (string) ( $asset['version'] ?? RELEASECART_VERSION );
 
 			wp_enqueue_script(
 				self::HANDLE,
-				TIERMINT_URL . 'assets/admin/build/index.js',
+				RELEASECART_URL . 'assets/admin/build/index.js',
 				// The classic-editor handles the rich text control drives are added
 				// to the dependency list so they load, and so the bundle evaluates
 				// with window.wp.editor present. Readiness (the default settings,
@@ -151,7 +151,7 @@ class SpaController implements Hookable {
 			/*
 			 * Load translations for the SPA bundle.
 			 */
-			wp_set_script_translations( self::HANDLE, 'tiermint', TIERMINT_PATH . 'languages' );
+			wp_set_script_translations( self::HANDLE, 'releasecart', RELEASECART_PATH . 'languages' );
 
 			/*
 			 * Product image controls use the WordPress media library.
@@ -172,7 +172,7 @@ class SpaController implements Hookable {
 			if ( $this->styleBuilt() ) {
 				wp_enqueue_style(
 					self::HANDLE,
-					TIERMINT_URL . 'assets/admin/build/index.css',
+					RELEASECART_URL . 'assets/admin/build/index.css',
 					array(),
 					$version
 				);
@@ -187,7 +187,7 @@ class SpaController implements Hookable {
 				self::HANDLE,
 				// The hex flags keep the payload safe inside a script element even
 				// if a future boot field ever carries markup-like characters.
-				'window.tierMint = ' . wp_json_encode(
+				'window.releaseCart = ' . wp_json_encode(
 					$this->bootData(),
 					JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
 				) . ';',
@@ -202,7 +202,7 @@ class SpaController implements Hookable {
 		 *
 		 * @param string $handle The core SPA bundle script handle.
 		 */
-		do_action( 'tiermint_admin_enqueue', self::HANDLE );
+		do_action( 'releasecart_admin_enqueue', self::HANDLE );
 	}
 
 	/**
@@ -213,7 +213,7 @@ class SpaController implements Hookable {
 	 * @return array<string, mixed>|null The manifest, or null when absent.
 	 */
 	protected function buildAsset(): ?array {
-		$assetFile = TIERMINT_PATH . 'assets/admin/build/index.asset.php';
+		$assetFile = RELEASECART_PATH . 'assets/admin/build/index.asset.php';
 
 		if ( ! file_exists( $assetFile ) ) {
 			return null;
@@ -234,7 +234,7 @@ class SpaController implements Hookable {
 	 * @return bool True when `assets/admin/build/index.css` exists.
 	 */
 	protected function styleBuilt(): bool {
-		return file_exists( TIERMINT_PATH . 'assets/admin/build/index.css' );
+		return file_exists( RELEASECART_PATH . 'assets/admin/build/index.css' );
 	}
 
 	/**
@@ -245,7 +245,7 @@ class SpaController implements Hookable {
 	 * @return array<string, mixed> The boot payload.
 	 */
 	public function bootData(): array {
-		$settings = get_option( 'tiermint_settings' );
+		$settings = get_option( 'releasecart_settings' );
 		$settings = is_array( $settings ) ? $settings : array();
 
 		$caps = array();
@@ -262,7 +262,7 @@ class SpaController implements Hookable {
 		$fields = new ProductFieldRegistry( new CoreProductFields() );
 
 		$data = array(
-			'apiRoot'       => esc_url_raw( rest_url( 'tiermint/v1/' ) ),
+			'apiRoot'       => esc_url_raw( rest_url( 'releasecart/v1/' ) ),
 			'nonce'         => wp_create_nonce( 'wp_rest' ),
 			'caps'          => $caps,
 			'settings'      => array(
@@ -378,7 +378,7 @@ class SpaController implements Hookable {
 
 			$out[] = array(
 				'id'    => (int) $page->ID,
-				'title' => '' !== $title ? $title : __( '(no title)', 'tiermint' ),
+				'title' => '' !== $title ? $title : __( '(no title)', 'releasecart' ),
 			);
 		}
 

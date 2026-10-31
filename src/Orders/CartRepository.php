@@ -2,12 +2,12 @@
 /**
  * Cart repository: the cookie token and transient persistence for carts.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Orders;
+namespace DrPlugin\WP\ReleaseCart\Orders;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -26,14 +26,14 @@ class CartRepository {
 	 *
 	 * @var string
 	 */
-	public const COOKIE = 'tiermint_cart';
+	public const COOKIE = 'releasecart_cart';
 
 	/**
 	 * The transient key prefix; the full key is this prefix plus the cart token.
 	 *
 	 * @var string
 	 */
-	private const PREFIX = 'tiermint_cart_';
+	private const PREFIX = 'releasecart_cart_';
 
 	/**
 	 * Cart lifetime in hours.
@@ -76,8 +76,8 @@ class CartRepository {
 			self::COOKIE,
 			$token,
 			time() + $this->ttlSeconds(),
-			defined( 'COOKIEPATH' ) ? COOKIEPATH : '/',
-			defined( 'COOKIE_DOMAIN' ) ? COOKIE_DOMAIN : '',
+			defined( 'COOKIEPATH' ) ? \COOKIEPATH : '/',
+			defined( 'COOKIE_DOMAIN' ) ? \COOKIE_DOMAIN : '',
 			is_ssl(),
 			true
 		);
@@ -100,8 +100,8 @@ class CartRepository {
 			self::COOKIE,
 			'',
 			time() - $this->ttlSeconds(),
-			defined( 'COOKIEPATH' ) ? COOKIEPATH : '/',
-			defined( 'COOKIE_DOMAIN' ) ? COOKIE_DOMAIN : '',
+			defined( 'COOKIEPATH' ) ? \COOKIEPATH : '/',
+			defined( 'COOKIE_DOMAIN' ) ? \COOKIE_DOMAIN : '',
 			is_ssl(),
 			true
 		);
@@ -141,6 +141,18 @@ class CartRepository {
 		$data = get_transient( self::PREFIX . $token );
 
 		return is_array( $data ) ? Cart::fromArray( $data ) : new Cart();
+	}
+
+	/**
+	 * Whether a cart is stored under a token. An expired cart is not.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $token The cart token.
+	 * @return bool True when the token's transient holds cart data.
+	 */
+	public function has( string $token ): bool {
+		return is_array( get_transient( self::PREFIX . $token ) );
 	}
 
 	/**

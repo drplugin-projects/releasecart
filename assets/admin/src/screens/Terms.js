@@ -366,7 +366,7 @@ export default function Terms() {
 		const confirmed = window.confirm(
 			__(
 				'Deleting this category will re-parent its child categories to its parent. Continue?',
-				'tiermint'
+				'releasecart'
 			)
 		);
 		if ( confirmed ) {
@@ -382,18 +382,18 @@ export default function Terms() {
 	 */
 	const deleteTag = ( term ) => {
 		// eslint-disable-next-line no-alert
-		if ( window.confirm( __( 'Delete this tag?', 'tiermint' ) ) ) {
+		if ( window.confirm( __( 'Delete this tag?', 'releasecart' ) ) ) {
 			deleteMutation.mutate( { id: term.id, taxonomy: 'tag' } );
 		}
 	};
 
 	return (
-		<section className="tiermint-admin-screen">
+		<section className="releasecart-admin-screen">
 			<ScreenHeader
-				title={ __( 'Categories and tags', 'tiermint' ) }
+				title={ __( 'Categories and tags', 'releasecart' ) }
 				description={ __(
 					'Categories group products into a hierarchy; tags are flat labels. Both are assigned per product in the product editor.',
-					'tiermint'
+					'releasecart'
 				) }
 			/>
 
@@ -411,12 +411,12 @@ export default function Terms() {
 				</Notice>
 			) }
 
-			<div className="tiermint-terms-columns">
+			<div className="releasecart-terms-columns">
 				<section
-					aria-label={ __( 'Categories', 'tiermint' ) }
-					className="tiermint-panel tiermint-terms-panel"
+					aria-label={ __( 'Categories', 'releasecart' ) }
+					className="releasecart-panel releasecart-terms-panel"
 				>
-					<h2>{ __( 'Categories', 'tiermint' ) }</h2>
+					<h2>{ __( 'Categories', 'releasecart' ) }</h2>
 
 					{ /* Show this before the parent selector to prevent duplicate root terms. */ }
 					{ categoriesQuery.isError && (
@@ -425,11 +425,11 @@ export default function Terms() {
 						</Notice>
 					) }
 
-					<div className="tiermint-term-add">
+					<div className="releasecart-term-add">
 						<TextControl
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
-							label={ __( 'Name', 'tiermint' ) }
+							label={ __( 'Name', 'releasecart' ) }
 							value={ addCat.name }
 							onChange={ ( value ) =>
 								setAddCat( ( prev ) => ( {
@@ -441,7 +441,7 @@ export default function Terms() {
 						<TextControl
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
-							label={ __( 'Slug (optional)', 'tiermint' ) }
+							label={ __( 'Slug (optional)', 'releasecart' ) }
 							value={ addCat.slug }
 							onChange={ ( value ) =>
 								setAddCat( ( prev ) => ( {
@@ -453,7 +453,7 @@ export default function Terms() {
 						<SelectControl
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
-							label={ __( 'Parent', 'tiermint' ) }
+							label={ __( 'Parent', 'releasecart' ) }
 							value={ addCat.parent }
 							options={ parentOptions( categories, null ) }
 							onChange={ ( value ) =>
@@ -465,7 +465,10 @@ export default function Terms() {
 						/>
 						<TextareaControl
 							__nextHasNoMarginBottom
-							label={ __( 'Description (optional)', 'tiermint' ) }
+							label={ __(
+								'Description (optional)',
+								'releasecart'
+							) }
 							value={ addCat.description }
 							onChange={ ( value ) =>
 								setAddCat( ( prev ) => ( {
@@ -485,7 +488,7 @@ export default function Terms() {
 							__experimentalIsFocusable
 							onClick={ onAddCategory }
 						>
-							{ __( 'Add category', 'tiermint' ) }
+							{ __( 'Add category', 'releasecart' ) }
 						</Button>
 					</div>
 
@@ -496,26 +499,28 @@ export default function Terms() {
 						! categoriesQuery.isError &&
 						categories.length === 0 && (
 							<EmptyState
-								className="tiermint-empty-state--panel"
+								className="releasecart-empty-state--panel"
 								message={ __(
 									'No categories yet. Add one above to start grouping products.',
-									'tiermint'
+									'releasecart'
 								) }
 							/>
 						) }
 
-					<ul className="tiermint-term-list">
+					<ul className="releasecart-term-list">
 						{ categoryRows.map( ( { term, depth } ) =>
 							editCatId === term.id ? (
 								<li
 									key={ term.id }
-									className="tiermint-term-edit"
-									style={ { '--tiermint-term-depth': depth } }
+									className="releasecart-term-edit"
+									style={ {
+										'--releasecart-term-depth': depth,
+									} }
 								>
 									<TextControl
 										__nextHasNoMarginBottom
 										__next40pxDefaultSize
-										label={ __( 'Name', 'tiermint' ) }
+										label={ __( 'Name', 'releasecart' ) }
 										value={ editCat.name }
 										onChange={ ( value ) =>
 											setEditCat( ( prev ) => ( {
@@ -529,7 +534,7 @@ export default function Terms() {
 										__next40pxDefaultSize
 										label={ __(
 											'Slug (optional)',
-											'tiermint'
+											'releasecart'
 										) }
 										value={ editCat.slug }
 										onChange={ ( value ) =>
@@ -542,7 +547,7 @@ export default function Terms() {
 									<SelectControl
 										__nextHasNoMarginBottom
 										__next40pxDefaultSize
-										label={ __( 'Parent', 'tiermint' ) }
+										label={ __( 'Parent', 'releasecart' ) }
 										value={ editCat.parent }
 										options={ parentOptions(
 											categories,
@@ -559,7 +564,7 @@ export default function Terms() {
 										__nextHasNoMarginBottom
 										label={ __(
 											'Description (optional)',
-											'tiermint'
+											'releasecart'
 										) }
 										value={ editCat.description }
 										onChange={ ( value ) =>
@@ -569,7 +574,7 @@ export default function Terms() {
 											} ) )
 										}
 									/>
-									<div className="tiermint-form-actions">
+									<div className="releasecart-form-actions">
 										<Button
 											variant="primary"
 											isBusy={ isSaving( term.id ) }
@@ -579,7 +584,7 @@ export default function Terms() {
 												saveCategory( term )
 											}
 										>
-											{ __( 'Save', 'tiermint' ) }
+											{ __( 'Save', 'releasecart' ) }
 										</Button>
 										<Button
 											variant="secondary"
@@ -587,29 +592,31 @@ export default function Terms() {
 												setEditCatId( null )
 											}
 										>
-											{ __( 'Cancel', 'tiermint' ) }
+											{ __( 'Cancel', 'releasecart' ) }
 										</Button>
 									</div>
 								</li>
 							) : (
 								<li
 									key={ term.id }
-									style={ { '--tiermint-term-depth': depth } }
+									style={ {
+										'--releasecart-term-depth': depth,
+									} }
 								>
-									<span className="tiermint-term-name">
+									<span className="releasecart-term-name">
 										{ term.name }
 									</span>
-									<span className="tiermint-term-slug">
+									<span className="releasecart-term-slug">
 										{ term.slug }
 									</span>
-									<div className="tiermint-term-actions">
+									<div className="releasecart-term-actions">
 										<Button
 											variant="secondary"
 											onClick={ () =>
 												startEditCategory( term )
 											}
 										>
-											{ __( 'Edit', 'tiermint' ) }
+											{ __( 'Edit', 'releasecart' ) }
 										</Button>
 										<Button
 											variant="secondary"
@@ -621,7 +628,7 @@ export default function Terms() {
 												deleteCategory( term )
 											}
 										>
-											{ __( 'Delete', 'tiermint' ) }
+											{ __( 'Delete', 'releasecart' ) }
 										</Button>
 									</div>
 								</li>
@@ -631,10 +638,10 @@ export default function Terms() {
 				</section>
 
 				<section
-					aria-label={ __( 'Tags', 'tiermint' ) }
-					className="tiermint-panel tiermint-terms-panel"
+					aria-label={ __( 'Tags', 'releasecart' ) }
+					className="releasecart-panel releasecart-terms-panel"
 				>
-					<h2>{ __( 'Tags', 'tiermint' ) }</h2>
+					<h2>{ __( 'Tags', 'releasecart' ) }</h2>
 
 					{ tagsQuery.isError && (
 						<Notice status="error" isDismissible={ false }>
@@ -642,11 +649,11 @@ export default function Terms() {
 						</Notice>
 					) }
 
-					<div className="tiermint-term-add">
+					<div className="releasecart-term-add">
 						<TextControl
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
-							label={ __( 'Name', 'tiermint' ) }
+							label={ __( 'Name', 'releasecart' ) }
 							value={ addTag.name }
 							onChange={ ( value ) =>
 								setAddTag( ( prev ) => ( {
@@ -658,7 +665,7 @@ export default function Terms() {
 						<TextControl
 							__nextHasNoMarginBottom
 							__next40pxDefaultSize
-							label={ __( 'Slug (optional)', 'tiermint' ) }
+							label={ __( 'Slug (optional)', 'releasecart' ) }
 							value={ addTag.slug }
 							onChange={ ( value ) =>
 								setAddTag( ( prev ) => ( {
@@ -669,7 +676,10 @@ export default function Terms() {
 						/>
 						<TextareaControl
 							__nextHasNoMarginBottom
-							label={ __( 'Description (optional)', 'tiermint' ) }
+							label={ __(
+								'Description (optional)',
+								'releasecart'
+							) }
 							value={ addTag.description }
 							onChange={ ( value ) =>
 								setAddTag( ( prev ) => ( {
@@ -688,7 +698,7 @@ export default function Terms() {
 							__experimentalIsFocusable
 							onClick={ onAddTag }
 						>
-							{ __( 'Add tag', 'tiermint' ) }
+							{ __( 'Add tag', 'releasecart' ) }
 						</Button>
 					</div>
 
@@ -698,25 +708,25 @@ export default function Terms() {
 						! tagsQuery.isError &&
 						tags.length === 0 && (
 							<EmptyState
-								className="tiermint-empty-state--panel"
+								className="releasecart-empty-state--panel"
 								message={ __(
 									'No tags yet. Add one above to start labelling products.',
-									'tiermint'
+									'releasecart'
 								) }
 							/>
 						) }
 
-					<ul className="tiermint-term-list">
+					<ul className="releasecart-term-list">
 						{ tags.map( ( term ) =>
 							editTagId === term.id ? (
 								<li
 									key={ term.id }
-									className="tiermint-term-edit"
+									className="releasecart-term-edit"
 								>
 									<TextControl
 										__nextHasNoMarginBottom
 										__next40pxDefaultSize
-										label={ __( 'Name', 'tiermint' ) }
+										label={ __( 'Name', 'releasecart' ) }
 										value={ editTag.name }
 										onChange={ ( value ) =>
 											setEditTag( ( prev ) => ( {
@@ -730,7 +740,7 @@ export default function Terms() {
 										__next40pxDefaultSize
 										label={ __(
 											'Slug (optional)',
-											'tiermint'
+											'releasecart'
 										) }
 										value={ editTag.slug }
 										onChange={ ( value ) =>
@@ -744,7 +754,7 @@ export default function Terms() {
 										__nextHasNoMarginBottom
 										label={ __(
 											'Description (optional)',
-											'tiermint'
+											'releasecart'
 										) }
 										value={ editTag.description }
 										onChange={ ( value ) =>
@@ -754,7 +764,7 @@ export default function Terms() {
 											} ) )
 										}
 									/>
-									<div className="tiermint-form-actions">
+									<div className="releasecart-form-actions">
 										<Button
 											variant="primary"
 											isBusy={ isSaving( term.id ) }
@@ -762,7 +772,7 @@ export default function Terms() {
 											__experimentalIsFocusable
 											onClick={ () => saveTag( term ) }
 										>
-											{ __( 'Save', 'tiermint' ) }
+											{ __( 'Save', 'releasecart' ) }
 										</Button>
 										<Button
 											variant="secondary"
@@ -770,26 +780,26 @@ export default function Terms() {
 												setEditTagId( null )
 											}
 										>
-											{ __( 'Cancel', 'tiermint' ) }
+											{ __( 'Cancel', 'releasecart' ) }
 										</Button>
 									</div>
 								</li>
 							) : (
 								<li key={ term.id }>
-									<span className="tiermint-term-name">
+									<span className="releasecart-term-name">
 										{ term.name }
 									</span>
-									<span className="tiermint-term-slug">
+									<span className="releasecart-term-slug">
 										{ term.slug }
 									</span>
-									<div className="tiermint-term-actions">
+									<div className="releasecart-term-actions">
 										<Button
 											variant="secondary"
 											onClick={ () =>
 												startEditTag( term )
 											}
 										>
-											{ __( 'Edit', 'tiermint' ) }
+											{ __( 'Edit', 'releasecart' ) }
 										</Button>
 										<Button
 											variant="secondary"
@@ -799,7 +809,7 @@ export default function Terms() {
 											__experimentalIsFocusable
 											onClick={ () => deleteTag( term ) }
 										>
-											{ __( 'Delete', 'tiermint' ) }
+											{ __( 'Delete', 'releasecart' ) }
 										</Button>
 									</div>
 								</li>
@@ -819,7 +829,7 @@ export default function Terms() {
  */
 export const route = {
 	path: '#/products/terms',
-	title: __( 'Categories and tags', 'tiermint' ),
-	capability: 'manage_tiermint',
+	title: __( 'Categories and tags', 'releasecart' ),
+	capability: 'manage_releasecart',
 	component: Terms,
 };

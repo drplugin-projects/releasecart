@@ -2,12 +2,12 @@
 /**
  * The standalone license delivery email definition.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Emails;
+namespace DrPlugin\WP\ReleaseCart\Emails;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -62,7 +62,7 @@ final class LicenseDeliveryEmail extends Email {
 
 		return sprintf(
 			/* translators: 1: the store name, 2: the product name. */
-			__( '%1$s: your license key for %2$s', 'tiermint' ),
+			__( '%1$s: your license key for %2$s', 'releasecart' ),
 			$store,
 			$product
 		);

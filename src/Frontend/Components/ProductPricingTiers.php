@@ -2,22 +2,22 @@
 /**
  * The product pricing tiers (purchase form) component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver;
-use DrPlugin\WP\TierMint\Discounts\DiscountSettings;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\ProductTierSelector;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\ResolvesTierDiscounts;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\SamplePreview;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\TierMetaPresenter;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Util\Money;
+use DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\ProductTierSelector;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\ResolvesTierDiscounts;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\SamplePreview;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\TierMetaPresenter;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Util\Money;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -70,7 +70,7 @@ final class ProductPricingTiers extends AbstractProductComponent {
 	 * @return array<string, mixed>
 	 */
 	protected function viewData( Product $product, array $attrs ): array {
-		return array( 'block' => 'tiermint-product-pricing-tiers' ) + ProductTierSelector::formData(
+		return array( 'block' => 'releasecart-product-pricing-tiers' ) + ProductTierSelector::formData(
 			$product,
 			$this->money,
 			TierMetaPresenter::flagsFrom( $attrs ),
@@ -99,7 +99,7 @@ final class ProductPricingTiers extends AbstractProductComponent {
 	protected function sampleViewData( Product $product, array $attrs ): array {
 		unset( $product );
 
-		return array( 'block' => 'tiermint-product-pricing-tiers' )
+		return array( 'block' => 'releasecart-product-pricing-tiers' )
 			+ ProductTierSelector::formData( SamplePreview::tierProduct(), $this->money, TierMetaPresenter::flagsFrom( $attrs ) );
 	}
 

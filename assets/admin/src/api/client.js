@@ -16,7 +16,7 @@ import { __ } from '@wordpress/i18n';
  *
  * @type {string}
  */
-const NAMESPACE = '/tiermint/v1';
+const NAMESPACE = '/releasecart/v1';
 
 /**
  * Delay object URL cleanup until the browser starts the download.
@@ -29,7 +29,7 @@ const REVOKE_DELAY_MS = 60000;
  * Prefix a helper path with the plugin namespace.
  *
  * @param {string} path The short path, e.g. `/products`.
- * @return {string} The namespaced path, e.g. `/tiermint/v1/products`.
+ * @return {string} The namespaced path, e.g. `/releasecart/v1/products`.
  */
 function namespaced( path ) {
 	const normalized = path.startsWith( '/' ) ? path : `/${ path }`;
@@ -99,7 +99,7 @@ export function normalizeError( error ) {
 			code: 'error',
 			message: error
 				? String( error )
-				: __( 'An unknown error occurred.', 'tiermint' ),
+				: __( 'An unknown error occurred.', 'releasecart' ),
 			status: 0,
 			errors: null,
 		};
@@ -112,7 +112,7 @@ export function normalizeError( error ) {
 		message:
 			typeof error.message === 'string' && error.message !== ''
 				? error.message
-				: __( 'Something went wrong.', 'tiermint' ),
+				: __( 'Something went wrong.', 'releasecart' ),
 		status: typeof data.status === 'number' ? data.status : 0,
 		errors: data.errors || null,
 	};

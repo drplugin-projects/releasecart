@@ -2,18 +2,18 @@
 /**
  * Creates and wires the storefront pages a fresh install needs.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Core;
+namespace DrPlugin\WP\ReleaseCart\Core;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Frontend\PageResolver;
-use DrPlugin\WP\TierMint\Frontend\StorefrontPageContent;
+use DrPlugin\WP\ReleaseCart\Frontend\PageResolver;
+use DrPlugin\WP\ReleaseCart\Frontend\StorefrontPageContent;
 
 /**
  * Creates the default storefront pages.
@@ -30,21 +30,21 @@ class PageProvisioner implements Hookable {
 	 *
 	 * @var string
 	 */
-	public const MARKER_META = '_tiermint_page';
+	public const MARKER_META = '_releasecart_page';
 
 	/**
 	 * Flag that defers provisioning until init.
 	 *
 	 * @var string
 	 */
-	public const PROVISION_FLAG = 'tiermint_pending_page_provision';
+	public const PROVISION_FLAG = 'releasecart_pending_page_provision';
 
 	/**
 	 * The settings option holding the pages map.
 	 *
 	 * @var string
 	 */
-	private const SETTINGS_OPTION = 'tiermint_settings';
+	private const SETTINGS_OPTION = 'releasecart_settings';
 
 	/**
 	 * Statuses that prevent page replacement.
@@ -60,7 +60,7 @@ class PageProvisioner implements Hookable {
 	 */
 	public function hooks(): void {
 		add_action( 'init', array( $this, 'maybeProvision' ), 20 );
-		add_action( 'tiermint_provision_pages', array( $this, 'provision' ) );
+		add_action( 'releasecart_provision_pages', array( $this, 'provision' ) );
 	}
 
 	/**
@@ -143,27 +143,27 @@ class PageProvisioner implements Hookable {
 	private function definitions(): array {
 		$definitions = array(
 			PageResolver::STORE          => array(
-				'title'   => __( 'Store', 'tiermint' ),
+				'title'   => __( 'Store', 'releasecart' ),
 				'content' => StorefrontPageContent::store(),
 			),
 			PageResolver::PRODUCT        => array(
-				'title'   => __( 'Product', 'tiermint' ),
+				'title'   => __( 'Product', 'releasecart' ),
 				'content' => StorefrontPageContent::productDetails(),
 			),
 			PageResolver::CHECKOUT       => array(
-				'title'   => __( 'Checkout', 'tiermint' ),
+				'title'   => __( 'Checkout', 'releasecart' ),
 				'content' => StorefrontPageContent::checkout(),
 			),
 			PageResolver::ACCOUNT        => array(
-				'title'   => __( 'Account', 'tiermint' ),
+				'title'   => __( 'Account', 'releasecart' ),
 				'content' => StorefrontPageContent::account(),
 			),
 			PageResolver::LOGIN          => array(
-				'title'   => __( 'Sign in', 'tiermint' ),
+				'title'   => __( 'Sign in', 'releasecart' ),
 				'content' => StorefrontPageContent::login(),
 			),
 			PageResolver::PASSWORD_RESET => array(
-				'title'   => __( 'Reset password', 'tiermint' ),
+				'title'   => __( 'Reset password', 'releasecart' ),
 				'content' => StorefrontPageContent::passwordReset(),
 			),
 		);
@@ -171,7 +171,7 @@ class PageProvisioner implements Hookable {
 		// Add registration only when the site accepts sign-ups.
 		if ( (bool) get_option( 'users_can_register' ) ) {
 			$definitions[ PageResolver::REGISTER ] = array(
-				'title'   => __( 'Register', 'tiermint' ),
+				'title'   => __( 'Register', 'releasecart' ),
 				'content' => StorefrontPageContent::registration(),
 			);
 		}

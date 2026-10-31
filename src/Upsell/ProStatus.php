@@ -2,12 +2,12 @@
 /**
  * Whether the Pro add-on is present, and where to send buyers.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Upsell;
+namespace DrPlugin\WP\ReleaseCart\Upsell;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -22,14 +22,13 @@ defined( 'ABSPATH' ) || exit;
 class ProStatus {
 
 	/**
-	 * The product page every upgrade link points at.
+	 * The site every upgrade link points at.
 	 *
-	 * One page describes both the free plugin and Pro. It carries no query
-	 * string, so the link tracks no referral.
+	 * It carries no query string, so the link tracks no referral.
 	 *
 	 * @var string
 	 */
-	private const UPGRADE_URL = 'https://drplugin.com/plugins/tiermint';
+	private const UPGRADE_URL = 'https://drplugin.com';
 
 	/**
 	 * Whether the Pro add-on is active.
@@ -39,7 +38,7 @@ class ProStatus {
 	 * @return bool True when Pro is present.
 	 */
 	public function isActive(): bool {
-		return defined( 'TIERMINT_PRO_VERSION' );
+		return defined( 'RELEASECART_PRO_VERSION' );
 	}
 
 	/**
@@ -47,7 +46,7 @@ class ProStatus {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return string The product page URL.
+	 * @return string The site URL.
 	 */
 	public function upgradeUrl(): string {
 		return self::UPGRADE_URL;

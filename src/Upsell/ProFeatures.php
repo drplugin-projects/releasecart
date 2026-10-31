@@ -2,12 +2,12 @@
 /**
  * The advertised Pro features and the upsell copy.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Upsell;
+namespace DrPlugin\WP\ReleaseCart\Upsell;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -32,58 +32,58 @@ final class ProFeatures {
 		return array(
 			array(
 				'key'   => 'subscriptions',
-				'title' => __( 'Subscriptions and recurring billing', 'tiermint' ),
-				'blurb' => __( 'Sell plans that renew on a schedule, with trials, upgrades, and automatic retries on a failed payment.', 'tiermint' ),
+				'title' => __( 'Subscriptions and recurring billing', 'releasecart' ),
+				'blurb' => __( 'Sell plans that renew on a schedule, with trials, upgrades, and automatic retries on a failed payment.', 'releasecart' ),
 			),
 			array(
 				'key'   => 'tax',
-				'title' => __( 'EU VAT with VIES and OSS returns', 'tiermint' ),
-				'blurb' => __( 'Charge VAT at each buyer\'s country rate, check VAT numbers against VIES, and prepare your OSS return.', 'tiermint' ),
+				'title' => __( 'EU VAT with VIES and OSS returns', 'releasecart' ),
+				'blurb' => __( 'Charge VAT at each buyer\'s country rate, check VAT numbers against VIES, and prepare your OSS return.', 'releasecart' ),
 			),
 			array(
 				'key'   => 'invoices',
-				'title' => __( 'PDF invoices', 'tiermint' ),
-				'blurb' => __( 'Issue a numbered PDF invoice for every order and let buyers download it from their account.', 'tiermint' ),
+				'title' => __( 'PDF invoices', 'releasecart' ),
+				'blurb' => __( 'Issue a numbered PDF invoice for every order and let buyers download it from their account.', 'releasecart' ),
 			),
 			array(
 				'key'   => 'paypal',
-				'title' => __( 'PayPal payments', 'tiermint' ),
-				'blurb' => __( 'Take payments through PayPal alongside Stripe.', 'tiermint' ),
+				'title' => __( 'PayPal payments', 'releasecart' ),
+				'blurb' => __( 'Take payments through PayPal alongside Stripe.', 'releasecart' ),
 			),
 			array(
 				'key'   => 'affiliates',
-				'title' => __( 'Affiliates', 'tiermint' ),
-				'blurb' => __( 'Run an affiliate program with referral tracking, commissions, and payouts.', 'tiermint' ),
+				'title' => __( 'Affiliates', 'releasecart' ),
+				'blurb' => __( 'Run an affiliate program with referral tracking, commissions, and payouts.', 'releasecart' ),
 			),
 			array(
 				'key'   => 'recovery',
-				'title' => __( 'Cart recovery emails', 'tiermint' ),
-				'blurb' => __( 'Email shoppers who leave without paying, on a schedule you set, each with an optional discount.', 'tiermint' ),
+				'title' => __( 'Cart recovery emails', 'releasecart' ),
+				'blurb' => __( 'Email shoppers who leave without paying, on a schedule you set, each with an optional discount.', 'releasecart' ),
 			),
 			array(
 				'key'   => 'analytics',
-				'title' => __( 'Store analytics', 'tiermint' ),
-				'blurb' => __( 'Track recurring revenue, active subscriptions, and customer lifetime value.', 'tiermint' ),
+				'title' => __( 'Store analytics', 'releasecart' ),
+				'blurb' => __( 'Track recurring revenue, active subscriptions, and customer lifetime value.', 'releasecart' ),
 			),
 			array(
 				'key'   => 'kits',
-				'title' => __( 'Template kits', 'tiermint' ),
-				'blurb' => __( 'Install a ready-made storefront layout as a starting point for your own.', 'tiermint' ),
+				'title' => __( 'Template kits', 'releasecart' ),
+				'blurb' => __( 'Install a ready-made storefront layout as a starting point for your own.', 'releasecart' ),
 			),
 			array(
 				'key'   => 'migration',
-				'title' => __( 'Store migration', 'tiermint' ),
-				'blurb' => __( 'Import products and customers from another platform.', 'tiermint' ),
+				'title' => __( 'Store migration', 'releasecart' ),
+				'blurb' => __( 'Import products and customers from another platform.', 'releasecart' ),
 			),
 			array(
 				'key'   => 'elementor',
-				'title' => __( 'Elementor subscription and invoice widgets', 'tiermint' ),
-				'blurb' => __( 'Add Subscriptions, Invoices, and Upgrade Prompt widgets to Elementor.', 'tiermint' ),
+				'title' => __( 'Elementor subscription and invoice widgets', 'releasecart' ),
+				'blurb' => __( 'Add Subscriptions, Invoices, and Upgrade Prompt widgets to Elementor.', 'releasecart' ),
 			),
 			array(
 				'key'   => 'conditional_content',
-				'title' => __( 'Conditional Content block', 'tiermint' ),
-				'blurb' => __( 'Show inner blocks only to visitors who match a license, subscription, purchase, or activation rule.', 'tiermint' ),
+				'title' => __( 'Conditional Content block', 'releasecart' ),
+				'blurb' => __( 'Show inner blocks only to visitors who match a license, subscription, purchase, or activation rule.', 'releasecart' ),
 			),
 		);
 	}
@@ -96,7 +96,7 @@ final class ProFeatures {
 	 * @return string The intro text.
 	 */
 	public function intro(): string {
-		return __( 'TierMint Pro is a separate add-on that extends this plugin. It adds recurring billing, EU VAT handling, PDF invoices, PayPal, affiliates, cart recovery, and store analytics. The free plugin keeps working as it is.', 'tiermint' );
+		return __( 'ReleaseCart Pro is a separate add-on that extends this plugin. It adds recurring billing, EU VAT handling, PDF invoices, PayPal, affiliates, cart recovery, and store analytics. The free plugin keeps working as it is.', 'releasecart' );
 	}
 
 	/**
@@ -107,7 +107,7 @@ final class ProFeatures {
 	 * @return string The notice text.
 	 */
 	public function notice(): string {
-		return __( 'TierMint Pro adds subscriptions, EU VAT, PDF invoices, PayPal, affiliates, and cart recovery.', 'tiermint' );
+		return __( 'ReleaseCart Pro adds subscriptions, EU VAT, PDF invoices, PayPal, affiliates, and cart recovery.', 'releasecart' );
 	}
 
 	/**
@@ -118,7 +118,7 @@ final class ProFeatures {
 	 * @return string The link label.
 	 */
 	public function linkLabel(): string {
-		return __( 'See TierMint Pro', 'tiermint' );
+		return __( 'See ReleaseCart Pro', 'releasecart' );
 	}
 
 	/**
@@ -129,6 +129,6 @@ final class ProFeatures {
 	 * @return string The button label.
 	 */
 	public function ctaLabel(): string {
-		return __( 'View TierMint Pro features', 'tiermint' );
+		return __( 'View ReleaseCart Pro features', 'releasecart' );
 	}
 }

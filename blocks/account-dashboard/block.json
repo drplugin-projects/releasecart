@@ -1,13 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "tiermint/account-dashboard",
+	"name": "releasecart/account-dashboard",
 	"title": "Account Dashboard",
-	"category": "tiermint",
+	"category": "releasecart",
 	"icon": "id-alt",
 	"description": "The customer account area: purchases, downloads, and licenses in one tabbed shell.",
-	"keywords": [ "account", "dashboard", "customer", "tiermint" ],
-	"textdomain": "tiermint",
+	"keywords": [ "account", "dashboard", "customer", "releasecart" ],
+	"textdomain": "releasecart",
 	"supports": {
 		"html": false,
 		"align": [ "wide", "full" ]

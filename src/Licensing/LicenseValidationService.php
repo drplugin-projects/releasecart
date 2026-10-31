@@ -2,19 +2,19 @@
 /**
  * License validation service: the hot path's decision logic.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Licensing;
+namespace DrPlugin\WP\ReleaseCart\Licensing;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use DrPlugin\WP\TierMint\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
 
 /**
  * Validates license, product and site claims.
@@ -86,7 +86,7 @@ class LicenseValidationService {
 			return $this->liveValidate( $licenseKey, $siteUrl, $fingerprint, $product, $now );
 		} catch ( LicensePersistenceException $fault ) {
 			return $this->recallGrace( $licenseKey, $now ) ?? throw $fault;
-		} catch ( \DrPlugin\WP\TierMint\Products\ProductPersistenceException $fault ) {
+		} catch ( \DrPlugin\WP\ReleaseCart\Products\ProductPersistenceException $fault ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
 			return $this->recallGrace( $licenseKey, $now ) ?? throw new LicensePersistenceException( 'Product read faulted during validation: ' . $fault->getMessage(), 0, $fault );
 		}
@@ -154,7 +154,7 @@ class LicenseValidationService {
 		 * @param array<string, mixed> $request The request context: license_key, site_url, product.
 		 */
 		do_action(
-			'tiermint_license_validated',
+			'releasecart_license_validated',
 			$license,
 			array(
 				'license_key' => $licenseKey,

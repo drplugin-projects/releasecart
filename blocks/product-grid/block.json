@@ -1,13 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "tiermint/product-grid",
+	"name": "releasecart/product-grid",
 	"title": "Product Grid",
-	"category": "tiermint",
+	"category": "releasecart",
 	"icon": "grid-view",
 	"description": "A filterable grid of published products.",
-	"keywords": [ "products", "catalog", "grid", "tiermint" ],
-	"textdomain": "tiermint",
+	"keywords": [ "products", "catalog", "grid", "releasecart" ],
+	"textdomain": "releasecart",
 	"supports": {
 		"html": false,
 		"align": [ "wide", "full" ]

@@ -34,15 +34,16 @@ function Upgrade( { boot } ) {
 					ctaLabel: '',
 					features: [],
 			  };
-	const linkLabel = upsell.linkLabel || __( 'See TierMint Pro', 'tiermint' );
+	const linkLabel =
+		upsell.linkLabel || __( 'See ReleaseCart Pro', 'releasecart' );
 
 	return (
-		<section className="tiermint-admin-screen tiermint-upsell">
-			<div className="tiermint-upsell__header">
-				<h1>{ __( 'TierMint Pro', 'tiermint' ) }</h1>
+		<section className="releasecart-admin-screen releasecart-upsell">
+			<div className="releasecart-upsell__header">
+				<h1>{ __( 'ReleaseCart Pro', 'releasecart' ) }</h1>
 				{ upsell.url && (
 					<a
-						className="button button-primary tiermint-upsell__cta"
+						className="button button-primary releasecart-upsell__cta"
 						href={ upsell.url }
 						target="_blank"
 						rel="noopener noreferrer"
@@ -53,7 +54,7 @@ function Upgrade( { boot } ) {
 			</div>
 
 			{ upsell.intro && (
-				<p className="tiermint-upsell__intro">{ upsell.intro }</p>
+				<p className="releasecart-upsell__intro">{ upsell.intro }</p>
 			) }
 
 			<UpsellFeatures
@@ -72,8 +73,8 @@ function Upgrade( { boot } ) {
  */
 export const route = {
 	path: '#/pro',
-	title: __( 'TierMint Pro', 'tiermint' ),
-	capability: 'manage_tiermint',
+	title: __( 'ReleaseCart Pro', 'releasecart' ),
+	capability: 'manage_releasecart',
 	component: Upgrade,
 	hideWhenPro: true,
 };

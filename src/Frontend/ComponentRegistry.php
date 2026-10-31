@@ -2,12 +2,12 @@
 /**
  * The registry of front-end components.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -98,7 +98,7 @@ class ComponentRegistry {
 		 *
 		 * @param array<int, class-string> $classes Component class names.
 		 */
-		$classes = apply_filters( 'tiermint_frontend_components', $this->defaultClasses );
+		$classes = apply_filters( 'releasecart_frontend_components', $this->defaultClasses );
 
 		$this->components = array();
 
@@ -117,7 +117,7 @@ class ComponentRegistry {
 					esc_html(
 						sprintf(
 							/* translators: 1: the rejected class name, 2: the Component interface name. */
-							__( 'Class "%1$s" added via tiermint_frontend_components must implement %2$s.', 'tiermint' ),
+							__( 'Class "%1$s" added via releasecart_frontend_components must implement %2$s.', 'releasecart' ),
 							is_string( $className ) ? $className : gettype( $className ),
 							Component::class
 						)

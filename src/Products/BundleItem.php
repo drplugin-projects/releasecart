@@ -2,12 +2,12 @@
 /**
  * Bundle composition value object.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Products;
+namespace DrPlugin\WP\ReleaseCart\Products;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -64,7 +64,7 @@ final class BundleItem {
 	public function __construct( ?int $bundleProductId, int $childProductId, ?int $childPriceId, int $sortOrder ) {
 		if ( $childProductId <= 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new ProductException( __( 'A bundle item must reference a valid child product.', 'tiermint' ) );
+			throw new ProductException( __( 'A bundle item must reference a valid child product.', 'releasecart' ) );
 		}
 
 		$this->bundleProductId = $bundleProductId;
@@ -97,7 +97,7 @@ final class BundleItem {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param object $row A `tiermint_bundle_items` row.
+	 * @param object $row A `releasecart_bundle_items` row.
 	 * @return self
 	 *
 	 * @throws ProductException When the row is invalid.

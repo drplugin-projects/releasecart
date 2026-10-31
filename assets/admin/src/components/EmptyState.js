@@ -16,15 +16,17 @@
  * @return {Element} The empty-state element.
  */
 export default function EmptyState( { message, action, className } ) {
-	const classes = [ 'tiermint-empty-state', className || '' ]
+	const classes = [ 'releasecart-empty-state', className || '' ]
 		.filter( Boolean )
 		.join( ' ' );
 
 	return (
 		<div className={ classes } role="status">
-			<p className="tiermint-empty-state__message">{ message }</p>
+			<p className="releasecart-empty-state__message">{ message }</p>
 			{ action && (
-				<div className="tiermint-empty-state__action">{ action }</div>
+				<div className="releasecart-empty-state__action">
+					{ action }
+				</div>
 			) }
 		</div>
 	);

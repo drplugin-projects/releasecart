@@ -2,12 +2,12 @@
 /**
  * The extensible product field registry.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Products\Fields;
+namespace DrPlugin\WP\ReleaseCart\Products\Fields;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -81,7 +81,7 @@ final class ProductFieldRegistry {
 		 *
 		 * @param array<int, array<string, mixed>> $fields The field definitions.
 		 */
-		$fields = apply_filters( 'tiermint_product_fields', $this->core->fields() );
+		$fields = apply_filters( 'releasecart_product_fields', $this->core->fields() );
 
 		$byId = array();
 		foreach ( (array) $fields as $field ) {
@@ -175,7 +175,7 @@ final class ProductFieldRegistry {
 		 *
 		 * @param array<int, array<string, string>> $panels The panel rows.
 		 */
-		$panels = apply_filters( 'tiermint_product_field_panels', $this->core->panels() );
+		$panels = apply_filters( 'releasecart_product_field_panels', $this->core->panels() );
 
 		$byId = array();
 		foreach ( (array) $panels as $panel ) {

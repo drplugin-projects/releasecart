@@ -2,21 +2,21 @@
 /**
  * Service provider for the Orders domain (cart, orders, refunds).
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Orders;
+namespace DrPlugin\WP\ReleaseCart\Orders;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Container;
-use DrPlugin\WP\TierMint\Core\ServiceProvider;
-use DrPlugin\WP\TierMint\Customers\CustomerService;
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Core\Container;
+use DrPlugin\WP\ReleaseCart\Core\ServiceProvider;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerService;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
 
 /**
  * Registers cart, order, refund and state services.
@@ -71,17 +71,17 @@ final class OrdersServiceProvider implements ServiceProvider {
 				$c->get( CartService::class ),
 				$c->get( OrderStateMachine::class ),
 				// Allow lean test containers without the Discounts provider.
-				$c->has( \DrPlugin\WP\TierMint\Discounts\DiscountService::class )
-					? $c->get( \DrPlugin\WP\TierMint\Discounts\DiscountService::class )
+				$c->has( \DrPlugin\WP\ReleaseCart\Discounts\DiscountService::class )
+					? $c->get( \DrPlugin\WP\ReleaseCart\Discounts\DiscountService::class )
 					: null,
-				$c->has( \DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver::class )
-					? $c->get( \DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver::class )
+				$c->has( \DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver::class )
+					? $c->get( \DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver::class )
 					: null,
-				$c->has( \DrPlugin\WP\TierMint\Discounts\DiscountSettings::class )
-					? $c->get( \DrPlugin\WP\TierMint\Discounts\DiscountSettings::class )
+				$c->has( \DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings::class )
+					? $c->get( \DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings::class )
 					: null,
-				$c->has( \DrPlugin\WP\TierMint\Database\Logger::class )
-					? $c->get( \DrPlugin\WP\TierMint\Database\Logger::class )
+				$c->has( \DrPlugin\WP\ReleaseCart\Database\Logger::class )
+					? $c->get( \DrPlugin\WP\ReleaseCart\Database\Logger::class )
 					: null
 			)
 		);

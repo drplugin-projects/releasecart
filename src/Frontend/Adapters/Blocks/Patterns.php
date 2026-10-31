@@ -1,20 +1,20 @@
 <?php
 /**
- * Registers the TierMint block pattern category and starter patterns.
+ * Registers the ReleaseCart block pattern category and starter patterns.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Adapters\Blocks;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Adapters\Blocks;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Registers TierMint starter patterns from the patterns directory.
+ * Registers ReleaseCart starter patterns from the patterns directory.
  *
  * Invalid pattern files do not stop the site.
  *
@@ -32,14 +32,14 @@ class Patterns implements Hookable {
 	}
 
 	/**
-	 * Register the TierMint pattern category and every shipped pattern.
+	 * Register the ReleaseCart pattern category and every shipped pattern.
 	 *
 	 * @return void
 	 */
 	public function registerPatterns(): void {
 		register_block_pattern_category(
 			Registrar::CATEGORY_SLUG,
-			array( 'label' => __( 'TierMint', 'tiermint' ) )
+			array( 'label' => __( 'ReleaseCart', 'releasecart' ) )
 		);
 
 		$files = glob( $this->patternsBasePath() . '*.php' );
@@ -63,7 +63,7 @@ class Patterns implements Hookable {
 			);
 
 			register_block_pattern(
-				'tiermint/' . basename( $file, '.php' ),
+				'releasecart/' . basename( $file, '.php' ),
 				$properties
 			);
 		}
@@ -75,6 +75,6 @@ class Patterns implements Hookable {
 	 * @return string
 	 */
 	protected function patternsBasePath(): string {
-		return TIERMINT_PATH . 'patterns/';
+		return RELEASECART_PATH . 'patterns/';
 	}
 }

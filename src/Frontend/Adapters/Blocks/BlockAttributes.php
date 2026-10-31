@@ -2,12 +2,12 @@
 /**
  * Generates block.json-style attribute definitions from component schemas.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Adapters\Blocks;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Adapters\Blocks;
 
 defined( 'ABSPATH' ) || exit;
 

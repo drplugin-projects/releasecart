@@ -1,13 +1,13 @@
 <?php
 /**
- * The TierMint Pricing Table Elementor widget.
+ * The ReleaseCart Pricing Table Elementor widget.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Widgets;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Widgets;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -33,7 +33,7 @@ final class PricingTableWidget extends ComponentWidget {
 	 * @return string
 	 */
 	public function get_title(): string {
-		return __( 'TierMint Pricing Table', 'tiermint' );
+		return __( 'ReleaseCart Pricing Table', 'releasecart' );
 	}
 
 	/**

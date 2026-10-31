@@ -53,14 +53,14 @@ const FILTER_PRODUCTS = 100;
  */
 function statusOptions() {
 	return [
-		{ label: __( 'All statuses', 'tiermint' ), value: '' },
-		{ label: __( 'Pending', 'tiermint' ), value: 'pending' },
-		{ label: __( 'Completed', 'tiermint' ), value: 'completed' },
-		{ label: __( 'Failed', 'tiermint' ), value: 'failed' },
-		{ label: __( 'Abandoned', 'tiermint' ), value: 'abandoned' },
-		{ label: __( 'Refunded', 'tiermint' ), value: 'refunded' },
+		{ label: __( 'All statuses', 'releasecart' ), value: '' },
+		{ label: __( 'Pending', 'releasecart' ), value: 'pending' },
+		{ label: __( 'Completed', 'releasecart' ), value: 'completed' },
+		{ label: __( 'Failed', 'releasecart' ), value: 'failed' },
+		{ label: __( 'Abandoned', 'releasecart' ), value: 'abandoned' },
+		{ label: __( 'Refunded', 'releasecart' ), value: 'refunded' },
 		{
-			label: __( 'Partially refunded', 'tiermint' ),
+			label: __( 'Partially refunded', 'releasecart' ),
 			value: 'partially_refunded',
 		},
 	];
@@ -90,7 +90,7 @@ function productOptions( items, activeId ) {
 		options.unshift( {
 			label: sprintf(
 				/* translators: %s: a product id, shown when the product's name is not in the filter list. */
-				__( 'Product #%s', 'tiermint' ),
+				__( 'Product #%s', 'releasecart' ),
 				activeId
 			),
 			value: activeId,
@@ -98,7 +98,7 @@ function productOptions( items, activeId ) {
 	}
 
 	return [
-		{ label: __( 'All products', 'tiermint' ), value: '' },
+		{ label: __( 'All products', 'releasecart' ), value: '' },
 		...options,
 	];
 }
@@ -115,8 +115,8 @@ function OrderRow( { order, canEditUsers } ) {
 	// A refund is either an explicit refund-type row or any negative total.
 	const isRefund = order.type === 'refund' || order.total < 0;
 	const className = isRefund
-		? 'tiermint-order-row tiermint-order-row--refund'
-		: 'tiermint-order-row';
+		? 'releasecart-order-row releasecart-order-row--refund'
+		: 'releasecart-order-row';
 
 	// The name if the customer record carries one, else the email the order was
 	// placed with, which every order has.
@@ -146,11 +146,11 @@ function OrderRow( { order, canEditUsers } ) {
 				<StatusBadge
 					status={ order.status }
 					label={ orderStatusLabel( order.status ) }
-					className="tiermint-status"
+					className="releasecart-status"
 				/>
 			</td>
 			<td>{ orderTypeLabel( order.type ) }</td>
-			<td className="tiermint-order-total">
+			<td className="releasecart-order-total">
 				{ formatMinor( order.total, order.currency ) }
 			</td>
 			<td>{ order.gateway }</td>
@@ -242,15 +242,15 @@ export default function Orders( { boot } ) {
 	}, [ page, totalPages, inHand, replacePage ] );
 
 	return (
-		<section className="tiermint-admin-screen">
-			<ScreenHeader title={ __( 'Orders', 'tiermint' ) } />
+		<section className="releasecart-admin-screen">
+			<ScreenHeader title={ __( 'Orders', 'releasecart' ) } />
 
-			<div className="tiermint-toolbar tiermint-orders-toolbar">
+			<div className="releasecart-toolbar releasecart-orders-toolbar">
 				<SelectControl
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					hideLabelFromVision
-					label={ __( 'Status', 'tiermint' ) }
+					label={ __( 'Status', 'releasecart' ) }
 					value={ status }
 					options={ statusOptions() }
 					onChange={ onStatusChange }
@@ -266,7 +266,7 @@ export default function Orders( { boot } ) {
 							( ! productsInHand &&
 								firstReadPending( productsQuery ) ) )
 					}
-					label={ __( 'Product', 'tiermint' ) }
+					label={ __( 'Product', 'releasecart' ) }
 					value={ productId }
 					options={
 						unreadableProducts && productId === ''
@@ -274,7 +274,7 @@ export default function Orders( { boot } ) {
 									{
 										label: __(
 											'Products unavailable',
-											'tiermint'
+											'releasecart'
 										),
 										value: '',
 									},
@@ -288,7 +288,7 @@ export default function Orders( { boot } ) {
 				/>
 				<SearchControl
 					__nextHasNoMarginBottom
-					label={ __( 'Search orders', 'tiermint' ) }
+					label={ __( 'Search orders', 'releasecart' ) }
 					value={ search }
 					onChange={ onSearchChange }
 				/>
@@ -300,7 +300,10 @@ export default function Orders( { boot } ) {
 				<Notice status="error" isDismissible={ false }>
 					{ query.error && query.error.message
 						? query.error.message
-						: __( 'The orders could not be loaded.', 'tiermint' ) }
+						: __(
+								'The orders could not be loaded.',
+								'releasecart'
+						  ) }
 				</Notice>
 			) }
 
@@ -308,40 +311,43 @@ export default function Orders( { boot } ) {
 				<EmptyState
 					message={
 						status || search || productId
-							? __( 'No orders match these filters.', 'tiermint' )
+							? __(
+									'No orders match these filters.',
+									'releasecart'
+							  )
 							: __(
 									'No orders yet. Completed and pending purchases appear here.',
-									'tiermint'
+									'releasecart'
 							  )
 					}
 				/>
 			) }
 
 			{ items.length > 0 && (
-				<table className="tiermint-orders-table wp-list-table widefat striped">
+				<table className="releasecart-orders-table wp-list-table widefat striped">
 					<thead>
 						<tr>
 							<SortableHeader
 								column="id"
-								label={ __( 'Order', 'tiermint' ) }
+								label={ __( 'Order', 'releasecart' ) }
 								sort={ sort }
 							/>
 							<SortableHeader
 								column="created_at"
-								label={ __( 'Date', 'tiermint' ) }
+								label={ __( 'Date', 'releasecart' ) }
 								sort={ sort }
 							/>
-							<th>{ __( 'Customer', 'tiermint' ) }</th>
-							<th>{ __( 'Product', 'tiermint' ) }</th>
-							<th>{ __( 'Status', 'tiermint' ) }</th>
-							<th>{ __( 'Type', 'tiermint' ) }</th>
+							<th>{ __( 'Customer', 'releasecart' ) }</th>
+							<th>{ __( 'Product', 'releasecart' ) }</th>
+							<th>{ __( 'Status', 'releasecart' ) }</th>
+							<th>{ __( 'Type', 'releasecart' ) }</th>
 							<SortableHeader
 								column="total"
-								label={ __( 'Total', 'tiermint' ) }
+								label={ __( 'Total', 'releasecart' ) }
 								sort={ sort }
-								className="tiermint-order-total"
+								className="releasecart-order-total"
 							/>
-							<th>{ __( 'Gateway', 'tiermint' ) }</th>
+							<th>{ __( 'Gateway', 'releasecart' ) }</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -375,7 +381,7 @@ export default function Orders( { boot } ) {
  */
 export const route = {
 	path: '#/orders',
-	title: __( 'Orders', 'tiermint' ),
-	capability: 'manage_tiermint',
+	title: __( 'Orders', 'releasecart' ),
+	capability: 'manage_releasecart',
 	component: Orders,
 };

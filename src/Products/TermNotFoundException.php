@@ -2,12 +2,12 @@
 /**
  * Exception for a missing term.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Products;
+namespace DrPlugin\WP\ReleaseCart\Products;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;

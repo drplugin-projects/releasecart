@@ -2,12 +2,12 @@
 /**
  * Allowed HTML for component output.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,7 +25,7 @@ final class Kses {
 	 *
 	 * @var string
 	 */
-	public const FILTER = 'tiermint_kses_allowed_html';
+	public const FILTER = 'releasecart_kses_allowed_html';
 
 	/**
 	 * Attributes allowed on every element: WordPress's global set and three more that components print.
@@ -239,7 +239,7 @@ final class Kses {
 		 * @param array<string, array<string, mixed>> $tags    Elements and their attributes, as wp_kses() takes them.
 		 * @param string                              $context Which list: 'component', 'image' or 'form'.
 		 */
-		$filtered = apply_filters( 'tiermint_kses_allowed_html', $tags, $context );
+		$filtered = apply_filters( 'releasecart_kses_allowed_html', $tags, $context );
 
 		return is_array( $filtered ) ? $filtered : $tags;
 	}

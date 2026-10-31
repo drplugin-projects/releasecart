@@ -2,121 +2,121 @@
  * Product changelog styles.
  */
 
-.tiermint-product-changelog {
+.releasecart-product-changelog {
 	display: flex;
 	flex-direction: column;
-	gap: var(--tiermint-space-5);
-	color: var(--tiermint-color-text);
+	gap: var(--releasecart-space-5);
+	color: var(--releasecart-color-text);
 }
 
-.tiermint-product-changelog__release {
-	padding: var(--tiermint-space-5);
-	background-color: var(--tiermint-color-surface);
-	border: 1px solid var(--tiermint-color-border);
-	border-radius: var(--tiermint-radius-lg);
-	box-shadow: var(--tiermint-shadow-sm);
+.releasecart-product-changelog__release {
+	padding: var(--releasecart-space-5);
+	background-color: var(--releasecart-color-surface);
+	border: 1px solid var(--releasecart-color-border);
+	border-radius: var(--releasecart-radius-lg);
+	box-shadow: var(--releasecart-shadow-sm);
 }
 
-.tiermint-product-changelog__header {
+.releasecart-product-changelog__header {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
-	gap: var(--tiermint-space-2) var(--tiermint-space-3);
-	margin-bottom: var(--tiermint-space-3);
+	gap: var(--releasecart-space-2) var(--releasecart-space-3);
+	margin-bottom: var(--releasecart-space-3);
 }
 
-.tiermint-product-changelog__version {
+.releasecart-product-changelog__version {
 	margin: 0;
-	font-size: var(--tiermint-font-size-lg);
-	font-weight: var(--tiermint-font-weight-semibold);
-	line-height: var(--tiermint-line-height-tight);
-	color: var(--tiermint-color-text);
+	font-size: var(--releasecart-font-size-lg);
+	font-weight: var(--releasecart-font-weight-semibold);
+	line-height: var(--releasecart-line-height-tight);
+	color: var(--releasecart-color-text);
 }
 
-.tiermint-product-changelog__date {
-	font-size: var(--tiermint-font-size-sm);
-	color: var(--tiermint-color-text-subtle);
+.releasecart-product-changelog__date {
+	font-size: var(--releasecart-font-size-sm);
+	color: var(--releasecart-color-text-subtle);
 }
 
 /* Keep compatibility details below the notes. */
-.tiermint-product-changelog__compat {
+.releasecart-product-changelog__compat {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--tiermint-space-1) var(--tiermint-space-4);
-	margin: var(--tiermint-space-3) 0 0;
-	font-size: var(--tiermint-font-size-xs);
-	color: var(--tiermint-color-text-subtle);
+	gap: var(--releasecart-space-1) var(--releasecart-space-4);
+	margin: var(--releasecart-space-3) 0 0;
+	font-size: var(--releasecart-font-size-xs);
+	color: var(--releasecart-color-text-subtle);
 }
 
 /* Space supported markup in release notes. */
-.tiermint-product-changelog__notes {
-	font-size: var(--tiermint-font-size-sm);
-	color: var(--tiermint-color-text-muted);
+.releasecart-product-changelog__notes {
+	font-size: var(--releasecart-font-size-sm);
+	color: var(--releasecart-color-text-muted);
 }
 
-.tiermint-product-changelog__notes > :first-child {
+.releasecart-product-changelog__notes > :first-child {
 	margin-top: 0;
 }
 
-.tiermint-product-changelog__notes > :last-child {
+.releasecart-product-changelog__notes > :last-child {
 	margin-bottom: 0;
 }
 
-.tiermint-product-changelog__notes p,
-.tiermint-product-changelog__notes ul,
-.tiermint-product-changelog__notes ol,
-.tiermint-product-changelog__notes pre {
-	margin: 0 0 var(--tiermint-space-3);
+.releasecart-product-changelog__notes p,
+.releasecart-product-changelog__notes ul,
+.releasecart-product-changelog__notes ol,
+.releasecart-product-changelog__notes pre {
+	margin: 0 0 var(--releasecart-space-3);
 }
 
-.tiermint-product-changelog__notes ul,
-.tiermint-product-changelog__notes ol {
-	padding-left: var(--tiermint-space-5);
+.releasecart-product-changelog__notes ul,
+.releasecart-product-changelog__notes ol {
+	padding-left: var(--releasecart-space-5);
 }
 
-.tiermint-product-changelog__notes li {
-	margin-bottom: var(--tiermint-space-1);
+.releasecart-product-changelog__notes li {
+	margin-bottom: var(--releasecart-space-1);
 }
 
-.tiermint-product-changelog__notes h1,
-.tiermint-product-changelog__notes h2,
-.tiermint-product-changelog__notes h3,
-.tiermint-product-changelog__notes h4,
-.tiermint-product-changelog__notes h5,
-.tiermint-product-changelog__notes h6 {
-	margin: var(--tiermint-space-4) 0 var(--tiermint-space-2);
-	font-size: var(--tiermint-font-size-base);
-	font-weight: var(--tiermint-font-weight-semibold);
-	color: var(--tiermint-color-text);
+.releasecart-product-changelog__notes h1,
+.releasecart-product-changelog__notes h2,
+.releasecart-product-changelog__notes h3,
+.releasecart-product-changelog__notes h4,
+.releasecart-product-changelog__notes h5,
+.releasecart-product-changelog__notes h6 {
+	margin: var(--releasecart-space-4) 0 var(--releasecart-space-2);
+	font-size: var(--releasecart-font-size-base);
+	font-weight: var(--releasecart-font-weight-semibold);
+	color: var(--releasecart-color-text);
 }
 
-.tiermint-product-changelog__notes a {
-	color: var(--tiermint-color-primary);
+.releasecart-product-changelog__notes a {
+	color: var(--releasecart-color-primary);
 	text-decoration: none;
 }
 
-.tiermint-product-changelog__notes a:hover,
-.tiermint-product-changelog__notes a:focus-visible {
+.releasecart-product-changelog__notes a:hover,
+.releasecart-product-changelog__notes a:focus-visible {
 	text-decoration: underline;
 }
 
-.tiermint-product-changelog__notes code {
+.releasecart-product-changelog__notes code {
 	padding: 0.1em 0.35em;
 	font-size: 0.9em;
-	background-color: var(--tiermint-color-surface-alt);
-	border: 1px solid var(--tiermint-color-border);
-	border-radius: var(--tiermint-radius-sm);
+	background-color: var(--releasecart-color-surface-alt);
+	border: 1px solid var(--releasecart-color-border);
+	border-radius: var(--releasecart-radius-sm);
 }
 
-.tiermint-product-changelog__notes pre {
-	padding: var(--tiermint-space-3);
+.releasecart-product-changelog__notes pre {
+	padding: var(--releasecart-space-3);
 	overflow-x: auto;
-	background-color: var(--tiermint-color-surface-alt);
-	border: 1px solid var(--tiermint-color-border);
-	border-radius: var(--tiermint-radius);
+	background-color: var(--releasecart-color-surface-alt);
+	border: 1px solid var(--releasecart-color-border);
+	border-radius: var(--releasecart-radius);
 }
 
-.tiermint-product-changelog__notes pre code {
+.releasecart-product-changelog__notes pre code {
 	padding: 0;
 	background: none;
 	border: 0;

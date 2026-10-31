@@ -2,18 +2,18 @@
 /**
  * The login-form front-end component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Frontend\AbstractComponent;
-use DrPlugin\WP\TierMint\Frontend\Kses;
-use DrPlugin\WP\TierMint\Frontend\PageResolver;
-use DrPlugin\WP\TierMint\Frontend\RenderContext;
-use DrPlugin\WP\TierMint\Util\RequestUrl;
+use DrPlugin\WP\ReleaseCart\Frontend\AbstractComponent;
+use DrPlugin\WP\ReleaseCart\Frontend\Kses;
+use DrPlugin\WP\ReleaseCart\Frontend\PageResolver;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContext;
+use DrPlugin\WP\ReleaseCart\Util\RequestUrl;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -31,7 +31,7 @@ class LoginForm extends AbstractComponent {
 	 *
 	 * @var string
 	 */
-	public const FAILED_MARKER = 'tiermint_login';
+	public const FAILED_MARKER = 'releasecart_login';
 
 	/**
 	 * Resolves the account page for the default redirect target.
@@ -68,22 +68,22 @@ class LoginForm extends AbstractComponent {
 			'redirect'      => array(
 				'type'        => 'string',
 				'default'     => '',
-				'label'       => __( 'Redirect URL', 'tiermint' ),
-				'description' => __( 'Where to send the visitor after logging in or out. Leave empty to stay on the current page.', 'tiermint' ),
+				'label'       => __( 'Redirect URL', 'releasecart' ),
+				'description' => __( 'Where to send the visitor after logging in or out. Leave empty to stay on the current page.', 'releasecart' ),
 				'control'     => 'url',
 			),
 			'show_register' => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show registration link', 'tiermint' ),
-				'description' => __( 'Show a "Create an account" link when site registration is open.', 'tiermint' ),
+				'label'       => __( 'Show registration link', 'releasecart' ),
+				'description' => __( 'Show a "Create an account" link when site registration is open.', 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'register_url'  => array(
 				'type'        => 'string',
 				'default'     => '',
-				'label'       => __( 'Registration URL', 'tiermint' ),
-				'description' => __( 'A specific registration page. When set, the create-account link points here and shows even if open registration is off.', 'tiermint' ),
+				'label'       => __( 'Registration URL', 'releasecart' ),
+				'description' => __( 'A specific registration page. When set, the create-account link points here and shows even if open registration is off.', 'releasecart' ),
 				'control'     => 'url',
 			),
 		);

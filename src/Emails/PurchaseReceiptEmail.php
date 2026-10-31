@@ -2,12 +2,12 @@
 /**
  * The purchase receipt email definition.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Emails;
+namespace DrPlugin\WP\ReleaseCart\Emails;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -62,7 +62,7 @@ final class PurchaseReceiptEmail extends Email {
 
 		return sprintf(
 			/* translators: 1: the store name, 2: the order reference number. */
-			__( '%1$s: your receipt for order #%2$s', 'tiermint' ),
+			__( '%1$s: your receipt for order #%2$s', 'releasecart' ),
 			$store,
 			$reference
 		);

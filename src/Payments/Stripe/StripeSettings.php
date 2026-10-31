@@ -2,19 +2,19 @@
 /**
  * Typed accessor for the Stripe gateway's stored configuration.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Payments\Stripe;
+namespace DrPlugin\WP\ReleaseCart\Payments\Stripe;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Payments\PaymentException;
-use DrPlugin\WP\TierMint\Util\Crypto;
-use DrPlugin\WP\TierMint\Util\CryptoException;
+use DrPlugin\WP\ReleaseCart\Payments\PaymentException;
+use DrPlugin\WP\ReleaseCart\Util\Crypto;
+use DrPlugin\WP\ReleaseCart\Util\CryptoException;
 
 /**
  * Stores public settings and encrypted per-mode secrets.
@@ -28,7 +28,7 @@ class StripeSettings {
 	 *
 	 * @var string
 	 */
-	private const SETTINGS_OPTION = 'tiermint_settings';
+	private const SETTINGS_OPTION = 'releasecart_settings';
 
 	/**
 	 * Option name prefix for the per-mode encrypted secret API keys; the mode
@@ -36,7 +36,7 @@ class StripeSettings {
 	 *
 	 * @var string
 	 */
-	private const SECRET_KEY_OPTION_PREFIX = 'tiermint_secret_stripe_sk_';
+	private const SECRET_KEY_OPTION_PREFIX = 'releasecart_secret_stripe_sk_';
 
 	/**
 	 * Option name prefix for the per-mode encrypted webhook signing secrets;
@@ -44,7 +44,7 @@ class StripeSettings {
 	 *
 	 * @var string
 	 */
-	private const WEBHOOK_SECRET_OPTION_PREFIX = 'tiermint_secret_stripe_whsec_';
+	private const WEBHOOK_SECRET_OPTION_PREFIX = 'releasecart_secret_stripe_whsec_';
 
 	/**
 	 * Store the crypto collaborator used for secrets at rest.
@@ -322,7 +322,7 @@ class StripeSettings {
 	private function assertValidMode( string $mode ): void {
 		if ( 'test' !== $mode && 'live' !== $mode ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new PaymentException( __( 'Stripe mode must be "test" or "live".', 'tiermint' ) );
+			throw new PaymentException( __( 'Stripe mode must be "test" or "live".', 'releasecart' ) );
 		}
 	}
 }

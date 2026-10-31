@@ -2,17 +2,17 @@
 /**
  * Term repository: the only Products class that touches $wpdb for `_terms`.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Products;
+namespace DrPlugin\WP\ReleaseCart\Products;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Database\Schema;
+use DrPlugin\WP\ReleaseCart\Database\Schema;
 
 /**
  * Stores product terms and their links.
@@ -28,7 +28,7 @@ class TermRepository {
 	 *
 	 * @var string
 	 */
-	private const CACHE_GROUP = 'tiermint_terms';
+	private const CACHE_GROUP = 'releasecart_terms';
 
 	/**
 	 * The WordPress database abstraction.
@@ -145,7 +145,7 @@ class TermRepository {
 
 		if ( null === $id ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new TermException( __( 'Cannot update a term that has no id.', 'tiermint' ) );
+			throw new TermException( __( 'Cannot update a term that has no id.', 'releasecart' ) );
 		}
 
 		$row = $term->toRow();
@@ -297,7 +297,7 @@ class TermRepository {
 	}
 
 	/**
-	 * The fully-qualified `tiermint_terms` table name.
+	 * The fully-qualified `releasecart_terms` table name.
 	 *
 	 * @since 1.0.0
 	 *
@@ -308,7 +308,7 @@ class TermRepository {
 	}
 
 	/**
-	 * The fully-qualified `tiermint_term_relationships` table name.
+	 * The fully-qualified `releasecart_term_relationships` table name.
 	 *
 	 * @since 1.0.0
 	 *

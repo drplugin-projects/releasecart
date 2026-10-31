@@ -2,18 +2,18 @@
 /**
  * Orders repository: the only Orders class that touches $wpdb.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Orders;
+namespace DrPlugin\WP\ReleaseCart\Orders;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Database\Schema;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Database\Schema;
 
 /**
  * Stores orders, line items and their id and UUID cache entries.
@@ -29,7 +29,7 @@ class OrderRepository {
 	 *
 	 * @var string
 	 */
-	private const CACHE_GROUP = 'tiermint_orders';
+	private const CACHE_GROUP = 'releasecart_orders';
 
 	/**
 	 * The WordPress database abstraction.
@@ -204,7 +204,7 @@ class OrderRepository {
 
 		if ( null === $id ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new OrderException( __( 'Cannot update an order that has no id.', 'tiermint' ) );
+			throw new OrderException( __( 'Cannot update an order that has no id.', 'releasecart' ) );
 		}
 
 		$this->updateWhere(
@@ -245,7 +245,7 @@ class OrderRepository {
 
 		if ( null === $id ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new OrderException( __( 'Cannot transition an order that has no id.', 'tiermint' ) );
+			throw new OrderException( __( 'Cannot transition an order that has no id.', 'releasecart' ) );
 		}
 
 		if ( array() === $fromStatuses ) {
@@ -314,7 +314,7 @@ class OrderRepository {
 
 		if ( null === $id ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new OrderException( __( 'Cannot stamp an order that has no id.', 'tiermint' ) );
+			throw new OrderException( __( 'Cannot stamp an order that has no id.', 'releasecart' ) );
 		}
 
 		$wpdb = $this->wpdb;
@@ -694,7 +694,7 @@ class OrderRepository {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param object $row A `tiermint_orders` row.
+	 * @param object $row A `releasecart_orders` row.
 	 * @return Order The hydrated order.
 	 */
 	private function hydrate( object $row ): Order {
@@ -706,7 +706,7 @@ class OrderRepository {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array<int, object> $rows The `tiermint_orders` rows on this page.
+	 * @param array<int, object> $rows The `releasecart_orders` rows on this page.
 	 * @return array<int, Order> The hydrated orders, in the order given.
 	 */
 	private function hydratePage( array $rows ): array {
@@ -927,7 +927,7 @@ class OrderRepository {
 	}
 
 	/**
-	 * The fully-qualified `tiermint_orders` table name.
+	 * The fully-qualified `releasecart_orders` table name.
 	 *
 	 * @since 1.0.0
 	 *
@@ -938,7 +938,7 @@ class OrderRepository {
 	}
 
 	/**
-	 * The fully-qualified `tiermint_order_items` table name.
+	 * The fully-qualified `releasecart_order_items` table name.
 	 *
 	 * @since 1.0.0
 	 *

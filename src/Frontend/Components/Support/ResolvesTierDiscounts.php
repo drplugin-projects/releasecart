@@ -2,17 +2,17 @@
 /**
  * Shared per-tier automatic-discount resolution for the tier-selector components.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components\Support;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components\Support;
 
-use DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver;
-use DrPlugin\WP\TierMint\Discounts\DiscountPersistenceException;
-use DrPlugin\WP\TierMint\Discounts\DiscountSettings;
-use DrPlugin\WP\TierMint\Products\Product;
+use DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountPersistenceException;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings;
+use DrPlugin\WP\ReleaseCart\Products\Product;
 
 defined( 'ABSPATH' ) || exit;
 

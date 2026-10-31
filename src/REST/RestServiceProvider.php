@@ -2,48 +2,49 @@
 /**
  * Service provider for the REST API layer.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Container;
-use DrPlugin\WP\TierMint\Core\ServiceProvider;
-use DrPlugin\WP\TierMint\Customers\CustomerService;
-use DrPlugin\WP\TierMint\Frontend\CheckoutFieldSettings;
-use DrPlugin\WP\TierMint\Frontend\ProductUrlProvider;
-use DrPlugin\WP\TierMint\Licensing\ActivationRepository;
-use DrPlugin\WP\TierMint\Licensing\ActivationService;
-use DrPlugin\WP\TierMint\Licensing\LicenseService;
-use DrPlugin\WP\TierMint\Licensing\LicenseValidationService;
-use DrPlugin\WP\TierMint\Orders\OrderService;
-use DrPlugin\WP\TierMint\Payments\CheckoutService;
-use DrPlugin\WP\TierMint\Payments\RefundCoordinator;
-use DrPlugin\WP\TierMint\Payments\WebhookProcessor;
-use DrPlugin\WP\TierMint\Customers\CustomerRepository;
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Licensing\LicenseRepository;
-use DrPlugin\WP\TierMint\Orders\OrderBuyers;
-use DrPlugin\WP\TierMint\Orders\OrderRepository;
-use DrPlugin\WP\TierMint\Products\Fields\ProductFieldRegistry;
-use DrPlugin\WP\TierMint\Products\ProductRepository;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Products\TermService;
-use DrPlugin\WP\TierMint\Storage\StorageManager;
-use DrPlugin\WP\TierMint\Updates\CustomerDownloads;
-use DrPlugin\WP\TierMint\Updates\PackageSigner;
-use DrPlugin\WP\TierMint\Updates\ReleaseRepository;
-use DrPlugin\WP\TierMint\Updates\ReleaseService;
-use DrPlugin\WP\TierMint\Updates\UpdateService;
-use DrPlugin\WP\TierMint\REST\Auth\ApiKeyAuthenticator;
-use DrPlugin\WP\TierMint\REST\Auth\ApiKeyRepository;
-use DrPlugin\WP\TierMint\REST\Auth\ApiKeyService;
-use DrPlugin\WP\TierMint\Util\RateLimiter;
+use DrPlugin\WP\ReleaseCart\Core\Container;
+use DrPlugin\WP\ReleaseCart\Core\ServiceProvider;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerService;
+use DrPlugin\WP\ReleaseCart\Frontend\CheckoutFieldSettings;
+use DrPlugin\WP\ReleaseCart\Frontend\ProductUrlProvider;
+use DrPlugin\WP\ReleaseCart\Licensing\ActivationRepository;
+use DrPlugin\WP\ReleaseCart\Licensing\ActivationService;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseService;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseValidationService;
+use DrPlugin\WP\ReleaseCart\Orders\CartService;
+use DrPlugin\WP\ReleaseCart\Orders\OrderService;
+use DrPlugin\WP\ReleaseCart\Payments\CheckoutService;
+use DrPlugin\WP\ReleaseCart\Payments\RefundCoordinator;
+use DrPlugin\WP\ReleaseCart\Payments\WebhookProcessor;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerRepository;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseRepository;
+use DrPlugin\WP\ReleaseCart\Orders\OrderBuyers;
+use DrPlugin\WP\ReleaseCart\Orders\OrderRepository;
+use DrPlugin\WP\ReleaseCart\Products\Fields\ProductFieldRegistry;
+use DrPlugin\WP\ReleaseCart\Products\ProductRepository;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Products\TermService;
+use DrPlugin\WP\ReleaseCart\Storage\StorageManager;
+use DrPlugin\WP\ReleaseCart\Updates\CustomerDownloads;
+use DrPlugin\WP\ReleaseCart\Updates\PackageSigner;
+use DrPlugin\WP\ReleaseCart\Updates\ReleaseRepository;
+use DrPlugin\WP\ReleaseCart\Updates\ReleaseService;
+use DrPlugin\WP\ReleaseCart\Updates\UpdateService;
+use DrPlugin\WP\ReleaseCart\REST\Auth\ApiKeyAuthenticator;
+use DrPlugin\WP\ReleaseCart\REST\Auth\ApiKeyRepository;
+use DrPlugin\WP\ReleaseCart\REST\Auth\ApiKeyService;
+use DrPlugin\WP\ReleaseCart\Util\RateLimiter;
 
 /**
  * Binds REST controllers and registers their route hooks.
@@ -120,6 +121,7 @@ final class RestServiceProvider implements ServiceProvider {
 			static fn ( Container $c ): CheckoutController => new CheckoutController(
 				$c->get( CheckoutService::class ),
 				$c->get( RateLimiter::class ),
+				$c->get( CartService::class ),
 				$c->get( CheckoutFieldSettings::class )
 			)
 		);
@@ -199,27 +201,27 @@ final class RestServiceProvider implements ServiceProvider {
 		$container->singleton(
 			DiscountsController::class,
 			static fn ( Container $c ): DiscountsController => new DiscountsController(
-				$c->get( \DrPlugin\WP\TierMint\Discounts\DiscountService::class )
+				$c->get( \DrPlugin\WP\ReleaseCart\Discounts\DiscountService::class )
 			)
 		);
 
 		$container->singleton(
 			ReportsController::class,
 			static fn ( Container $c ): ReportsController => new ReportsController(
-				$c->get( \DrPlugin\WP\TierMint\Reports\ReportService::class )
+				$c->get( \DrPlugin\WP\ReleaseCart\Reports\ReportService::class )
 			)
 		);
 
 		$container->singleton(
-			\DrPlugin\WP\TierMint\Reports\CsvWriter::class,
-			static fn (): \DrPlugin\WP\TierMint\Reports\CsvWriter => new \DrPlugin\WP\TierMint\Reports\CsvWriter()
+			\DrPlugin\WP\ReleaseCart\Reports\CsvWriter::class,
+			static fn (): \DrPlugin\WP\ReleaseCart\Reports\CsvWriter => new \DrPlugin\WP\ReleaseCart\Reports\CsvWriter()
 		);
 
 		$container->singleton(
 			ReportsExportController::class,
 			static fn ( Container $c ): ReportsExportController => new ReportsExportController(
-				$c->get( \DrPlugin\WP\TierMint\Reports\ReportService::class ),
-				$c->get( \DrPlugin\WP\TierMint\Reports\CsvWriter::class ),
+				$c->get( \DrPlugin\WP\ReleaseCart\Reports\ReportService::class ),
+				$c->get( \DrPlugin\WP\ReleaseCart\Reports\CsvWriter::class ),
 				$c->get( OrderRepository::class ),
 				$c->get( OrderBuyers::class )
 			)

@@ -2,12 +2,12 @@
 /**
  * Cart notice view-data helper for the storefront templates.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -58,7 +58,7 @@ final class CartNotices {
 
 		return array(
 			'show'         => true,
-			'text'         => __( 'Added to your cart.', 'tiermint' ),
+			'text'         => __( 'Added to your cart.', 'releasecart' ),
 			'checkout_url' => $pages->url( PageResolver::CHECKOUT ),
 		);
 	}
@@ -83,8 +83,8 @@ final class CartNotices {
 		}
 
 		$messages = array(
-			'invalid' => __( 'That item could not be added to the cart.', 'tiermint' ),
-			'failed'  => __( 'Something went wrong updating your cart. Please try again.', 'tiermint' ),
+			'invalid' => __( 'That item could not be added to the cart.', 'releasecart' ),
+			'failed'  => __( 'Something went wrong updating your cart. Please try again.', 'releasecart' ),
 		);
 
 		if ( ! isset( $messages[ $code ] ) ) {

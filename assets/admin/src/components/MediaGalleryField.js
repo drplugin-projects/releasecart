@@ -148,40 +148,40 @@ export default function MediaGalleryField( { field, value, onChange } ) {
 	};
 
 	return (
-		<div className="tiermint-media-gallery">
-			<span className="tiermint-media-gallery__label">
+		<div className="releasecart-media-gallery">
+			<span className="releasecart-media-gallery__label">
 				{ field.label }
 			</span>
 
 			{ ids.length === 0 ? (
-				<p className="tiermint-media-gallery__empty">
-					{ __( 'No images yet.', 'tiermint' ) }
+				<p className="releasecart-media-gallery__empty">
+					{ __( 'No images yet.', 'releasecart' ) }
 				</p>
 			) : (
-				<ul className="tiermint-media-gallery__items">
+				<ul className="releasecart-media-gallery__items">
 					{ ids.map( ( id, index ) => {
 						const preview = previews[ id ];
 						return (
 							<li
 								key={ id }
-								className="tiermint-media-gallery__item"
+								className="releasecart-media-gallery__item"
 							>
 								{ preview && preview.url ? (
 									<img
-										className="tiermint-media-gallery__image"
+										className="releasecart-media-gallery__image"
 										src={ preview.url }
 										alt={ preview.alt || '' }
 									/>
 								) : (
-									<span className="tiermint-media-gallery__chip">
+									<span className="releasecart-media-gallery__chip">
 										{ sprintf(
 											/* translators: %d: the image attachment id. */
-											__( 'Image #%d', 'tiermint' ),
+											__( 'Image #%d', 'releasecart' ),
 											id
 										) }
 									</span>
 								) }
-								<div className="tiermint-media-gallery__actions">
+								<div className="releasecart-media-gallery__actions">
 									<Button
 										variant="tertiary"
 										disabled={ index === 0 }
@@ -190,12 +190,12 @@ export default function MediaGalleryField( { field, value, onChange } ) {
 											/* translators: %d: image position, starting at 1. */
 											__(
 												'Move image %d earlier',
-												'tiermint'
+												'releasecart'
 											),
 											index + 1
 										) }
 									>
-										{ __( 'Move up', 'tiermint' ) }
+										{ __( 'Move up', 'releasecart' ) }
 									</Button>
 									<Button
 										variant="tertiary"
@@ -205,12 +205,12 @@ export default function MediaGalleryField( { field, value, onChange } ) {
 											/* translators: %d: image position, starting at 1. */
 											__(
 												'Move image %d later',
-												'tiermint'
+												'releasecart'
 											),
 											index + 1
 										) }
 									>
-										{ __( 'Move down', 'tiermint' ) }
+										{ __( 'Move down', 'releasecart' ) }
 									</Button>
 									<Button
 										variant="tertiary"
@@ -220,12 +220,12 @@ export default function MediaGalleryField( { field, value, onChange } ) {
 											/* translators: %d: attachment id of the image to remove. */
 											__(
 												'Remove image #%d',
-												'tiermint'
+												'releasecart'
 											),
 											id
 										) }
 									>
-										{ __( 'Remove', 'tiermint' ) }
+										{ __( 'Remove', 'releasecart' ) }
 									</Button>
 								</div>
 							</li>
@@ -235,10 +235,12 @@ export default function MediaGalleryField( { field, value, onChange } ) {
 			) }
 
 			<Button variant="secondary" onClick={ add }>
-				{ __( 'Add images', 'tiermint' ) }
+				{ __( 'Add images', 'releasecart' ) }
 			</Button>
 			{ field.help && (
-				<p className="tiermint-media-gallery__help">{ field.help }</p>
+				<p className="releasecart-media-gallery__help">
+					{ field.help }
+				</p>
 			) }
 		</div>
 	);

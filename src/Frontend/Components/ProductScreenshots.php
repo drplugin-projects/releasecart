@@ -2,16 +2,16 @@
 /**
  * The product screenshots gallery component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Frontend\Components\Support\SamplePreview;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\ScreenshotGallery;
-use DrPlugin\WP\TierMint\Products\Product;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\SamplePreview;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\ScreenshotGallery;
+use DrPlugin\WP\ReleaseCart\Products\Product;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -71,7 +71,7 @@ final class ProductScreenshots extends AbstractProductComponent {
 		$tile = static function ( string $label ): array {
 			return array(
 				'full'    => '#',
-				'thumb'   => SamplePreview::placeholderTile( 'tiermint-product-screenshots__img', $label ),
+				'thumb'   => SamplePreview::placeholderTile( 'releasecart-product-screenshots__img', $label ),
 				'alt'     => $label,
 				'caption' => $label,
 			);
@@ -79,8 +79,8 @@ final class ProductScreenshots extends AbstractProductComponent {
 
 		return array(
 			'screenshots' => array(
-				$tile( __( 'Sample screenshot one', 'tiermint' ) ),
-				$tile( __( 'Sample screenshot two', 'tiermint' ) ),
+				$tile( __( 'Sample screenshot one', 'releasecart' ) ),
+				$tile( __( 'Sample screenshot two', 'releasecart' ) ),
 			),
 		);
 	}

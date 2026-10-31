@@ -1,31 +1,31 @@
 /* Registration form styles. Keep the honeypot available to basic bots. */
 
-.tiermint-registration-form {
-	color: var(--tiermint-color-text);
-	font-size: var(--tiermint-font-size-base);
+.releasecart-registration-form {
+	color: var(--releasecart-color-text);
+	font-size: var(--releasecart-font-size-base);
 }
 
 /* Limit the inner card because themes can size the root. */
-.tiermint-registration-form__card {
+.releasecart-registration-form__card {
 	display: flex;
 	flex-direction: column;
-	gap: var(--tiermint-space-4);
+	gap: var(--releasecart-space-4);
 	max-width: 26rem;
 	margin-inline: auto;
 }
 
-.tiermint-registration-form__form {
+.releasecart-registration-form__form {
 	display: flex;
 	flex-direction: column;
-	gap: var(--tiermint-space-5);
+	gap: var(--releasecart-space-5);
 	margin: 0;
 }
 
-.tiermint-registration-form__field {
+.releasecart-registration-form__field {
 	margin: 0;
 }
 
-.tiermint-registration-form__hp {
+.releasecart-registration-form__hp {
 	position: absolute;
 	left: -9999px;
 	width: 1px;
@@ -33,38 +33,38 @@
 	overflow: hidden;
 }
 
-.tiermint-registration-form__submit {
+.releasecart-registration-form__submit {
 	margin: 0;
 }
 
-.tiermint-registration-form__submit button {
+.releasecart-registration-form__submit button {
 	width: 100%;
 }
 
-.tiermint-registration-form__error {
+.releasecart-registration-form__error {
 	margin: 0;
 }
 
-.tiermint-registration-form__success,
-.tiermint-registration-form__signed-in {
+.releasecart-registration-form__success,
+.releasecart-registration-form__signed-in {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	gap: var(--tiermint-space-3);
+	gap: var(--releasecart-space-3);
 }
 
-.tiermint-registration-form__success p,
-.tiermint-registration-form__signed-in p {
+.releasecart-registration-form__success p,
+.releasecart-registration-form__signed-in p {
 	margin: 0;
 }
 
-.tiermint-registration-form__closed {
+.releasecart-registration-form__closed {
 	margin: 0;
-	color: var(--tiermint-color-text-muted);
+	color: var(--releasecart-color-text-muted);
 }
 
-.tiermint-registration-form__sign-in {
+.releasecart-registration-form__sign-in {
 	margin: 0;
-	font-size: var(--tiermint-font-size-sm);
+	font-size: var(--releasecart-font-size-sm);
 	text-align: center;
 }

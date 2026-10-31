@@ -2,12 +2,12 @@
 /**
  * License key generator.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Licensing;
+namespace DrPlugin\WP\ReleaseCart\Licensing;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -53,18 +53,18 @@ class KeyGenerator {
 		 *
 		 * @param string $key The default grouped-hex key (35 characters).
 		 */
-		$key = apply_filters( 'tiermint_license_key', $key );
+		$key = apply_filters( 'releasecart_license_key', $key );
 
 		$key = (string) $key;
 
 		if ( '' === $key ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseValidationException( __( 'A license key cannot be empty.', 'tiermint' ) );
+			throw new LicenseValidationException( __( 'A license key cannot be empty.', 'releasecart' ) );
 		}
 
 		if ( strlen( $key ) > self::MAX_KEY_LENGTH ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseValidationException( __( 'A license key cannot be longer than 35 characters.', 'tiermint' ) );
+			throw new LicenseValidationException( __( 'A license key cannot be longer than 35 characters.', 'releasecart' ) );
 		}
 
 		return $key;

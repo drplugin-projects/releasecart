@@ -22,9 +22,9 @@ import { joinList } from './list';
  */
 export function orderTypeLabel( type ) {
 	const map = {
-		purchase: __( 'Purchase', 'tiermint' ),
-		renewal: __( 'Renewal', 'tiermint' ),
-		refund: __( 'Refund', 'tiermint' ),
+		purchase: __( 'Purchase', 'releasecart' ),
+		renewal: __( 'Renewal', 'releasecart' ),
+		refund: __( 'Refund', 'releasecart' ),
 	};
 	return map[ type ] || type;
 }
@@ -41,7 +41,7 @@ export function orderProductSummary( items ) {
 			item.price_name
 				? sprintf(
 						/* translators: 1: a primary label, 2: a secondary detail shown in parentheses. */
-						__( '%1$s (%2$s)', 'tiermint' ),
+						__( '%1$s (%2$s)', 'releasecart' ),
 						item.product_name,
 						item.price_name
 				  )

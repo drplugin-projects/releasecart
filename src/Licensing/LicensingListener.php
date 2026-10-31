@@ -2,20 +2,20 @@
 /**
  * Hook listener wiring the licensing engine to order events and cron.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Licensing;
+namespace DrPlugin\WP\ReleaseCart\Licensing;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Orders\Order;
-use DrPlugin\WP\TierMint\Orders\OrderService;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Orders\OrderService;
 use Throwable;
 
 /**
@@ -31,14 +31,14 @@ final class LicensingListener implements Hookable {
 	 *
 	 * @var string
 	 */
-	public const RETRY_HOOK = 'tiermint_job_retry_license_mint';
+	public const RETRY_HOOK = 'releasecart_job_retry_license_mint';
 
 	/**
 	 * The daily expiry sweep hook.
 	 *
 	 * @var string
 	 */
-	public const EXPIRY_HOOK = 'tiermint_job_expire_licenses';
+	public const EXPIRY_HOOK = 'releasecart_job_expire_licenses';
 
 	/**
 	 * Base retry delay in seconds; attempt N waits BASE * 2^N.
@@ -78,8 +78,8 @@ final class LicensingListener implements Hookable {
 	 * @return void
 	 */
 	public function hooks(): void {
-		add_action( 'tiermint_order_completed', array( $this, 'onOrderCompleted' ), 10, 1 );
-		add_action( 'tiermint_order_refunded', array( $this, 'onOrderRefunded' ), 10, 2 );
+		add_action( 'releasecart_order_completed', array( $this, 'onOrderCompleted' ), 10, 1 );
+		add_action( 'releasecart_order_refunded', array( $this, 'onOrderRefunded' ), 10, 2 );
 		add_action( self::EXPIRY_HOOK, array( $this, 'onExpiryJob' ) );
 		add_action( self::RETRY_HOOK, array( $this, 'onMintRetry' ), 10, 2 );
 		add_action( 'init', array( $this, 'scheduleJobs' ) );
@@ -190,9 +190,9 @@ final class LicensingListener implements Hookable {
 			wp_clear_scheduled_hook( self::EXPIRY_HOOK );
 		}
 
-		if ( false === as_next_scheduled_action( self::EXPIRY_HOOK, array(), 'tiermint' ) ) {
+		if ( false === as_next_scheduled_action( self::EXPIRY_HOOK, array(), 'releasecart' ) ) {
 			// Enforce a single recurring action during concurrent requests.
-			as_schedule_recurring_action( time(), 86400, self::EXPIRY_HOOK, array(), 'tiermint', true );
+			as_schedule_recurring_action( time(), 86400, self::EXPIRY_HOOK, array(), 'releasecart', true );
 		}
 	}
 
@@ -221,6 +221,6 @@ final class LicensingListener implements Hookable {
 		);
 
 		// Back off retries to avoid repeated database failures.
-		as_schedule_single_action( time() + ( self::RETRY_BASE_SECONDS * ( 2 ** $attempt ) ), self::RETRY_HOOK, array( $orderId, $attempt ), 'tiermint' );
+		as_schedule_single_action( time() + ( self::RETRY_BASE_SECONDS * ( 2 ** $attempt ) ), self::RETRY_HOOK, array( $orderId, $attempt ), 'releasecart' );
 	}
 }

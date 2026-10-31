@@ -1,21 +1,21 @@
 <?php
 /**
- * Auto-generates [tiermint_*] shortcodes from the component registry.
+ * Auto-generates [releasecart_*] shortcodes from the component registry.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Adapters\Shortcodes;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Adapters\Shortcodes;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Frontend\AssetManager;
-use DrPlugin\WP\TierMint\Frontend\AttributeResolver;
-use DrPlugin\WP\TierMint\Frontend\Component;
-use DrPlugin\WP\TierMint\Frontend\ComponentRegistry;
-use DrPlugin\WP\TierMint\Frontend\Kses;
-use DrPlugin\WP\TierMint\Frontend\RenderContextResolver;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Frontend\AssetManager;
+use DrPlugin\WP\ReleaseCart\Frontend\AttributeResolver;
+use DrPlugin\WP\ReleaseCart\Frontend\Component;
+use DrPlugin\WP\ReleaseCart\Frontend\ComponentRegistry;
+use DrPlugin\WP\ReleaseCart\Frontend\Kses;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContextResolver;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -34,9 +34,9 @@ class Registrar implements Hookable {
 	 * @var array<string, string>
 	 */
 	public const ALIASES = array(
-		'tiermint_buy'     => 'buy-button',
-		'tiermint_pricing' => 'pricing-table',
-		'tiermint_login'   => 'login-form',
+		'releasecart_buy'     => 'buy-button',
+		'releasecart_pricing' => 'pricing-table',
+		'releasecart_login'   => 'login-form',
 	);
 
 	/**
@@ -133,7 +133,7 @@ class Registrar implements Hookable {
 	 * @return array<int, string>
 	 */
 	private function tagsFor( string $slug ): array {
-		$tags = array( 'tiermint_' . str_replace( '-', '_', $slug ) );
+		$tags = array( 'releasecart_' . str_replace( '-', '_', $slug ) );
 
 		foreach ( self::ALIASES as $tag => $aliasSlug ) {
 			if ( $aliasSlug === $slug ) {
@@ -151,7 +151,7 @@ class Registrar implements Hookable {
 	 */
 	public function registerShortcodes(): void {
 		foreach ( $this->registry->all() as $slug => $component ) {
-			add_shortcode( 'tiermint_' . str_replace( '-', '_', $slug ), $this->callbackFor( $component ) );
+			add_shortcode( 'releasecart_' . str_replace( '-', '_', $slug ), $this->callbackFor( $component ) );
 		}
 
 		foreach ( self::ALIASES as $tag => $slug ) {

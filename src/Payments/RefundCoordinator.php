@@ -2,21 +2,21 @@
 /**
  * Coordinates gateway refunds and the local ledger.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Payments;
+namespace DrPlugin\WP\ReleaseCart\Payments;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Orders\Order;
-use DrPlugin\WP\TierMint\Orders\OrderNotFoundException;
-use DrPlugin\WP\TierMint\Orders\OrderRepository;
-use DrPlugin\WP\TierMint\Orders\OrderValidationException;
-use DrPlugin\WP\TierMint\Orders\RefundService;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Orders\OrderNotFoundException;
+use DrPlugin\WP\ReleaseCart\Orders\OrderRepository;
+use DrPlugin\WP\ReleaseCart\Orders\OrderValidationException;
+use DrPlugin\WP\ReleaseCart\Orders\RefundService;
 
 /**
  * Coordinates gateway refunds and the local ledger.
@@ -128,7 +128,7 @@ class RefundCoordinator {
 	 * @param array<string, mixed> $charge The Stripe charge payload (amount_refunded, refunds.data).
 	 * @return bool True: the event was addressed to this install and is now reconciled.
 	 *
-	 * @throws \DrPlugin\WP\TierMint\Orders\OrderPersistenceException When a ledger write fails
+	 * @throws \DrPlugin\WP\ReleaseCart\Orders\OrderPersistenceException When a ledger write fails
 	 *         (the processor marks the event failed so the gateway retries).
 	 * @throws RefundLockException When another refund for the same order holds the lock.
 	 */
@@ -242,7 +242,7 @@ class RefundCoordinator {
 			return $supplied;
 		}
 
-		return sprintf( 'tiermint-refund-%d-%d', $orderId, $amount );
+		return sprintf( 'releasecart-refund-%d-%d', $orderId, $amount );
 	}
 
 	/**

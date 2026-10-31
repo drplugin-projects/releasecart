@@ -1,12 +1,12 @@
 {
-	"name": "tiermint",
+	"name": "releasecart",
 	"version": "1.0.0",
 	"private": true,
-	"description": "Build tooling for the TierMint WordPress plugin.",
-	"homepage": "https://drplugin.com/docs/tiermint",
+	"description": "Build tooling for the ReleaseCart WordPress plugin.",
+	"homepage": "https://drplugin.com/docs",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/drplugin-projects/tiermint.git"
+		"url": "https://github.com/drplugin-projects/releasecart.git"
 	},
 	"license": "GPL-2.0-or-later",
 	"scripts": {

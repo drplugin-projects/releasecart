@@ -1,5 +1,5 @@
 /**
- * TierMint product pricing tiers: plan/quantity progressive enhancement.
+ * ReleaseCart product pricing tiers: plan/quantity progressive enhancement.
  *
  * Keep quantity controls aligned with the selected plan.
  */
@@ -12,10 +12,10 @@
  */
 function enhance( root ) {
 	const quantityBlock = root.querySelector(
-		'.tiermint-product-pricing-tiers__quantity'
+		'.releasecart-product-pricing-tiers__quantity'
 	);
 	const quantityInput = root.querySelector(
-		'.tiermint-product-pricing-tiers__quantity input[name="quantity"]'
+		'.releasecart-product-pricing-tiers__quantity input[name="quantity"]'
 	);
 	const radios = Array.prototype.slice.call(
 		root.querySelectorAll( 'input[name="price_id"][type="radio"]' )
@@ -27,10 +27,10 @@ function enhance( root ) {
 	}
 
 	const fixedBlock = root.querySelector(
-		'.tiermint-product-pricing-tiers__quantity-fixed'
+		'.releasecart-product-pricing-tiers__quantity-fixed'
 	);
 	const fixedValue = root.querySelector(
-		'.tiermint-product-pricing-tiers__quantity-fixed-value'
+		'.releasecart-product-pricing-tiers__quantity-fixed-value'
 	);
 
 	/**
@@ -95,5 +95,5 @@ function enhance( root ) {
 }
 
 document
-	.querySelectorAll( '.tiermint-product-pricing-tiers' )
+	.querySelectorAll( '.releasecart-product-pricing-tiers' )
 	.forEach( enhance );

@@ -2,12 +2,12 @@
 /**
  * Exception for a forbidden order status transition.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Orders;
+namespace DrPlugin\WP\ReleaseCart\Orders;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -30,6 +30,6 @@ final class OrderTransitionException extends OrderException {
 	 */
 	public static function between( OrderStatus $from, OrderStatus $to ): self {
 		/* translators: 1: the order's current status, 2: the requested order status. */
-		return new self( sprintf( __( 'Cannot change order status from "%1$s" to "%2$s".', 'tiermint' ), $from->value, $to->value ) );
+		return new self( sprintf( __( 'Cannot change order status from "%1$s" to "%2$s".', 'releasecart' ), $from->value, $to->value ) );
 	}
 }

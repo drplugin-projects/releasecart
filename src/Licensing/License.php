@@ -2,12 +2,12 @@
 /**
  * License aggregate value object.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Licensing;
+namespace DrPlugin\WP\ReleaseCart\Licensing;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -160,40 +160,40 @@ final class License {
 	) {
 		if ( '' === $licenseKey ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseValidationException( __( 'A license must have a key.', 'tiermint' ) );
+			throw new LicenseValidationException( __( 'A license must have a key.', 'releasecart' ) );
 		}
 
 		// The key is stored in a fixed CHAR(35) column, so anything longer would be
 		// truncated silently on write and never match on lookup. Reject it up front.
 		if ( strlen( $licenseKey ) > self::MAX_KEY_LENGTH ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseValidationException( __( 'A license key cannot be longer than 35 characters.', 'tiermint' ) );
+			throw new LicenseValidationException( __( 'A license key cannot be longer than 35 characters.', 'releasecart' ) );
 		}
 
 		if ( $productId <= 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseValidationException( __( 'A license must belong to a product.', 'tiermint' ) );
+			throw new LicenseValidationException( __( 'A license must belong to a product.', 'releasecart' ) );
 		}
 
 		if ( $orderId <= 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseValidationException( __( 'A license must belong to an order.', 'tiermint' ) );
+			throw new LicenseValidationException( __( 'A license must belong to an order.', 'releasecart' ) );
 		}
 
 		if ( $customerId <= 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseValidationException( __( 'A license must belong to a customer.', 'tiermint' ) );
+			throw new LicenseValidationException( __( 'A license must belong to a customer.', 'releasecart' ) );
 		}
 
 		// NULL means unlimited; a negative cap is meaningless (the column is UNSIGNED).
 		if ( null !== $activationLimit && $activationLimit < 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseValidationException( __( 'A license activation limit cannot be negative.', 'tiermint' ) );
+			throw new LicenseValidationException( __( 'A license activation limit cannot be negative.', 'releasecart' ) );
 		}
 
 		if ( $activationCount < 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseValidationException( __( 'A license activation count cannot be negative.', 'tiermint' ) );
+			throw new LicenseValidationException( __( 'A license activation count cannot be negative.', 'releasecart' ) );
 		}
 
 		$this->id              = $id;

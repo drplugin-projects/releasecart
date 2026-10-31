@@ -2,14 +2,14 @@
 /**
  * Emits the stored storefront appearance overrides as an inline token block.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,7 +25,7 @@ class AppearanceTokens implements Hookable {
 	 *
 	 * @var string
 	 */
-	private const OPTION = 'tiermint_settings';
+	private const OPTION = 'releasecart_settings';
 
 	/**
 	 * The appearance validator and token deriver.

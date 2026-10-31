@@ -19,12 +19,12 @@ import { __ } from '@wordpress/i18n';
  */
 export function orderStatusLabel( status ) {
 	const map = {
-		pending: __( 'Pending', 'tiermint' ),
-		completed: __( 'Completed', 'tiermint' ),
-		failed: __( 'Failed', 'tiermint' ),
-		abandoned: __( 'Abandoned', 'tiermint' ),
-		refunded: __( 'Refunded', 'tiermint' ),
-		partially_refunded: __( 'Partially refunded', 'tiermint' ),
+		pending: __( 'Pending', 'releasecart' ),
+		completed: __( 'Completed', 'releasecart' ),
+		failed: __( 'Failed', 'releasecart' ),
+		abandoned: __( 'Abandoned', 'releasecart' ),
+		refunded: __( 'Refunded', 'releasecart' ),
+		partially_refunded: __( 'Partially refunded', 'releasecart' ),
 	};
 	return map[ status ] || status;
 }

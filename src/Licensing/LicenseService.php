@@ -2,28 +2,28 @@
 /**
  * License domain service: generation, lifecycle, and refund policy.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Licensing;
+namespace DrPlugin\WP\ReleaseCart\Licensing;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use DrPlugin\WP\TierMint\Database\AdvisoryLock;
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Orders\Order;
-use DrPlugin\WP\TierMint\Orders\OrderItem;
-use DrPlugin\WP\TierMint\Orders\OrderStatus;
-use DrPlugin\WP\TierMint\Orders\OrderType;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductPrice;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Products\ProductType;
+use DrPlugin\WP\ReleaseCart\Database\AdvisoryLock;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Orders\OrderItem;
+use DrPlugin\WP\ReleaseCart\Orders\OrderStatus;
+use DrPlugin\WP\ReleaseCart\Orders\OrderType;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductPrice;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Products\ProductType;
 
 /**
  * Applies license purchase and lifecycle rules.
@@ -39,14 +39,14 @@ class LicenseService {
 	 *
 	 * @var string
 	 */
-	public const META_PRE_DISABLE = '_tiermint_pre_disable_status';
+	public const META_PRE_DISABLE = '_releasecart_pre_disable_status';
 
 	/**
 	 * Meta key linking a bundle child license to the bundle product that granted it.
 	 *
 	 * @var string
 	 */
-	public const META_BUNDLE_PRODUCT = '_tiermint_bundle_product_id';
+	public const META_BUNDLE_PRODUCT = '_releasecart_bundle_product_id';
 
 	/**
 	 * How many fresh keys to try when the astronomically unlikely collision hits.
@@ -136,7 +136,7 @@ class LicenseService {
 		 * @param License[] $licenses   The customer's licenses, newest first.
 		 * @param int       $customerId The customer id.
 		 */
-		$filtered = apply_filters( 'tiermint_customer_licenses', $licenses, $customerId );
+		$filtered = apply_filters( 'releasecart_customer_licenses', $licenses, $customerId );
 
 		if ( ! is_array( $filtered ) ) {
 			return $licenses;
@@ -273,14 +273,14 @@ class LicenseService {
 			}
 
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseTransitionException( __( 'The license could not be disabled because it changed state concurrently.', 'tiermint' ) );
+			throw new LicenseTransitionException( __( 'The license could not be disabled because it changed state concurrently.', 'releasecart' ) );
 		}
 
 		// Remember what the license was, so enable() can restore expired as
 		// expired instead of granting time back. The entity's status is what
 		// the caller read a moment ago; a racing lazy expiry flip could make it
 		// stale by one step, which self-heals on the next validation.
-		update_metadata( 'tiermint_license', (int) $license->id(), self::META_PRE_DISABLE, $license->status()->value );
+		update_metadata( 'releasecart_license', (int) $license->id(), self::META_PRE_DISABLE, $license->status()->value );
 
 		$this->lkg->forget( $license->licenseKey() );
 
@@ -293,7 +293,7 @@ class LicenseService {
 		 *
 		 * @param License $fresh The disabled license.
 		 */
-		do_action( 'tiermint_license_disabled', $fresh );
+		do_action( 'releasecart_license_disabled', $fresh );
 
 		$this->logger->log(
 			'license',
@@ -322,7 +322,7 @@ class LicenseService {
 			return $license;
 		}
 
-		$remembered = get_metadata( 'tiermint_license', (int) $license->id(), self::META_PRE_DISABLE, true );
+		$remembered = get_metadata( 'releasecart_license', (int) $license->id(), self::META_PRE_DISABLE, true );
 		$restoreTo  = LicenseStatus::tryFrom( (string) $remembered ) ?? LicenseStatus::Active;
 
 		// Only active/expired are restorable states; a corrupt memo falls back
@@ -337,7 +337,7 @@ class LicenseService {
 			return $this->reload( $license );
 		}
 
-		delete_metadata( 'tiermint_license', (int) $license->id(), self::META_PRE_DISABLE );
+		delete_metadata( 'releasecart_license', (int) $license->id(), self::META_PRE_DISABLE );
 
 		$this->lkg->forget( $license->licenseKey() );
 
@@ -350,7 +350,7 @@ class LicenseService {
 		 *
 		 * @param License $fresh The re-enabled license.
 		 */
-		do_action( 'tiermint_license_enabled', $fresh );
+		do_action( 'releasecart_license_enabled', $fresh );
 
 		$this->logger->log(
 			'license',
@@ -415,7 +415,7 @@ class LicenseService {
 
 		if ( ! $won ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseTransitionException( __( 'A disabled license cannot be renewed. Re-enable it first.', 'tiermint' ) );
+			throw new LicenseTransitionException( __( 'A disabled license cannot be renewed. Re-enable it first.', 'releasecart' ) );
 		}
 
 		$this->lkg->forget( $license->licenseKey() );
@@ -430,7 +430,7 @@ class LicenseService {
 		 * @param License    $fresh The renewed license.
 		 * @param Order|null $order The order that drove the renewal, when there is one.
 		 */
-		do_action( 'tiermint_license_renewed', $fresh, $order );
+		do_action( 'releasecart_license_renewed', $fresh, $order );
 
 		$this->logger->log(
 			'license',
@@ -466,7 +466,7 @@ class LicenseService {
 
 		if ( ! $won ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseTransitionException( __( 'A disabled license cannot be renewed. Re-enable it first.', 'tiermint' ) );
+			throw new LicenseTransitionException( __( 'A disabled license cannot be renewed. Re-enable it first.', 'releasecart' ) );
 		}
 
 		$this->lkg->forget( $license->licenseKey() );
@@ -474,7 +474,7 @@ class LicenseService {
 		$fresh = $this->reload( $license );
 
 		/** This action is documented in {@see renew()}. */
-		do_action( 'tiermint_license_renewed', $fresh, $order );
+		do_action( 'releasecart_license_renewed', $fresh, $order );
 
 		$this->logger->log(
 			'license',
@@ -507,7 +507,7 @@ class LicenseService {
 		// another product would point the entitlement at an unrelated catalog item.
 		if ( $newTier->productId() !== $license->productId() ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new LicenseValidationException( __( 'A license can only change to a price tier of its own product.', 'tiermint' ) );
+			throw new LicenseValidationException( __( 'A license can only change to a price tier of its own product.', 'releasecart' ) );
 		}
 
 		$this->licenses->changeTier( $license, $newTier->id(), $newTier->activationLimit() );
@@ -525,7 +525,7 @@ class LicenseService {
 		 * @param ProductPrice $newTier The tier the license now carries.
 		 * @param Order|null   $order   The order driving the change, when one drove it.
 		 */
-		do_action( 'tiermint_license_tier_changed', $fresh, $newTier, $order );
+		do_action( 'releasecart_license_tier_changed', $fresh, $newTier, $order );
 
 		$this->logger->log(
 			'license',
@@ -587,7 +587,7 @@ class LicenseService {
 		 * @param DateTimeImmutable|null $expiresAt The stored expiry, or null for lifetime.
 		 * @param License                $license   The license being evaluated.
 		 */
-		$effective = apply_filters( 'tiermint_license_expires_at', $license->expiresAt(), $license );
+		$effective = apply_filters( 'releasecart_license_expires_at', $license->expiresAt(), $license );
 
 		if ( ! $effective instanceof DateTimeImmutable ) {
 			return $license;
@@ -601,7 +601,7 @@ class LicenseService {
 		 * @param int     $days    The grace window in days.
 		 * @param License $license The license being evaluated.
 		 */
-		$graceDays = (int) apply_filters( 'tiermint_expiry_grace_days', 0, $license );
+		$graceDays = (int) apply_filters( 'releasecart_expiry_grace_days', 0, $license );
 
 		$cutoff = $graceDays > 0 ? $effective->modify( sprintf( '+%d days', $graceDays ) ) : $effective;
 
@@ -623,7 +623,7 @@ class LicenseService {
 	 * @param int   $amountRefunded The amount refunded in this refund, minor units.
 	 * @return void
 	 */
-	public function onOrderRefunded( Order $order, int $amountRefunded ): void { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- The signature mirrors the tiermint_order_refunded hook; the policy keys off the order's status, not the amount.
+	public function onOrderRefunded( Order $order, int $amountRefunded ): void { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- The signature mirrors the releasecart_order_refunded hook; the policy keys off the order's status, not the amount.
 		if ( OrderStatus::Refunded !== $order->status() || null === $order->id() ) {
 			return;
 		}
@@ -636,7 +636,7 @@ class LicenseService {
 		 * @param bool  $disables Default true.
 		 * @param Order $order    The fully refunded order.
 		 */
-		if ( ! apply_filters( 'tiermint_refund_disables_license', true, $order ) ) {
+		if ( ! apply_filters( 'releasecart_refund_disables_license', true, $order ) ) {
 			return;
 		}
 
@@ -675,7 +675,7 @@ class LicenseService {
 		 *
 		 * @param License $fresh The expired license.
 		 */
-		do_action( 'tiermint_license_expired', $fresh );
+		do_action( 'releasecart_license_expired', $fresh );
 
 		$this->logger->log(
 			'license',
@@ -799,7 +799,7 @@ class LicenseService {
 		 * @param ProductPrice|null $price   The granting tier, or null.
 		 * @param Order             $order   The purchase order.
 		 */
-		$limit = apply_filters( 'tiermint_activation_limit', $limit, $product, $price, $order );
+		$limit = apply_filters( 'releasecart_activation_limit', $limit, $product, $price, $order );
 
 		/**
  * Filter the license period granted by a purchase.
@@ -811,7 +811,7 @@ class LicenseService {
 		 * @param ProductPrice|null $price   The granting tier, or null.
 		 * @param Order             $order   The purchase order.
 		 */
-		$length = apply_filters( 'tiermint_license_length', $length, $product, $price, $order );
+		$length = apply_filters( 'releasecart_license_length', $length, $product, $price, $order );
 
 		$expiresAt = null;
 
@@ -844,7 +844,7 @@ class LicenseService {
 
 		if ( null !== $bundleProductId ) {
 			// Lineage: which bundle granted this child license.
-			update_metadata( 'tiermint_license', $id, self::META_BUNDLE_PRODUCT, $bundleProductId );
+			update_metadata( 'releasecart_license', $id, self::META_BUNDLE_PRODUCT, $bundleProductId );
 		}
 
 		/**
@@ -855,7 +855,7 @@ class LicenseService {
 		 * @param License $license The freshly minted license.
 		 * @param Order   $order   The completed order that earned it.
 		 */
-		do_action( 'tiermint_license_generated', $license, $order );
+		do_action( 'releasecart_license_generated', $license, $order );
 
 		$this->logger->log(
 			'license',

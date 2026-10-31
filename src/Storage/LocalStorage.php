@@ -2,12 +2,12 @@
 /**
  * Local filesystem storage provider.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Storage;
+namespace DrPlugin\WP\ReleaseCart\Storage;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -26,7 +26,7 @@ final class LocalStorage implements StorageProvider {
 	 * @var string
 	 */
 	private const HTACCESS_CONTENTS = <<<'HTACCESS'
-# Deny direct access to TierMint package files; downloads only ever go
+# Deny direct access to ReleaseCart package files; downloads only ever go
 # through the signed /package/download REST endpoint.
 <IfModule mod_authz_core.c>
 	Require all denied
@@ -53,18 +53,18 @@ HTACCESS;
 WEBCONFIG;
 
 	/**
-	 * Directory-listing guard file contents.
+	 * Listing guard contents. The guard is an empty index.html, so no PHP file goes into uploads.
 	 *
 	 * @var string
 	 */
-	private const INDEX_PHP_CONTENTS = "<?php\n// Silence is golden: nothing here is meant to be browsed.\n";
+	private const INDEX_HTML_CONTENTS = '';
 
 	/**
 	 * Guard-file names blocked at the packages root.
 	 *
 	 * @var array<int, string>
 	 */
-	private const RESERVED_GUARD_FILES = array( '.htaccess', 'web.config', 'index.php' );
+	private const RESERVED_GUARD_FILES = array( '.htaccess', 'web.config', 'index.html' );
 
 	/**
 	 * Cached packages root.
@@ -107,7 +107,8 @@ WEBCONFIG;
 	 * @param string $key        Desired provider-scoped key.
 	 * @return StoredFile Reference DTO: provider id, final key, filesize, sha256.
 	 *
-	 * @throws StorageException When the source is unreadable, the key is invalid, or the write fails.
+	 * @throws StorageException When the source is unreadable, the key is invalid, WordPress
+	 *                          cannot write files directly, or the write fails.
 	 */
 	public function store( string $sourcePath, string $key ): StoredFile {
 		if ( ! is_file( $sourcePath ) || ! is_readable( $sourcePath ) ) {
@@ -116,7 +117,15 @@ WEBCONFIG;
 		}
 
 		$normalizedKey = $this->normalizeKey( $key );
-		$this->ensureRoot();
+		$filesystem    = $this->directFilesystem();
+
+		// Checked before any folder or file is written.
+		if ( null === $filesystem ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
+			throw StorageException::filesystemUnavailable();
+		}
+
+		$this->ensureRoot( $filesystem );
 
 		$targetPath = $this->root() . '/' . $normalizedKey;
 
@@ -125,21 +134,12 @@ WEBCONFIG;
 			throw StorageException::writeFailed( $normalizedKey, 'could not create the destination directory' );
 		}
 
-		$filesystem = $this->directFilesystem( $this->root() );
-
-		if ( null !== $filesystem ) {
-			$copied = $filesystem->copy( $sourcePath, $targetPath, true );
-		} else {
-			// Another filesystem method needs credentials, and a REST upload cannot ask for them.
-			$copied = copy( $sourcePath, $targetPath );
-		}
-
-		if ( ! $copied ) {
+		if ( ! $filesystem->copy( $sourcePath, $targetPath, true ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
 			throw StorageException::writeFailed( $normalizedKey, 'copy to the packages directory failed' );
 		}
 
-		$this->guardFolders( dirname( $normalizedKey ) );
+		$this->guardFolders( $filesystem, dirname( $normalizedKey ) );
 
 		$filesize = filesize( $targetPath );
 		$sha256   = hash_file( 'sha256', $targetPath );
@@ -217,7 +217,7 @@ WEBCONFIG;
 	private function root(): string {
 		if ( null === $this->root ) {
 			$uploadDir  = wp_upload_dir();
-			$this->root = rtrim( (string) $uploadDir['basedir'], '/\\' ) . '/tiermint/packages';
+			$this->root = rtrim( (string) $uploadDir['basedir'], '/\\' ) . '/releasecart/packages';
 		}
 
 		return $this->root;
@@ -228,32 +228,34 @@ WEBCONFIG;
 	 *
 	 * @since 1.0.0
 	 *
+	 * @param \WP_Filesystem_Base $filesystem The direct filesystem.
 	 * @return void
 	 */
-	private function ensureRoot(): void {
+	private function ensureRoot( \WP_Filesystem_Base $filesystem ): void {
 		$root = $this->root();
 
 		wp_mkdir_p( $root );
 
-		$this->writeGuardFileIfMissing( $root . '/.htaccess', self::HTACCESS_CONTENTS );
-		$this->writeGuardFileIfMissing( $root . '/web.config', self::WEB_CONFIG_CONTENTS );
-		$this->writeGuardFileIfMissing( $root . '/index.php', self::INDEX_PHP_CONTENTS );
+		$this->writeGuardFileIfMissing( $filesystem, $root . '/.htaccess', self::HTACCESS_CONTENTS );
+		$this->writeGuardFileIfMissing( $filesystem, $root . '/web.config', self::WEB_CONFIG_CONTENTS );
+		$this->writeGuardFileIfMissing( $filesystem, $root . '/index.html', self::INDEX_HTML_CONTENTS );
 	}
 
 	/**
-	 * Put an index.php in each folder of a key's path below the root.
+	 * Put an index.html in each folder of a key's path below the root.
 	 *
 	 * The root's .htaccess and web.config cover these folders on Apache and IIS.
-	 * The index.php stops a folder listing on servers that ignore both.
+	 * The index.html stops a folder listing on servers that ignore both.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $folder Normalized folder part of the key, or "." for none.
+	 * @param \WP_Filesystem_Base $filesystem The direct filesystem.
+	 * @param string              $folder     Normalized folder part of the key, or "." for none.
 	 * @return void
 	 */
-	private function guardFolders( string $folder ): void {
+	private function guardFolders( \WP_Filesystem_Base $filesystem, string $folder ): void {
 		while ( '.' !== $folder && '' !== $folder ) {
-			$this->writeGuardFileIfMissing( $this->root() . '/' . $folder . '/index.php', self::INDEX_PHP_CONTENTS );
+			$this->writeGuardFileIfMissing( $filesystem, $this->root() . '/' . $folder . '/index.html', self::INDEX_HTML_CONTENTS );
 			$folder = dirname( $folder );
 		}
 	}
@@ -263,39 +265,31 @@ WEBCONFIG;
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $path     Absolute path of the guard file.
-	 * @param string $contents Contents to write when the file is missing.
+	 * @param \WP_Filesystem_Base $filesystem The direct filesystem.
+	 * @param string              $path       Absolute path of the guard file.
+	 * @param string              $contents   Contents to write when the file is missing.
 	 * @return void
 	 */
-	private function writeGuardFileIfMissing( string $path, string $contents ): void {
+	private function writeGuardFileIfMissing( \WP_Filesystem_Base $filesystem, string $path, string $contents ): void {
 		if ( file_exists( $path ) ) {
 			return;
 		}
 
-		$filesystem = $this->directFilesystem( dirname( $path ) );
-
-		if ( null !== $filesystem ) {
-			$filesystem->put_contents( $path, $contents );
-
-			return;
-		}
-
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- Another filesystem method needs credentials, and a REST upload cannot ask for them.
-		file_put_contents( $path, $contents );
+		$filesystem->put_contents( $path, $contents );
 	}
 
 	/**
 	 * Get the direct WP_Filesystem, or null when WordPress would use another method.
 	 *
 	 * An instance WordPress already set up is reused only when it is direct, so an
-	 * FTP instance in use elsewhere in the request is never replaced.
+	 * FTP instance in use elsewhere in the request is never replaced. Another method
+	 * needs credentials, and a REST upload cannot ask for them.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $context The folder the write goes to.
 	 * @return \WP_Filesystem_Base|null
 	 */
-	private function directFilesystem( string $context ): ?\WP_Filesystem_Base {
+	private function directFilesystem(): ?\WP_Filesystem_Base {
 		global $wp_filesystem;
 
 		if ( $wp_filesystem instanceof \WP_Filesystem_Base ) {
@@ -304,6 +298,14 @@ WEBCONFIG;
 
 		if ( ! function_exists( 'get_filesystem_method' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		// WordPress picks the method by writing a test file in this folder, so it
+		// must exist. The packages root does not, before the first upload.
+		$context = $this->root();
+
+		while ( ! is_dir( $context ) && dirname( $context ) !== $context ) {
+			$context = dirname( $context );
 		}
 
 		// PHP writes the uploads folder itself, so file ownership is not checked.

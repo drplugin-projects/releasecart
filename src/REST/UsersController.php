@@ -2,12 +2,12 @@
 /**
  * REST controller for the WordPress user picker the admin screens search through.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -114,7 +114,7 @@ final class UsersController extends AbstractRestController {
 	private function searchArgs(): array {
 		return array(
 			'term' => array(
-				'description'       => __( 'Match accounts whose display name or email contains this text.', 'tiermint' ),
+				'description'       => __( 'Match accounts whose display name or email contains this text.', 'releasecart' ),
 				'type'              => 'string',
 				'default'           => '',
 				'sanitize_callback' => 'sanitize_text_field',

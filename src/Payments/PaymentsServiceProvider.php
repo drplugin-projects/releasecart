@@ -2,29 +2,29 @@
 /**
  * Service provider for the Payments layer.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Payments;
+namespace DrPlugin\WP\ReleaseCart\Payments;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Container;
-use DrPlugin\WP\TierMint\Core\ServiceProvider;
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Orders\OrderRepository;
-use DrPlugin\WP\TierMint\Orders\OrderService;
-use DrPlugin\WP\TierMint\Orders\RefundService;
-use DrPlugin\WP\TierMint\Payments\Stripe\StripeApiClient;
-use DrPlugin\WP\TierMint\Payments\Stripe\StripeEventHandlers;
-use DrPlugin\WP\TierMint\Payments\Stripe\StripeGateway;
-use DrPlugin\WP\TierMint\Payments\Stripe\StripeSettings;
-use DrPlugin\WP\TierMint\Payments\Stripe\StripeWebhookVerifier;
-use DrPlugin\WP\TierMint\Util\Crypto;
-use DrPlugin\WP\TierMint\Util\RateLimiter;
+use DrPlugin\WP\ReleaseCart\Core\Container;
+use DrPlugin\WP\ReleaseCart\Core\ServiceProvider;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Orders\OrderRepository;
+use DrPlugin\WP\ReleaseCart\Orders\OrderService;
+use DrPlugin\WP\ReleaseCart\Orders\RefundService;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeApiClient;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeEventHandlers;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeGateway;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeSettings;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeWebhookVerifier;
+use DrPlugin\WP\ReleaseCart\Util\Crypto;
+use DrPlugin\WP\ReleaseCart\Util\RateLimiter;
 
 /**
  * Registers the payment services before REST controllers resolve them.

@@ -2,12 +2,12 @@
 /**
  * The management API key entity.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST\Auth;
+namespace DrPlugin\WP\ReleaseCart\REST\Auth;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -28,7 +28,7 @@ final class ApiKey {
 	 *
 	 * @var string
 	 */
-	public const PUBLIC_KEY_PATTERN = '/^tmk_[0-9a-f]{32}$/';
+	public const PUBLIC_KEY_PATTERN = '/^rck_[0-9a-f]{32}$/';
 
 	/**
 	 * The row id, or null before the first persist.
@@ -101,7 +101,7 @@ final class ApiKey {
 	 * @param int|null               $id         The row id, or null before persisting.
 	 * @param int                    $userId     The owning WP user id.
 	 * @param string                 $label      The human label.
-	 * @param string                 $publicKey  The tmk_-prefixed public key.
+	 * @param string                 $publicKey  The rck_-prefixed public key.
 	 * @param string                 $secretHash The hash of the secret.
 	 * @param ApiKeyPermission       $permission The read/write permission.
 	 * @param ApiKeyStatus           $status     The lifecycle status.
@@ -125,23 +125,23 @@ final class ApiKey {
 		$errors = array();
 
 		if ( $userId <= 0 ) {
-			$errors[] = __( 'An API key must belong to a user.', 'tiermint' );
+			$errors[] = __( 'An API key must belong to a user.', 'releasecart' );
 		}
 
 		if ( '' === trim( $label ) ) {
-			$errors[] = __( 'An API key needs a label.', 'tiermint' );
+			$errors[] = __( 'An API key needs a label.', 'releasecart' );
 		}
 
 		if ( strlen( $label ) > 200 ) {
-			$errors[] = __( 'The API key label must be 200 characters or fewer.', 'tiermint' );
+			$errors[] = __( 'The API key label must be 200 characters or fewer.', 'releasecart' );
 		}
 
 		if ( 1 !== preg_match( self::PUBLIC_KEY_PATTERN, $publicKey ) ) {
-			$errors[] = __( 'The public key is malformed.', 'tiermint' );
+			$errors[] = __( 'The public key is malformed.', 'releasecart' );
 		}
 
 		if ( '' === $secretHash ) {
-			$errors[] = __( 'An API key cannot exist without a secret.', 'tiermint' );
+			$errors[] = __( 'An API key cannot exist without a secret.', 'releasecart' );
 		}
 
 		if ( array() !== $errors ) {
@@ -198,7 +198,7 @@ final class ApiKey {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return string The tmk_-prefixed public key.
+	 * @return string The rck_-prefixed public key.
 	 */
 	public function publicKey(): string {
 		return $this->publicKey;

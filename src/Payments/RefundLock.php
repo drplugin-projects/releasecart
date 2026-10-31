@@ -2,12 +2,12 @@
 /**
  * Per-order advisory lock that serializes refund recording.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Payments;
+namespace DrPlugin\WP\ReleaseCart\Payments;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -81,6 +81,6 @@ class RefundLock {
 	private function lockName( int $orderId ): string {
 		$scope = md5( (string) $this->wpdb->dbname . '|' . (string) $this->wpdb->prefix );
 
-		return substr( 'tiermint_refund_' . $orderId . '_' . $scope, 0, 64 );
+		return substr( 'releasecart_refund_' . $orderId . '_' . $scope, 0, 64 );
 	}
 }

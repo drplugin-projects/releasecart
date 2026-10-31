@@ -2,23 +2,23 @@
 /**
  * REST controller for the product Taxonomy (terms) management resource.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Products\ProductTaxonomy;
-use DrPlugin\WP\TierMint\Products\Term;
-use DrPlugin\WP\TierMint\Products\TermException;
-use DrPlugin\WP\TierMint\Products\TermNotFoundException;
-use DrPlugin\WP\TierMint\Products\TermPersistenceException;
-use DrPlugin\WP\TierMint\Products\TermService;
-use DrPlugin\WP\TierMint\Products\TermValidationException;
+use DrPlugin\WP\ReleaseCart\Products\ProductTaxonomy;
+use DrPlugin\WP\ReleaseCart\Products\Term;
+use DrPlugin\WP\ReleaseCart\Products\TermException;
+use DrPlugin\WP\ReleaseCart\Products\TermNotFoundException;
+use DrPlugin\WP\ReleaseCart\Products\TermPersistenceException;
+use DrPlugin\WP\ReleaseCart\Products\TermService;
+use DrPlugin\WP\ReleaseCart\Products\TermValidationException;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -152,7 +152,7 @@ final class TermsController extends AbstractRestController {
 		} catch ( TermPersistenceException $e ) {
 			// A database write failed: a server fault, not client input. Report a
 			// generic 500 and keep the exception's internal detail out of the response.
-			return $this->serverError( __( 'The term could not be saved. Please try again.', 'tiermint' ) );
+			return $this->serverError( __( 'The term could not be saved. Please try again.', 'releasecart' ) );
 		} catch ( TermException $e ) {
 			// A non-validation, non-persistence domain error is still a client input
 			// problem, not a server fault.
@@ -198,7 +198,7 @@ final class TermsController extends AbstractRestController {
 		} catch ( TermPersistenceException $e ) {
 			// A database write failed: a server fault, not client input. Report a
 			// generic 500 and keep the exception's internal detail out of the response.
-			return $this->serverError( __( 'The term could not be saved. Please try again.', 'tiermint' ) );
+			return $this->serverError( __( 'The term could not be saved. Please try again.', 'releasecart' ) );
 		} catch ( TermException $e ) {
 			return $this->invalidParams( array( $e->getMessage() ) );
 		}
@@ -281,13 +281,13 @@ final class TermsController extends AbstractRestController {
 	private function writeArgs(): array {
 		return array(
 			'name'        => array(
-				'description'       => __( 'Term display name.', 'tiermint' ),
+				'description'       => __( 'Term display name.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'slug'        => array(
-				'description'       => __( 'Term URL slug (unique within its taxonomy).', 'tiermint' ),
+				'description'       => __( 'Term URL slug (unique within its taxonomy).', 'releasecart' ),
 				'type'              => 'string',
 				// Wrapped: REST sanitize callbacks receive ($value, $request, $param),
 				// so bare sanitize_title() would take the request object as its
@@ -297,14 +297,14 @@ final class TermsController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'parent'      => array(
-				'description'       => __( 'Parent term id (categories only; tags are flat).', 'tiermint' ),
+				'description'       => __( 'Parent term id (categories only; tags are flat).', 'releasecart' ),
 				'type'              => 'integer',
 				'minimum'           => 0,
 				'sanitize_callback' => 'absint',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'description' => array(
-				'description'       => __( 'Long term description.', 'tiermint' ),
+				'description'       => __( 'Long term description.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_textarea_field',
 				'validate_callback' => 'rest_validate_request_arg',
@@ -322,7 +322,7 @@ final class TermsController extends AbstractRestController {
 	private function idArgs(): array {
 		return array(
 			'id' => array(
-				'description'       => __( 'Unique term identifier.', 'tiermint' ),
+				'description'       => __( 'Unique term identifier.', 'releasecart' ),
 				'type'              => 'integer',
 				'required'          => true,
 				'sanitize_callback' => 'absint',
@@ -341,7 +341,7 @@ final class TermsController extends AbstractRestController {
 	 */
 	private function taxonomyArg( bool $required ): array {
 		return array(
-			'description'       => __( 'Which taxonomy the term belongs to.', 'tiermint' ),
+			'description'       => __( 'Which taxonomy the term belongs to.', 'releasecart' ),
 			'type'              => 'string',
 			'required'          => $required,
 			'enum'              => array( ProductTaxonomy::Category->value, ProductTaxonomy::Tag->value ),

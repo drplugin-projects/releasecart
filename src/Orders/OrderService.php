@@ -2,22 +2,22 @@
 /**
  * Order service.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Orders;
+namespace DrPlugin\WP\ReleaseCart\Orders;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Customers\CustomerService;
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductPrice;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Products\ProductStatus;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerService;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductPrice;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Products\ProductStatus;
 
 /**
  * Creates and updates orders.
@@ -66,30 +66,30 @@ class OrderService {
 	/**
 	 * Checkout discount service, when available.
 	 *
-	 * @var \DrPlugin\WP\TierMint\Discounts\DiscountService|null
+	 * @var \DrPlugin\WP\ReleaseCart\Discounts\DiscountService|null
 	 */
-	private ?\DrPlugin\WP\TierMint\Discounts\DiscountService $discounts;
+	private ?\DrPlugin\WP\ReleaseCart\Discounts\DiscountService $discounts;
 
 	/**
 	 * Resolves automatic discounts when the engine is available.
 	 *
-	 * @var \DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver|null
+	 * @var \DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver|null
 	 */
-	private ?\DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver $autoResolver;
+	private ?\DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver $autoResolver;
 
 	/**
 	 * Reads the code and automatic discount combination rule.
 	 *
-	 * @var \DrPlugin\WP\TierMint\Discounts\DiscountSettings|null
+	 * @var \DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings|null
 	 */
-	private ?\DrPlugin\WP\TierMint\Discounts\DiscountSettings $discountSettings;
+	private ?\DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings $discountSettings;
 
 	/**
 	 * Builds the same discount result for quotes and checkout.
 	 *
-	 * @var \DrPlugin\WP\TierMint\Discounts\DiscountComposer|null
+	 * @var \DrPlugin\WP\ReleaseCart\Discounts\DiscountComposer|null
 	 */
-	private ?\DrPlugin\WP\TierMint\Discounts\DiscountComposer $discountComposer = null;
+	private ?\DrPlugin\WP\ReleaseCart\Discounts\DiscountComposer $discountComposer = null;
 
 	/**
 	 * Audit log for a totals listener's invalid lines, when available.
@@ -103,15 +103,15 @@ class OrderService {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param OrderRepository                                                $orders           The orders repository.
-	 * @param CustomerService                                                $customers        The customer service (buyer resolution + counters).
-	 * @param ProductService                                                 $products         The product catalog for authoritative pricing.
-	 * @param CartService                                                    $cart             The cart service (source of the order, cleared after).
-	 * @param OrderStateMachine                                              $machine          The status transition guard.
-	 * @param \DrPlugin\WP\TierMint\Discounts\DiscountService|null           $discounts        The discount engine; null disables code redemption.
-	 * @param \DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver|null $autoResolver   The automatic-discount resolver; null disables automatic discounts.
-	 * @param \DrPlugin\WP\TierMint\Discounts\DiscountSettings|null          $discountSettings The combination-rule reader; null defaults to code-replaces-auto.
-	 * @param Logger|null                                                    $logger           The audit log; null logs nothing.
+	 * @param OrderRepository                                                   $orders           The orders repository.
+	 * @param CustomerService                                                   $customers        The customer service (buyer resolution + counters).
+	 * @param ProductService                                                    $products         The product catalog for authoritative pricing.
+	 * @param CartService                                                       $cart             The cart service (source of the order, cleared after).
+	 * @param OrderStateMachine                                                 $machine          The status transition guard.
+	 * @param \DrPlugin\WP\ReleaseCart\Discounts\DiscountService|null           $discounts        The discount engine; null disables code redemption.
+	 * @param \DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver|null $autoResolver   The automatic-discount resolver; null disables automatic discounts.
+	 * @param \DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings|null          $discountSettings The combination-rule reader; null defaults to code-replaces-auto.
+	 * @param Logger|null                                                       $logger           The audit log; null logs nothing.
 	 */
 	public function __construct(
 		OrderRepository $orders,
@@ -119,9 +119,9 @@ class OrderService {
 		ProductService $products,
 		CartService $cart,
 		OrderStateMachine $machine,
-		?\DrPlugin\WP\TierMint\Discounts\DiscountService $discounts = null,
-		?\DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver $autoResolver = null,
-		?\DrPlugin\WP\TierMint\Discounts\DiscountSettings $discountSettings = null,
+		?\DrPlugin\WP\ReleaseCart\Discounts\DiscountService $discounts = null,
+		?\DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver $autoResolver = null,
+		?\DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings $discountSettings = null,
 		?Logger $logger = null
 	) {
 		$this->orders           = $orders;
@@ -145,10 +145,10 @@ class OrderService {
 	 * @param array<string, mixed>      $buyer   The buyer input for find-or-create (`email`
 	 *                                            required, optional `user_id`, `name`).
 	 * @param array<string, mixed>      $context Optional request context (`ip_address`, `country`,
-	 *                                            `discount_code`). Any `tiermint_preview` key is
+	 *                                            `discount_code`). Any `releasecart_preview` key is
 	 *                                            stripped: a real checkout is never a preview.
 	 * @param array<int, string>|null   $notices Out parameter: receives the buyer-facing
-	 *                                         advisories `tiermint_checkout_quote_notices`
+	 *                                         advisories `releasecart_checkout_quote_notices`
 	 *                                         produced for this charge, so the caller can
 	 *                                         show them next to the amount they explain.
 	 * @param array<string, mixed>|null $discountBreakdown Out parameter: receives the code and
@@ -160,7 +160,7 @@ class OrderService {
 	 *
 	 * @throws OrderValidationException When the cart is empty or a line is no longer
 	 *                                  purchasable.
-	 * @throws \DrPlugin\WP\TierMint\Discounts\DiscountValidationException When a
+	 * @throws \DrPlugin\WP\ReleaseCart\Discounts\DiscountValidationException When a
 	 *                                  request-supplied discount code is invalid (a
 	 *                                  cart-stored code is dropped instead, never thrown).
 	 */
@@ -169,13 +169,13 @@ class OrderService {
 		$notices = array();
 
 		// Only quote() may mark a request as a preview.
-		unset( $context['tiermint_preview'] );
+		unset( $context['releasecart_preview'] );
 
 		$cart = $this->cart->getCart();
 
 		if ( $cart->isEmpty() ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw OrderValidationException::withErrors( array( __( 'The cart is empty.', 'tiermint' ) ) );
+			throw OrderValidationException::withErrors( array( __( 'The cart is empty.', 'releasecart' ) ) );
 		}
 
 		// Reject unavailable lines before customer creation writes a record.
@@ -193,9 +193,9 @@ class OrderService {
 		 * @param array<int, OrderItem> $items   The live-priced line items.
 		 * @param array<string, mixed>  $context The request context (ip_address, country,
 		 *        discount_code, plus any keys an extension added through
-		 *        `tiermint_checkout_intent_context`).
+		 *        `releasecart_checkout_intent_context`).
 		 */
-		$vetoes = apply_filters( 'tiermint_checkout_errors', array(), $items, $context );
+		$vetoes = apply_filters( 'releasecart_checkout_errors', array(), $items, $context );
 
 		if ( is_array( $vetoes ) ) {
 			$vetoes = array_values( array_filter( $vetoes, 'is_string' ) );
@@ -221,7 +221,7 @@ class OrderService {
 			} else {
 				try {
 					$codeApplication = $this->applyDiscount( $discountCode, $items, null );
-				} catch ( \DrPlugin\WP\TierMint\Discounts\DiscountValidationException $e ) {
+				} catch ( \DrPlugin\WP\ReleaseCart\Discounts\DiscountValidationException $e ) {
 					$discountDropped = $this->discountDroppedNotice( $e );
 				}
 			}
@@ -233,7 +233,7 @@ class OrderService {
 		if ( null !== $codeApplication ) {
 			try {
 				$codeApplication = $this->applyDiscount( $discountCode, $items, $customer );
-			} catch ( \DrPlugin\WP\TierMint\Discounts\DiscountValidationException $e ) {
+			} catch ( \DrPlugin\WP\ReleaseCart\Discounts\DiscountValidationException $e ) {
 				if ( $fromRequest ) {
 					throw $e;
 				}
@@ -258,11 +258,11 @@ class OrderService {
 			 *
 			 * @since 1.0.0
 			 *
-			 * @param \DrPlugin\WP\TierMint\Discounts\Discount $discount The primary applied discount.
+			 * @param \DrPlugin\WP\ReleaseCart\Discounts\Discount $discount The primary applied discount.
 			 * @param array<int, array<string, int>>           $cart     The priced lines the
 			 *        discount was computed against: product_id and subtotal (minor units) per line.
 			 */
-			do_action( 'tiermint_discount_applied', $primaryDiscount, $this->discountItems( $items ) );
+			do_action( 'releasecart_discount_applied', $primaryDiscount, $this->discountItems( $items ) );
 		}
 
 		// Tax follows discounts. A listener may rebase a line, so the sums come
@@ -306,8 +306,8 @@ class OrderService {
 
 		// Save the stacked automatic component before order-created listeners run.
 		if ( null !== $autoMeta ) {
-			update_metadata( 'tiermint_order', (int) $saved->id(), '_tiermint_auto_discount_id', $autoMeta['id'] );
-			update_metadata( 'tiermint_order', (int) $saved->id(), '_tiermint_auto_discount', $autoMeta['amount'] );
+			update_metadata( 'releasecart_order', (int) $saved->id(), '_releasecart_auto_discount_id', $autoMeta['id'] );
+			update_metadata( 'releasecart_order', (int) $saved->id(), '_releasecart_auto_discount', $autoMeta['amount'] );
 		}
 
 		// Only empty the cart once the order is safely persisted.
@@ -320,7 +320,7 @@ class OrderService {
 		 *
 		 * @param Order $order The newly created pending order, reloaded from storage.
 		 */
-		do_action( 'tiermint_order_created', $saved );
+		do_action( 'releasecart_order_created', $saved );
 
 		return $saved;
 	}
@@ -334,8 +334,8 @@ class OrderService {
 	 *
 	 * @param array<string, mixed> $context Optional request context (`ip_address`, `country`,
 	 *                                       `discount_code`, plus anything an extension added
-	 *                                       through `tiermint_checkout_intent_context`). A
-	 *                                       `tiermint_preview` key is set to true here,
+	 *                                       through `releasecart_checkout_intent_context`). A
+	 *                                       `releasecart_preview` key is set to true here,
 	 *                                       overwriting anything supplied, so a caller can
 	 *                                       never pass a quote off to a listener as a real
 	 *                                       checkout.
@@ -355,11 +355,11 @@ class OrderService {
 
 		if ( $cart->isEmpty() ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw OrderValidationException::withErrors( array( __( 'The cart is empty.', 'tiermint' ) ) );
+			throw OrderValidationException::withErrors( array( __( 'The cart is empty.', 'releasecart' ) ) );
 		}
 
 		/* Preview listeners must avoid external work. */
-		$context['tiermint_preview'] = true;
+		$context['releasecart_preview'] = true;
 
 		$clampNotices = array();
 		$items        = $this->buildItems( $cart, $clampNotices );
@@ -367,7 +367,7 @@ class OrderService {
 		$notices = array();
 
 		/** This filter is documented in {@see createFromCart()}. */
-		$vetoes = apply_filters( 'tiermint_checkout_errors', array(), $items, $context );
+		$vetoes = apply_filters( 'releasecart_checkout_errors', array(), $items, $context );
 
 		if ( is_array( $vetoes ) ) {
 			// A quote reports vetoes but still returns its current price.
@@ -388,7 +388,7 @@ class OrderService {
 			try {
 				// Quotes do not create customers. Check customer rules at checkout.
 				$codeApplication = $this->applyDiscount( $discountCode, $items, null );
-			} catch ( \DrPlugin\WP\TierMint\Discounts\DiscountValidationException $e ) {
+			} catch ( \DrPlugin\WP\ReleaseCart\Discounts\DiscountValidationException $e ) {
 				// Report a rejected code at full price.
 				$errors   = array_values( array_filter( $e->getErrors(), 'is_string' ) );
 				$discount = array(
@@ -471,7 +471,7 @@ class OrderService {
 			 *        the quote route returns it.
 			 * @param array<string, mixed>             $context The request context the cart was priced against.
 			 */
-			$filtered = apply_filters( 'tiermint_checkout_quote_notices', $notices, $lines, $context );
+			$filtered = apply_filters( 'releasecart_checkout_quote_notices', $notices, $lines, $context );
 		} catch ( \Throwable ) {
 			// Keep existing notices when a listener fails.
 			return array_values( array_filter( $notices, 'is_string' ) );
@@ -603,7 +603,7 @@ class OrderService {
 		 *
 		 * @param Order $order The completed order, reloaded from storage.
 		 */
-		do_action( 'tiermint_order_completed', $saved );
+		do_action( 'releasecart_order_completed', $saved );
 
 		return array( $saved, true );
 	}
@@ -689,7 +689,7 @@ class OrderService {
 		 * @param Order  $order  The failed order, reloaded from storage.
 		 * @param string $reason A short reason for the failure.
 		 */
-		do_action( 'tiermint_order_failed', $saved, $reason );
+		do_action( 'releasecart_order_failed', $saved, $reason );
 
 		return $saved;
 	}
@@ -739,7 +739,7 @@ class OrderService {
 		 *
 		 * @param Order $order The abandoned order, reloaded from storage.
 		 */
-		do_action( 'tiermint_order_abandoned', $saved );
+		do_action( 'releasecart_order_abandoned', $saved );
 
 		return $saved;
 	}
@@ -810,23 +810,23 @@ class OrderService {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string                                        $code            The submitted code.
-	 * @param array<int, OrderItem>                         $items           The live-priced line items.
-	 * @param \DrPlugin\WP\TierMint\Customers\Customer|null $customer        The resolved buyer, or null
+	 * @param string                                           $code            The submitted code.
+	 * @param array<int, OrderItem>                            $items           The live-priced line items.
+	 * @param \DrPlugin\WP\ReleaseCart\Customers\Customer|null $customer        The resolved buyer, or null
 	 *                                                                       pre-resolution (skips the
 	 *                                                                       once-per-customer rule only).
-	 * @param array<int, int>|null                          $chargeSubtotals Optional reduced per-line
-	 *        subtotals (index-aligned) to compute the reduction against when the code stacks on an
-	 *        automatic discount; the code's gates still measure the original items.
-	 * @return \DrPlugin\WP\TierMint\Discounts\DiscountApplication The computed application.
+	 * @param array<int, int>|null                             $chargeSubtotals Optional reduced per-line
+	 *           subtotals (index-aligned) to compute the reduction against when the code stacks on an
+	 *           automatic discount; the code's gates still measure the original items.
+	 * @return \DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication The computed application.
 	 *
 	 * @throws OrderValidationException When no discount engine is wired but a code was submitted:
 	 *                                  charging full price against an entered code is never acceptable.
 	 */
-	private function applyDiscount( string $code, array $items, ?\DrPlugin\WP\TierMint\Customers\Customer $customer, ?array $chargeSubtotals = null ): \DrPlugin\WP\TierMint\Discounts\DiscountApplication {
+	private function applyDiscount( string $code, array $items, ?\DrPlugin\WP\ReleaseCart\Customers\Customer $customer, ?array $chargeSubtotals = null ): \DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication {
 		if ( null === $this->discounts ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw OrderValidationException::withErrors( array( __( 'Discount codes are not available on this store.', 'tiermint' ) ) );
+			throw OrderValidationException::withErrors( array( __( 'Discount codes are not available on this store.', 'releasecart' ) ) );
 		}
 
 		return $this->discounts->applyToCart( $code, $this->discountItems( $items ), $customer, $chargeSubtotals );
@@ -839,14 +839,14 @@ class OrderService {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array<int, OrderItem>                                    $items           The priced line items.
-	 * @param \DrPlugin\WP\TierMint\Customers\Customer|null            $customer        The resolved buyer, or null on a quote.
-	 * @param \DrPlugin\WP\TierMint\Discounts\DiscountApplication|null $codeApplication The validated code application, or null.
-	 * @return array{items: array<int, OrderItem>, primary: \DrPlugin\WP\TierMint\Discounts\Discount|null, auto_meta: array{id: int, amount: int}|null, code_component: \DrPlugin\WP\TierMint\Discounts\DiscountApplication|null, auto_component: \DrPlugin\WP\TierMint\Discounts\DiscountApplication|null}
+	 * @param array<int, OrderItem>                                       $items           The priced line items.
+	 * @param \DrPlugin\WP\ReleaseCart\Customers\Customer|null            $customer        The resolved buyer, or null on a quote.
+	 * @param \DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication|null $codeApplication The validated code application, or null.
+	 * @return array{items: array<int, OrderItem>, primary: \DrPlugin\WP\ReleaseCart\Discounts\Discount|null, auto_meta: array{id: int, amount: int}|null, code_component: \DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication|null, auto_component: \DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication|null}
 	 *         The allocated items, the primary discount, the stacked automatic component for order
 	 *         meta, and the code/automatic contributions as they landed on the final price.
 	 */
-	private function composeWithAutomatic( array $items, ?\DrPlugin\WP\TierMint\Customers\Customer $customer, ?\DrPlugin\WP\TierMint\Discounts\DiscountApplication $codeApplication ): array {
+	private function composeWithAutomatic( array $items, ?\DrPlugin\WP\ReleaseCart\Customers\Customer $customer, ?\DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication $codeApplication ): array {
 		// Without an automatic engine, only the code can apply.
 		if ( null === $this->autoResolver ) {
 			$items = null !== $codeApplication ? $this->allocateDiscount( $items, $codeApplication ) : $items;
@@ -867,11 +867,11 @@ class OrderService {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return \DrPlugin\WP\TierMint\Discounts\DiscountComposer
+	 * @return \DrPlugin\WP\ReleaseCart\Discounts\DiscountComposer
 	 */
-	private function discountComposer(): \DrPlugin\WP\TierMint\Discounts\DiscountComposer {
+	private function discountComposer(): \DrPlugin\WP\ReleaseCart\Discounts\DiscountComposer {
 		if ( null === $this->discountComposer ) {
-			$this->discountComposer = new \DrPlugin\WP\TierMint\Discounts\DiscountComposer(
+			$this->discountComposer = new \DrPlugin\WP\ReleaseCart\Discounts\DiscountComposer(
 				$this->autoResolver,
 				$this->discountSettings,
 				$this->discounts
@@ -886,14 +886,14 @@ class OrderService {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array<int, OrderItem>                                    $items         The allocated line items.
-	 * @param \DrPlugin\WP\TierMint\Discounts\Discount|null            $primary       The primary discount.
-	 * @param array{id: int, amount: int}|null                         $autoMeta      The stacked automatic component for order meta.
-	 * @param \DrPlugin\WP\TierMint\Discounts\DiscountApplication|null $codeComponent The code's contribution to the final price.
-	 * @param \DrPlugin\WP\TierMint\Discounts\DiscountApplication|null $autoComponent The automatic discount's contribution.
-	 * @return array{items: array<int, OrderItem>, primary: \DrPlugin\WP\TierMint\Discounts\Discount|null, auto_meta: array{id: int, amount: int}|null, code_component: \DrPlugin\WP\TierMint\Discounts\DiscountApplication|null, auto_component: \DrPlugin\WP\TierMint\Discounts\DiscountApplication|null}
+	 * @param array<int, OrderItem>                                       $items         The allocated line items.
+	 * @param \DrPlugin\WP\ReleaseCart\Discounts\Discount|null            $primary       The primary discount.
+	 * @param array{id: int, amount: int}|null                            $autoMeta      The stacked automatic component for order meta.
+	 * @param \DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication|null $codeComponent The code's contribution to the final price.
+	 * @param \DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication|null $autoComponent The automatic discount's contribution.
+	 * @return array{items: array<int, OrderItem>, primary: \DrPlugin\WP\ReleaseCart\Discounts\Discount|null, auto_meta: array{id: int, amount: int}|null, code_component: \DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication|null, auto_component: \DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication|null}
 	 */
-	private function composition( array $items, ?\DrPlugin\WP\TierMint\Discounts\Discount $primary, ?array $autoMeta, ?\DrPlugin\WP\TierMint\Discounts\DiscountApplication $codeComponent, ?\DrPlugin\WP\TierMint\Discounts\DiscountApplication $autoComponent ): array {
+	private function composition( array $items, ?\DrPlugin\WP\ReleaseCart\Discounts\Discount $primary, ?array $autoMeta, ?\DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication $codeComponent, ?\DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication $autoComponent ): array {
 		return array(
 			'items'          => $items,
 			'primary'        => $primary,
@@ -908,11 +908,11 @@ class OrderService {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param \DrPlugin\WP\TierMint\Discounts\DiscountApplication|null $application The application, or null.
-	 * @param int                                                      $count       The number of lines.
+	 * @param \DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication|null $application The application, or null.
+	 * @param int                                                         $count       The number of lines.
 	 * @return array<int, int> The per-line amounts, index-aligned with the lines.
 	 */
-	private function perLineAmounts( ?\DrPlugin\WP\TierMint\Discounts\DiscountApplication $application, int $count ): array {
+	private function perLineAmounts( ?\DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication $application, int $count ): array {
 		$amounts = array_fill( 0, max( 0, $count ), 0 );
 
 		if ( null === $application ) {
@@ -931,15 +931,15 @@ class OrderService {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param \DrPlugin\WP\TierMint\Discounts\DiscountValidationException $e The rejection.
+	 * @param \DrPlugin\WP\ReleaseCart\Discounts\DiscountValidationException $e The rejection.
 	 * @return string The translated advisory.
 	 */
-	private function discountDroppedNotice( \DrPlugin\WP\TierMint\Discounts\DiscountValidationException $e ): string {
+	private function discountDroppedNotice( \DrPlugin\WP\ReleaseCart\Discounts\DiscountValidationException $e ): string {
 		$errors = array_values( array_filter( $e->getErrors(), 'is_string' ) );
 
 		return array() !== $errors
 			? $errors[0]
-			: __( 'The saved discount code is no longer valid and was not applied.', 'tiermint' );
+			: __( 'The saved discount code is no longer valid and was not applied.', 'releasecart' );
 	}
 
 	/**
@@ -947,11 +947,11 @@ class OrderService {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param \DrPlugin\WP\TierMint\Discounts\DiscountApplication|null $codeComponent The code's landed contribution.
-	 * @param \DrPlugin\WP\TierMint\Discounts\DiscountApplication|null $autoComponent The automatic discount's contribution.
+	 * @param \DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication|null $codeComponent The code's landed contribution.
+	 * @param \DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication|null $autoComponent The automatic discount's contribution.
 	 * @return array{discount: array<string, mixed>|null, auto_discount: array<string, mixed>|null}
 	 */
-	private function discountPayload( ?\DrPlugin\WP\TierMint\Discounts\DiscountApplication $codeComponent, ?\DrPlugin\WP\TierMint\Discounts\DiscountApplication $autoComponent ): array {
+	private function discountPayload( ?\DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication $codeComponent, ?\DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication $autoComponent ): array {
 		$discount = null !== $codeComponent
 			? array(
 				'valid'  => true,
@@ -979,10 +979,10 @@ class OrderService {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param \DrPlugin\WP\TierMint\Discounts\Discount $discount The discount to label.
+	 * @param \DrPlugin\WP\ReleaseCart\Discounts\Discount $discount The discount to label.
 	 * @return string The translated label.
 	 */
-	private function discountLabel( \DrPlugin\WP\TierMint\Discounts\Discount $discount ): string {
+	private function discountLabel( \DrPlugin\WP\ReleaseCart\Discounts\Discount $discount ): string {
 		$name = $discount->name();
 
 		if ( null !== $name && '' !== $name ) {
@@ -990,12 +990,12 @@ class OrderService {
 		}
 
 		if ( $discount->isAuto() ) {
-			return __( 'Automatic discount', 'tiermint' );
+			return __( 'Automatic discount', 'releasecart' );
 		}
 
 		return sprintf(
 			/* translators: %s: the discount code the buyer applied. */
-			__( 'Discount (%s)', 'tiermint' ),
+			__( 'Discount (%s)', 'releasecart' ),
 			$discount->code()
 		);
 	}
@@ -1005,12 +1005,12 @@ class OrderService {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array<int, OrderItem>                               $items       The undiscounted items, index-aligned
-	 *                                                                         with the application's allocations.
-	 * @param \DrPlugin\WP\TierMint\Discounts\DiscountApplication $application The computed application.
+	 * @param array<int, OrderItem>                                  $items       The undiscounted items, index-aligned
+	 *                                                                            with the application's allocations.
+	 * @param \DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication $application The computed application.
 	 * @return array<int, OrderItem> The discounted items.
 	 */
-	private function allocateDiscount( array $items, \DrPlugin\WP\TierMint\Discounts\DiscountApplication $application ): array {
+	private function allocateDiscount( array $items, \DrPlugin\WP\ReleaseCart\Discounts\DiscountApplication $application ): array {
 		return $this->applyLineDiscounts( $items, $this->perLineAmounts( $application, count( $items ) ) );
 	}
 
@@ -1089,9 +1089,9 @@ class OrderService {
 		 * @param array<int, OrderItem> $items   The priced, discount-allocated line items.
 		 * @param array<string, mixed>  $context The request context (ip_address, country,
 		 *        discount_code, plus any keys an extension added through
-		 *        `tiermint_checkout_intent_context`).
+		 *        `releasecart_checkout_intent_context`).
 		 */
-		$taxes = apply_filters( 'tiermint_checkout_calculate_totals', array_fill( 0, count( $items ), 0 ), $items, $context );
+		$taxes = apply_filters( 'releasecart_checkout_calculate_totals', array_fill( 0, count( $items ), 0 ), $items, $context );
 
 		if ( ! is_array( $taxes ) ) {
 			return $items;
@@ -1119,7 +1119,7 @@ class OrderService {
 			$taxed[] = $item->withTax( is_numeric( $value ) ? max( 0, (int) $value ) : 0 );
 		}
 
-		if ( array() !== $refused && null !== $this->logger && true !== ( $context['tiermint_preview'] ?? false ) ) {
+		if ( array() !== $refused && null !== $this->logger && true !== ( $context['releasecart_preview'] ?? false ) ) {
 			$this->logger->log(
 				'error',
 				sprintf( 'A checkout totals listener returned an invalid line array, so these lines were booked as priced with no tax: %s.', implode( ', ', $refused ) ),
@@ -1254,7 +1254,7 @@ class OrderService {
 
 			if ( null === $product || ProductStatus::Published !== $product->status() ) {
 				/* translators: %d: the product id. */
-				$errors[] = sprintf( __( 'Product %d is no longer available for purchase.', 'tiermint' ), $line->productId() );
+				$errors[] = sprintf( __( 'Product %d is no longer available for purchase.', 'releasecart' ), $line->productId() );
 				continue;
 			}
 
@@ -1262,7 +1262,7 @@ class OrderService {
 
 			if ( null === $price ) {
 				/* translators: %d: the product id. */
-				$errors[] = sprintf( __( 'The selected price for product %d is no longer available.', 'tiermint' ), $line->productId() );
+				$errors[] = sprintf( __( 'The selected price for product %d is no longer available.', 'releasecart' ), $line->productId() );
 				continue;
 			}
 
@@ -1311,7 +1311,7 @@ class OrderService {
 	public static function quantityAdjustedNotice( string $productName, int $quantity ): string {
 		return sprintf(
 			/* translators: 1: the product name, 2: the adjusted quantity. */
-			__( 'The quantity for %1$s was adjusted to %2$d.', 'tiermint' ),
+			__( 'The quantity for %1$s was adjusted to %2$d.', 'releasecart' ),
 			$productName,
 			$quantity
 		);
@@ -1344,7 +1344,7 @@ class OrderService {
 	 * @return string The three-letter uppercase currency code.
 	 */
 	private function storeCurrency(): string {
-		$settings = get_option( 'tiermint_settings' );
+		$settings = get_option( 'releasecart_settings' );
 		$currency = ( is_array( $settings ) && ! empty( $settings['currency'] ) ) ? (string) $settings['currency'] : 'USD';
 		$currency = strtoupper( substr( $currency, 0, 3 ) );
 

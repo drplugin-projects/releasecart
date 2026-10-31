@@ -2,18 +2,18 @@
 /**
  * Signed download URL utility.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Updates;
+namespace DrPlugin\WP\ReleaseCart\Updates;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Util\Crypto;
-use DrPlugin\WP\TierMint\Util\CryptoException;
+use DrPlugin\WP\ReleaseCart\Util\Crypto;
+use DrPlugin\WP\ReleaseCart\Util\CryptoException;
 use InvalidArgumentException;
 
 /**
@@ -30,7 +30,7 @@ class PackageSigner {
 	 *
 	 * @var string
 	 */
-	public const SECRET_OPTION = 'tiermint_secret_download_signing';
+	public const SECRET_OPTION = 'releasecart_secret_download_signing';
 
 	/**
 	 * Verdict: signature genuine and within its lifetime.
@@ -150,7 +150,7 @@ class PackageSigner {
 
 		$fields['signature'] = $this->hmac( $this->packageCanonical( $productId, $releaseId, $licenseKeyId, $siteHash, $expires ) );
 
-		return $this->buildUrl( 'tiermint/v1/package/download', $fields );
+		return $this->buildUrl( 'releasecart/v1/package/download', $fields );
 	}
 
 	/**
@@ -206,7 +206,7 @@ class PackageSigner {
 
 		$fields['signature'] = $this->signOrderFile( $orderId, $itemId, $customerId, $fileToken, $expires );
 
-		return $this->buildUrl( 'tiermint/v1/order/download', $fields );
+		return $this->buildUrl( 'releasecart/v1/order/download', $fields );
 	}
 
 	/**
@@ -468,7 +468,7 @@ class PackageSigner {
 		 *
 		 * @param int $ttl URL lifetime in seconds. Default 300, or the per-call override when one was passed.
 		 */
-		$ttl = apply_filters( 'tiermint_download_url_ttl', $base );
+		$ttl = apply_filters( 'releasecart_download_url_ttl', $base );
 
 		return max( self::MIN_TTL, (int) $ttl );
 	}

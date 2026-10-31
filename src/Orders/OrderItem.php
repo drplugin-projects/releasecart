@@ -2,12 +2,12 @@
 /**
  * Order line item value object.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Orders;
+namespace DrPlugin\WP\ReleaseCart\Orders;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -132,17 +132,17 @@ final class OrderItem {
 	) {
 		if ( $productId <= 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new OrderException( __( 'An order item must reference a valid product.', 'tiermint' ) );
+			throw new OrderException( __( 'An order item must reference a valid product.', 'releasecart' ) );
 		}
 
 		if ( '' === trim( $productName ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new OrderException( __( 'An order item must have a non-empty product name.', 'tiermint' ) );
+			throw new OrderException( __( 'An order item must have a non-empty product name.', 'releasecart' ) );
 		}
 
 		if ( $quantity < 1 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new OrderException( __( 'An order item quantity must be at least one.', 'tiermint' ) );
+			throw new OrderException( __( 'An order item quantity must be at least one.', 'releasecart' ) );
 		}
 
 		// A line item, unlike the order aggregate, only ever carries non-negative
@@ -150,7 +150,7 @@ final class OrderItem {
 		// negative line here. Reject negatives so they cannot reach the columns.
 		if ( $subtotal < 0 || $discount < 0 || $tax < 0 || $total < 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new OrderException( __( 'An order item amount cannot be negative.', 'tiermint' ) );
+			throw new OrderException( __( 'An order item amount cannot be negative.', 'releasecart' ) );
 		}
 
 		$this->id          = $id;
@@ -197,7 +197,7 @@ final class OrderItem {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param object $row A `tiermint_order_items` row.
+	 * @param object $row A `releasecart_order_items` row.
 	 * @return self
 	 *
 	 * @throws OrderException When the row violates a line invariant.

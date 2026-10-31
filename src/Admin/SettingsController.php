@@ -2,24 +2,24 @@
 /**
  * The settings REST surface for the admin SPA.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Admin;
+namespace DrPlugin\WP\ReleaseCart\Admin;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Frontend\Appearance;
-use DrPlugin\WP\TierMint\Payments\PaymentException;
-use DrPlugin\WP\TierMint\Payments\Stripe\StripeSettings;
-use DrPlugin\WP\TierMint\REST\AbstractRestController;
-use DrPlugin\WP\TierMint\Util\CryptoException;
-use DrPlugin\WP\TierMint\Webhooks\WebhookEndpoints;
-use DrPlugin\WP\TierMint\Webhooks\WebhookNotFoundException;
-use DrPlugin\WP\TierMint\Webhooks\WebhookValidationException;
+use DrPlugin\WP\ReleaseCart\Frontend\Appearance;
+use DrPlugin\WP\ReleaseCart\Payments\PaymentException;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeSettings;
+use DrPlugin\WP\ReleaseCart\REST\AbstractRestController;
+use DrPlugin\WP\ReleaseCart\Util\CryptoException;
+use DrPlugin\WP\ReleaseCart\Webhooks\WebhookEndpoints;
+use DrPlugin\WP\ReleaseCart\Webhooks\WebhookNotFoundException;
+use DrPlugin\WP\ReleaseCart\Webhooks\WebhookValidationException;
 use Throwable;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -38,7 +38,7 @@ final class SettingsController extends AbstractRestController {
 	 *
 	 * @var string
 	 */
-	private const OPTION = 'tiermint_settings';
+	private const OPTION = 'releasecart_settings';
 
 	/**
 	 * The prefix of a served secret mask.
@@ -175,7 +175,7 @@ final class SettingsController extends AbstractRestController {
 		$values = $request->get_json_params()['values'] ?? null;
 
 		if ( ! is_array( $values ) || array() === $values ) {
-			return $this->invalidParams( array( __( 'No settings values were submitted.', 'tiermint' ) ) );
+			return $this->invalidParams( array( __( 'No settings values were submitted.', 'releasecart' ) ) );
 		}
 
 		$errors       = array();
@@ -190,7 +190,7 @@ final class SettingsController extends AbstractRestController {
 
 			if ( null === $field ) {
 				/* translators: %s: the unknown settings field id. */
-				$errors[] = sprintf( __( 'Unknown setting: %s.', 'tiermint' ), (string) $fieldId );
+				$errors[] = sprintf( __( 'Unknown setting: %s.', 'releasecart' ), (string) $fieldId );
 				continue;
 			}
 
@@ -205,7 +205,7 @@ final class SettingsController extends AbstractRestController {
 			// empty-path option write.
 			if ( 'option' !== $field['storage'] ) {
 				/* translators: %s: the settings field label. */
-				$errors[] = sprintf( __( '%s is not writable through this endpoint.', 'tiermint' ), (string) $field['label'] );
+				$errors[] = sprintf( __( '%s is not writable through this endpoint.', 'releasecart' ), (string) $field['label'] );
 				continue;
 			}
 
@@ -306,7 +306,7 @@ final class SettingsController extends AbstractRestController {
 		try {
 			$endpoint = $this->webhooks->update( (string) $request['id'], $changes );
 		} catch ( WebhookNotFoundException $e ) {
-			return $this->notFound( __( 'No such webhook endpoint.', 'tiermint' ) );
+			return $this->notFound( __( 'No such webhook endpoint.', 'releasecart' ) );
 		} catch ( WebhookValidationException $e ) {
 			return $this->invalidParams( array( $e->getMessage() ) );
 		} catch ( Throwable $e ) {
@@ -328,7 +328,7 @@ final class SettingsController extends AbstractRestController {
 		try {
 			$this->webhooks->delete( (string) $request['id'] );
 		} catch ( WebhookNotFoundException $e ) {
-			return $this->notFound( __( 'No such webhook endpoint.', 'tiermint' ) );
+			return $this->notFound( __( 'No such webhook endpoint.', 'releasecart' ) );
 		} catch ( Throwable $e ) {
 			return $this->serverError();
 		}
@@ -437,7 +437,7 @@ final class SettingsController extends AbstractRestController {
 	private function stageStripeWrite( array $field, $value, array &$writes, array &$errors ): void {
 		if ( null !== $value && ! is_string( $value ) ) {
 			/* translators: %s: the settings field label. */
-			$errors[] = sprintf( __( '%s must be a text value (or null to clear it).', 'tiermint' ), (string) $field['label'] );
+			$errors[] = sprintf( __( '%s must be a text value (or null to clear it).', 'releasecart' ), (string) $field['label'] );
 
 			return;
 		}
@@ -448,7 +448,7 @@ final class SettingsController extends AbstractRestController {
 		// is a 400 before any staged write has executed, not a mid-batch throw.
 		if ( ! in_array( $mode, array( 'test', 'live' ), true ) ) {
 			/* translators: %s: the settings field label. */
-			$errors[] = sprintf( __( '%s has an invalid credential mode.', 'tiermint' ), (string) $field['label'] );
+			$errors[] = sprintf( __( '%s has an invalid credential mode.', 'releasecart' ), (string) $field['label'] );
 
 			return;
 		}
@@ -489,7 +489,7 @@ final class SettingsController extends AbstractRestController {
 		// string "Array". Null stays allowed so typed cases coerce it.
 		if ( null !== $value && ! is_scalar( $value ) ) {
 			/* translators: %s: the settings field label. */
-			$errors[] = sprintf( __( '%s received an invalid value type.', 'tiermint' ), $label );
+			$errors[] = sprintf( __( '%s received an invalid value type.', 'releasecart' ), $label );
 
 			return null;
 		}
@@ -499,7 +499,7 @@ final class SettingsController extends AbstractRestController {
 				$code = strtoupper( trim( (string) $value ) );
 				if ( 1 !== preg_match( '/^[A-Z]{3}$/', $code ) ) {
 					/* translators: %s: the settings field label. */
-					$errors[] = sprintf( __( '%s must be a three-letter ISO currency code.', 'tiermint' ), $label );
+					$errors[] = sprintf( __( '%s must be a three-letter ISO currency code.', 'releasecart' ), $label );
 
 					return null;
 				}
@@ -517,7 +517,7 @@ final class SettingsController extends AbstractRestController {
 				$choice  = (string) $value;
 				if ( ! in_array( $choice, $allowed, true ) ) {
 					/* translators: %s: the settings field label. */
-					$errors[] = sprintf( __( '%s received a value outside its allowed choices.', 'tiermint' ), $label );
+					$errors[] = sprintf( __( '%s received a value outside its allowed choices.', 'releasecart' ), $label );
 
 					return null;
 				}
@@ -528,7 +528,7 @@ final class SettingsController extends AbstractRestController {
 				$address = trim( (string) $value );
 				if ( '' !== $address && ! is_email( $address ) ) {
 					/* translators: %s: the settings field label. */
-					$errors[] = sprintf( __( '%s must be a valid email address.', 'tiermint' ), $label );
+					$errors[] = sprintf( __( '%s must be a valid email address.', 'releasecart' ), $label );
 
 					return null;
 				}
@@ -539,7 +539,7 @@ final class SettingsController extends AbstractRestController {
 				$color = $this->appearance->sanitizeColor( $value );
 				if ( null === $color ) {
 					/* translators: %s: the settings field label. */
-					$errors[] = sprintf( __( '%s must be a hex colour such as #2563eb.', 'tiermint' ), $label );
+					$errors[] = sprintf( __( '%s must be a hex colour such as #2563eb.', 'releasecart' ), $label );
 
 					return null;
 				}
@@ -550,7 +550,7 @@ final class SettingsController extends AbstractRestController {
 				$font = $this->appearance->sanitizeFontStack( $value );
 				if ( null === $font ) {
 					/* translators: %s: the settings field label. */
-					$errors[] = sprintf( __( '%s must be a list of font names, for example Inter, Arial, sans-serif.', 'tiermint' ), $label );
+					$errors[] = sprintf( __( '%s must be a list of font names, for example Inter, Arial, sans-serif.', 'releasecart' ), $label );
 
 					return null;
 				}

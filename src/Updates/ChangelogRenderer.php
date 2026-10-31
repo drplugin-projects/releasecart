@@ -2,12 +2,12 @@
 /**
  * Changelog Markdown-to-HTML renderer for the update "View details" modal.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Updates;
+namespace DrPlugin\WP\ReleaseCart\Updates;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -27,7 +27,7 @@ final class ChangelogRenderer {
 	 *
 	 * @var string
 	 */
-	private const CACHE_GROUP = 'tiermint';
+	private const CACHE_GROUP = 'releasecart';
 
 	/**
 	 * Prefix for the object-cache keys under {@see self::CACHE_GROUP}.

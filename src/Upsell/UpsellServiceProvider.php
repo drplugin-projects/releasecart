@@ -2,18 +2,18 @@
 /**
  * Service provider for the Pro upgrade surfaces.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Upsell;
+namespace DrPlugin\WP\ReleaseCart\Upsell;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Container;
-use DrPlugin\WP\TierMint\Core\ServiceProvider;
+use DrPlugin\WP\ReleaseCart\Core\Container;
+use DrPlugin\WP\ReleaseCart\Core\ServiceProvider;
 
 /**
  * Binds the upsell seams and wires the admin menu, settings teaser, and dismiss

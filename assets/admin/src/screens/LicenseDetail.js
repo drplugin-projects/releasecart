@@ -27,7 +27,7 @@ import { firstReadPending } from '../utils/listState';
  */
 const BACK_TO_LICENSES = {
 	href: '#/licenses',
-	label: __( 'Back to licenses', 'tiermint' ),
+	label: __( 'Back to licenses', 'releasecart' ),
 };
 
 /**
@@ -36,9 +36,9 @@ const BACK_TO_LICENSES = {
  * @type {Object<string, string>}
  */
 const STATUS_LABELS = {
-	active: __( 'Active', 'tiermint' ),
-	expired: __( 'Expired', 'tiermint' ),
-	disabled: __( 'Disabled', 'tiermint' ),
+	active: __( 'Active', 'releasecart' ),
+	expired: __( 'Expired', 'releasecart' ),
+	disabled: __( 'Disabled', 'releasecart' ),
 };
 
 /**
@@ -47,8 +47,8 @@ const STATUS_LABELS = {
  * @type {Object<string, string>}
  */
 const ACTIVATION_STATUS_LABELS = {
-	active: __( 'Active', 'tiermint' ),
-	deactivated: __( 'Deactivated', 'tiermint' ),
+	active: __( 'Active', 'releasecart' ),
+	deactivated: __( 'Deactivated', 'releasecart' ),
 };
 
 /**
@@ -88,7 +88,7 @@ function licenseQueryKey( id ) {
  * @param {string}  [fallback] The label to show for a falsy date string.
  * @return {string} The formatted date, or the fallback label.
  */
-function formatDate( dateString, fallback = __( 'Never', 'tiermint' ) ) {
+function formatDate( dateString, fallback = __( 'Never', 'releasecart' ) ) {
 	if ( ! dateString ) {
 		return fallback;
 	}
@@ -110,7 +110,7 @@ function formatDate( dateString, fallback = __( 'Never', 'tiermint' ) ) {
 function formatUsage( count, limit ) {
 	return sprintf(
 		/* translators: 1: number of activations used, 2: the activation limit (or an infinity symbol for unlimited). */
-		__( '%1$d / %2$s', 'tiermint' ),
+		__( '%1$d / %2$s', 'releasecart' ),
 		count,
 		limit ? String( limit ) : '∞'
 	);
@@ -174,9 +174,9 @@ export default function LicenseDetail( { params } ) {
 	// Do not read license data until the first request has a usable result.
 	if ( firstReadPending( licenseQuery ) || ( ! isError && ! data ) ) {
 		return (
-			<section className="tiermint-admin-screen">
+			<section className="releasecart-admin-screen">
 				<ScreenHeader
-					title={ __( 'License', 'tiermint' ) }
+					title={ __( 'License', 'releasecart' ) }
 					backLink={ BACK_TO_LICENSES }
 				/>
 				<SkeletonForm fields={ 5 } />
@@ -186,9 +186,9 @@ export default function LicenseDetail( { params } ) {
 
 	if ( isError ) {
 		return (
-			<section className="tiermint-admin-screen">
+			<section className="releasecart-admin-screen">
 				<ScreenHeader
-					title={ __( 'License', 'tiermint' ) }
+					title={ __( 'License', 'releasecart' ) }
 					backLink={ BACK_TO_LICENSES }
 				/>
 				<Notice
@@ -196,7 +196,7 @@ export default function LicenseDetail( { params } ) {
 					isDismissible={ false }
 				>
 					{ error.status === 404
-						? __( 'License not found.', 'tiermint' )
+						? __( 'License not found.', 'releasecart' )
 						: error.message }
 				</Notice>
 			</section>
@@ -204,22 +204,22 @@ export default function LicenseDetail( { params } ) {
 	}
 
 	return (
-		<section className="tiermint-admin-screen">
+		<section className="releasecart-admin-screen">
 			<ScreenHeader
-				title={ __( 'License', 'tiermint' ) }
+				title={ __( 'License', 'releasecart' ) }
 				backLink={ BACK_TO_LICENSES }
 			/>
 
 			{ /* Keep the key and metadata in one panel. */ }
-			<div className="tiermint-panel">
-				<div className="tiermint-license-key-field">
+			<div className="releasecart-panel">
+				<div className="releasecart-license-key-field">
 					<TextControl
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
-						label={ __( 'License key', 'tiermint' ) }
+						label={ __( 'License key', 'releasecart' ) }
 						value={ data.license_key }
 						readOnly
-						className="tiermint-mono"
+						className="releasecart-mono"
 					/>
 					{ /* Match the key field height. */ }
 					<Button
@@ -228,14 +228,14 @@ export default function LicenseDetail( { params } ) {
 						onClick={ handleCopy }
 					>
 						{ copied
-							? __( 'Copied', 'tiermint' )
-							: __( 'Copy', 'tiermint' ) }
+							? __( 'Copied', 'releasecart' )
+							: __( 'Copy', 'releasecart' ) }
 					</Button>
 				</div>
 
-				<dl className="tiermint-license-meta">
+				<dl className="releasecart-license-meta">
 					<div>
-						<dt>{ __( 'Status', 'tiermint' ) }</dt>
+						<dt>{ __( 'Status', 'releasecart' ) }</dt>
 						<dd>
 							<StatusBadge
 								status={ data.status }
@@ -246,11 +246,11 @@ export default function LicenseDetail( { params } ) {
 						</dd>
 					</div>
 					<div>
-						<dt>{ __( 'Expires', 'tiermint' ) }</dt>
+						<dt>{ __( 'Expires', 'releasecart' ) }</dt>
 						<dd>{ formatDate( data.expires_at ) }</dd>
 					</div>
 					<div>
-						<dt>{ __( 'Activations', 'tiermint' ) }</dt>
+						<dt>{ __( 'Activations', 'releasecart' ) }</dt>
 						<dd>
 							{ formatUsage(
 								data.activation_count,
@@ -259,19 +259,19 @@ export default function LicenseDetail( { params } ) {
 						</dd>
 					</div>
 					<div>
-						<dt>{ __( 'Order', 'tiermint' ) }</dt>
+						<dt>{ __( 'Order', 'releasecart' ) }</dt>
 						<dd>
 							<a href={ `#/orders/${ data.order_id }` }>
 								{ sprintf(
 									/* translators: %d: a numeric record id. */
-									__( '#%d', 'tiermint' ),
+									__( '#%d', 'releasecart' ),
 									data.order_id
 								) }
 							</a>
 						</dd>
 					</div>
 					<div>
-						<dt>{ __( 'Customer', 'tiermint' ) }</dt>
+						<dt>{ __( 'Customer', 'releasecart' ) }</dt>
 						<dd>
 							{ /* Use the id when the customer record no longer exists. */ }
 							{ data.customer_email ? (
@@ -285,7 +285,7 @@ export default function LicenseDetail( { params } ) {
 							) : (
 								sprintf(
 									/* translators: %d: a numeric record id. */
-									__( '#%d', 'tiermint' ),
+									__( '#%d', 'releasecart' ),
 									data.customer_id
 								)
 							) }
@@ -294,23 +294,23 @@ export default function LicenseDetail( { params } ) {
 				</dl>
 			</div>
 
-			<h2>{ __( 'Activations', 'tiermint' ) }</h2>
-			<table className="tiermint-activations-table wp-list-table widefat striped">
+			<h2>{ __( 'Activations', 'releasecart' ) }</h2>
+			<table className="releasecart-activations-table wp-list-table widefat striped">
 				<thead>
 					<tr>
-						<th>{ __( 'Site', 'tiermint' ) }</th>
-						<th>{ __( 'Status', 'tiermint' ) }</th>
-						<th>{ __( 'Activated', 'tiermint' ) }</th>
-						<th>{ __( 'Deactivated', 'tiermint' ) }</th>
-						<th>{ __( 'Last checked', 'tiermint' ) }</th>
-						<th>{ __( 'Actions', 'tiermint' ) }</th>
+						<th>{ __( 'Site', 'releasecart' ) }</th>
+						<th>{ __( 'Status', 'releasecart' ) }</th>
+						<th>{ __( 'Activated', 'releasecart' ) }</th>
+						<th>{ __( 'Deactivated', 'releasecart' ) }</th>
+						<th>{ __( 'Last checked', 'releasecart' ) }</th>
+						<th>{ __( 'Actions', 'releasecart' ) }</th>
 					</tr>
 				</thead>
 				<tbody>
 					{ data.activations.length === 0 && (
 						<tr>
 							<td colSpan={ 6 }>
-								{ __( 'No activations yet.', 'tiermint' ) }
+								{ __( 'No activations yet.', 'releasecart' ) }
 							</td>
 						</tr>
 					) }
@@ -345,7 +345,7 @@ export default function LicenseDetail( { params } ) {
 							<td>
 								{ formatDate(
 									activation.last_checked_at,
-									__( 'Never', 'tiermint' )
+									__( 'Never', 'releasecart' )
 								) }
 							</td>
 							<td>
@@ -359,7 +359,7 @@ export default function LicenseDetail( { params } ) {
 											)
 										}
 									>
-										{ __( 'Deactivate', 'tiermint' ) }
+										{ __( 'Deactivate', 'releasecart' ) }
 									</Button>
 								) }
 							</td>
@@ -370,14 +370,14 @@ export default function LicenseDetail( { params } ) {
 
 			{ confirmActivationId !== null && (
 				<Modal
-					className="tiermint-modal tiermint-modal--confirm"
-					title={ __( 'Deactivate this activation?', 'tiermint' ) }
+					className="releasecart-modal releasecart-modal--confirm"
+					title={ __( 'Deactivate this activation?', 'releasecart' ) }
 					onRequestClose={ () => setConfirmActivationId( null ) }
 				>
 					<p>
 						{ __(
 							'This frees up the activation slot right away, so the customer can activate their license elsewhere.',
-							'tiermint'
+							'releasecart'
 						) }
 					</p>
 
@@ -387,13 +387,13 @@ export default function LicenseDetail( { params } ) {
 						</Notice>
 					) }
 
-					<div className="tiermint-modal-actions">
+					<div className="releasecart-modal-actions">
 						<Button
 							variant="tertiary"
 							disabled={ deactivateMutation.isPending }
 							onClick={ () => setConfirmActivationId( null ) }
 						>
-							{ __( 'Cancel', 'tiermint' ) }
+							{ __( 'Cancel', 'releasecart' ) }
 						</Button>
 						<Button
 							variant="primary"
@@ -404,7 +404,7 @@ export default function LicenseDetail( { params } ) {
 								deactivateMutation.mutate( confirmActivationId )
 							}
 						>
-							{ __( 'Yes, deactivate', 'tiermint' ) }
+							{ __( 'Yes, deactivate', 'releasecart' ) }
 						</Button>
 					</div>
 				</Modal>
@@ -420,7 +420,7 @@ export default function LicenseDetail( { params } ) {
  */
 export const route = {
 	path: '#/licenses/:id',
-	title: __( 'License', 'tiermint' ),
-	capability: 'manage_tiermint',
+	title: __( 'License', 'releasecart' ),
+	capability: 'manage_releasecart',
 	component: LicenseDetail,
 };

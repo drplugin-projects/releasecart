@@ -2,19 +2,19 @@
 /**
  * Records discount use after order completion.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Discounts;
+namespace DrPlugin\WP\ReleaseCart\Discounts;
 
 // Block direct access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
 use Throwable;
 
 /**
@@ -61,7 +61,7 @@ final class DiscountsListener implements Hookable {
 	 * @return void
 	 */
 	public function hooks(): void {
-		add_action( 'tiermint_order_completed', array( $this, 'onOrderCompleted' ), 10, 1 );
+		add_action( 'releasecart_order_completed', array( $this, 'onOrderCompleted' ), 10, 1 );
 	}
 
 	/**
@@ -84,7 +84,7 @@ final class DiscountsListener implements Hookable {
 		}
 
 		// Also credit a distinct automatic discount stored for stack mode.
-		$autoId = (int) get_metadata( 'tiermint_order', $orderId, '_tiermint_auto_discount_id', true );
+		$autoId = (int) get_metadata( 'releasecart_order', $orderId, '_releasecart_auto_discount_id', true );
 
 		if ( $autoId > 0 && $autoId !== (int) $discountId ) {
 			$this->credit( $autoId, $orderId );

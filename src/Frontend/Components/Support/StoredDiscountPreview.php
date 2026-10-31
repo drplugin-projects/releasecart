@@ -2,19 +2,19 @@
 /**
  * Prices a cart's stored discount code, composed with the best automatic discount, for display.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components\Support;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components\Support;
 
-use DrPlugin\WP\TierMint\Discounts\Discount;
-use DrPlugin\WP\TierMint\Discounts\DiscountComposer;
-use DrPlugin\WP\TierMint\Discounts\DiscountPersistenceException;
-use DrPlugin\WP\TierMint\Discounts\DiscountService;
-use DrPlugin\WP\TierMint\Discounts\DiscountValidationException;
-use DrPlugin\WP\TierMint\Util\Money;
+use DrPlugin\WP\ReleaseCart\Discounts\Discount;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountComposer;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountPersistenceException;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountService;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountValidationException;
+use DrPlugin\WP\ReleaseCart\Util\Money;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -131,7 +131,7 @@ final class StoredDiscountPreview {
 
 		return sprintf(
 			/* translators: %s: the discount code the buyer applied. */
-			__( 'Discount (%s)', 'tiermint' ),
+			__( 'Discount (%s)', 'releasecart' ),
 			$discount->code()
 		);
 	}
@@ -145,6 +145,6 @@ final class StoredDiscountPreview {
 	private static function autoLabel( Discount $discount ): string {
 		$name = $discount->name();
 
-		return ( null !== $name && '' !== $name ) ? $name : __( 'Automatic discount', 'tiermint' );
+		return ( null !== $name && '' !== $name ) ? $name : __( 'Automatic discount', 'releasecart' );
 	}
 }

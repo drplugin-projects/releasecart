@@ -100,19 +100,19 @@ function SecretField( { field, served, stagedValue, onChange, onRestore } ) {
 
 	if ( stagedForRemoval ) {
 		return (
-			<div className="tiermint-secret-field tiermint-secret-field--removing">
+			<div className="releasecart-secret-field releasecart-secret-field--removing">
 				<Notice status="warning" isDismissible={ false }>
 					{ sprintf(
 						// translators: %s is the human-readable field label.
 						__(
 							'The "%s" secret will be removed when you save.',
-							'tiermint'
+							'releasecart'
 						),
 						field.label
 					) }
 				</Notice>
 				<Button variant="link" onClick={ () => onRestore( field.id ) }>
-					{ __( 'Undo', 'tiermint' ) }
+					{ __( 'Undo', 'releasecart' ) }
 				</Button>
 			</div>
 		);
@@ -121,13 +121,13 @@ function SecretField( { field, served, stagedValue, onChange, onRestore } ) {
 	const label = isSet
 		? sprintf(
 				// translators: %s is the human-readable field label.
-				__( '%s (enter a new value to replace)', 'tiermint' ),
+				__( '%s (enter a new value to replace)', 'releasecart' ),
 				field.label
 		  )
 		: field.label;
 
 	return (
-		<div className="tiermint-secret-field">
+		<div className="releasecart-secret-field">
 			<TextControl
 				__nextHasNoMarginBottom
 				__next40pxDefaultSize
@@ -144,7 +144,7 @@ function SecretField( { field, served, stagedValue, onChange, onRestore } ) {
 					variant="secondary"
 					onClick={ () => onChange( field.id, null ) }
 				>
-					{ __( 'Clear', 'tiermint' ) }
+					{ __( 'Clear', 'releasecart' ) }
 				</Button>
 			) }
 		</div>
@@ -163,42 +163,44 @@ function SecretField( { field, served, stagedValue, onChange, onRestore } ) {
  */
 function ColorField( { field, currentValue, help, onChange } ) {
 	const value = typeof currentValue === 'string' ? currentValue : '';
-	const shown = value || __( 'Default', 'tiermint' );
+	const shown = value || __( 'Default', 'releasecart' );
 
 	return (
-		<div className="tiermint-field tiermint-color-field">
-			<span className="tiermint-color-field__label">{ field.label }</span>
+		<div className="releasecart-field releasecart-color-field">
+			<span className="releasecart-color-field__label">
+				{ field.label }
+			</span>
 			<Dropdown
-				className="tiermint-color-field__dropdown"
-				contentClassName="tiermint-color-field__popover"
+				className="releasecart-color-field__dropdown"
+				contentClassName="releasecart-color-field__popover"
 				popoverProps={ { placement: 'bottom-start' } }
 				renderToggle={ ( { isOpen, onToggle } ) => (
 					<Button
 						variant="secondary"
-						className="tiermint-color-field__toggle"
+						className="releasecart-color-field__toggle"
 						aria-expanded={ isOpen }
 						aria-label={ sprintf(
 							// translators: 1: a label, 2: its value.
-							__( '%1$s: %2$s', 'tiermint' ),
+							__( '%1$s: %2$s', 'releasecart' ),
 							field.label,
 							shown
 						) }
 						onClick={ onToggle }
 					>
 						<span
-							className="tiermint-color-field__swatch"
+							className="releasecart-color-field__swatch"
 							style={ {
 								backgroundColor: value || 'transparent',
 							} }
 							aria-hidden="true"
 						/>
-						<span className="tiermint-color-field__value">
+						<span className="releasecart-color-field__value">
 							{ shown }
 						</span>
 					</Button>
 				) }
 				renderContent={ () => (
-					<div className="tiermint-color-field__content">
+					<div className="releasecart-color-field__content">
 						<ColorPicker
 							color={ value || undefined }
 							enableAlpha={ false }
@@ -207,15 +209,17 @@ function ColorField( { field, currentValue, help, onChange } ) {
 						/>
 						<Button
 							variant="tertiary"
-							className="tiermint-color-field__clear"
+							className="releasecart-color-field__clear"
 							onClick={ () => onChange( field.id, '' ) }
 						>
-							{ __( 'Clear', 'tiermint' ) }
+							{ __( 'Clear', 'releasecart' ) }
 						</Button>
 					</div>
 				) }
 			/>
-			{ help && <p className="tiermint-color-field__help">{ help }</p> }
+			{ help && (
+				<p className="releasecart-color-field__help">{ help }</p>
+			) }
 		</div>
 	);
 }
@@ -250,15 +254,18 @@ function FieldControl( {
 	// render-only, so it is caught before the external-field placeholder below.
 	if ( field.type === 'pro_upsell' ) {
 		return (
-			<div className="tiermint-field tiermint-upsell tiermint-upsell--settings">
+			<div className="releasecart-field releasecart-upsell releasecart-upsell--settings">
 				{ upsell.intro && (
-					<p className="tiermint-upsell__intro">{ upsell.intro }</p>
+					<p className="releasecart-upsell__intro">
+						{ upsell.intro }
+					</p>
 				) }
 				<UpsellFeatures
 					features={ upsell.features }
 					url={ upsell.url }
 					linkLabel={
-						upsell.linkLabel || __( 'See TierMint Pro', 'tiermint' )
+						upsell.linkLabel ||
+						__( 'See ReleaseCart Pro', 'releasecart' )
 					}
 				/>
 			</div>
@@ -284,12 +291,14 @@ function FieldControl( {
 	// placeholder so the field is accounted for but cannot be edited or saved.
 	if ( field.external ) {
 		return (
-			<div className="tiermint-field tiermint-field--external">
-				<span className="tiermint-field__label">{ field.label }</span>
-				<p className="tiermint-field__external-note">
+			<div className="releasecart-field releasecart-field--external">
+				<span className="releasecart-field__label">
+					{ field.label }
+				</span>
+				<p className="releasecart-field__external-note">
 					{ __(
 						'This setting is provided by an extension that is not loaded.',
-						'tiermint'
+						'releasecart'
 					) }
 				</p>
 			</div>
@@ -437,24 +446,24 @@ function WebhooksPanel( {
 	const endpoints = Array.isArray( data.endpoints ) ? data.endpoints : [];
 
 	return (
-		<div className="tiermint-webhooks">
-			<div className="tiermint-toolbar tiermint-webhooks__toolbar">
+		<div className="releasecart-webhooks">
+			<div className="releasecart-toolbar releasecart-webhooks__toolbar">
 				<Button variant="secondary" onClick={ onAdd }>
-					{ __( 'Add endpoint', 'tiermint' ) }
+					{ __( 'Add endpoint', 'releasecart' ) }
 				</Button>
 			</div>
 
 			{ endpoints.length === 0 ? (
-				<p>{ __( 'No webhook endpoints yet.', 'tiermint' ) }</p>
+				<p>{ __( 'No webhook endpoints yet.', 'releasecart' ) }</p>
 			) : (
-				<table className="tiermint-webhooks__table wp-list-table widefat striped">
+				<table className="releasecart-webhooks__table wp-list-table widefat striped">
 					<thead>
 						<tr>
-							<th>{ __( 'URL', 'tiermint' ) }</th>
-							<th>{ __( 'Events', 'tiermint' ) }</th>
-							<th>{ __( 'Active', 'tiermint' ) }</th>
-							<th>{ __( 'Status', 'tiermint' ) }</th>
-							<th>{ __( 'Actions', 'tiermint' ) }</th>
+							<th>{ __( 'URL', 'releasecart' ) }</th>
+							<th>{ __( 'Events', 'releasecart' ) }</th>
+							<th>{ __( 'Active', 'releasecart' ) }</th>
+							<th>{ __( 'Status', 'releasecart' ) }</th>
+							<th>{ __( 'Actions', 'releasecart' ) }</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -471,7 +480,10 @@ function WebhooksPanel( {
 										__nextHasNoMarginBottom
 										label={ sprintf(
 											// translators: %s is the endpoint URL.
-											__( 'Active for %s', 'tiermint' ),
+											__(
+												'Active for %s',
+												'releasecart'
+											),
 											endpoint.url
 										) }
 										checked={ !! endpoint.active }
@@ -485,12 +497,15 @@ function WebhooksPanel( {
 									{ endpoint.failing && (
 										<Tooltip
 											text={ __(
-												'Every retry to this endpoint failed, so TierMint stopped sending to it. Check that the URL is reachable and returns a 2xx response, then switch the endpoint back to active.',
-												'tiermint'
+												'Every retry to this endpoint failed, so ReleaseCart stopped sending to it. Check that the URL is reachable and returns a 2xx response, then switch the endpoint back to active.',
+												'releasecart'
 											) }
 										>
-											<span className="tiermint-badge tiermint-badge--failing">
-												{ __( 'Failing', 'tiermint' ) }
+											<span className="releasecart-badge releasecart-badge--failing">
+												{ __(
+													'Failing',
+													'releasecart'
+												) }
 											</span>
 										</Tooltip>
 									) }
@@ -508,7 +523,7 @@ function WebhooksPanel( {
 											>
 												{ __(
 													'Confirm delete',
-													'tiermint'
+													'releasecart'
 												) }
 											</Button>
 											<Button
@@ -517,7 +532,10 @@ function WebhooksPanel( {
 													setConfirmingId( null )
 												}
 											>
-												{ __( 'Cancel', 'tiermint' ) }
+												{ __(
+													'Cancel',
+													'releasecart'
+												) }
 											</Button>
 										</>
 									) : (
@@ -534,7 +552,7 @@ function WebhooksPanel( {
 												setConfirmingId( endpoint.id )
 											}
 										>
-											{ __( 'Delete', 'tiermint' ) }
+											{ __( 'Delete', 'releasecart' ) }
 										</Button>
 									) }
 								</td>
@@ -597,37 +615,37 @@ function AddEndpointModal( {
 
 		return (
 			<Modal
-				className="tiermint-modal tiermint-modal--confirm"
-				title={ __( 'Endpoint created', 'tiermint' ) }
+				className="releasecart-modal releasecart-modal--confirm"
+				title={ __( 'Endpoint created', 'releasecart' ) }
 				onRequestClose={ onClose }
 			>
-				<div className="tiermint-form-stack">
+				<div className="releasecart-form-stack">
 					<Notice status="warning" isDismissible={ false }>
 						{ __(
 							'Copy this signing secret now. For your security it is shown once and can never be retrieved again.',
-							'tiermint'
+							'releasecart'
 						) }
 					</Notice>
 					<TextControl
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
 						readOnly
-						label={ __( 'Signing secret', 'tiermint' ) }
+						label={ __( 'Signing secret', 'releasecart' ) }
 						value={ secret }
 						onChange={ () => undefined }
 					/>
 				</div>
-				<div className="tiermint-modal-actions">
+				<div className="releasecart-modal-actions">
 					<Button variant="secondary" onClick={ copy }>
-						{ __( 'Copy secret', 'tiermint' ) }
+						{ __( 'Copy secret', 'releasecart' ) }
 					</Button>
 					{ copied && (
 						<span role="status">
-							{ __( 'Copied.', 'tiermint' ) }
+							{ __( 'Copied.', 'releasecart' ) }
 						</span>
 					) }
 					<Button variant="primary" onClick={ onClose }>
-						{ __( 'Done', 'tiermint' ) }
+						{ __( 'Done', 'releasecart' ) }
 					</Button>
 				</div>
 			</Modal>
@@ -649,11 +667,11 @@ function AddEndpointModal( {
 
 	return (
 		<Modal
-			className="tiermint-modal"
-			title={ __( 'Add endpoint', 'tiermint' ) }
+			className="releasecart-modal"
+			title={ __( 'Add endpoint', 'releasecart' ) }
 			onRequestClose={ onClose }
 		>
-			<div className="tiermint-form-stack">
+			<div className="releasecart-form-stack">
 				{ errors && (
 					<Notice status="error" isDismissible={ false }>
 						<ul>
@@ -667,12 +685,12 @@ function AddEndpointModal( {
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					type="url"
-					label={ __( 'Endpoint URL', 'tiermint' ) }
+					label={ __( 'Endpoint URL', 'releasecart' ) }
 					value={ url }
 					onChange={ setUrl }
 				/>
-				<fieldset className="tiermint-modal__events">
-					<legend>{ __( 'Events', 'tiermint' ) }</legend>
+				<fieldset className="releasecart-modal__events">
+					<legend>{ __( 'Events', 'releasecart' ) }</legend>
 					{ events.map( ( name ) => (
 						<CheckboxControl
 							__nextHasNoMarginBottom
@@ -686,17 +704,17 @@ function AddEndpointModal( {
 					) ) }
 				</fieldset>
 			</div>
-			<div className="tiermint-modal-actions">
+			<div className="releasecart-modal-actions">
 				<Button
 					variant="primary"
 					isBusy={ busy }
 					disabled={ busy }
 					onClick={ () => onCreate( { url, events: selected } ) }
 				>
-					{ __( 'Create endpoint', 'tiermint' ) }
+					{ __( 'Create endpoint', 'releasecart' ) }
 				</Button>
 				<Button variant="tertiary" onClick={ onClose }>
-					{ __( 'Cancel', 'tiermint' ) }
+					{ __( 'Cancel', 'releasecart' ) }
 				</Button>
 			</div>
 		</Modal>
@@ -1019,7 +1037,7 @@ export default function Settings( { boot, params } ) {
 			) : (
 				<fieldset
 					key={ `group:${ run.group }` }
-					className={ `tiermint-settings__group tiermint-settings__group--${ run.group }` }
+					className={ `releasecart-settings__group releasecart-settings__group--${ run.group }` }
 				>
 					<legend>{ groupLabel( run.group ) }</legend>
 					{ run.fields.map( renderField ) }
@@ -1083,10 +1101,13 @@ export default function Settings( { boot, params } ) {
 				<>
 					{ groups.length > 1 && (
 						<nav
-							className="tiermint-settings__subtabs"
-							aria-label={ __( 'Payment gateways', 'tiermint' ) }
+							className="releasecart-settings__subtabs"
+							aria-label={ __(
+								'Payment gateways',
+								'releasecart'
+							) }
 						>
-							<ul className="tiermint-settings__subtab-list">
+							<ul className="releasecart-settings__subtab-list">
 								{ groups.map( ( group ) => {
 									const isActive =
 										group.id === activeSubtabId;
@@ -1097,8 +1118,8 @@ export default function Settings( { boot, params } ) {
 												href={ target }
 												className={
 													isActive
-														? 'tiermint-settings__subtab is-active'
-														: 'tiermint-settings__subtab'
+														? 'releasecart-settings__subtab is-active'
+														: 'releasecart-settings__subtab'
 												}
 												aria-current={
 													isActive
@@ -1133,8 +1154,8 @@ export default function Settings( { boot, params } ) {
 	const showSave = visibleFields.some( ( field ) => ! field.external );
 
 	return (
-		<section className="tiermint-admin-screen tiermint-settings">
-			<h1>{ __( 'Settings', 'tiermint' ) }</h1>
+		<section className="releasecart-admin-screen releasecart-settings">
+			<h1>{ __( 'Settings', 'releasecart' ) }</h1>
 
 			{ firstReadPending( settingsQuery ) && (
 				<SkeletonForm fields={ 5 } />
@@ -1147,7 +1168,7 @@ export default function Settings( { boot, params } ) {
 
 			{ saved && (
 				<Notice status="success" onRemove={ () => setSaved( false ) }>
-					{ __( 'Settings saved.', 'tiermint' ) }
+					{ __( 'Settings saved.', 'releasecart' ) }
 				</Notice>
 			) }
 			{ saveErrors && (
@@ -1163,10 +1184,10 @@ export default function Settings( { boot, params } ) {
 			{ data && tabSections.length > 0 && (
 				<>
 					<nav
-						className="tiermint-settings__tabs"
-						aria-label={ __( 'Settings sections', 'tiermint' ) }
+						className="releasecart-settings__tabs"
+						aria-label={ __( 'Settings sections', 'releasecart' ) }
 					>
-						<ul className="tiermint-settings__tab-list">
+						<ul className="releasecart-settings__tab-list">
 							{ tabSections.map( ( section ) => {
 								const isActive = section.id === activeTabId;
 								const target = `#/settings/${ section.id }`;
@@ -1176,8 +1197,8 @@ export default function Settings( { boot, params } ) {
 											href={ target }
 											className={
 												isActive
-													? 'tiermint-settings__tab is-active'
-													: 'tiermint-settings__tab'
+													? 'releasecart-settings__tab is-active'
+													: 'releasecart-settings__tab'
 											}
 											aria-current={
 												isActive ? 'page' : undefined
@@ -1196,13 +1217,13 @@ export default function Settings( { boot, params } ) {
 					</nav>
 
 					{ activeSection && (
-						<div className="tiermint-settings__panel">
-							<h2 className="tiermint-settings__panel-title">
+						<div className="releasecart-settings__panel">
+							<h2 className="releasecart-settings__panel-title">
 								{ activeSection.title }
 							</h2>
 							{ panelBody }
 							{ showSave && (
-								<div className="tiermint-form-actions">
+								<div className="releasecart-form-actions">
 									<Button
 										variant="primary"
 										isBusy={ saveMutation.isPending }
@@ -1217,7 +1238,7 @@ export default function Settings( { boot, params } ) {
 											);
 										} }
 									>
-										{ __( 'Save changes', 'tiermint' ) }
+										{ __( 'Save changes', 'releasecart' ) }
 									</Button>
 								</div>
 							) }
@@ -1249,8 +1270,8 @@ export default function Settings( { boot, params } ) {
  */
 export const route = {
 	path: '#/settings',
-	title: __( 'Settings', 'tiermint' ),
-	capability: 'manage_tiermint_settings',
+	title: __( 'Settings', 'releasecart' ),
+	capability: 'manage_releasecart_settings',
 	component: Settings,
 };
 
@@ -1261,8 +1282,8 @@ export const route = {
  */
 export const tabRoute = {
 	path: '#/settings/:tab',
-	title: __( 'Settings', 'tiermint' ),
-	capability: 'manage_tiermint_settings',
+	title: __( 'Settings', 'releasecart' ),
+	capability: 'manage_releasecart_settings',
 	component: Settings,
 };
 
@@ -1274,7 +1295,7 @@ export const tabRoute = {
  */
 export const subtabRoute = {
 	path: '#/settings/:tab/:subtab',
-	title: __( 'Settings', 'tiermint' ),
-	capability: 'manage_tiermint_settings',
+	title: __( 'Settings', 'releasecart' ),
+	capability: 'manage_releasecart_settings',
 	component: Settings,
 };

@@ -2,12 +2,12 @@
 /**
  * The curated storefront appearance overrides: validation and token derivation.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -139,7 +139,7 @@ final class Appearance {
 			if ( null === $hex || '' === $hex ) {
 				continue;
 			}
-			$out[ '--tiermint-' . $suffix ] = $hex;
+			$out[ '--releasecart-' . $suffix ] = $hex;
 			foreach ( $this->companions( $key, $hex ) as $property => $value ) {
 				$out[ $property ] = $value;
 			}
@@ -147,14 +147,14 @@ final class Appearance {
 
 		if ( isset( $overrides['radius'] ) && is_string( $overrides['radius'] ) && isset( self::RADIUS_PRESETS[ $overrides['radius'] ] ) ) {
 			foreach ( self::RADIUS_PRESETS[ $overrides['radius'] ] as $suffix => $value ) {
-				$out[ '--tiermint-' . $suffix ] = $value;
+				$out[ '--releasecart-' . $suffix ] = $value;
 			}
 		}
 
 		if ( array_key_exists( 'font', $overrides ) ) {
 			$font = $this->sanitizeFontStack( $overrides['font'] );
 			if ( null !== $font && '' !== $font ) {
-				$out['--tiermint-font-sans'] = $font;
+				$out['--releasecart-font-sans'] = $font;
 			}
 		}
 
@@ -195,26 +195,26 @@ final class Appearance {
 		switch ( $key ) {
 			case 'primary':
 				return array(
-					'--tiermint-color-primary-hover' => $this->mix( $hex, '#000000', 0.15 ),
-					'--tiermint-color-primary-soft'  => $this->mix( $hex, '#ffffff', 0.90 ),
-					'--tiermint-color-focus'         => $hex,
+					'--releasecart-color-primary-hover' => $this->mix( $hex, '#000000', 0.15 ),
+					'--releasecart-color-primary-soft'  => $this->mix( $hex, '#ffffff', 0.90 ),
+					'--releasecart-color-focus'         => $hex,
 				);
 			case 'surface':
 				return array(
-					'--tiermint-color-surface-raised' => $hex,
-					'--tiermint-color-surface-alt'    => $this->mix( $hex, '#000000', 0.03 ),
+					'--releasecart-color-surface-raised' => $hex,
+					'--releasecart-color-surface-alt'    => $this->mix( $hex, '#000000', 0.03 ),
 				);
 			case 'border':
 				return array(
-					'--tiermint-color-border-strong' => $this->mix( $hex, '#000000', 0.12 ),
+					'--releasecart-color-border-strong' => $this->mix( $hex, '#000000', 0.12 ),
 				);
 			case 'success':
 				return array(
-					'--tiermint-color-success-bg' => $this->mix( $hex, '#ffffff', 0.94 ),
+					'--releasecart-color-success-bg' => $this->mix( $hex, '#ffffff', 0.94 ),
 				);
 			case 'error':
 				return array(
-					'--tiermint-color-error-bg' => $this->mix( $hex, '#ffffff', 0.94 ),
+					'--releasecart-color-error-bg' => $this->mix( $hex, '#ffffff', 0.94 ),
 				);
 			default:
 				return array();

@@ -1,13 +1,13 @@
 <?php
 /**
- * The TierMint Checkout Elementor widget.
+ * The ReleaseCart Checkout Elementor widget.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Widgets;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Widgets;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -33,7 +33,7 @@ final class CheckoutWidget extends ComponentWidget {
 	 * @return string
 	 */
 	public function get_title(): string {
-		return __( 'TierMint Checkout', 'tiermint' );
+		return __( 'ReleaseCart Checkout', 'releasecart' );
 	}
 
 	/**

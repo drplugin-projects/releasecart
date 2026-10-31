@@ -2,12 +2,12 @@
 /**
  * Maps the order/license meta tables onto `$wpdb` for the core metadata API.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Database;
+namespace DrPlugin\WP\ReleaseCart\Database;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -28,7 +28,7 @@ final class MetaTables {
 	 * @return void
 	 */
 	public static function register( \wpdb $wpdb ): void {
-		$wpdb->tiermint_ordermeta   = Schema::tableName( $wpdb, 'order_meta' );
-		$wpdb->tiermint_licensemeta = Schema::tableName( $wpdb, 'license_meta' );
+		$wpdb->releasecart_ordermeta   = Schema::tableName( $wpdb, 'order_meta' );
+		$wpdb->releasecart_licensemeta = Schema::tableName( $wpdb, 'license_meta' );
 	}
 }

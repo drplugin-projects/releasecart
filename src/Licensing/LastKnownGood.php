@@ -2,12 +2,12 @@
 /**
  * Last-known-good validation cache with the 72-hour grace window.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Licensing;
+namespace DrPlugin\WP\ReleaseCart\Licensing;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -76,6 +76,6 @@ class LastKnownGood {
 	 * @return string The transient name.
 	 */
 	private function transientKey( string $licenseKey ): string {
-		return 'tiermint_lkg_' . md5( $licenseKey );
+		return 'releasecart_lkg_' . md5( $licenseKey );
 	}
 }

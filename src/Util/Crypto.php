@@ -2,12 +2,12 @@
 /**
  * Secrets-at-rest encryption utility.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Util;
+namespace DrPlugin\WP\ReleaseCart\Util;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -28,7 +28,7 @@ final class Crypto {
 	 *
 	 * @var string
 	 */
-	private const KEY_CONTEXT = 'tiermint-secrets';
+	private const KEY_CONTEXT = 'releasecart-secrets';
 
 	/**
 	 * Encrypts a plaintext secret for storage at rest.

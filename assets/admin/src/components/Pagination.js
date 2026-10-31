@@ -103,12 +103,12 @@ export default function Pagination( {
 	const hasTotal = typeof count === 'number' && Number.isFinite( count );
 
 	return (
-		<div className="tiermint-pagination">
+		<div className="releasecart-pagination">
 			{ hasTotal && (
-				<span className="tiermint-pagination__count">
+				<span className="releasecart-pagination__count">
 					{ sprintf(
 						/* translators: %d: number of rows across every page. */
-						_n( '%d item', '%d items', count, 'tiermint' ),
+						_n( '%d item', '%d items', count, 'releasecart' ),
 						count
 					) }
 				</span>
@@ -116,10 +116,10 @@ export default function Pagination( {
 
 			{ /* The numbers say the position on screen; this says it to a screen
 			     reader, which would otherwise have to count buttons to find out. */ }
-			<span className="tiermint-pagination__status screen-reader-text">
+			<span className="releasecart-pagination__status screen-reader-text">
 				{ sprintf(
 					/* translators: 1: current page number, 2: total number of pages. */
-					__( 'Page %1$d of %2$d', 'tiermint' ),
+					__( 'Page %1$d of %2$d', 'releasecart' ),
 					page,
 					pages
 				) }
@@ -127,11 +127,11 @@ export default function Pagination( {
 
 			<button
 				type="button"
-				className="button tiermint-pagination__button"
+				className="button releasecart-pagination__button"
 				disabled={ page <= 1 }
 				onClick={ () => onChange( page - 1 ) }
 			>
-				{ __( 'Previous', 'tiermint' ) }
+				{ __( 'Previous', 'releasecart' ) }
 			</button>
 
 			{ pageWindow( page, pages ).map( ( value, index ) => {
@@ -139,7 +139,7 @@ export default function Pagination( {
 					return (
 						<span
 							key={ `gap-${ index }` }
-							className="tiermint-pagination__gap"
+							className="releasecart-pagination__gap"
 							aria-hidden="true"
 						>
 							…
@@ -156,14 +156,14 @@ export default function Pagination( {
 						type="button"
 						className={
 							isCurrent
-								? 'button tiermint-pagination__current'
-								: 'button tiermint-pagination__page'
+								? 'button releasecart-pagination__current'
+								: 'button releasecart-pagination__page'
 						}
 						aria-current={ isCurrent ? 'page' : undefined }
 						aria-disabled={ isCurrent || undefined }
 						aria-label={ sprintf(
 							/* translators: %d: page number. */
-							__( 'Page %d', 'tiermint' ),
+							__( 'Page %d', 'releasecart' ),
 							value
 						) }
 						onClick={ () => {
@@ -179,11 +179,11 @@ export default function Pagination( {
 
 			<button
 				type="button"
-				className="button tiermint-pagination__button"
+				className="button releasecart-pagination__button"
 				disabled={ page >= pages }
 				onClick={ () => onChange( page + 1 ) }
 			>
-				{ __( 'Next', 'tiermint' ) }
+				{ __( 'Next', 'releasecart' ) }
 			</button>
 		</div>
 	);

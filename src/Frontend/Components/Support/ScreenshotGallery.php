@@ -2,12 +2,12 @@
 /**
  * Shared screenshot-gallery resolver.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components\Support;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components\Support;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -68,7 +68,7 @@ final class ScreenshotGallery {
 			return null;
 		}
 
-		$thumb = wp_get_attachment_image( $id, self::THUMB_SIZE, false, array( 'class' => 'tiermint-product-screenshots__img' ) );
+		$thumb = wp_get_attachment_image( $id, self::THUMB_SIZE, false, array( 'class' => 'releasecart-product-screenshots__img' ) );
 
 		return array(
 			'full'    => $full,

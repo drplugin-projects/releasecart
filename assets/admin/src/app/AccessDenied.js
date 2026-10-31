@@ -16,12 +16,12 @@ import { __ } from '@wordpress/i18n';
  */
 export default function AccessDenied() {
 	return (
-		<section className="tiermint-admin-screen tiermint-admin-denied">
-			<h1>{ __( 'Access denied', 'tiermint' ) }</h1>
+		<section className="releasecart-admin-screen releasecart-admin-denied">
+			<h1>{ __( 'Access denied', 'releasecart' ) }</h1>
 			<p>
 				{ __(
 					'You do not have permission to view this screen.',
-					'tiermint'
+					'releasecart'
 				) }
 			</p>
 		</section>

@@ -1,0 +1,83 @@
+/* Theme tokens for all front-end components. */
+@layer releasecart {
+	:root {
+		/* Color: base surfaces and text */
+		--releasecart-color-page: #f6f7f9;
+		--releasecart-color-surface: #ffffff;
+		--releasecart-color-surface-alt: #f9fafb;
+		--releasecart-color-surface-raised: #ffffff;
+		--releasecart-color-border: #e5e7eb;
+		--releasecart-color-border-strong: #d1d5db;
+		--releasecart-color-text: #111827;
+		--releasecart-color-text-muted: #4b5563;
+		--releasecart-color-text-subtle: #6b7280;
+
+		/* Color: accent */
+		--releasecart-color-primary: #2563eb;
+		--releasecart-color-primary-hover: #1d4ed8;
+		--releasecart-color-primary-contrast: #ffffff;
+		--releasecart-color-primary-soft: #eff6ff;
+		--releasecart-color-focus: #2563eb;
+
+		/* Keep the lightbox scrim dark in every theme. */
+		--releasecart-color-overlay: rgba(17, 24, 39, 0.7);
+
+		/* Semantic colours and notice backgrounds. */
+		--releasecart-color-success: #15803d;
+		--releasecart-color-success-bg: #f0fdf4;
+		--releasecart-color-error: #b91c1c;
+		--releasecart-color-error-bg: #fef2f2;
+		--releasecart-color-warning: #b45309;
+		--releasecart-color-warning-bg: #fffbeb;
+		--releasecart-color-info: #0369a1;
+		--releasecart-color-info-bg: #f0f9ff;
+
+		/* Shape */
+		--releasecart-radius-sm: 6px;
+		--releasecart-radius: 8px;
+		--releasecart-radius-lg: 12px;
+		--releasecart-radius-full: 9999px;
+		--releasecart-border: 1px solid var(--releasecart-color-border);
+
+		/* Elevation */
+		--releasecart-shadow-sm: 0 1px 2px rgba(17, 24, 39, 0.06);
+		--releasecart-shadow-md: 0 4px 12px rgba(17, 24, 39, 0.08);
+		--releasecart-shadow-lg: 0 12px 32px rgba(17, 24, 39, 0.12);
+
+		/* Spacing scale */
+		--releasecart-space-1: 0.25rem;
+		--releasecart-space-2: 0.5rem;
+		--releasecart-space-3: 0.75rem;
+		--releasecart-space-4: 1rem;
+		--releasecart-space-5: 1.5rem;
+		--releasecart-space-6: 2rem;
+		--releasecart-space-7: 3rem;
+		--releasecart-space-8: 4rem;
+
+		/* Override this token to use the theme font. */
+		--releasecart-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+		--releasecart-font-size-xs: 0.75rem;
+		--releasecart-font-size-sm: 0.875rem;
+		--releasecart-font-size-base: 1rem;
+		--releasecart-font-size-lg: 1.125rem;
+		--releasecart-font-size-xl: 1.375rem;
+		--releasecart-font-size-2xl: 1.75rem;
+		--releasecart-line-height-tight: 1.25;
+		--releasecart-line-height-base: 1.6;
+		--releasecart-font-weight-medium: 500;
+		--releasecart-font-weight-semibold: 600;
+		--releasecart-font-weight-bold: 700;
+	}
+
+	/* Honor reduced-motion preferences for every component at once. */
+	@media (prefers-reduced-motion: reduce) {
+		.releasecart-component *,
+		.releasecart-component *::before,
+		.releasecart-component *::after {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+			scroll-behavior: auto !important;
+		}
+	}
+}

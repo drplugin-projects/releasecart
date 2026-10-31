@@ -2,12 +2,12 @@
 /**
  * Exception thrown when a storage provider fails to read, write, or resolve a file.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Storage;
+namespace DrPlugin\WP\ReleaseCart\Storage;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -22,6 +22,13 @@ use RuntimeException;
 final class StorageException extends RuntimeException {
 
 	/**
+	 * Whether WordPress could not give a direct filesystem.
+	 *
+	 * @var bool
+	 */
+	private bool $filesystemUnavailable = false;
+
+	/**
 	 * Build an exception for a file reference whose provider id has no
 	 * registered adapter.
 	 *
@@ -32,7 +39,7 @@ final class StorageException extends RuntimeException {
 	 */
 	public static function unknownProvider( string $providerId ): self {
 		return new self(
-			sprintf( 'TierMint storage provider "%s" is not registered.', $providerId )
+			sprintf( 'ReleaseCart storage provider "%s" is not registered.', $providerId )
 		);
 	}
 
@@ -46,7 +53,7 @@ final class StorageException extends RuntimeException {
 	 */
 	public static function unreadableSource( string $sourcePath ): self {
 		return new self(
-			sprintf( 'TierMint storage source file is not readable: %s', $sourcePath )
+			sprintf( 'ReleaseCart storage source file is not readable: %s', $sourcePath )
 		);
 	}
 
@@ -61,7 +68,7 @@ final class StorageException extends RuntimeException {
 	 */
 	public static function writeFailed( string $key, string $reason ): self {
 		return new self(
-			sprintf( 'TierMint storage write failed for key "%s": %s', $key, $reason )
+			sprintf( 'ReleaseCart storage write failed for key "%s": %s', $key, $reason )
 		);
 	}
 
@@ -75,7 +82,35 @@ final class StorageException extends RuntimeException {
 	 */
 	public static function invalidKey( string $key ): self {
 		return new self(
-			sprintf( 'TierMint storage key is invalid: %s', $key )
+			sprintf( 'ReleaseCart storage key is invalid: %s', $key )
 		);
+	}
+
+	/**
+	 * Build an exception for a site where WordPress cannot write files directly.
+	 *
+	 * Another filesystem method needs credentials, and a REST upload cannot ask for them.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return self
+	 */
+	public static function filesystemUnavailable(): self {
+		$exception = new self( 'ReleaseCart storage needs the direct WP_Filesystem, and WordPress would use another method on this site.' );
+
+		$exception->filesystemUnavailable = true;
+
+		return $exception;
+	}
+
+	/**
+	 * Whether this failure is a site without direct file writes.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool True only for an exception from filesystemUnavailable().
+	 */
+	public function isFilesystemUnavailable(): bool {
+		return $this->filesystemUnavailable;
 	}
 }

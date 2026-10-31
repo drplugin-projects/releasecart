@@ -1,13 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "tiermint/product-pricing-tiers",
+	"name": "releasecart/product-pricing-tiers",
 	"title": "Product Pricing Tiers",
-	"category": "tiermint",
+	"category": "releasecart",
 	"icon": "cart",
 	"description": "A product's plan selector, quantity control, and add-to-cart button.",
-	"keywords": [ "product", "price", "plans", "add to cart", "tiermint" ],
-	"textdomain": "tiermint",
+	"keywords": [ "product", "price", "plans", "add to cart", "releasecart" ],
+	"textdomain": "releasecart",
 	"supports": {
 		"html": false
 	},

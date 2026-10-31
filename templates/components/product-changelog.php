@@ -4,7 +4,7 @@
  *
  * Release HTML is sanitized before this template uses it.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  *
  * @var array{
  *     releases: array<int, array{version: string, date: string|null, html: string, compatibility: array<int, array{label: string, value: string}>}>,
@@ -14,54 +14,54 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$tiermint_releases     = ( isset( $data['releases'] ) && is_array( $data['releases'] ) ) ? $data['releases'] : array();
-$tiermint_show_heading = ! empty( $data['show_version_heading'] );
+$releasecart_releases     = ( isset( $data['releases'] ) && is_array( $data['releases'] ) ) ? $data['releases'] : array();
+$releasecart_show_heading = ! empty( $data['show_version_heading'] );
 
-if ( array() === $tiermint_releases ) {
+if ( array() === $releasecart_releases ) {
 	return;
 }
 ?>
-<div class="tiermint-component tiermint-product-changelog">
-	<?php foreach ( $tiermint_releases as $tiermint_release ) : ?>
+<div class="releasecart-component releasecart-product-changelog">
+	<?php foreach ( $releasecart_releases as $releasecart_release ) : ?>
 		<?php
-		$tiermint_version = isset( $tiermint_release['version'] ) ? (string) $tiermint_release['version'] : '';
-		$tiermint_date    = ( isset( $tiermint_release['date'] ) && '' !== (string) $tiermint_release['date'] ) ? (string) $tiermint_release['date'] : null;
-		$tiermint_notes   = isset( $tiermint_release['html'] ) ? (string) $tiermint_release['html'] : '';
-		$tiermint_compat  = ( isset( $tiermint_release['compatibility'] ) && is_array( $tiermint_release['compatibility'] ) ) ? $tiermint_release['compatibility'] : array();
+		$releasecart_version = isset( $releasecart_release['version'] ) ? (string) $releasecart_release['version'] : '';
+		$releasecart_date    = ( isset( $releasecart_release['date'] ) && '' !== (string) $releasecart_release['date'] ) ? (string) $releasecart_release['date'] : null;
+		$releasecart_notes   = isset( $releasecart_release['html'] ) ? (string) $releasecart_release['html'] : '';
+		$releasecart_compat  = ( isset( $releasecart_release['compatibility'] ) && is_array( $releasecart_release['compatibility'] ) ) ? $releasecart_release['compatibility'] : array();
 		?>
-		<section class="tiermint-product-changelog__release">
-			<?php if ( $tiermint_show_heading || null !== $tiermint_date ) : ?>
-				<header class="tiermint-product-changelog__header">
-					<?php if ( $tiermint_show_heading && '' !== $tiermint_version ) : ?>
-						<h3 class="tiermint-product-changelog__version">
+		<section class="releasecart-product-changelog__release">
+			<?php if ( $releasecart_show_heading || null !== $releasecart_date ) : ?>
+				<header class="releasecart-product-changelog__header">
+					<?php if ( $releasecart_show_heading && '' !== $releasecart_version ) : ?>
+						<h3 class="releasecart-product-changelog__version">
 							<?php
 							/* translators: %s: a release version number, e.g. 1.4.0. */
-							echo esc_html( sprintf( __( 'Version %s', 'tiermint' ), $tiermint_version ) );
+							echo esc_html( sprintf( __( 'Version %s', 'releasecart' ), $releasecart_version ) );
 							?>
 						</h3>
 					<?php endif; ?>
-					<?php if ( null !== $tiermint_date ) : ?>
-						<span class="tiermint-product-changelog__date"><?php echo esc_html( $tiermint_date ); ?></span>
+					<?php if ( null !== $releasecart_date ) : ?>
+						<span class="releasecart-product-changelog__date"><?php echo esc_html( $releasecart_date ); ?></span>
 					<?php endif; ?>
 				</header>
 			<?php endif; ?>
 
-			<?php if ( '' !== $tiermint_notes ) : ?>
-				<div class="tiermint-product-changelog__notes">
+			<?php if ( '' !== $releasecart_notes ) : ?>
+				<div class="releasecart-product-changelog__notes">
 					<?php
 					// The notes can come from the object cache, so they are filtered again here.
-					echo wp_kses_post( $tiermint_notes );
+					echo wp_kses_post( $releasecart_notes );
 					?>
 				</div>
 			<?php endif; ?>
 
-			<?php if ( array() !== $tiermint_compat ) : ?>
-				<p class="tiermint-product-changelog__compat">
-					<?php foreach ( $tiermint_compat as $tiermint_compat_item ) : ?>
-						<span class="tiermint-product-changelog__compat-item">
+			<?php if ( array() !== $releasecart_compat ) : ?>
+				<p class="releasecart-product-changelog__compat">
+					<?php foreach ( $releasecart_compat as $releasecart_compat_item ) : ?>
+						<span class="releasecart-product-changelog__compat-item">
 							<?php
 							/* translators: 1: a label, 2: its value. */
-							echo esc_html( sprintf( __( '%1$s: %2$s', 'tiermint' ), (string) $tiermint_compat_item['label'], (string) $tiermint_compat_item['value'] ) );
+							echo esc_html( sprintf( __( '%1$s: %2$s', 'releasecart' ), (string) $releasecart_compat_item['label'], (string) $releasecart_compat_item['value'] ) );
 							?>
 						</span>
 					<?php endforeach; ?>

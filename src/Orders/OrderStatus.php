@@ -2,12 +2,12 @@
 /**
  * Order lifecycle status enum.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Orders;
+namespace DrPlugin\WP\ReleaseCart\Orders;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -26,7 +26,7 @@ enum OrderStatus: string {
 	case Pending = 'pending';
 
 	/**
-	 * Payment confirmed. Triggers `tiermint_order_completed`.
+	 * Payment confirmed. Triggers `releasecart_order_completed`.
 	 */
 	case Completed = 'completed';
 

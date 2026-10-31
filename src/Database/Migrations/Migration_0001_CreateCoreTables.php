@@ -2,18 +2,18 @@
 /**
  * Migration 0001: create every core table.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Database\Migrations;
+namespace DrPlugin\WP\ReleaseCart\Database\Migrations;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Database\Migration;
-use DrPlugin\WP\TierMint\Database\Schema;
+use DrPlugin\WP\ReleaseCart\Database\Migration;
+use DrPlugin\WP\ReleaseCart\Database\Schema;
 
 /**
  * Creates the core tables with dbDelta.

@@ -2,12 +2,12 @@
 /**
  * Exception for exceeding a license's activation limit.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Licensing;
+namespace DrPlugin\WP\ReleaseCart\Licensing;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -37,7 +37,7 @@ final class ActivationLimitException extends LicenseException {
 	 */
 	public function __construct( int $limit ) {
 		/* translators: %d: the license's maximum number of activations. */
-		parent::__construct( sprintf( __( 'Activation limit of %d reached for this license.', 'tiermint' ), $limit ) );
+		parent::__construct( sprintf( __( 'Activation limit of %d reached for this license.', 'releasecart' ), $limit ) );
 		$this->limit = $limit;
 	}
 

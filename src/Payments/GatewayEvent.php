@@ -2,12 +2,12 @@
 /**
  * Immutable DTO for a verified inbound gateway webhook event.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Payments;
+namespace DrPlugin\WP\ReleaseCart\Payments;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;

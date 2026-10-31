@@ -2,12 +2,12 @@
 /**
  * Base class for front-end components.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -27,8 +27,8 @@ abstract class AbstractComponent implements Component {
 	 */
 	public function assets(): array {
 		return array(
-			'styles'  => array( 'tiermint-' . $this->slug() ),
-			'scripts' => array( 'tiermint-' . $this->slug() ),
+			'styles'  => array( 'releasecart-' . $this->slug() ),
+			'scripts' => array( 'releasecart-' . $this->slug() ),
 		);
 	}
 
@@ -39,7 +39,7 @@ abstract class AbstractComponent implements Component {
 	 * @return string The rendered HTML, or '' when no template exists.
 	 */
 	protected function renderTemplate( array $data ): string {
-		$template = locate_template( 'tiermint/components/' . $this->slug() . '.php' );
+		$template = locate_template( 'releasecart/components/' . $this->slug() . '.php' );
 
 		if ( ! is_string( $template ) || '' === $template ) {
 			$template = $this->defaultTemplatePath();
@@ -94,7 +94,7 @@ abstract class AbstractComponent implements Component {
 	 * @return string
 	 */
 	protected function sampleCaptionPath(): string {
-		return TIERMINT_PATH . 'templates/components/partials/editor-sample-caption.php';
+		return RELEASECART_PATH . 'templates/components/partials/editor-sample-caption.php';
 	}
 
 	/**
@@ -103,6 +103,6 @@ abstract class AbstractComponent implements Component {
 	 * @return string
 	 */
 	protected function defaultTemplatePath(): string {
-		return TIERMINT_PATH . 'templates/components/' . $this->slug() . '.php';
+		return RELEASECART_PATH . 'templates/components/' . $this->slug() . '.php';
 	}
 }

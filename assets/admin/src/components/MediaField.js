@@ -102,46 +102,46 @@ export default function MediaField( { field, value, onChange } ) {
 	let body;
 	if ( attachment && attachment.url ) {
 		body = (
-			<div className="tiermint-media-field__preview">
+			<div className="releasecart-media-field__preview">
 				<img
-					className="tiermint-media-field__image"
+					className="releasecart-media-field__image"
 					src={ attachment.url }
 					alt={ attachment.alt || '' }
 				/>
-				<div className="tiermint-media-field__actions">
+				<div className="releasecart-media-field__actions">
 					<Button variant="secondary" onClick={ pick }>
-						{ __( 'Replace image', 'tiermint' ) }
+						{ __( 'Replace image', 'releasecart' ) }
 					</Button>
 					<Button
 						variant="secondary"
 						isDestructive
 						onClick={ remove }
 					>
-						{ __( 'Remove image', 'tiermint' ) }
+						{ __( 'Remove image', 'releasecart' ) }
 					</Button>
 				</div>
 			</div>
 		);
 	} else if ( id > 0 ) {
 		body = (
-			<div className="tiermint-media-field__preview tiermint-media-field__preview--unresolved">
-				<span className="tiermint-media-field__chip">
+			<div className="releasecart-media-field__preview releasecart-media-field__preview--unresolved">
+				<span className="releasecart-media-field__chip">
 					{ sprintf(
 						/* translators: %d: the image attachment id. */
-						__( 'Image #%d', 'tiermint' ),
+						__( 'Image #%d', 'releasecart' ),
 						id
 					) }
 				</span>
-				<div className="tiermint-media-field__actions">
+				<div className="releasecart-media-field__actions">
 					<Button variant="secondary" onClick={ pick }>
-						{ __( 'Replace image', 'tiermint' ) }
+						{ __( 'Replace image', 'releasecart' ) }
 					</Button>
 					<Button
 						variant="secondary"
 						isDestructive
 						onClick={ remove }
 					>
-						{ __( 'Remove image', 'tiermint' ) }
+						{ __( 'Remove image', 'releasecart' ) }
 					</Button>
 				</div>
 			</div>
@@ -149,17 +149,19 @@ export default function MediaField( { field, value, onChange } ) {
 	} else {
 		body = (
 			<Button variant="secondary" onClick={ pick }>
-				{ __( 'Select image', 'tiermint' ) }
+				{ __( 'Select image', 'releasecart' ) }
 			</Button>
 		);
 	}
 
 	return (
-		<div className="tiermint-media-field">
-			<span className="tiermint-media-field__label">{ field.label }</span>
+		<div className="releasecart-media-field">
+			<span className="releasecart-media-field__label">
+				{ field.label }
+			</span>
 			{ body }
 			{ field.help && (
-				<p className="tiermint-media-field__help">{ field.help }</p>
+				<p className="releasecart-media-field__help">{ field.help }</p>
 			) }
 		</div>
 	);

@@ -2,18 +2,18 @@
 /**
  * The password-reset front-end component (request a link and set a new password).
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Frontend\AbstractComponent;
-use DrPlugin\WP\TierMint\Frontend\PageResolver;
-use DrPlugin\WP\TierMint\Frontend\PasswordResetActionListener;
-use DrPlugin\WP\TierMint\Frontend\PasswordResetCookie;
-use DrPlugin\WP\TierMint\Frontend\RenderContext;
+use DrPlugin\WP\ReleaseCart\Frontend\AbstractComponent;
+use DrPlugin\WP\ReleaseCart\Frontend\PageResolver;
+use DrPlugin\WP\ReleaseCart\Frontend\PasswordResetActionListener;
+use DrPlugin\WP\ReleaseCart\Frontend\PasswordResetCookie;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContext;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -93,8 +93,8 @@ class PasswordResetForm extends AbstractComponent {
 			'login_url' => array(
 				'type'        => 'string',
 				'default'     => '',
-				'label'       => __( 'Sign-in URL', 'tiermint' ),
-				'description' => __( 'Where the sign-in links point. Falls back to the sign-in page, then the WordPress login screen.', 'tiermint' ),
+				'label'       => __( 'Sign-in URL', 'releasecart' ),
+				'description' => __( 'Where the sign-in links point. Falls back to the sign-in page, then the WordPress login screen.', 'releasecart' ),
 				'control'     => 'url',
 			),
 		);
@@ -253,19 +253,19 @@ class PasswordResetForm extends AbstractComponent {
 	 */
 	private function message( string $code ): string {
 		$messages = array(
-			'invalid'    => __( 'We could not process that request. Please check the address and try again.', 'tiermint' ),
-			'failed'     => __( 'Something went wrong. Please try again.', 'tiermint' ),
-			'throttled'  => __( 'Too many attempts. Please wait a few minutes and try again.', 'tiermint' ),
-			'mismatch'   => __( 'The two passwords do not match.', 'tiermint' ),
-			'policy'     => __( "That password does not meet this site's password rules.", 'tiermint' ),
-			'invalidkey' => __( 'This password reset link is invalid or has already been used. Please request a new one.', 'tiermint' ),
-			'expiredkey' => __( 'This password reset link has expired. Please request a new one.', 'tiermint' ),
+			'invalid'    => __( 'We could not process that request. Please check the address and try again.', 'releasecart' ),
+			'failed'     => __( 'Something went wrong. Please try again.', 'releasecart' ),
+			'throttled'  => __( 'Too many attempts. Please wait a few minutes and try again.', 'releasecart' ),
+			'mismatch'   => __( 'The two passwords do not match.', 'releasecart' ),
+			'policy'     => __( "That password does not meet this site's password rules.", 'releasecart' ),
+			'invalidkey' => __( 'This password reset link is invalid or has already been used. Please request a new one.', 'releasecart' ),
+			'expiredkey' => __( 'This password reset link has expired. Please request a new one.', 'releasecart' ),
 		);
 
 		if ( 'short' === $code ) {
 			return sprintf(
 				/* translators: %d: the minimum password length. */
-				__( 'Please choose a password of at least %d characters (and no more than 4096).', 'tiermint' ),
+				__( 'Please choose a password of at least %d characters (and no more than 4096).', 'releasecart' ),
 				$this->minLength()
 			);
 		}
@@ -280,7 +280,7 @@ class PasswordResetForm extends AbstractComponent {
 	 */
 	private function minLength(): int {
 		/** This filter is documented in src/Frontend/PasswordResetActionListener.php */
-		return max( 1, (int) apply_filters( 'tiermint_password_reset_min_length', 8 ) );
+		return max( 1, (int) apply_filters( 'releasecart_password_reset_min_length', 8 ) );
 	}
 
 	/**

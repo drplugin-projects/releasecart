@@ -2,19 +2,19 @@
 /**
  * Hourly job that sweeps stale pending orders to abandoned.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Jobs;
+namespace DrPlugin\WP\ReleaseCart\Jobs;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Orders\OrderService;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Orders\OrderService;
 use Throwable;
 
 /**
@@ -31,7 +31,7 @@ final class AbandonedOrdersSweep implements Hookable {
 	 *
 	 * @var string
 	 */
-	public const SWEEP_HOOK = 'tiermint_job_abandoned_orders';
+	public const SWEEP_HOOK = 'releasecart_job_abandoned_orders';
 
 	/**
 	 * Seconds in an hour, available without WordPress constants.
@@ -88,10 +88,10 @@ final class AbandonedOrdersSweep implements Hookable {
 	 * @return void
 	 */
 	public function scheduleJobs(): void {
-		if ( false === as_next_scheduled_action( self::SWEEP_HOOK, array(), 'tiermint' ) ) {
+		if ( false === as_next_scheduled_action( self::SWEEP_HOOK, array(), 'releasecart' ) ) {
 			// The trailing `true` asks Action Scheduler to enforce uniqueness at claim time,
 			// so two concurrent first requests cannot both schedule the recurring sweep.
-			as_schedule_recurring_action( time(), self::HOUR, self::SWEEP_HOOK, array(), 'tiermint', true );
+			as_schedule_recurring_action( time(), self::HOUR, self::SWEEP_HOOK, array(), 'releasecart', true );
 		}
 	}
 
@@ -116,7 +116,7 @@ final class AbandonedOrdersSweep implements Hookable {
 		 *
 		 * @param int $age The age threshold in seconds (default 48 hours).
 		 */
-		$age    = max( self::HOUR, (int) apply_filters( 'tiermint_abandoned_order_age', self::DEFAULT_AGE ) );
+		$age    = max( self::HOUR, (int) apply_filters( 'releasecart_abandoned_order_age', self::DEFAULT_AGE ) );
 		$before = gmdate( 'Y-m-d H:i:s', $now - $age );
 
 		$orders = $this->orders->pendingForAbandonment( $before, self::BATCH_SIZE );

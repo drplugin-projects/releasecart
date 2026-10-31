@@ -1,8 +1,8 @@
 /**
- * The one dismissible Pro notice, rendered inside the TierMint SPA.
+ * The one dismissible Pro notice, rendered inside the ReleaseCart SPA.
  *
  * It lives in the SPA shell, not a wp-admin `admin_notices` banner, so it is
- * structurally incapable of appearing outside TierMint's own screens. One
+ * structurally incapable of appearing outside ReleaseCart's own screens. One
  * topic, per user, dismissed once and gone.
  */
 
@@ -44,10 +44,10 @@ export default function UpsellBanner( { boot } ) {
 	const onUpgradeScreen = window.location.hash.split( '?' )[ 0 ] === '#/pro';
 
 	// Only while Pro is absent, only for a user who can dismiss it (the dismiss
-	// route is manage_tiermint-gated), and only until dismissed.
+	// route is manage_releasecart-gated), and only until dismissed.
 	if (
 		( boot && boot.pro ) ||
-		! caps.manage_tiermint ||
+		! caps.manage_releasecart ||
 		dismissed ||
 		! upsell.notice ||
 		onUpgradeScreen
@@ -67,24 +67,25 @@ export default function UpsellBanner( { boot } ) {
 	};
 
 	return (
-		<div className="tiermint-upsell-banner" role="note">
-			<p className="tiermint-upsell-banner__text">
+		<div className="releasecart-upsell-banner" role="note">
+			<p className="releasecart-upsell-banner__text">
 				{ upsell.notice }{ ' ' }
 				<a
-					className="tiermint-upsell-banner__link"
+					className="releasecart-upsell-banner__link"
 					href={ upsell.url }
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					{ upsell.linkLabel || __( 'See TierMint Pro', 'tiermint' ) }
+					{ upsell.linkLabel ||
+						__( 'See ReleaseCart Pro', 'releasecart' ) }
 				</a>
 			</p>
 			<button
 				type="button"
-				className="button-link tiermint-upsell-banner__dismiss"
+				className="button-link releasecart-upsell-banner__dismiss"
 				onClick={ onDismiss }
 			>
-				{ __( 'Dismiss', 'tiermint' ) }
+				{ __( 'Dismiss', 'releasecart' ) }
 			</button>
 		</div>
 	);

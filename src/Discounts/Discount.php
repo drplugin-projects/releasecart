@@ -2,12 +2,12 @@
 /**
  * Discount value object.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Discounts;
+namespace DrPlugin\WP\ReleaseCart\Discounts;
 
 // Block direct access.
 defined( 'ABSPATH' ) || exit;
@@ -206,16 +206,16 @@ final class Discount {
 		$errors = array();
 
 		if ( '' === $code ) {
-			$errors[] = __( 'A discount code is required.', 'tiermint' );
+			$errors[] = __( 'A discount code is required.', 'releasecart' );
 		} elseif ( mb_strlen( $code ) > 50 ) {
-			$errors[] = __( 'A discount code may be at most 50 characters.', 'tiermint' );
+			$errors[] = __( 'A discount code may be at most 50 characters.', 'releasecart' );
 		}
 
 		$name = null === $name ? null : trim( $name );
 		$name = ( null === $name || '' === $name ) ? null : $name;
 
 		if ( null !== $name && mb_strlen( $name ) > 200 ) {
-			$errors[] = __( 'A discount name may be at most 200 characters.', 'tiermint' );
+			$errors[] = __( 'A discount name may be at most 200 characters.', 'releasecart' );
 		}
 
 		if ( DiscountType::Percent === $type ) {
@@ -223,7 +223,7 @@ final class Discount {
 			$amountFixed = null;
 
 			if ( null === $amountPercent || $amountPercent <= 0 || $amountPercent > 100 ) {
-				$errors[] = __( 'A percentage discount must be greater than 0 and at most 100.', 'tiermint' );
+				$errors[] = __( 'A percentage discount must be greater than 0 and at most 100.', 'releasecart' );
 			} else {
 				// Match the database precision.
 				$amountPercent = round( $amountPercent, 2 );
@@ -232,7 +232,7 @@ final class Discount {
 			$amountPercent = null;
 
 			if ( null === $amountFixed || $amountFixed <= 0 ) {
-				$errors[] = __( 'A fixed discount amount must be greater than zero.', 'tiermint' );
+				$errors[] = __( 'A fixed discount amount must be greater than zero.', 'releasecart' );
 			}
 		}
 
@@ -251,13 +251,13 @@ final class Discount {
 				case DiscountScope::Products:
 					$categoryIds = null;
 					if ( null === $productIds ) {
-						$errors[] = __( 'A product-scoped automatic discount needs at least one product.', 'tiermint' );
+						$errors[] = __( 'A product-scoped automatic discount needs at least one product.', 'releasecart' );
 					}
 					break;
 				case DiscountScope::Categories:
 					$productIds = null;
 					if ( null === $categoryIds ) {
-						$errors[] = __( 'A category-scoped automatic discount needs at least one category.', 'tiermint' );
+						$errors[] = __( 'A category-scoped automatic discount needs at least one category.', 'releasecart' );
 					}
 					break;
 			}
@@ -268,28 +268,28 @@ final class Discount {
 		}
 
 		if ( null !== $minTotal && $minTotal < 0 ) {
-			$errors[] = __( 'A minimum order total cannot be negative.', 'tiermint' );
+			$errors[] = __( 'A minimum order total cannot be negative.', 'releasecart' );
 		}
 
 		if ( null !== $maxUses && $maxUses <= 0 ) {
-			$errors[] = __( 'A usage limit must be greater than zero.', 'tiermint' );
+			$errors[] = __( 'A usage limit must be greater than zero.', 'releasecart' );
 		}
 
 		if ( $useCount < 0 ) {
-			$errors[] = __( 'A use count cannot be negative.', 'tiermint' );
+			$errors[] = __( 'A use count cannot be negative.', 'releasecart' );
 		}
 
 		// Reject dates MySQL would silently normalize.
 		foreach ( array( $startsAt, $expiresAt ) as $window ) {
 			if ( null !== $window && ! self::isMysqlDatetime( $window ) ) {
 				/* translators: %s: the rejected timestamp value. */
-				$errors[] = sprintf( __( 'The window timestamp "%s" is not valid; use the Y-m-d H:i:s format in UTC.', 'tiermint' ), $window );
+				$errors[] = sprintf( __( 'The window timestamp "%s" is not valid; use the Y-m-d H:i:s format in UTC.', 'releasecart' ), $window );
 			}
 		}
 
 		// The start cannot follow the end.
 		if ( null !== $startsAt && null !== $expiresAt && strtotime( $startsAt ) > strtotime( $expiresAt ) ) {
-			$errors[] = __( 'A discount cannot expire before it starts.', 'tiermint' );
+			$errors[] = __( 'A discount cannot expire before it starts.', 'releasecart' );
 		}
 
 		if ( array() !== $errors ) {
@@ -709,7 +709,7 @@ final class Discount {
 			$id = (int) $productId;
 
 			if ( $id <= 0 ) {
-				$errors[] = __( 'Every scoped product id must be a positive integer.', 'tiermint' );
+				$errors[] = __( 'Every scoped product id must be a positive integer.', 'releasecart' );
 
 				continue;
 			}
@@ -740,7 +740,7 @@ final class Discount {
 			$id = (int) $categoryId;
 
 			if ( $id <= 0 ) {
-				$errors[] = __( 'Every scoped category id must be a positive integer.', 'tiermint' );
+				$errors[] = __( 'Every scoped category id must be a positive integer.', 'releasecart' );
 
 				continue;
 			}

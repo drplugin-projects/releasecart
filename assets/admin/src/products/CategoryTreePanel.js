@@ -115,7 +115,10 @@ export default function CategoryTreePanel( { selectedIds, onAdd, onRemove } ) {
 			setError(
 				sprintf(
 					/* translators: %s: the category name a merchant tried to create. */
-					__( 'A category named "%s" already exists.', 'tiermint' ),
+					__(
+						'A category named "%s" already exists.',
+						'releasecart'
+					),
 					name
 				)
 			);
@@ -141,12 +144,12 @@ export default function CategoryTreePanel( { selectedIds, onAdd, onRemove } ) {
 	} else {
 		body = (
 			<>
-				<div className="tiermint-term-tree">
+				<div className="releasecart-term-tree">
 					{ rows.map( ( { term, depth } ) => (
 						<div
 							key={ term.id }
-							className="tiermint-term-tree__row"
-							style={ { '--tiermint-term-depth': depth } }
+							className="releasecart-term-tree__row"
+							style={ { '--releasecart-term-depth': depth } }
 						>
 							<CheckboxControl
 								__nextHasNoMarginBottom
@@ -165,11 +168,11 @@ export default function CategoryTreePanel( { selectedIds, onAdd, onRemove } ) {
 						</div>
 					) ) }
 				</div>
-				<div className="tiermint-term-field__add">
+				<div className="releasecart-term-field__add">
 					<TextControl
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
-						label={ __( 'Add a new category', 'tiermint' ) }
+						label={ __( 'Add a new category', 'releasecart' ) }
 						value={ newName }
 						onChange={ ( value ) => {
 							setNewName( value );
@@ -181,7 +184,7 @@ export default function CategoryTreePanel( { selectedIds, onAdd, onRemove } ) {
 					<SelectControl
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
-						label={ __( 'Parent category', 'tiermint' ) }
+						label={ __( 'Parent category', 'releasecart' ) }
 						value={ newParent }
 						options={ parentOptions( terms, null ) }
 						onChange={ ( value ) => setNewParent( value ) }
@@ -195,11 +198,11 @@ export default function CategoryTreePanel( { selectedIds, onAdd, onRemove } ) {
 						__experimentalIsFocusable
 						onClick={ onCreate }
 					>
-						{ __( 'Add category', 'tiermint' ) }
+						{ __( 'Add category', 'releasecart' ) }
 					</Button>
 				</div>
 				{ error && (
-					<p className="tiermint-term-field__error" role="alert">
+					<p className="releasecart-term-field__error" role="alert">
 						{ error }
 					</p>
 				) }
@@ -208,8 +211,8 @@ export default function CategoryTreePanel( { selectedIds, onAdd, onRemove } ) {
 	}
 
 	return (
-		<div className="tiermint-panel tiermint-product-edit__box tiermint-term-field">
-			<h2>{ __( 'Product categories', 'tiermint' ) }</h2>
+		<div className="releasecart-panel releasecart-product-edit__box releasecart-term-field">
+			<h2>{ __( 'Product categories', 'releasecart' ) }</h2>
 			{ body }
 		</div>
 	);

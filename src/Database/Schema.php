@@ -1,13 +1,13 @@
 <?php
 /**
- * Canonical definitions of the core TierMint tables.
+ * Canonical definitions of the core ReleaseCart tables.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Database;
+namespace DrPlugin\WP\ReleaseCart\Database;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -54,16 +54,16 @@ final class Schema {
 	}
 
 	/**
-	 * The fully-qualified table name for a base name (`{$prefix}tiermint_{$base}`).
+	 * The fully-qualified table name for a base name (`{$prefix}releasecart_{$base}`).
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param \wpdb  $wpdb The WordPress database abstraction (for the site prefix).
 	 * @param string $base A base name from {@see tables()}.
-	 * @return string The prefixed, TierMint-namespaced table name.
+	 * @return string The prefixed, ReleaseCart-namespaced table name.
 	 */
 	public static function tableName( \wpdb $wpdb, string $base ): string {
-		return $wpdb->prefix . 'tiermint_' . $base;
+		return $wpdb->prefix . 'releasecart_' . $base;
 	}
 
 	/**
@@ -195,13 +195,13 @@ final class Schema {
 			// WP-style meta table.
 			'order_meta'         => <<<'SQL'
 			meta_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-			tiermint_order_id bigint(20) unsigned NOT NULL DEFAULT 0,
+			releasecart_order_id bigint(20) unsigned NOT NULL DEFAULT 0,
 			meta_key varchar(191) DEFAULT NULL,
 			meta_value longtext,
 			PRIMARY KEY  (meta_id),
-			KEY tiermint_order_id (tiermint_order_id),
+			KEY releasecart_order_id (releasecart_order_id),
 			KEY meta_key (meta_key),
-			KEY meta_key_order (meta_key, tiermint_order_id)
+			KEY meta_key_order (meta_key, releasecart_order_id)
 			SQL,
 
 			'customers'          => <<<'SQL'
@@ -246,11 +246,11 @@ final class Schema {
 			// WP-style meta table.
 			'license_meta'       => <<<'SQL'
 			meta_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-			tiermint_license_id bigint(20) unsigned NOT NULL DEFAULT 0,
+			releasecart_license_id bigint(20) unsigned NOT NULL DEFAULT 0,
 			meta_key varchar(191) DEFAULT NULL,
 			meta_value longtext,
 			PRIMARY KEY  (meta_id),
-			KEY tiermint_license_id (tiermint_license_id),
+			KEY releasecart_license_id (releasecart_license_id),
 			KEY meta_key (meta_key)
 			SQL,
 

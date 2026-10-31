@@ -1,19 +1,19 @@
 <?php
 /**
- * Shared base for TierMint REST controllers.
+ * Shared base for ReleaseCart REST controllers.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Capabilities;
-use DrPlugin\WP\TierMint\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Core\Capabilities;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
 use WP_Error;
 use WP_REST_Response;
 
@@ -29,7 +29,7 @@ abstract class AbstractRestController implements Hookable {
 	 *
 	 * @var string
 	 */
-	protected const API_NAMESPACE = 'tiermint/v1';
+	protected const API_NAMESPACE = 'releasecart/v1';
 
 	/**
 	 * Register the controller's routes when WordPress builds the REST API.
@@ -56,7 +56,7 @@ abstract class AbstractRestController implements Hookable {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return bool True when the current user may manage TierMint resources.
+	 * @return bool True when the current user may manage ReleaseCart resources.
 	 */
 	public function managePermission(): bool {
 		return current_user_can( Capabilities::MANAGE );
@@ -67,7 +67,7 @@ abstract class AbstractRestController implements Hookable {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return bool True when the current user may change TierMint configuration.
+	 * @return bool True when the current user may change ReleaseCart configuration.
 	 */
 	public function settingsPermission(): bool {
 		return current_user_can( Capabilities::MANAGE_SETTINGS );
@@ -76,13 +76,13 @@ abstract class AbstractRestController implements Hookable {
 	/**
 	 * The read-only reporting permission gate.
 	 *
-	 * Store managers pass too: manage_tiermint already reads raw orders and customers, so it
+	 * Store managers pass too: manage_releasecart already reads raw orders and customers, so it
 	 * is never locked out of the less-sensitive aggregate reports. PII-bearing exports keep
-	 * their own manage_tiermint gate; this only covers aggregate report reads.
+	 * their own manage_releasecart gate; this only covers aggregate report reads.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return bool True when the current user may view TierMint reports.
+	 * @return bool True when the current user may view ReleaseCart reports.
 	 */
 	public function reportsPermission(): bool {
 		return current_user_can( Capabilities::VIEW_REPORTS ) || current_user_can( Capabilities::MANAGE );
@@ -93,7 +93,7 @@ abstract class AbstractRestController implements Hookable {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string               $code    The stable, `tiermint_`-prefixed error code.
+	 * @param string               $code    The stable, `releasecart_`-prefixed error code.
 	 * @param string               $message The human-readable error message.
 	 * @param int                  $status  The HTTP status to return.
 	 * @param array<string, mixed> $extra   Extra fields to merge into `data`.
@@ -109,12 +109,12 @@ abstract class AbstractRestController implements Hookable {
 	 * @since 1.0.0
 	 *
 	 * @param string $message An optional override message.
-	 * @return WP_Error The `tiermint_not_found` error at HTTP 404.
+	 * @return WP_Error The `releasecart_not_found` error at HTTP 404.
 	 */
 	protected function notFound( string $message = '' ): WP_Error {
 		return $this->error(
-			'tiermint_not_found',
-			'' !== $message ? $message : __( 'The requested resource was not found.', 'tiermint' ),
+			'releasecart_not_found',
+			'' !== $message ? $message : __( 'The requested resource was not found.', 'releasecart' ),
 			404
 		);
 	}
@@ -126,12 +126,12 @@ abstract class AbstractRestController implements Hookable {
 	 *
 	 * @param array<int, string> $errors  The individual field-level validation messages.
 	 * @param string             $message An optional override summary message.
-	 * @return WP_Error The `tiermint_invalid_params` error at HTTP 400.
+	 * @return WP_Error The `releasecart_invalid_params` error at HTTP 400.
 	 */
 	protected function invalidParams( array $errors, string $message = '' ): WP_Error {
 		return $this->error(
-			'tiermint_invalid_params',
-			'' !== $message ? $message : __( 'One or more parameters were invalid.', 'tiermint' ),
+			'releasecart_invalid_params',
+			'' !== $message ? $message : __( 'One or more parameters were invalid.', 'releasecart' ),
 			400,
 			array( 'errors' => array_values( $errors ) )
 		);
@@ -143,12 +143,12 @@ abstract class AbstractRestController implements Hookable {
 	 * @since 1.0.0
 	 *
 	 * @param string $message An optional safe message.
-	 * @return WP_Error The `tiermint_server_error` error at HTTP 500.
+	 * @return WP_Error The `releasecart_server_error` error at HTTP 500.
 	 */
 	protected function serverError( string $message = '' ): WP_Error {
 		return $this->error(
-			'tiermint_server_error',
-			'' !== $message ? $message : __( 'The request could not be completed. Please try again.', 'tiermint' ),
+			'releasecart_server_error',
+			'' !== $message ? $message : __( 'The request could not be completed. Please try again.', 'releasecart' ),
 			500
 		);
 	}

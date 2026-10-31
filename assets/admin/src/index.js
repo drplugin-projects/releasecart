@@ -27,7 +27,7 @@ import './admin.css';
  *
  * @type {string}
  */
-export const ROOT_ID = 'tiermint-admin-root';
+export const ROOT_ID = 'releasecart-admin-root';
 
 /**
  * Mount the app onto a container with the given boot data.

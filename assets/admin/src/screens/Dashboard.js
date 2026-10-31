@@ -35,47 +35,53 @@ import { orderStatusLabel } from '../utils/orderStatus';
 const QUICK_LINKS = [
 	{
 		path: '#/products',
-		capability: 'manage_tiermint',
-		label: __( 'Manage Products', 'tiermint' ),
+		capability: 'manage_releasecart',
+		label: __( 'Manage Products', 'releasecart' ),
 		description: __(
 			'Manage your digital products, prices, and releases.',
-			'tiermint'
+			'releasecart'
 		),
 	},
 	{
 		path: '#/orders',
-		capability: 'manage_tiermint',
-		label: __( 'Manage Orders', 'tiermint' ),
-		description: __( 'Review orders, receipts, and refunds.', 'tiermint' ),
+		capability: 'manage_releasecart',
+		label: __( 'Manage Orders', 'releasecart' ),
+		description: __(
+			'Review orders, receipts, and refunds.',
+			'releasecart'
+		),
 	},
 	{
 		path: '#/licenses',
-		capability: 'manage_tiermint',
-		label: __( 'Manage Licenses', 'tiermint' ),
+		capability: 'manage_releasecart',
+		label: __( 'Manage Licenses', 'releasecart' ),
 		description: __(
 			'Look up license keys and their activations.',
-			'tiermint'
+			'releasecart'
 		),
 	},
 	{
 		path: '#/discounts',
-		capability: 'manage_tiermint',
-		label: __( 'Manage Discounts', 'tiermint' ),
-		description: __( 'Create and manage discount codes.', 'tiermint' ),
+		capability: 'manage_releasecart',
+		label: __( 'Manage Discounts', 'releasecart' ),
+		description: __( 'Create and manage discount codes.', 'releasecart' ),
 	},
 	{
 		path: '#/reports',
-		capability: 'view_tiermint_reports',
-		label: __( 'View Reports', 'tiermint' ),
-		description: __( 'See sales totals and trends over time.', 'tiermint' ),
+		capability: 'view_releasecart_reports',
+		label: __( 'View Reports', 'releasecart' ),
+		description: __(
+			'See sales totals and trends over time.',
+			'releasecart'
+		),
 	},
 	{
 		path: '#/settings',
-		capability: 'manage_tiermint_settings',
-		label: __( 'Store Settings', 'tiermint' ),
+		capability: 'manage_releasecart_settings',
+		label: __( 'Store Settings', 'releasecart' ),
 		description: __(
 			'Configure store details, currency, and gateways.',
-			'tiermint'
+			'releasecart'
 		),
 	},
 ];
@@ -152,11 +158,11 @@ function LatestOrderRow( { order, canEditUsers } ) {
 					label={ orderStatusLabel( order.status ) }
 				/>
 			</td>
-			<td className="tiermint-col--secondary">
+			<td className="releasecart-col--secondary">
 				{ orderTypeLabel( order.type ) }
 			</td>
 			<td>{ formatMinor( order.total, order.currency ) }</td>
-			<td className="tiermint-col--secondary">{ order.gateway }</td>
+			<td className="releasecart-col--secondary">{ order.gateway }</td>
 		</tr>
 	);
 }
@@ -172,8 +178,8 @@ export default function Dashboard( { boot } ) {
 	const caps = ( boot && boot.caps ) || {};
 	const currency =
 		( boot && boot.settings && boot.settings.currency ) || 'USD';
-	const canManage = hasCapability( caps, 'manage_tiermint' );
-	const canViewReports = hasCapability( caps, 'view_tiermint_reports' );
+	const canManage = hasCapability( caps, 'manage_releasecart' );
+	const canViewReports = hasCapability( caps, 'view_releasecart_reports' );
 	const canEditUsers = hasCapability( caps, 'edit_users' );
 	const dashboardPanels = useDashboardPanels( caps );
 
@@ -224,43 +230,43 @@ export default function Dashboard( { boot } ) {
 
 	const welcomeHeading = sprintf(
 		/* translators: %s: the store/product name. */
-		__( 'Welcome to %s', 'tiermint' ),
-		'TierMint'
+		__( 'Welcome to %s', 'releasecart' ),
+		'ReleaseCart'
 	);
 
 	return (
-		<section className="tiermint-admin-screen tiermint-admin-dashboard">
-			<ScreenHeader title={ __( 'Dashboard', 'tiermint' ) } />
+		<section className="releasecart-admin-screen releasecart-admin-dashboard">
+			<ScreenHeader title={ __( 'Dashboard', 'releasecart' ) } />
 
-			<div className="tiermint-admin-card tiermint-admin-dashboard-welcome">
+			<div className="releasecart-admin-card releasecart-admin-dashboard-welcome">
 				<h2>{ welcomeHeading }</h2>
 				<p>
 					{ __(
 						'Here is a quick overview of your store.',
-						'tiermint'
+						'releasecart'
 					) }
 				</p>
 			</div>
 
 			{ ( sales || salesPending || metricPanels.length > 0 ) && (
-				<section className="tiermint-admin-dashboard-sales">
-					<div className="tiermint-admin-dashboard-section-heading">
+				<section className="releasecart-admin-dashboard-sales">
+					<div className="releasecart-admin-dashboard-section-heading">
 						<div>
-							<h2>{ __( 'Store overview', 'tiermint' ) }</h2>
+							<h2>{ __( 'Store overview', 'releasecart' ) }</h2>
 							{ ( sales || salesPending ) && (
 								<p>
 									{ __(
 										'Sales figures cover the last 30 days.',
-										'tiermint'
+										'releasecart'
 									) }
 								</p>
 							) }
 						</div>
 						{ ( canViewReports || headingLinks.length > 0 ) && (
-							<div className="tiermint-admin-dashboard-heading-links">
+							<div className="releasecart-admin-dashboard-heading-links">
 								{ canViewReports && (
 									<a href="#/reports">
-										{ __( 'View report', 'tiermint' ) }
+										{ __( 'View report', 'releasecart' ) }
 									</a>
 								) }
 								{ headingLinks.map( ( link ) => (
@@ -272,28 +278,28 @@ export default function Dashboard( { boot } ) {
 						) }
 					</div>
 					{ sales && excludedCurrencies.length > 0 && (
-						<p className="tiermint-admin-dashboard-currency-note">
+						<p className="releasecart-admin-dashboard-currency-note">
 							{ sprintf(
 								/* translators: %s: store currency code, for example USD. */
 								__(
 									'These figures cover %s only. Other currencies are available in Reports.',
-									'tiermint'
+									'releasecart'
 								),
 								salesCurrency
 							) }
 						</p>
 					) }
-					<div className="tiermint-admin-dashboard-metrics">
+					<div className="releasecart-admin-dashboard-metrics">
 						{ salesPending && (
 							// Keep grid cards while exposing the skeleton state.
-							<div className="tiermint-skeleton tiermint-skeleton--metrics">
+							<div className="releasecart-skeleton releasecart-skeleton--metrics">
 								<span
 									className="screen-reader-text"
 									role="status"
 								>
 									{ __(
 										'Loading sales figures',
-										'tiermint'
+										'releasecart'
 									) }
 								</span>
 								{ Array.from( {
@@ -301,20 +307,20 @@ export default function Dashboard( { boot } ) {
 								} ).map( ( _value, index ) => (
 									<div
 										key={ index }
-										className="tiermint-skeleton__card tiermint-admin-dashboard-metric--loading"
+										className="releasecart-skeleton__card releasecart-admin-dashboard-metric--loading"
 										aria-hidden="true"
 									>
-										<div className="tiermint-skeleton__label" />
-										<div className="tiermint-skeleton__value" />
+										<div className="releasecart-skeleton__label" />
+										<div className="releasecart-skeleton__value" />
 									</div>
 								) ) }
 							</div>
 						) }
 						{ ! salesPending && sales && sales.totals && (
 							<>
-								<div className="tiermint-admin-card tiermint-admin-dashboard-metric">
+								<div className="releasecart-admin-card releasecart-admin-dashboard-metric">
 									<span>
-										{ __( 'Gross revenue', 'tiermint' ) }
+										{ __( 'Gross revenue', 'releasecart' ) }
 									</span>
 									<strong>
 										{ formatMinor(
@@ -323,8 +329,10 @@ export default function Dashboard( { boot } ) {
 										) }
 									</strong>
 								</div>
-								<div className="tiermint-admin-card tiermint-admin-dashboard-metric">
-									<span>{ __( 'Refunds', 'tiermint' ) }</span>
+								<div className="releasecart-admin-card releasecart-admin-dashboard-metric">
+									<span>
+										{ __( 'Refunds', 'releasecart' ) }
+									</span>
 									<strong>
 										{ formatMinor(
 											sales.totals.refund_total,
@@ -332,9 +340,9 @@ export default function Dashboard( { boot } ) {
 										) }
 									</strong>
 								</div>
-								<div className="tiermint-admin-card tiermint-admin-dashboard-metric">
+								<div className="releasecart-admin-card releasecart-admin-dashboard-metric">
 									<span>
-										{ __( 'Net revenue', 'tiermint' ) }
+										{ __( 'Net revenue', 'releasecart' ) }
 									</span>
 									<strong>
 										{ formatMinor(
@@ -343,8 +351,10 @@ export default function Dashboard( { boot } ) {
 										) }
 									</strong>
 								</div>
-								<div className="tiermint-admin-card tiermint-admin-dashboard-metric">
-									<span>{ __( 'Orders', 'tiermint' ) }</span>
+								<div className="releasecart-admin-card releasecart-admin-dashboard-metric">
+									<span>
+										{ __( 'Orders', 'releasecart' ) }
+									</span>
 									<strong>
 										{ sales.totals.order_count }
 									</strong>
@@ -359,9 +369,9 @@ export default function Dashboard( { boot } ) {
 				</section>
 			) }
 
-			<div className="tiermint-admin-dashboard-links">
+			<div className="releasecart-admin-dashboard-links">
 				{ visibleLinks.map( ( link ) => (
-					<div className="tiermint-admin-card" key={ link.path }>
+					<div className="releasecart-admin-card" key={ link.path }>
 						<h2>
 							<a href={ link.path }>{ link.label }</a>
 						</h2>
@@ -369,7 +379,7 @@ export default function Dashboard( { boot } ) {
 					</div>
 				) ) }
 				{ linkPanels.map( ( entry ) => (
-					<div className="tiermint-admin-card" key={ entry.id }>
+					<div className="releasecart-admin-card" key={ entry.id }>
 						<h2>
 							<a href={ entry.path }>{ entry.label }</a>
 						</h2>
@@ -380,29 +390,29 @@ export default function Dashboard( { boot } ) {
 
 			{ /* Keep the latest-orders card stable while it loads. */ }
 			{ firstReadPending( ordersQuery ) && (
-				<div className="tiermint-admin-card tiermint-admin-dashboard-latest-orders">
-					<h2>{ __( 'Latest orders', 'tiermint' ) }</h2>
+				<div className="releasecart-admin-card releasecart-admin-dashboard-latest-orders">
+					<h2>{ __( 'Latest orders', 'releasecart' ) }</h2>
 					<SkeletonTable rows={ 5 } columns={ 8 } />
 				</div>
 			) }
 
 			{ latestOrders && (
-				<div className="tiermint-admin-card tiermint-admin-dashboard-latest-orders">
-					<h2>{ __( 'Latest orders', 'tiermint' ) }</h2>
-					<table className="tiermint-admin-table wp-list-table widefat striped">
+				<div className="releasecart-admin-card releasecart-admin-dashboard-latest-orders">
+					<h2>{ __( 'Latest orders', 'releasecart' ) }</h2>
+					<table className="releasecart-admin-table wp-list-table widefat striped">
 						<thead>
 							<tr>
-								<th>{ __( 'Order', 'tiermint' ) }</th>
-								<th>{ __( 'Date', 'tiermint' ) }</th>
-								<th>{ __( 'Customer', 'tiermint' ) }</th>
-								<th>{ __( 'Product', 'tiermint' ) }</th>
-								<th>{ __( 'Status', 'tiermint' ) }</th>
-								<th className="tiermint-col--secondary">
-									{ __( 'Type', 'tiermint' ) }
+								<th>{ __( 'Order', 'releasecart' ) }</th>
+								<th>{ __( 'Date', 'releasecart' ) }</th>
+								<th>{ __( 'Customer', 'releasecart' ) }</th>
+								<th>{ __( 'Product', 'releasecart' ) }</th>
+								<th>{ __( 'Status', 'releasecart' ) }</th>
+								<th className="releasecart-col--secondary">
+									{ __( 'Type', 'releasecart' ) }
 								</th>
-								<th>{ __( 'Total', 'tiermint' ) }</th>
-								<th className="tiermint-col--secondary">
-									{ __( 'Gateway', 'tiermint' ) }
+								<th>{ __( 'Total', 'releasecart' ) }</th>
+								<th className="releasecart-col--secondary">
+									{ __( 'Gateway', 'releasecart' ) }
 								</th>
 							</tr>
 						</thead>
@@ -429,7 +439,7 @@ export default function Dashboard( { boot } ) {
  */
 export const route = {
 	path: '#/',
-	title: __( 'Dashboard', 'tiermint' ),
-	capability: 'manage_tiermint',
+	title: __( 'Dashboard', 'releasecart' ),
+	capability: 'manage_releasecart',
 	component: Dashboard,
 };

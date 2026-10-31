@@ -2,23 +2,23 @@
 /**
  * REST controller for the block/page-builder editor product, term, and page pickers.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Capabilities;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Products\ProductStatus;
-use DrPlugin\WP\TierMint\Products\ProductTaxonomy;
-use DrPlugin\WP\TierMint\Products\Term;
-use DrPlugin\WP\TierMint\Products\TermService;
+use DrPlugin\WP\ReleaseCart\Core\Capabilities;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Products\ProductStatus;
+use DrPlugin\WP\ReleaseCart\Products\ProductTaxonomy;
+use DrPlugin\WP\ReleaseCart\Products\Term;
+use DrPlugin\WP\ReleaseCart\Products\TermService;
 use WP_Post;
 use WP_Query;
 use WP_REST_Request;
@@ -342,21 +342,21 @@ final class EditorSearchController extends AbstractRestController {
 	private function productArgs(): array {
 		return array(
 			'search'   => array(
-				'description'       => __( 'Match published products whose name, slug, overview, or description contains this text.', 'tiermint' ),
+				'description'       => __( 'Match published products whose name, slug, overview, or description contains this text.', 'releasecart' ),
 				'type'              => 'string',
 				'default'           => '',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'include'  => array(
-				'description'       => __( 'Resolve these product ids to their names, ignoring the search term. Used to label saved selections.', 'tiermint' ),
+				'description'       => __( 'Resolve these product ids to their names, ignoring the search term. Used to label saved selections.', 'releasecart' ),
 				'type'              => 'array',
 				'items'             => array( 'type' => 'integer' ),
 				'sanitize_callback' => 'wp_parse_id_list',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'per_page' => array(
-				'description'       => __( 'Maximum number of products to return.', 'tiermint' ),
+				'description'       => __( 'Maximum number of products to return.', 'releasecart' ),
 				'type'              => 'integer',
 				'default'           => self::DEFAULT_PER_PAGE,
 				'minimum'           => 1,
@@ -377,21 +377,21 @@ final class EditorSearchController extends AbstractRestController {
 	private function pageArgs(): array {
 		return array(
 			'search'   => array(
-				'description'       => __( 'Match published pages whose title contains this text.', 'tiermint' ),
+				'description'       => __( 'Match published pages whose title contains this text.', 'releasecart' ),
 				'type'              => 'string',
 				'default'           => '',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'include'  => array(
-				'description'       => __( 'Resolve these page ids to their titles, ignoring the search term. Used to label saved selections.', 'tiermint' ),
+				'description'       => __( 'Resolve these page ids to their titles, ignoring the search term. Used to label saved selections.', 'releasecart' ),
 				'type'              => 'array',
 				'items'             => array( 'type' => 'integer' ),
 				'sanitize_callback' => 'wp_parse_id_list',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'per_page' => array(
-				'description'       => __( 'Maximum number of pages to return.', 'tiermint' ),
+				'description'       => __( 'Maximum number of pages to return.', 'releasecart' ),
 				'type'              => 'integer',
 				'default'           => self::DEFAULT_PER_PAGE,
 				'minimum'           => 1,
@@ -412,7 +412,7 @@ final class EditorSearchController extends AbstractRestController {
 	private function termArgs(): array {
 		return array(
 			'taxonomy' => array(
-				'description'       => __( 'Which taxonomy to list.', 'tiermint' ),
+				'description'       => __( 'Which taxonomy to list.', 'releasecart' ),
 				'type'              => 'string',
 				'required'          => true,
 				'enum'              => array( ProductTaxonomy::Category->value, ProductTaxonomy::Tag->value ),

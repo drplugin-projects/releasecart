@@ -2,17 +2,17 @@
 /**
  * Service provider for core, cross-cutting services.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Core;
+namespace DrPlugin\WP\ReleaseCart\Core;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Database\Migrator;
+use DrPlugin\WP\ReleaseCart\Database\Migrator;
 
 /**
  * Registers core lifecycle services.

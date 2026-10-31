@@ -2,24 +2,24 @@
 /**
  * The all-in-one product details component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Discounts\AutomaticDiscountResolver;
-use DrPlugin\WP\TierMint\Discounts\DiscountSettings;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\ProductTierSelector;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\ResolvesTierDiscounts;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\SamplePreview;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\ScreenshotGallery;
-use DrPlugin\WP\TierMint\Frontend\Components\Support\TierMetaPresenter;
-use DrPlugin\WP\TierMint\Frontend\ProductPageTitle;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Util\Money;
+use DrPlugin\WP\ReleaseCart\Discounts\AutomaticDiscountResolver;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountSettings;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\ProductTierSelector;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\ResolvesTierDiscounts;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\SamplePreview;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\ScreenshotGallery;
+use DrPlugin\WP\ReleaseCart\Frontend\Components\Support\TierMetaPresenter;
+use DrPlugin\WP\ReleaseCart\Frontend\ProductPageTitle;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Util\Money;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -91,7 +91,7 @@ final class ProductDetails extends AbstractProductComponent {
 			'overview'    => $this->richField( $product->overview() ),
 			'description' => $this->richField( $product->description() ),
 			'screenshots' => ScreenshotGallery::fromIds( $settings['screenshots'] ?? array() ),
-			'purchase'    => array( 'block' => 'tiermint-product-details' ) + ProductTierSelector::formData(
+			'purchase'    => array( 'block' => 'releasecart-product-details' ) + ProductTierSelector::formData(
 				$product,
 				$this->money,
 				TierMetaPresenter::flagsFrom( $attrs ),
@@ -120,7 +120,7 @@ final class ProductDetails extends AbstractProductComponent {
 	 */
 	protected function sampleViewData( Product $product, array $attrs ): array {
 		$data             = $this->viewData( $product, $attrs );
-		$data['purchase'] = array( 'block' => 'tiermint-product-details' )
+		$data['purchase'] = array( 'block' => 'releasecart-product-details' )
 			+ ProductTierSelector::formData( SamplePreview::tierProduct(), $this->money, TierMetaPresenter::flagsFrom( $attrs ) );
 
 		return $data;
@@ -137,8 +137,8 @@ final class ProductDetails extends AbstractProductComponent {
 				'type'        => 'enum',
 				'enum'        => array( 'two-column', 'single' ),
 				'default'     => 'two-column',
-				'label'       => __( 'Layout', 'tiermint' ),
-				'description' => __( 'Two columns (media beside the buying panel) where there is room, or a single stacked column.', 'tiermint' ),
+				'label'       => __( 'Layout', 'releasecart' ),
+				'description' => __( 'Two columns (media beside the buying panel) where there is room, or a single stacked column.', 'releasecart' ),
 				'control'     => 'select',
 			),
 		) + TierMetaPresenter::toggleSchema();
@@ -152,8 +152,8 @@ final class ProductDetails extends AbstractProductComponent {
 	public function assets(): array {
 		$assets = parent::assets();
 
-		$assets['styles']  = array_merge( $assets['styles'], array( 'tiermint-product-screenshots' ) );
-		$assets['scripts'] = array_merge( $assets['scripts'], array( 'tiermint-product-screenshots' ) );
+		$assets['styles']  = array_merge( $assets['styles'], array( 'releasecart-product-screenshots' ) );
+		$assets['scripts'] = array_merge( $assets['scripts'], array( 'releasecart-product-screenshots' ) );
 
 		return $assets;
 	}
@@ -164,8 +164,8 @@ final class ProductDetails extends AbstractProductComponent {
 	 * @return string Escaped HTML.
 	 */
 	protected function editorPlaceholder(): string {
-		return '<div class="tiermint-component tiermint-product-details tiermint-product-details--placeholder">'
-			. '<p>' . esc_html__( 'Product details will appear here on the product page.', 'tiermint' ) . '</p>'
+		return '<div class="releasecart-component releasecart-product-details releasecart-product-details--placeholder">'
+			. '<p>' . esc_html__( 'Product details will appear here on the product page.', 'releasecart' ) . '</p>'
 			. '</div>';
 	}
 

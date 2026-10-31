@@ -2,9 +2,9 @@
 /**
  * Password reset form template.
  *
- * Theme override: {theme}/tiermint/components/password-reset-form.php.
+ * Theme override: {theme}/releasecart/components/password-reset-form.php.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  *
  * @var array<string, mixed> $data {
  *     State-specific view data.
@@ -29,34 +29,34 @@
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<div class="tiermint-component tiermint-password-reset-form">
+<div class="releasecart-component releasecart-password-reset-form">
 	<?php // Keep the card width independent from the theme content column. ?>
-	<div class="tiermint-password-reset-form__card tiermint-card">
+	<div class="releasecart-password-reset-form__card releasecart-card">
 	<?php if ( 'done' === $data['state'] ) : ?>
 
-		<div class="tiermint-password-reset-form__done">
-			<p><?php echo esc_html__( 'Your password has been reset.', 'tiermint' ); ?></p>
-			<a class="tiermint-password-reset-form__sign-in" href="<?php echo esc_url( $data['login_url'] ); ?>">
-				<?php echo esc_html__( 'Sign in', 'tiermint' ); ?>
+		<div class="releasecart-password-reset-form__done">
+			<p><?php echo esc_html__( 'Your password has been reset.', 'releasecart' ); ?></p>
+			<a class="releasecart-password-reset-form__sign-in" href="<?php echo esc_url( $data['login_url'] ); ?>">
+				<?php echo esc_html__( 'Sign in', 'releasecart' ); ?>
 			</a>
 		</div>
 
 	<?php elseif ( 'sent' === $data['state'] ) : ?>
 
-		<div class="tiermint-password-reset-form__sent">
-			<p><?php echo esc_html__( 'If an account exists for that address, we have emailed a link to reset your password. The link expires in 24 hours.', 'tiermint' ); ?></p>
-			<a class="tiermint-password-reset-form__sign-in" href="<?php echo esc_url( $data['login_url'] ); ?>">
-				<?php echo esc_html__( 'Back to sign in', 'tiermint' ); ?>
+		<div class="releasecart-password-reset-form__sent">
+			<p><?php echo esc_html__( 'If an account exists for that address, we have emailed a link to reset your password. The link expires in 24 hours.', 'releasecart' ); ?></p>
+			<a class="releasecart-password-reset-form__sign-in" href="<?php echo esc_url( $data['login_url'] ); ?>">
+				<?php echo esc_html__( 'Back to sign in', 'releasecart' ); ?>
 			</a>
 		</div>
 
 	<?php elseif ( 'signed_in' === $data['state'] ) : ?>
 
-		<div class="tiermint-password-reset-form__signed-in">
-			<p><?php echo esc_html__( 'You are signed in.', 'tiermint' ); ?></p>
+		<div class="releasecart-password-reset-form__signed-in">
+			<p><?php echo esc_html__( 'You are signed in.', 'releasecart' ); ?></p>
 			<?php if ( null !== $data['account_url'] ) : ?>
-				<a class="tiermint-password-reset-form__account" href="<?php echo esc_url( $data['account_url'] ); ?>">
-					<?php echo esc_html__( 'Go to your account', 'tiermint' ); ?>
+				<a class="releasecart-password-reset-form__account" href="<?php echo esc_url( $data['account_url'] ); ?>">
+					<?php echo esc_html__( 'Go to your account', 'releasecart' ); ?>
 				</a>
 			<?php endif; ?>
 		</div>
@@ -64,66 +64,66 @@ defined( 'ABSPATH' ) || exit;
 	<?php elseif ( 'reset' === $data['state'] ) : ?>
 
 		<?php if ( $data['error']['show'] ) : ?>
-			<p class="tiermint-password-reset-form__error tiermint-notice tiermint-notice--error" role="alert">
+			<p class="releasecart-password-reset-form__error releasecart-notice releasecart-notice--error" role="alert">
 				<?php echo esc_html( $data['error']['text'] ); ?>
 			</p>
 		<?php endif; ?>
 
-		<form class="tiermint-password-reset-form__form" method="post" autocomplete="on">
+		<form class="releasecart-password-reset-form__form" method="post" autocomplete="on">
 			<?php wp_nonce_field( $data['nonce_action'], $data['nonce_field'] ); ?>
 			<input type="hidden" name="<?php echo esc_attr( $data['action_field'] ); ?>" value="1" />
 			<input type="hidden" name="<?php echo esc_attr( $data['key_field'] ); ?>" value="<?php echo esc_attr( $data['rp_key'] ); ?>" />
 
 			<?php // A hidden username so password managers save the credential against the account. ?>
-			<input type="text" class="tiermint-password-reset-form__username" name="username" value="<?php echo esc_attr( $data['login'] ); ?>" autocomplete="username" readonly hidden aria-hidden="true" tabindex="-1" />
+			<input type="text" class="releasecart-password-reset-form__username" name="username" value="<?php echo esc_attr( $data['login'] ); ?>" autocomplete="username" readonly hidden aria-hidden="true" tabindex="-1" />
 
-			<p class="tiermint-password-reset-form__field tiermint-field">
-				<label for="tiermint-reset-pass1"><?php echo esc_html__( 'New password', 'tiermint' ); ?></label>
-				<input type="password" class="tiermint-input" id="tiermint-reset-pass1" name="<?php echo esc_attr( $data['pass1_field'] ); ?>" autocomplete="new-password" minlength="<?php echo esc_attr( (string) $data['min_length'] ); ?>" required />
+			<p class="releasecart-password-reset-form__field releasecart-field">
+				<label for="releasecart-reset-pass1"><?php echo esc_html__( 'New password', 'releasecart' ); ?></label>
+				<input type="password" class="releasecart-input" id="releasecart-reset-pass1" name="<?php echo esc_attr( $data['pass1_field'] ); ?>" autocomplete="new-password" minlength="<?php echo esc_attr( (string) $data['min_length'] ); ?>" required />
 			</p>
 
-			<p class="tiermint-password-reset-form__field tiermint-field">
-				<label for="tiermint-reset-pass2"><?php echo esc_html__( 'Confirm new password', 'tiermint' ); ?></label>
-				<input type="password" class="tiermint-input" id="tiermint-reset-pass2" name="<?php echo esc_attr( $data['pass2_field'] ); ?>" autocomplete="new-password" minlength="<?php echo esc_attr( (string) $data['min_length'] ); ?>" required />
+			<p class="releasecart-password-reset-form__field releasecart-field">
+				<label for="releasecart-reset-pass2"><?php echo esc_html__( 'Confirm new password', 'releasecart' ); ?></label>
+				<input type="password" class="releasecart-input" id="releasecart-reset-pass2" name="<?php echo esc_attr( $data['pass2_field'] ); ?>" autocomplete="new-password" minlength="<?php echo esc_attr( (string) $data['min_length'] ); ?>" required />
 			</p>
 
-			<p class="tiermint-password-reset-form__submit">
-				<button type="submit" class="tiermint-button tiermint-button--primary"><?php echo esc_html__( 'Save password', 'tiermint' ); ?></button>
+			<p class="releasecart-password-reset-form__submit">
+				<button type="submit" class="releasecart-button releasecart-button--primary"><?php echo esc_html__( 'Save password', 'releasecart' ); ?></button>
 			</p>
 		</form>
 
 	<?php else : ?>
 
 		<?php if ( $data['error']['show'] ) : ?>
-			<p class="tiermint-password-reset-form__error tiermint-notice tiermint-notice--error" role="alert">
+			<p class="releasecart-password-reset-form__error releasecart-notice releasecart-notice--error" role="alert">
 				<?php echo esc_html( $data['error']['text'] ); ?>
 			</p>
 		<?php endif; ?>
 
-		<p class="tiermint-password-reset-form__intro">
-			<?php echo esc_html__( 'Enter your email address or username and we will email you a link to reset your password.', 'tiermint' ); ?>
+		<p class="releasecart-password-reset-form__intro">
+			<?php echo esc_html__( 'Enter your email address or username and we will email you a link to reset your password.', 'releasecart' ); ?>
 		</p>
 
-		<form class="tiermint-password-reset-form__form" method="post">
+		<form class="releasecart-password-reset-form__form" method="post">
 			<?php wp_nonce_field( $data['nonce_action'], $data['nonce_field'] ); ?>
 			<input type="hidden" name="<?php echo esc_attr( $data['action_field'] ); ?>" value="1" />
 
-			<p class="tiermint-password-reset-form__field tiermint-field">
-				<label for="tiermint-reset-login"><?php echo esc_html__( 'Email address or username', 'tiermint' ); ?></label>
-				<input type="text" class="tiermint-input" id="tiermint-reset-login" name="<?php echo esc_attr( $data['login_field'] ); ?>" autocomplete="username" maxlength="254" required />
+			<p class="releasecart-password-reset-form__field releasecart-field">
+				<label for="releasecart-reset-login"><?php echo esc_html__( 'Email address or username', 'releasecart' ); ?></label>
+				<input type="text" class="releasecart-input" id="releasecart-reset-login" name="<?php echo esc_attr( $data['login_field'] ); ?>" autocomplete="username" maxlength="254" required />
 			</p>
 
 			<?php
 			// The honeypot: hidden from people, tempting to bots. A non-empty value on
 			// submit is treated as a bot and silently faked as success server-side.
 			?>
-			<div class="tiermint-password-reset-form__hp" aria-hidden="true">
-				<label for="tiermint-reset-website"><?php echo esc_html__( 'Leave this field empty', 'tiermint' ); ?></label>
-				<input type="text" id="tiermint-reset-website" name="<?php echo esc_attr( $data['honeypot_field'] ); ?>" tabindex="-1" autocomplete="off" />
+			<div class="releasecart-password-reset-form__hp" aria-hidden="true">
+				<label for="releasecart-reset-website"><?php echo esc_html__( 'Leave this field empty', 'releasecart' ); ?></label>
+				<input type="text" id="releasecart-reset-website" name="<?php echo esc_attr( $data['honeypot_field'] ); ?>" tabindex="-1" autocomplete="off" />
 			</div>
 
-			<p class="tiermint-password-reset-form__submit">
-				<button type="submit" class="tiermint-button tiermint-button--primary"><?php echo esc_html__( 'Send reset link', 'tiermint' ); ?></button>
+			<p class="releasecart-password-reset-form__submit">
+				<button type="submit" class="releasecart-button releasecart-button--primary"><?php echo esc_html__( 'Send reset link', 'releasecart' ); ?></button>
 			</p>
 		</form>
 

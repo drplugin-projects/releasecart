@@ -2,12 +2,12 @@
 /**
  * Plugin deactivation handler.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Core;
+namespace DrPlugin\WP\ReleaseCart\Core;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -32,11 +32,11 @@ final class Deactivator {
 	 */
 	public function deactivate(): void {
 		// These jobs reschedule on the next activation.
-		as_unschedule_all_actions( \DrPlugin\WP\TierMint\Licensing\LicensingListener::EXPIRY_HOOK, array(), 'tiermint' );
-		as_unschedule_all_actions( \DrPlugin\WP\TierMint\Jobs\ActionSchedulerPruner::PRUNE_HOOK, array(), 'tiermint' );
-		as_unschedule_all_actions( \DrPlugin\WP\TierMint\Jobs\AbandonedOrdersSweep::SWEEP_HOOK, array(), 'tiermint' );
+		as_unschedule_all_actions( \DrPlugin\WP\ReleaseCart\Licensing\LicensingListener::EXPIRY_HOOK, array(), 'releasecart' );
+		as_unschedule_all_actions( \DrPlugin\WP\ReleaseCart\Jobs\ActionSchedulerPruner::PRUNE_HOOK, array(), 'releasecart' );
+		as_unschedule_all_actions( \DrPlugin\WP\ReleaseCart\Jobs\AbandonedOrdersSweep::SWEEP_HOOK, array(), 'releasecart' );
 
 		// Rebuild product rewrites after the next activation.
-		\DrPlugin\WP\TierMint\Frontend\ProductRewrites::clearOnDeactivate();
+		\DrPlugin\WP\ReleaseCart\Frontend\ProductRewrites::clearOnDeactivate();
 	}
 }

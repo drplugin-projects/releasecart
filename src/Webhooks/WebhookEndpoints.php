@@ -2,18 +2,18 @@
 /**
  * Outbound webhook endpoint configuration store.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Webhooks;
+namespace DrPlugin\WP\ReleaseCart\Webhooks;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Util\Crypto;
-use DrPlugin\WP\TierMint\Util\CryptoException;
+use DrPlugin\WP\ReleaseCart\Util\Crypto;
+use DrPlugin\WP\ReleaseCart\Util\CryptoException;
 
 /**
  * Store outbound webhook endpoints and encrypted signing secrets.
@@ -27,14 +27,14 @@ class WebhookEndpoints {
 	 *
 	 * @var string
 	 */
-	private const SETTINGS_OPTION = 'tiermint_settings';
+	private const SETTINGS_OPTION = 'releasecart_settings';
 
 	/**
 	 * Option-name prefix for per-endpoint encrypted signing secrets.
 	 *
 	 * @var string
 	 */
-	private const SECRET_OPTION_PREFIX = 'tiermint_secret_webhook_';
+	private const SECRET_OPTION_PREFIX = 'releasecart_secret_webhook_';
 
 	/**
 	 * Core event catalog, extended by the webhook-events filter.
@@ -80,7 +80,7 @@ class WebhookEndpoints {
 		 *
 		 * @param array<int, string> $events Allowed event names.
 		 */
-		$events = apply_filters( 'tiermint_webhook_events', self::DEFAULT_EVENTS );
+		$events = apply_filters( 'releasecart_webhook_events', self::DEFAULT_EVENTS );
 
 		$clean = array();
 		foreach ( (array) $events as $event ) {
@@ -145,7 +145,7 @@ class WebhookEndpoints {
 		$events = $this->validateEvents( $events );
 
 		$id     = 'whe_' . bin2hex( random_bytes( 8 ) );
-		$secret = 'tmwh_' . bin2hex( random_bytes( 24 ) );
+		$secret = 'rcwh_' . bin2hex( random_bytes( 24 ) );
 
 		$endpoint = array(
 			'id'         => $id,
@@ -312,7 +312,7 @@ class WebhookEndpoints {
 
 		if ( '' === $clean ) {
 			throw new WebhookValidationException(
-				esc_html__( 'The webhook URL must be a valid http or https URL.', 'tiermint' )
+				esc_html__( 'The webhook URL must be a valid http or https URL.', 'releasecart' )
 			);
 		}
 
@@ -333,7 +333,7 @@ class WebhookEndpoints {
 		foreach ( $events as $event ) {
 			if ( ! is_string( $event ) || ! in_array( $event, $catalog, true ) ) {
 				throw new WebhookValidationException(
-					esc_html__( 'One or more webhook events are not recognized.', 'tiermint' )
+					esc_html__( 'One or more webhook events are not recognized.', 'releasecart' )
 				);
 			}
 
@@ -342,7 +342,7 @@ class WebhookEndpoints {
 
 		if ( array() === $clean ) {
 			throw new WebhookValidationException(
-				esc_html__( 'A webhook endpoint must subscribe to at least one event.', 'tiermint' )
+				esc_html__( 'A webhook endpoint must subscribe to at least one event.', 'releasecart' )
 			);
 		}
 
@@ -355,7 +355,7 @@ class WebhookEndpoints {
 	 * @return string The message.
 	 */
 	private function unknownEndpointMessage(): string {
-		return __( 'That webhook endpoint is not registered.', 'tiermint' );
+		return __( 'That webhook endpoint is not registered.', 'releasecart' );
 	}
 
 	/**

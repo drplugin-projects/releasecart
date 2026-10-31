@@ -2,19 +2,19 @@
 /**
  * Releases repository: the only Updates class that touches the releases table.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Updates;
+namespace DrPlugin\WP\ReleaseCart\Updates;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use DrPlugin\WP\TierMint\Database\Schema;
+use DrPlugin\WP\ReleaseCart\Database\Schema;
 
 /**
  * Repository for release rows and release caches.
@@ -30,7 +30,7 @@ class ReleaseRepository {
 	 *
 	 * @var string
 	 */
-	private const CACHE_GROUP = 'tiermint';
+	private const CACHE_GROUP = 'releasecart';
 
 	/**
 	 * The WordPress database abstraction.

@@ -4,19 +4,19 @@
  *
  * Uses the shared purchase form for consistent tier selection and cart actions.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  *
  * @var array<string, mixed> $data Purchase-form data.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$tiermint_form = ( isset( $data ) && is_array( $data ) ) ? $data : array();
+$releasecart_form = ( isset( $data ) && is_array( $data ) ) ? $data : array();
 
-if ( empty( $tiermint_form['has_tiers'] ) ) {
+if ( empty( $releasecart_form['has_tiers'] ) ) {
 	return;
 }
 ?>
-<div class="tiermint-component tiermint-product-pricing-tiers">
-	<?php require TIERMINT_PATH . 'templates/components/partials/product-purchase-form.php'; ?>
+<div class="releasecart-component releasecart-product-pricing-tiers">
+	<?php require RELEASECART_PATH . 'templates/components/partials/product-purchase-form.php'; ?>
 </div>

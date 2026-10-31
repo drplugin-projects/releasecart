@@ -1,10 +1,10 @@
 <?php
 /**
- * Adds WordPress updates for a TierMint product.
+ * Adds WordPress updates for a ReleaseCart product.
  *
  * Rename the class when another bundled copy can load.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 // Block direct access.
@@ -13,28 +13,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Allow another bundled copy to load first.
-if ( ! class_exists( 'TierMint_Update_Client' ) ) {
+if ( ! class_exists( 'ReleaseCart_Update_Client' ) ) {
 
 	/**
-	 * Connects a plugin to the TierMint update API.
+	 * Connects a plugin to the ReleaseCart update API.
 	 *
 	 * @since 1.0.0
 	 */
-	class TierMint_Update_Client {
+	class ReleaseCart_Update_Client {
 
 		/**
 		 * Transient key prefix for the 12-hour freshness cache.
 		 *
 		 * @var string
 		 */
-		const CACHE_PREFIX = 'tiermint_uc_';
+		const CACHE_PREFIX = 'releasecart_uc_';
 
 		/**
 		 * Transient key prefix for the 72-hour last-known-good grace store.
 		 *
 		 * @var string
 		 */
-		const GRACE_PREFIX = 'tiermint_ucg_';
+		const GRACE_PREFIX = 'releasecart_ucg_';
 
 		/**
 		 * Freshness window in hours: within it, no network call is made.
@@ -107,12 +107,12 @@ if ( ! class_exists( 'TierMint_Update_Client' ) ) {
 		 * @param array $options {
 		 *     Configuration.
 		 *
-		 *     @type string $api_url      The store's `tiermint/v1` REST base URL.
+		 *     @type string $api_url      The store's `releasecart/v1` REST base URL.
 		 *     @type string $product_slug The product's catalog slug.
 		 *     @type string $plugin_file  The host plugin's `__FILE__`.
 		 *     @type string $license_key  The license key credential (optional; empty allowed).
 		 *     @type string $channel      The release channel to ask for (optional). A store that
-		 *                                runs TierMint Pro reads it; other stores ignore it.
+		 *                                runs ReleaseCart Pro reads it; other stores ignore it.
 		 * }
 		 */
 		public function __construct( array $options ) {
@@ -260,7 +260,7 @@ if ( ! class_exists( 'TierMint_Update_Client' ) ) {
 
 			if ( ! is_array( $payload ) || ! isset( $payload['package'] ) || '' === (string) $payload['package'] ) {
 				return new WP_Error(
-					'tiermint_no_fresh_package',
+					'releasecart_no_fresh_package',
 					'Could not refresh the download link for this update. Please try updating again.'
 				);
 			}
@@ -273,7 +273,7 @@ if ( ! class_exists( 'TierMint_Update_Client' ) ) {
 
 			if ( is_wp_error( $file ) ) {
 				return new WP_Error(
-					'tiermint_download_failed',
+					'releasecart_download_failed',
 					'The update package could not be downloaded. Please try updating again.'
 				);
 			}
@@ -459,7 +459,7 @@ if ( ! class_exists( 'TierMint_Update_Client' ) ) {
 			 *
 			 * @param int $hours The grace window in hours. Default 72.
 			 */
-			$hours = (int) apply_filters( 'tiermint_client_grace_hours', self::DEFAULT_GRACE_HOURS );
+			$hours = (int) apply_filters( 'releasecart_client_grace_hours', self::DEFAULT_GRACE_HOURS );
 
 			if ( $hours < 0 ) {
 				$hours = 0;

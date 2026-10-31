@@ -2,18 +2,18 @@
 /**
  * Plugin activation handler.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Core;
+namespace DrPlugin\WP\ReleaseCart\Core;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Database\Migrator;
-use DrPlugin\WP\TierMint\Frontend\ProductRewrites;
+use DrPlugin\WP\ReleaseCart\Database\Migrator;
+use DrPlugin\WP\ReleaseCart\Frontend\ProductRewrites;
 
 /**
  * Runs pending migrations and seeds missing defaults on activation.
@@ -57,8 +57,8 @@ final class Activator {
 		Capabilities::ensure();
 
 		// Never replace existing settings on reactivation.
-		if ( get_option( 'tiermint_settings' ) === false ) {
-			add_option( 'tiermint_settings', $this->defaultSettings() );
+		if ( get_option( 'releasecart_settings' ) === false ) {
+			add_option( 'releasecart_settings', $this->defaultSettings() );
 		}
 
 		// Provision pages on init, after post types and blocks load.
@@ -73,7 +73,7 @@ final class Activator {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return array<string, mixed> Default TierMint settings.
+	 * @return array<string, mixed> Default ReleaseCart settings.
 	 */
 	private function defaultSettings(): array {
 		return array(

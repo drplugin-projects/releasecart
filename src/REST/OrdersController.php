@@ -2,30 +2,30 @@
 /**
  * REST controller for the Orders management resource.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Customers\Customer;
-use DrPlugin\WP\TierMint\Orders\Order;
-use DrPlugin\WP\TierMint\Orders\OrderBuyers;
-use DrPlugin\WP\TierMint\Orders\OrderException;
-use DrPlugin\WP\TierMint\Orders\OrderItem;
-use DrPlugin\WP\TierMint\Orders\OrderNotFoundException;
-use DrPlugin\WP\TierMint\Orders\OrderPersistenceException;
-use DrPlugin\WP\TierMint\Orders\OrderService;
-use DrPlugin\WP\TierMint\Orders\OrderStatus;
-use DrPlugin\WP\TierMint\Orders\OrderValidationException;
-use DrPlugin\WP\TierMint\Payments\GatewayConfigurationException;
-use DrPlugin\WP\TierMint\Payments\PaymentException;
-use DrPlugin\WP\TierMint\Payments\RefundCoordinator;
-use DrPlugin\WP\TierMint\Payments\RefundLockException;
+use DrPlugin\WP\ReleaseCart\Customers\Customer;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Orders\OrderBuyers;
+use DrPlugin\WP\ReleaseCart\Orders\OrderException;
+use DrPlugin\WP\ReleaseCart\Orders\OrderItem;
+use DrPlugin\WP\ReleaseCart\Orders\OrderNotFoundException;
+use DrPlugin\WP\ReleaseCart\Orders\OrderPersistenceException;
+use DrPlugin\WP\ReleaseCart\Orders\OrderService;
+use DrPlugin\WP\ReleaseCart\Orders\OrderStatus;
+use DrPlugin\WP\ReleaseCart\Orders\OrderValidationException;
+use DrPlugin\WP\ReleaseCart\Payments\GatewayConfigurationException;
+use DrPlugin\WP\ReleaseCart\Payments\PaymentException;
+use DrPlugin\WP\ReleaseCart\Payments\RefundCoordinator;
+use DrPlugin\WP\ReleaseCart\Payments\RefundLockException;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -151,7 +151,7 @@ final class OrdersController extends AbstractRestController {
 
 		// Prime metadata once for the page.
 		if ( array() !== $orders ) {
-			update_meta_cache( 'tiermint_order', array_map( static fn ( Order $order ): int => (int) $order->id(), $orders ) );
+			update_meta_cache( 'releasecart_order', array_map( static fn ( Order $order ): int => (int) $order->id(), $orders ) );
 		}
 
 		$response = new WP_REST_Response( $this->presentCollection( $orders ), 200 );
@@ -233,29 +233,29 @@ final class OrdersController extends AbstractRestController {
 			return $this->invalidParams( $e->getErrors() );
 		} catch ( OrderPersistenceException $e ) {
 			// Do not expose database details.
-			return $this->serverError( __( 'The refund could not be completed. Please try again.', 'tiermint' ) );
+			return $this->serverError( __( 'The refund could not be completed. Please try again.', 'releasecart' ) );
 		} catch ( OrderException $e ) {
 			// Other domain errors are invalid input.
 			return $this->invalidParams( array( $e->getMessage() ) );
 		} catch ( RefundLockException $e ) {
 			// A concurrent refund holds the order lock.
 			return $this->error(
-				'tiermint_refund_in_progress',
-				__( 'Another refund for this order is currently being processed. Please try again in a moment.', 'tiermint' ),
+				'releasecart_refund_in_progress',
+				__( 'Another refund for this order is currently being processed. Please try again in a moment.', 'releasecart' ),
 				409
 			);
 		} catch ( GatewayConfigurationException $e ) {
 			// The gateway rejected its configuration before the request.
 			return $this->error(
-				'tiermint_gateway_not_configured',
-				__( 'The payment gateway is not configured, so the refund was not attempted. Nothing was charged or refunded.', 'tiermint' ),
+				'releasecart_gateway_not_configured',
+				__( 'The payment gateway is not configured, so the refund was not attempted. Nothing was charged or refunded.', 'releasecart' ),
 				502
 			);
 		} catch ( PaymentException $e ) {
 			// The gateway result is uncertain. The webhook reconciles a completed refund.
 			return $this->error(
-				'tiermint_gateway_error',
-				__( 'The payment gateway did not confirm the refund. The money may or may not have moved; check the order and your gateway dashboard before trying again.', 'tiermint' ),
+				'releasecart_gateway_error',
+				__( 'The payment gateway did not confirm the refund. The money may or may not have moved; check the order and your gateway dashboard before trying again.', 'releasecart' ),
 				502
 			);
 		}
@@ -273,7 +273,7 @@ final class OrdersController extends AbstractRestController {
 	private function collectionArgs(): array {
 		return array(
 			'page'        => array(
-				'description'       => __( 'Current page of the collection.', 'tiermint' ),
+				'description'       => __( 'Current page of the collection.', 'releasecart' ),
 				'type'              => 'integer',
 				'default'           => 1,
 				'minimum'           => 1,
@@ -281,7 +281,7 @@ final class OrdersController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'per_page'    => array(
-				'description'       => __( 'Maximum number of items to return per page.', 'tiermint' ),
+				'description'       => __( 'Maximum number of items to return per page.', 'releasecart' ),
 				'type'              => 'integer',
 				'default'           => 10,
 				'minimum'           => 1,
@@ -290,34 +290,34 @@ final class OrdersController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'search'      => array(
-				'description'       => __( 'Limit results to those matching an email or order id.', 'tiermint' ),
+				'description'       => __( 'Limit results to those matching an email or order id.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'status'      => array(
-				'description'       => __( 'Limit results to a single order status.', 'tiermint' ),
+				'description'       => __( 'Limit results to a single order status.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => $this->statusValues(),
 				'sanitize_callback' => 'sanitize_key',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'customer_id' => array(
-				'description'       => __( 'Limit results to a single customer.', 'tiermint' ),
+				'description'       => __( 'Limit results to a single customer.', 'releasecart' ),
 				'type'              => 'integer',
 				'minimum'           => 1,
 				'sanitize_callback' => 'absint',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'product_id'  => array(
-				'description'       => __( 'Limit results to orders holding a line item for a product.', 'tiermint' ),
+				'description'       => __( 'Limit results to orders holding a line item for a product.', 'releasecart' ),
 				'type'              => 'integer',
 				'minimum'           => 1,
 				'sanitize_callback' => 'absint',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'orderby'     => array(
-				'description'       => __( 'Sort collection by order attribute.', 'tiermint' ),
+				'description'       => __( 'Sort collection by order attribute.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'id', 'created_at', 'total' ),
 				'default'           => 'created_at',
@@ -325,7 +325,7 @@ final class OrdersController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'order'       => array(
-				'description'       => __( 'Order sort attribute ascending or descending.', 'tiermint' ),
+				'description'       => __( 'Order sort attribute ascending or descending.', 'releasecart' ),
 				'type'              => 'string',
 				'enum'              => array( 'asc', 'desc' ),
 				'default'           => 'desc',
@@ -345,7 +345,7 @@ final class OrdersController extends AbstractRestController {
 	private function refundArgs(): array {
 		return array(
 			'amount'          => array(
-				'description'       => __( 'Amount to refund, in the minor units of the order currency.', 'tiermint' ),
+				'description'       => __( 'Amount to refund, in the minor units of the order currency.', 'releasecart' ),
 				'type'              => 'integer',
 				'required'          => true,
 				'minimum'           => 1,
@@ -353,7 +353,7 @@ final class OrdersController extends AbstractRestController {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'idempotency_key' => array(
-				'description'       => __( 'Optional per-refund key so two deliberate identical refunds are distinct at the gateway. Omit to use the server default (which replays an identical amount).', 'tiermint' ),
+				'description'       => __( 'Optional per-refund key so two deliberate identical refunds are distinct at the gateway. Omit to use the server default (which replays an identical amount).', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
@@ -371,7 +371,7 @@ final class OrdersController extends AbstractRestController {
 	private function idArgs(): array {
 		return array(
 			'id' => array(
-				'description'       => __( 'Unique order identifier.', 'tiermint' ),
+				'description'       => __( 'Unique order identifier.', 'releasecart' ),
 				'type'              => 'integer',
 				'required'          => true,
 				'sanitize_callback' => 'absint',
@@ -448,7 +448,7 @@ final class OrdersController extends AbstractRestController {
 			return null;
 		}
 
-		$value = get_metadata( 'tiermint_order', $id, $key, true );
+		$value = get_metadata( 'releasecart_order', $id, $key, true );
 
 		return '' === $value ? null : $value;
 	}

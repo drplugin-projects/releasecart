@@ -2,17 +2,17 @@
 /**
  * Products repository: the only Products class that touches $wpdb.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Products;
+namespace DrPlugin\WP\ReleaseCart\Products;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Database\Schema;
+use DrPlugin\WP\ReleaseCart\Database\Schema;
 
 /**
  * Stores products, prices and bundle items.
@@ -28,7 +28,7 @@ class ProductRepository {
 	 *
 	 * @var string
 	 */
-	private const CACHE_GROUP = 'tiermint_products';
+	private const CACHE_GROUP = 'releasecart_products';
 
 	/**
 	 * The WordPress database abstraction.
@@ -213,7 +213,7 @@ class ProductRepository {
 
 		if ( null === $id ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new ProductException( __( 'Cannot update a product that has no id.', 'tiermint' ) );
+			throw new ProductException( __( 'Cannot update a product that has no id.', 'releasecart' ) );
 		}
 
 		$row          = $product->toRow();
@@ -378,7 +378,7 @@ class ProductRepository {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array<int, object> $rows The `tiermint_products` rows on this page.
+	 * @param array<int, object> $rows The `releasecart_products` rows on this page.
 	 * @return array<int, Product> The hydrated products, in the order given.
 	 */
 	private function hydratePage( array $rows ): array {
@@ -455,7 +455,7 @@ class ProductRepository {
 		 *
 		 * @param array<string, mixed> $args The product-query args about to build SQL.
 		 */
-		return (array) apply_filters( 'tiermint_product_query_args', $args );
+		return (array) apply_filters( 'releasecart_product_query_args', $args );
 	}
 
 	/**
@@ -464,7 +464,7 @@ class ProductRepository {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param object $row A `tiermint_products` row.
+	 * @param object $row A `releasecart_products` row.
 	 * @return Product The hydrated product.
 	 */
 	private function hydrate( object $row ): Product {
@@ -1020,7 +1020,7 @@ class ProductRepository {
 	}
 
 	/**
-	 * The fully-qualified `tiermint_products` table name.
+	 * The fully-qualified `releasecart_products` table name.
 	 *
 	 * @since 1.0.0
 	 *
@@ -1031,7 +1031,7 @@ class ProductRepository {
 	}
 
 	/**
-	 * The fully-qualified `tiermint_product_prices` table name.
+	 * The fully-qualified `releasecart_product_prices` table name.
 	 *
 	 * @since 1.0.0
 	 *
@@ -1042,7 +1042,7 @@ class ProductRepository {
 	}
 
 	/**
-	 * The fully-qualified `tiermint_bundle_items` table name.
+	 * The fully-qualified `releasecart_bundle_items` table name.
 	 *
 	 * @since 1.0.0
 	 *
@@ -1053,7 +1053,7 @@ class ProductRepository {
 	}
 
 	/**
-	 * The fully-qualified `tiermint_term_relationships` table name.
+	 * The fully-qualified `releasecart_term_relationships` table name.
 	 *
 	 * @since 1.0.0
 	 *
@@ -1064,7 +1064,7 @@ class ProductRepository {
 	}
 
 	/**
-	 * The fully-qualified `tiermint_terms` table name.
+	 * The fully-qualified `releasecart_terms` table name.
 	 *
 	 * @since 1.0.0
 	 *

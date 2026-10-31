@@ -2,18 +2,18 @@
 /**
  * Resolves storage providers by id.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Storage;
+namespace DrPlugin\WP\ReleaseCart\Storage;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Resolves providers from `tiermint_storage_providers`.
+ * Resolves providers from `releasecart_storage_providers`.
  * The provider map is cached for the request.
  *
  * @since 1.0.0
@@ -42,7 +42,7 @@ final class StorageManager {
 		 *
 		 * @param array<string, StorageProvider> $providers Provider map, 'local' => LocalStorage by default.
 		 */
-		$this->providers = apply_filters( 'tiermint_storage_providers', array( 'local' => $localStorage ) );
+		$this->providers = apply_filters( 'releasecart_storage_providers', array( 'local' => $localStorage ) );
 	}
 
 	/**

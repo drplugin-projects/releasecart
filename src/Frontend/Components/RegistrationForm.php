@@ -2,18 +2,18 @@
 /**
  * The registration-form front-end component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Frontend\AbstractComponent;
-use DrPlugin\WP\TierMint\Frontend\Kses;
-use DrPlugin\WP\TierMint\Frontend\PageResolver;
-use DrPlugin\WP\TierMint\Frontend\RegistrationActionListener;
-use DrPlugin\WP\TierMint\Frontend\RenderContext;
+use DrPlugin\WP\ReleaseCart\Frontend\AbstractComponent;
+use DrPlugin\WP\ReleaseCart\Frontend\Kses;
+use DrPlugin\WP\ReleaseCart\Frontend\PageResolver;
+use DrPlugin\WP\ReleaseCart\Frontend\RegistrationActionListener;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContext;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -68,15 +68,15 @@ class RegistrationForm extends AbstractComponent {
 			'show_name' => array(
 				'type'        => 'boolean',
 				'default'     => true,
-				'label'       => __( 'Show the name field', 'tiermint' ),
-				'description' => __( 'Collect an optional display name alongside the email.', 'tiermint' ),
+				'label'       => __( 'Show the name field', 'releasecart' ),
+				'description' => __( 'Collect an optional display name alongside the email.', 'releasecart' ),
 				'control'     => 'toggle',
 			),
 			'login_url' => array(
 				'type'        => 'string',
 				'default'     => '',
-				'label'       => __( 'Sign-in URL', 'tiermint' ),
-				'description' => __( 'Where the "already have an account" link points. Falls back to the sign-in page.', 'tiermint' ),
+				'label'       => __( 'Sign-in URL', 'releasecart' ),
+				'description' => __( 'Where the "already have an account" link points. Falls back to the sign-in page.', 'releasecart' ),
 				'control'     => 'url',
 			),
 		);
@@ -196,10 +196,10 @@ class RegistrationForm extends AbstractComponent {
 		}
 
 		$messages = array(
-			'invalid'   => __( 'We could not complete your registration. Please check your details and try again.', 'tiermint' ),
-			'failed'    => __( 'Something went wrong. Please try again.', 'tiermint' ),
-			'closed'    => __( 'Registration is currently closed.', 'tiermint' ),
-			'throttled' => __( 'Too many attempts. Please wait a few minutes and try again.', 'tiermint' ),
+			'invalid'   => __( 'We could not complete your registration. Please check your details and try again.', 'releasecart' ),
+			'failed'    => __( 'Something went wrong. Please try again.', 'releasecart' ),
+			'closed'    => __( 'Registration is currently closed.', 'releasecart' ),
+			'throttled' => __( 'Too many attempts. Please wait a few minutes and try again.', 'releasecart' ),
 		);
 
 		return array(

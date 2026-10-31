@@ -2,27 +2,27 @@
 /**
  * Update-check payload service.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Updates;
+namespace DrPlugin\WP\ReleaseCart\Updates;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use DrPlugin\WP\TierMint\Licensing\LicensePersistenceException;
-use DrPlugin\WP\TierMint\Licensing\LicenseRepository;
-use DrPlugin\WP\TierMint\Licensing\LicenseValidationService;
-use DrPlugin\WP\TierMint\Licensing\SiteUrlNormalizer;
-use DrPlugin\WP\TierMint\Licensing\ValidationResult;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductNotFoundException;
-use DrPlugin\WP\TierMint\Products\ProductRepository;
-use DrPlugin\WP\TierMint\Products\ProductStatus;
+use DrPlugin\WP\ReleaseCart\Licensing\LicensePersistenceException;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseRepository;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseValidationService;
+use DrPlugin\WP\ReleaseCart\Licensing\SiteUrlNormalizer;
+use DrPlugin\WP\ReleaseCart\Licensing\ValidationResult;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductNotFoundException;
+use DrPlugin\WP\ReleaseCart\Products\ProductRepository;
+use DrPlugin\WP\ReleaseCart\Products\ProductStatus;
 
 /**
  * Builds update-check responses.
@@ -69,8 +69,8 @@ class UpdateService {
 	 * @param string|null            $installedVersion The client's installed version, for the update_available verdict.
 	 * @param DateTimeImmutable|null $now              The check instant (tests inject).
 	 * @param array<string, mixed>   $params           The request's arguments as received, passed to the
-	 *                                                 `tiermint_update_check_release` filter.
-	 * @return array<string, mixed> The assembled payload, after the `tiermint_update_check_response` filter.
+	 *                                                 `releasecart_update_check_release` filter.
+	 * @return array<string, mixed> The assembled payload, after the `releasecart_update_check_response` filter.
 	 *
 	 * @throws ProductNotFoundException    When no product carries the slug, or the product is not
 	 *                                     published and the key is not valid for it (controller: generic 404).
@@ -115,7 +115,7 @@ class UpdateService {
 		 *                                      (ValidationResult).
 		 */
 		$release = apply_filters(
-			'tiermint_update_check_release',
+			'releasecart_update_check_release',
 			$latest,
 			array(
 				'product'           => $product,
@@ -139,7 +139,7 @@ class UpdateService {
 		 *                                      (string|null), `installed_version` (string|null).
 		 */
 		return apply_filters(
-			'tiermint_update_check_response',
+			'releasecart_update_check_response',
 			$payload,
 			array(
 				'product'           => $product,
@@ -198,8 +198,8 @@ class UpdateService {
 
 		if ( ! $result->isValid() ) {
 			$payload['upgrade_notice'] = 'expired' === $result->status()
-				? __( 'Your license has expired. To receive this update, buy a new license and use its key.', 'tiermint' )
-				: __( 'A valid license is required to receive this update.', 'tiermint' );
+				? __( 'Your license has expired. To receive this update, buy a new license and use its key.', 'releasecart' )
+				: __( 'A valid license is required to receive this update.', 'releasecart' );
 
 			return $payload;
 		}

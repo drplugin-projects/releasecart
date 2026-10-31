@@ -1,5 +1,5 @@
 /**
- * TierMint product screenshots modal gallery.
+ * ReleaseCart product screenshots modal gallery.
  *
  * Add an accessible modal gallery to screenshot links.
  */
@@ -21,19 +21,19 @@ const FALLBACK = {
 function readLabels( container ) {
 	return {
 		close:
-			container.getAttribute( 'data-tiermint-lightbox-close' ) ||
+			container.getAttribute( 'data-releasecart-lightbox-close' ) ||
 			FALLBACK.close,
 		prev:
-			container.getAttribute( 'data-tiermint-gallery-prev' ) ||
+			container.getAttribute( 'data-releasecart-gallery-prev' ) ||
 			FALLBACK.prev,
 		next:
-			container.getAttribute( 'data-tiermint-gallery-next' ) ||
+			container.getAttribute( 'data-releasecart-gallery-next' ) ||
 			FALLBACK.next,
 		label:
-			container.getAttribute( 'data-tiermint-gallery-label' ) ||
+			container.getAttribute( 'data-releasecart-gallery-label' ) ||
 			FALLBACK.label,
 		counter:
-			container.getAttribute( 'data-tiermint-gallery-counter' ) ||
+			container.getAttribute( 'data-releasecart-gallery-counter' ) ||
 			FALLBACK.counter,
 	};
 }
@@ -47,7 +47,7 @@ function readLabels( container ) {
 function buildGallery( container ) {
 	const linkEls = Array.prototype.slice.call(
 		container.querySelectorAll(
-			'.tiermint-product-screenshots__link[data-tiermint-lightbox]'
+			'.releasecart-product-screenshots__link[data-releasecart-lightbox]'
 		)
 	);
 
@@ -62,7 +62,7 @@ function buildGallery( container ) {
 			link,
 			src: link.getAttribute( 'href' ),
 			alt: img ? img.getAttribute( 'alt' ) || '' : '',
-			caption: link.getAttribute( 'data-tiermint-caption' ) || '',
+			caption: link.getAttribute( 'data-releasecart-caption' ) || '',
 		};
 	} );
 
@@ -104,36 +104,36 @@ function ensureModal() {
 	// The overlay mounts on the body, outside the gallery root, so it carries the
 	// component class itself to pick up the shared reset (font, box-sizing, links).
 	overlay.className =
-		'tiermint-component tiermint-product-screenshots__modal';
+		'releasecart-component releasecart-product-screenshots__modal';
 	overlay.setAttribute( 'role', 'dialog' );
 	overlay.setAttribute( 'aria-modal', 'true' );
 	overlay.hidden = true;
 
 	const closeButton = makeButton(
-		'tiermint-product-screenshots__modal-close'
+		'releasecart-product-screenshots__modal-close'
 	);
 	const prevButton = makeButton(
-		'tiermint-product-screenshots__modal-nav tiermint-product-screenshots__modal-prev'
+		'releasecart-product-screenshots__modal-nav releasecart-product-screenshots__modal-prev'
 	);
 	const nextButton = makeButton(
-		'tiermint-product-screenshots__modal-nav tiermint-product-screenshots__modal-next'
+		'releasecart-product-screenshots__modal-nav releasecart-product-screenshots__modal-next'
 	);
 
 	const figure = document.createElement( 'figure' );
-	figure.className = 'tiermint-product-screenshots__modal-figure';
+	figure.className = 'releasecart-product-screenshots__modal-figure';
 
 	const image = document.createElement( 'img' );
-	image.className = 'tiermint-product-screenshots__modal-image';
+	image.className = 'releasecart-product-screenshots__modal-image';
 	image.alt = '';
 
 	const meta = document.createElement( 'figcaption' );
-	meta.className = 'tiermint-product-screenshots__modal-meta';
+	meta.className = 'releasecart-product-screenshots__modal-meta';
 
 	const counter = document.createElement( 'span' );
-	counter.className = 'tiermint-product-screenshots__modal-counter';
+	counter.className = 'releasecart-product-screenshots__modal-counter';
 
 	const caption = document.createElement( 'span' );
-	caption.className = 'tiermint-product-screenshots__modal-caption';
+	caption.className = 'releasecart-product-screenshots__modal-caption';
 
 	meta.appendChild( counter );
 	meta.appendChild( caption );
@@ -327,7 +327,7 @@ function ensureModal() {
  */
 function init() {
 	const containers = Array.prototype.slice.call(
-		document.querySelectorAll( '.tiermint-product-screenshots' )
+		document.querySelectorAll( '.releasecart-product-screenshots' )
 	);
 
 	containers.forEach( ( container ) => {

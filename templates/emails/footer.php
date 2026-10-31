@@ -2,16 +2,16 @@
 /**
  * Email footer partial.
  *
- * Theme override: {theme}/tiermint/emails/footer.php.
+ * Theme override: {theme}/releasecart/emails/footer.php.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  *
  * @var array<string, mixed> $data View data.
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$tiermint_store_name = (string) ( $data['store_name'] ?? '' );
+$releasecart_store_name = (string) ( $data['store_name'] ?? '' );
 ?>
 						</td>
 					</tr>
@@ -22,8 +22,8 @@ $tiermint_store_name = (string) ( $data['store_name'] ?? '' );
 								echo esc_html(
 									sprintf(
 										/* translators: %s: the store name. */
-										__( 'This message was sent by %s regarding your order.', 'tiermint' ),
-										$tiermint_store_name
+										__( 'This message was sent by %s regarding your order.', 'releasecart' ),
+										$releasecart_store_name
 									)
 								);
 								?>

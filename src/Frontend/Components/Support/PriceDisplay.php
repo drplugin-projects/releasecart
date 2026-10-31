@@ -2,14 +2,14 @@
 /**
  * The one seam that renders a catalog price node, plain or struck through.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components\Support;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components\Support;
 
-use DrPlugin\WP\TierMint\Util\Money;
+use DrPlugin\WP\ReleaseCart\Util\Money;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -69,7 +69,7 @@ final class PriceDisplay {
 		 *
 		 * @param string $note The note. Default ''.
 		 */
-		$note = apply_filters( 'tiermint_price_note', '' );
+		$note = apply_filters( 'releasecart_price_note', '' );
 
 		return is_string( $note ) && '' !== $note ? wp_strip_all_tags( $note ) : '';
 	}
@@ -92,7 +92,7 @@ final class PriceDisplay {
 		}
 
 		return sprintf(
-			'<span class="tiermint-price"><span class="tiermint-price__amount">%s</span> <span class="tiermint-price__note">%s</span></span>',
+			'<span class="releasecart-price"><span class="releasecart-price__amount">%s</span> <span class="releasecart-price__note">%s</span></span>',
 			esc_html( $amount ),
 			esc_html( $note )
 		);
@@ -109,13 +109,13 @@ final class PriceDisplay {
 	 * @return string The rendered pair markup.
 	 */
 	private static function pair( string $was, string $now, string $note ): string {
-		$tiermint_was  = $was;
-		$tiermint_now  = $now;
-		$tiermint_note = $note;
+		$releasecart_was  = $was;
+		$releasecart_now  = $now;
+		$releasecart_note = $note;
 
 		ob_start();
 		// Keep the shared markup outside theme overrides.
-		require TIERMINT_PATH . 'templates/components/partials/price.php';
+		require RELEASECART_PATH . 'templates/components/partials/price.php';
 
 		return (string) ob_get_clean();
 	}

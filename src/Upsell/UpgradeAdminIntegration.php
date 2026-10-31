@@ -1,22 +1,22 @@
 <?php
 /**
- * The "TierMint Pro" entry in the TierMint admin menu.
+ * The "ReleaseCart Pro" entry in the ReleaseCart admin menu.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Upsell;
+namespace DrPlugin\WP\ReleaseCart\Upsell;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Capabilities;
-use DrPlugin\WP\TierMint\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Core\Capabilities;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
 
 /**
- * Adds a "TierMint Pro" submenu that opens the in-SPA upgrade screen.
+ * Adds a "ReleaseCart Pro" submenu that opens the in-SPA upgrade screen.
  *
  * The entry shows only while Pro is absent. The filter is attached
  * unconditionally and reads the status when it fires, so the class stays
@@ -66,11 +66,11 @@ final class UpgradeAdminIntegration implements Hookable {
 	 * @return void
 	 */
 	public function hooks(): void {
-		add_filter( 'tiermint_admin_menu_items', array( $this, 'addMenuItem' ) );
+		add_filter( 'releasecart_admin_menu_items', array( $this, 'addMenuItem' ) );
 	}
 
 	/**
-	 * Append the "TierMint Pro" item, last, when Pro is absent.
+	 * Append the "ReleaseCart Pro" item, last, when Pro is absent.
 	 *
 	 * @since 1.0.0
 	 *
@@ -84,7 +84,7 @@ final class UpgradeAdminIntegration implements Hookable {
 
 		$items[] = array(
 			'id'    => self::ITEM_ID,
-			'title' => __( 'TierMint Pro', 'tiermint' ),
+			'title' => __( 'ReleaseCart Pro', 'releasecart' ),
 			'hash'  => self::HASH,
 			'cap'   => Capabilities::MANAGE,
 		);

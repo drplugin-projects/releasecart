@@ -2,21 +2,21 @@
 /**
  * Outbound webhook event dispatcher.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Webhooks;
+namespace DrPlugin\WP\ReleaseCart\Webhooks;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Customers\Customer;
-use DrPlugin\WP\TierMint\Licensing\Activation;
-use DrPlugin\WP\TierMint\Licensing\License;
-use DrPlugin\WP\TierMint\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Customers\Customer;
+use DrPlugin\WP\ReleaseCart\Licensing\Activation;
+use DrPlugin\WP\ReleaseCart\Licensing\License;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
 
 /**
  * Queue one outbound webhook per subscribed endpoint.
@@ -30,7 +30,7 @@ class WebhookDispatcher implements Hookable {
 	 *
 	 * @var string
 	 */
-	public const JOB_HOOK = 'tiermint_job_send_webhook';
+	public const JOB_HOOK = 'releasecart_job_send_webhook';
 
 	/**
 	 * The registered endpoint store.
@@ -42,17 +42,17 @@ class WebhookDispatcher implements Hookable {
 	/**
 	 * Records contained enqueue failures.
 	 *
-	 * @var \DrPlugin\WP\TierMint\Database\Logger
+	 * @var \DrPlugin\WP\ReleaseCart\Database\Logger
 	 */
-	private \DrPlugin\WP\TierMint\Database\Logger $logger;
+	private \DrPlugin\WP\ReleaseCart\Database\Logger $logger;
 
 	/**
 	 * Wire the endpoint store and the audit logger.
 	 *
-	 * @param WebhookEndpoints                      $endpoints Registered endpoint configs.
-	 * @param \DrPlugin\WP\TierMint\Database\Logger $logger    Audit log writer for contained failures.
+	 * @param WebhookEndpoints                         $endpoints Registered endpoint configs.
+	 * @param \DrPlugin\WP\ReleaseCart\Database\Logger $logger    Audit log writer for contained failures.
 	 */
-	public function __construct( WebhookEndpoints $endpoints, \DrPlugin\WP\TierMint\Database\Logger $logger ) {
+	public function __construct( WebhookEndpoints $endpoints, \DrPlugin\WP\ReleaseCart\Database\Logger $logger ) {
 		$this->endpoints = $endpoints;
 		$this->logger    = $logger;
 	}
@@ -63,14 +63,14 @@ class WebhookDispatcher implements Hookable {
 	 * @return void
 	 */
 	public function hooks(): void {
-		add_action( 'tiermint_order_completed', array( $this, 'onOrderCompleted' ) );
-		add_action( 'tiermint_order_refunded', array( $this, 'onOrderRefunded' ), 10, 2 );
-		add_action( 'tiermint_license_generated', array( $this, 'onLicenseGenerated' ), 10, 2 );
-		add_action( 'tiermint_license_activated', array( $this, 'onLicenseActivated' ), 10, 2 );
-		add_action( 'tiermint_license_deactivated', array( $this, 'onLicenseDeactivated' ), 10, 2 );
-		add_action( 'tiermint_license_expired', array( $this, 'onLicenseExpired' ) );
-		add_action( 'tiermint_customer_created', array( $this, 'onCustomerCreated' ) );
-		add_action( 'tiermint_send_webhook', array( $this, 'onSendWebhook' ), 10, 2 );
+		add_action( 'releasecart_order_completed', array( $this, 'onOrderCompleted' ) );
+		add_action( 'releasecart_order_refunded', array( $this, 'onOrderRefunded' ), 10, 2 );
+		add_action( 'releasecart_license_generated', array( $this, 'onLicenseGenerated' ), 10, 2 );
+		add_action( 'releasecart_license_activated', array( $this, 'onLicenseActivated' ), 10, 2 );
+		add_action( 'releasecart_license_deactivated', array( $this, 'onLicenseDeactivated' ), 10, 2 );
+		add_action( 'releasecart_license_expired', array( $this, 'onLicenseExpired' ) );
+		add_action( 'releasecart_customer_created', array( $this, 'onCustomerCreated' ) );
+		add_action( 'releasecart_send_webhook', array( $this, 'onSendWebhook' ), 10, 2 );
 	}
 
 	/**
@@ -150,9 +150,9 @@ class WebhookDispatcher implements Hookable {
 	}
 
 	/**
-	 * Send an event an extension added through `tiermint_webhook_events`.
+	 * Send an event an extension added through `releasecart_webhook_events`.
 	 *
-	 * Listens on `tiermint_send_webhook`. A license or an order is snapshotted
+	 * Listens on `releasecart_send_webhook`. A license or an order is snapshotted
 	 * the way core's own events are; an array goes out as it is.
 	 *
 	 * @param mixed $event   The catalog event name.
@@ -225,7 +225,7 @@ class WebhookDispatcher implements Hookable {
 				as_enqueue_async_action(
 					self::JOB_HOOK,
 					array( $endpoint['id'], $event, 'whd_' . wp_generate_uuid4(), $body, 0 ),
-					'tiermint'
+					'releasecart'
 				);
 			} catch ( \Throwable $failure ) {
 				$this->logger->log(

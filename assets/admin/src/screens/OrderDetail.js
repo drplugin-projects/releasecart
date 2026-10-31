@@ -32,7 +32,7 @@ import { orderStatusLabel } from '../utils/orderStatus';
  */
 const BACK_TO_ORDERS = {
 	href: '#/orders',
-	label: __( 'Back to orders', 'tiermint' ),
+	label: __( 'Back to orders', 'releasecart' ),
 };
 
 /**
@@ -90,32 +90,32 @@ function refundErrorMessages( error ) {
 		return [];
 	}
 
-	const generic = __( 'The refund could not be processed.', 'tiermint' );
+	const generic = __( 'The refund could not be processed.', 'releasecart' );
 
 	switch ( error.code ) {
-		case 'tiermint_invalid_params': {
+		case 'releasecart_invalid_params': {
 			const fields = collectFieldMessages( error.errors );
 			return fields.length > 0 ? fields : [ error.message || generic ];
 		}
-		case 'tiermint_refund_in_progress':
+		case 'releasecart_refund_in_progress':
 			return [
 				__(
 					'Another refund for this order is still being recorded. Wait a moment and try again.',
-					'tiermint'
+					'releasecart'
 				),
 			];
-		case 'tiermint_gateway_not_configured':
+		case 'releasecart_gateway_not_configured':
 			return [
 				__(
 					'Nothing was charged or refunded: the payment gateway is not configured.',
-					'tiermint'
+					'releasecart'
 				),
 			];
-		case 'tiermint_gateway_error':
+		case 'releasecart_gateway_error':
 			return [
 				__(
 					"The payment gateway did not confirm this refund, so the money may or may not have moved. Do not retry it. The store reconciles the refund automatically when the gateway's webhook arrives.",
-					'tiermint'
+					'releasecart'
 				),
 			];
 		default:
@@ -131,9 +131,9 @@ function refundErrorMessages( error ) {
  */
 function typeLabel( type ) {
 	const map = {
-		purchase: __( 'Purchase', 'tiermint' ),
-		renewal: __( 'Renewal', 'tiermint' ),
-		refund: __( 'Refund', 'tiermint' ),
+		purchase: __( 'Purchase', 'releasecart' ),
+		renewal: __( 'Renewal', 'releasecart' ),
+		refund: __( 'Refund', 'releasecart' ),
 	};
 	return map[ type ] || type;
 }
@@ -229,7 +229,7 @@ function RefundModal( { order, orderId, onClose, onRefunded } ) {
 	const gatewayUncertain =
 		refund.isError &&
 		!! refund.error &&
-		refund.error.code === 'tiermint_gateway_error';
+		refund.error.code === 'releasecart_gateway_error';
 
 	/**
 	 * Submit the refund, minting a brand-new idempotency key for this click.
@@ -245,48 +245,48 @@ function RefundModal( { order, orderId, onClose, onRefunded } ) {
 
 	return (
 		<Modal
-			className="tiermint-modal tiermint-modal--confirm"
-			title={ __( 'Refund order', 'tiermint' ) }
+			className="releasecart-modal releasecart-modal--confirm"
+			title={ __( 'Refund order', 'releasecart' ) }
 			onRequestClose={ onClose }
 		>
 			{ phase === 'form' && (
-				<div className="tiermint-refund-form">
+				<div className="releasecart-refund-form">
 					<TextControl
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
 						type="number"
-						label={ __( 'Refund amount', 'tiermint' ) }
+						label={ __( 'Refund amount', 'releasecart' ) }
 						value={ amountInput }
 						onChange={ setAmountInput }
 						help={ sprintf(
 							/* translators: %s: ISO 4217 currency code. */
-							__( 'Amount to refund, in %s.', 'tiermint' ),
+							__( 'Amount to refund, in %s.', 'releasecart' ),
 							order.currency
 						) }
 					/>
-					<div className="tiermint-modal-actions">
+					<div className="releasecart-modal-actions">
 						<Button variant="tertiary" onClick={ onClose }>
-							{ __( 'Cancel', 'tiermint' ) }
+							{ __( 'Cancel', 'releasecart' ) }
 						</Button>
 						<Button
 							variant="primary"
 							disabled={ ! amountValid }
 							onClick={ () => setPhase( 'confirm' ) }
 						>
-							{ __( 'Review refund', 'tiermint' ) }
+							{ __( 'Review refund', 'releasecart' ) }
 						</Button>
 					</div>
 				</div>
 			) }
 
 			{ phase === 'confirm' && (
-				<div className="tiermint-refund-confirm">
-					<p className="tiermint-refund-restate">
+				<div className="releasecart-refund-confirm">
+					<p className="releasecart-refund-restate">
 						{ sprintf(
 							/* translators: 1: formatted amount, 2: ISO 4217 currency code. */
 							__(
 								'You are about to refund %1$s (%2$s) to the customer. This cannot be undone.',
-								'tiermint'
+								'releasecart'
 							),
 							formatMinor( minorUnits, order.currency ),
 							order.currency
@@ -303,13 +303,13 @@ function RefundModal( { order, orderId, onClose, onRefunded } ) {
 						</Notice>
 					) }
 
-					<div className="tiermint-modal-actions">
+					<div className="releasecart-modal-actions">
 						<Button
 							variant="tertiary"
 							disabled={ refund.isPending }
 							onClick={ () => setPhase( 'form' ) }
 						>
-							{ __( 'Back', 'tiermint' ) }
+							{ __( 'Back', 'releasecart' ) }
 						</Button>
 						<Button
 							variant="primary"
@@ -317,7 +317,7 @@ function RefundModal( { order, orderId, onClose, onRefunded } ) {
 							disabled={ refund.isPending || gatewayUncertain }
 							onClick={ submit }
 						>
-							{ __( 'Confirm refund', 'tiermint' ) }
+							{ __( 'Confirm refund', 'releasecart' ) }
 						</Button>
 					</div>
 				</div>
@@ -373,9 +373,9 @@ export default function OrderDetail( { params, boot } ) {
 	// Match the shared first-read gate and guard missing query data.
 	if ( firstReadPending( query ) || ( ! query.isError && ! query.data ) ) {
 		return (
-			<section className="tiermint-admin-screen">
+			<section className="releasecart-admin-screen">
 				<ScreenHeader
-					title={ __( 'Order', 'tiermint' ) }
+					title={ __( 'Order', 'releasecart' ) }
 					backLink={ BACK_TO_ORDERS }
 				/>
 				<SkeletonForm fields={ 5 } />
@@ -387,15 +387,18 @@ export default function OrderDetail( { params, boot } ) {
 	// would otherwise dead-end on a notice with nothing to click.
 	if ( query.isError ) {
 		return (
-			<section className="tiermint-admin-screen">
+			<section className="releasecart-admin-screen">
 				<ScreenHeader
-					title={ __( 'Order', 'tiermint' ) }
+					title={ __( 'Order', 'releasecart' ) }
 					backLink={ BACK_TO_ORDERS }
 				/>
 				<Notice status="error" isDismissible={ false }>
 					{ query.error && query.error.message
 						? query.error.message
-						: __( 'The order could not be loaded.', 'tiermint' ) }
+						: __(
+								'The order could not be loaded.',
+								'releasecart'
+						  ) }
 				</Notice>
 			</section>
 		);
@@ -407,11 +410,11 @@ export default function OrderDetail( { params, boot } ) {
 		order.status === 'completed' || order.status === 'partially_refunded';
 
 	return (
-		<section className="tiermint-admin-screen tiermint-order-detail">
+		<section className="releasecart-admin-screen releasecart-order-detail">
 			<ScreenHeader
 				title={ sprintf(
 					/* translators: %d: the order id. */
-					__( 'Order #%d', 'tiermint' ),
+					__( 'Order #%d', 'releasecart' ),
 					order.id
 				) }
 				backLink={ BACK_TO_ORDERS }
@@ -424,7 +427,7 @@ export default function OrderDetail( { params, boot } ) {
 									__next40pxDefaultSize
 									onClick={ () => setModalOpen( true ) }
 								>
-									{ __( 'Refund', 'tiermint' ) }
+									{ __( 'Refund', 'releasecart' ) }
 								</Button>
 							) }
 							{ extensionActions.map(
@@ -438,65 +441,65 @@ export default function OrderDetail( { params, boot } ) {
 			/>
 
 			{ /* Keep order facts below the header's side-by-side layout. */ }
-			<div className="tiermint-panel">
-				<dl className="tiermint-order-meta">
+			<div className="releasecart-panel">
+				<dl className="releasecart-order-meta">
 					<div>
-						<dt>{ __( 'Reference', 'tiermint' ) }</dt>
+						<dt>{ __( 'Reference', 'releasecart' ) }</dt>
 						<dd>{ order.uuid }</dd>
 					</div>
 					<div>
-						<dt>{ __( 'Status', 'tiermint' ) }</dt>
+						<dt>{ __( 'Status', 'releasecart' ) }</dt>
 						<dd>
 							<StatusBadge
 								status={ order.status }
 								label={ orderStatusLabel( order.status ) }
-								className="tiermint-status"
+								className="releasecart-status"
 							/>
 						</dd>
 					</div>
 					<div>
-						<dt>{ __( 'Type', 'tiermint' ) }</dt>
+						<dt>{ __( 'Type', 'releasecart' ) }</dt>
 						<dd>{ typeLabel( order.type ) }</dd>
 					</div>
 					<div>
 						{ /* Plain text: there is no per-customer filter view to
 						   deep-link to yet, so a link would mislead. */ }
-						<dt>{ __( 'Customer', 'tiermint' ) }</dt>
+						<dt>{ __( 'Customer', 'releasecart' ) }</dt>
 						<dd>{ order.email }</dd>
 					</div>
 					<div>
-						<dt>{ __( 'Gateway', 'tiermint' ) }</dt>
+						<dt>{ __( 'Gateway', 'releasecart' ) }</dt>
 						<dd>{ order.gateway }</dd>
 					</div>
 					{ order.gateway_txn_id && (
 						<div>
-							<dt>{ __( 'Transaction', 'tiermint' ) }</dt>
+							<dt>{ __( 'Transaction', 'releasecart' ) }</dt>
 							<dd>{ order.gateway_txn_id }</dd>
 						</div>
 					) }
 					{ order.discount_code && (
 						<div>
-							<dt>{ __( 'Discount code', 'tiermint' ) }</dt>
+							<dt>{ __( 'Discount code', 'releasecart' ) }</dt>
 							<dd>{ order.discount_code }</dd>
 						</div>
 					) }
 					<div>
-						<dt>{ __( 'Created', 'tiermint' ) }</dt>
+						<dt>{ __( 'Created', 'releasecart' ) }</dt>
 						<dd>{ formatDateTime( order.created_at ) }</dd>
 					</div>
 					<div>
-						<dt>{ __( 'Completed', 'tiermint' ) }</dt>
+						<dt>{ __( 'Completed', 'releasecart' ) }</dt>
 						<dd>{ formatDateTime( order.completed_at ) }</dd>
 					</div>
 					{ order.country && (
 						<div>
-							<dt>{ __( 'Billing country', 'tiermint' ) }</dt>
+							<dt>{ __( 'Billing country', 'releasecart' ) }</dt>
 							<dd>{ order.country }</dd>
 						</div>
 					) }
 					{ order.terms_accepted_at && (
 						<div>
-							<dt>{ __( 'Terms accepted', 'tiermint' ) }</dt>
+							<dt>{ __( 'Terms accepted', 'releasecart' ) }</dt>
 							<dd>
 								{ formatDateTime( order.terms_accepted_at ) }
 							</dd>
@@ -504,7 +507,7 @@ export default function OrderDetail( { params, boot } ) {
 					) }
 					{ order.billing_address && (
 						<div>
-							<dt>{ __( 'Billing address', 'tiermint' ) }</dt>
+							<dt>{ __( 'Billing address', 'releasecart' ) }</dt>
 							<dd>
 								{ formatBillingAddress(
 									order.billing_address
@@ -514,37 +517,37 @@ export default function OrderDetail( { params, boot } ) {
 					) }
 					{ order.company_name && (
 						<div>
-							<dt>{ __( 'Company', 'tiermint' ) }</dt>
+							<dt>{ __( 'Company', 'releasecart' ) }</dt>
 							<dd>{ order.company_name }</dd>
 						</div>
 					) }
 					{ order.tax_id && (
 						<div>
-							<dt>{ __( 'Tax ID', 'tiermint' ) }</dt>
+							<dt>{ __( 'Tax ID', 'releasecart' ) }</dt>
 							<dd>{ order.tax_id }</dd>
 						</div>
 					) }
 					{ order.ip_address && (
 						<div>
-							<dt>{ __( 'IP address', 'tiermint' ) }</dt>
+							<dt>{ __( 'IP address', 'releasecart' ) }</dt>
 							<dd>{ order.ip_address }</dd>
 						</div>
 					) }
 				</dl>
 			</div>
 
-			<h2>{ __( 'Items', 'tiermint' ) }</h2>
+			<h2>{ __( 'Items', 'releasecart' ) }</h2>
 
-			<table className="tiermint-order-items wp-list-table widefat striped">
+			<table className="releasecart-order-items wp-list-table widefat striped">
 				<thead>
 					<tr>
-						<th>{ __( 'Product', 'tiermint' ) }</th>
-						<th>{ __( 'Price', 'tiermint' ) }</th>
-						<th>{ __( 'Qty', 'tiermint' ) }</th>
-						<th>{ __( 'Subtotal', 'tiermint' ) }</th>
-						<th>{ __( 'Discount', 'tiermint' ) }</th>
-						<th>{ __( 'Tax', 'tiermint' ) }</th>
-						<th>{ __( 'Total', 'tiermint' ) }</th>
+						<th>{ __( 'Product', 'releasecart' ) }</th>
+						<th>{ __( 'Price', 'releasecart' ) }</th>
+						<th>{ __( 'Qty', 'releasecart' ) }</th>
+						<th>{ __( 'Subtotal', 'releasecart' ) }</th>
+						<th>{ __( 'Discount', 'releasecart' ) }</th>
+						<th>{ __( 'Tax', 'releasecart' ) }</th>
+						<th>{ __( 'Total', 'releasecart' ) }</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -568,16 +571,16 @@ export default function OrderDetail( { params, boot } ) {
 				</tbody>
 			</table>
 
-			<div className="tiermint-panel tiermint-order-totals-panel">
-				<dl className="tiermint-order-totals">
+			<div className="releasecart-panel releasecart-order-totals-panel">
+				<dl className="releasecart-order-totals">
 					<div>
-						<dt>{ __( 'Subtotal', 'tiermint' ) }</dt>
+						<dt>{ __( 'Subtotal', 'releasecart' ) }</dt>
 						<dd>
 							{ formatMinor( order.subtotal, order.currency ) }
 						</dd>
 					</div>
 					<div>
-						<dt>{ __( 'Discount', 'tiermint' ) }</dt>
+						<dt>{ __( 'Discount', 'releasecart' ) }</dt>
 						<dd>
 							{ formatMinor(
 								order.discount_total,
@@ -586,13 +589,13 @@ export default function OrderDetail( { params, boot } ) {
 						</dd>
 					</div>
 					<div>
-						<dt>{ __( 'Tax', 'tiermint' ) }</dt>
+						<dt>{ __( 'Tax', 'releasecart' ) }</dt>
 						<dd>
 							{ formatMinor( order.tax_total, order.currency ) }
 						</dd>
 					</div>
 					<div>
-						<dt>{ __( 'Total', 'tiermint' ) }</dt>
+						<dt>{ __( 'Total', 'releasecart' ) }</dt>
 						<dd>{ formatMinor( order.total, order.currency ) }</dd>
 					</div>
 				</dl>
@@ -617,7 +620,7 @@ export default function OrderDetail( { params, boot } ) {
  */
 export const route = {
 	path: '#/orders/:id',
-	title: __( 'Order detail', 'tiermint' ),
-	capability: 'manage_tiermint',
+	title: __( 'Order detail', 'releasecart' ),
+	capability: 'manage_releasecart',
 	component: OrderDetail,
 };

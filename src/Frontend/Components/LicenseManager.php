@@ -2,23 +2,23 @@
 /**
  * The customer license-manager front-end component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use DrPlugin\WP\TierMint\Frontend\AbstractComponent;
-use DrPlugin\WP\TierMint\Frontend\RenderContext;
-use DrPlugin\WP\TierMint\Licensing\ActivationService;
-use DrPlugin\WP\TierMint\Licensing\ActivationStatus;
-use DrPlugin\WP\TierMint\Licensing\License;
-use DrPlugin\WP\TierMint\Licensing\LicenseStatus;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Util\RequestUrl;
+use DrPlugin\WP\ReleaseCart\Frontend\AbstractComponent;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContext;
+use DrPlugin\WP\ReleaseCart\Licensing\ActivationService;
+use DrPlugin\WP\ReleaseCart\Licensing\ActivationStatus;
+use DrPlugin\WP\ReleaseCart\Licensing\License;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseStatus;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Util\RequestUrl;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -80,24 +80,24 @@ final class LicenseManager extends AbstractComponent {
 		return array(
 			'title'            => array(
 				'type'        => 'string',
-				'default'     => __( 'Your licenses', 'tiermint' ),
+				'default'     => __( 'Your licenses', 'releasecart' ),
 				'control'     => 'text',
-				'label'       => __( 'Heading', 'tiermint' ),
-				'description' => __( 'The heading shown above the license list. Leave empty to hide it.', 'tiermint' ),
+				'label'       => __( 'Heading', 'releasecart' ),
+				'description' => __( 'The heading shown above the license list. Leave empty to hide it.', 'releasecart' ),
 			),
 			'show_key'         => array(
 				'type'        => 'boolean',
 				'default'     => true,
 				'control'     => 'toggle',
-				'label'       => __( 'Show license key', 'tiermint' ),
-				'description' => __( 'Print the full license key for each license.', 'tiermint' ),
+				'label'       => __( 'Show license key', 'releasecart' ),
+				'description' => __( 'Print the full license key for each license.', 'releasecart' ),
 			),
 			'show_activations' => array(
 				'type'        => 'boolean',
 				'default'     => true,
 				'control'     => 'toggle',
-				'label'       => __( 'Show site activations', 'tiermint' ),
-				'description' => __( 'Show the active-sites list and the activate/deactivate controls.', 'tiermint' ),
+				'label'       => __( 'Show site activations', 'releasecart' ),
+				'description' => __( 'Show the active-sites list and the activate/deactivate controls.', 'releasecart' ),
 			),
 		);
 	}
@@ -169,11 +169,11 @@ final class LicenseManager extends AbstractComponent {
 			'licenses'         => array(
 				array(
 					'id'                     => 0,
-					'product_name'           => __( 'Sample product', 'tiermint' ),
-					'license_key'            => 'TIERMINT-XXXX-XXXX-XXXX-XXXX',
+					'product_name'           => __( 'Sample product', 'releasecart' ),
+					'license_key'            => 'RELEASECART-XXXX-XXXX-XXXX-XXXX',
 					'status_slug'            => 'active',
-					'status_label'           => __( 'Active', 'tiermint' ),
-					'expiry_label'           => __( 'Lifetime', 'tiermint' ),
+					'status_label'           => __( 'Active', 'releasecart' ),
+					'expiry_label'           => __( 'Lifetime', 'releasecart' ),
 					'activation_count'       => 1,
 					'activation_limit_label' => '5',
 					'can_activate'           => false,
@@ -246,7 +246,7 @@ final class LicenseManager extends AbstractComponent {
 	 */
 	private function licenseRow( License $license, DateTimeImmutable $now, bool $showActivations ): array {
 		$product     = $this->products->get( $license->productId() );
-		$productName = null !== $product ? $product->name() : __( 'Unavailable product', 'tiermint' );
+		$productName = null !== $product ? $product->name() : __( 'Unavailable product', 'releasecart' );
 
 		$displayExpired = $license->isExpiredAt( $now );
 		$displayStatus  = $displayExpired ? LicenseStatus::Expired : $license->status();
@@ -274,7 +274,7 @@ final class LicenseManager extends AbstractComponent {
 			'expiry_label'           => $this->expiryLabel( $license ),
 			'activation_count'       => $license->activationCount(),
 			'activation_limit_label' => null === $limit
-				? __( 'unlimited', 'tiermint' )
+				? __( 'unlimited', 'releasecart' )
 				: (string) $limit,
 			'can_activate'           => $canActivate,
 			'activations'            => $activations,
@@ -291,9 +291,9 @@ final class LicenseManager extends AbstractComponent {
 	 */
 	private function statusLabel( LicenseStatus $status ): string {
 		return match ( $status ) {
-			LicenseStatus::Active   => __( 'Active', 'tiermint' ),
-			LicenseStatus::Expired  => __( 'Expired', 'tiermint' ),
-			LicenseStatus::Disabled => __( 'Disabled', 'tiermint' ),
+			LicenseStatus::Active   => __( 'Active', 'releasecart' ),
+			LicenseStatus::Expired  => __( 'Expired', 'releasecart' ),
+			LicenseStatus::Disabled => __( 'Disabled', 'releasecart' ),
 		};
 	}
 
@@ -307,7 +307,7 @@ final class LicenseManager extends AbstractComponent {
 	 */
 	private function expiryLabel( License $license ): string {
 		if ( $license->isLifetime() ) {
-			return __( 'Lifetime', 'tiermint' );
+			return __( 'Lifetime', 'releasecart' );
 		}
 
 		$expiresAt = $license->expiresAt();

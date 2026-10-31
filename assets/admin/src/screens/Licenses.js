@@ -44,10 +44,10 @@ const PER_PAGE = 20;
  * @type {Array<{label: string, value: string}>}
  */
 const STATUS_FILTER_OPTIONS = [
-	{ label: __( 'All statuses', 'tiermint' ), value: '' },
-	{ label: __( 'Active', 'tiermint' ), value: 'active' },
-	{ label: __( 'Expired', 'tiermint' ), value: 'expired' },
-	{ label: __( 'Disabled', 'tiermint' ), value: 'disabled' },
+	{ label: __( 'All statuses', 'releasecart' ), value: '' },
+	{ label: __( 'Active', 'releasecart' ), value: 'active' },
+	{ label: __( 'Expired', 'releasecart' ), value: 'expired' },
+	{ label: __( 'Disabled', 'releasecart' ), value: 'disabled' },
 ];
 
 /**
@@ -56,9 +56,9 @@ const STATUS_FILTER_OPTIONS = [
  * @type {Object<string, string>}
  */
 const STATUS_LABELS = {
-	active: __( 'Active', 'tiermint' ),
-	expired: __( 'Expired', 'tiermint' ),
-	disabled: __( 'Disabled', 'tiermint' ),
+	active: __( 'Active', 'releasecart' ),
+	expired: __( 'Expired', 'releasecart' ),
+	disabled: __( 'Disabled', 'releasecart' ),
 };
 
 /**
@@ -70,7 +70,7 @@ const STATUS_LABELS = {
  */
 function formatDate( dateString ) {
 	if ( ! dateString ) {
-		return __( 'Never', 'tiermint' );
+		return __( 'Never', 'releasecart' );
 	}
 	const date = new Date( dateString );
 	if ( Number.isNaN( date.getTime() ) ) {
@@ -90,7 +90,7 @@ function formatDate( dateString ) {
 function formatUsage( count, limit ) {
 	return sprintf(
 		/* translators: 1: number of activations used, 2: the activation limit (or an infinity symbol for unlimited). */
-		__( '%1$d / %2$s', 'tiermint' ),
+		__( '%1$d / %2$s', 'releasecart' ),
 		count,
 		limit ? String( limit ) : '∞'
 	);
@@ -103,8 +103,8 @@ function formatUsage( count, limit ) {
  */
 function bulkActions() {
 	return [
-		{ value: 'disable', label: __( 'Disable', 'tiermint' ) },
-		{ value: 'enable', label: __( 'Enable', 'tiermint' ) },
+		{ value: 'disable', label: __( 'Disable', 'releasecart' ) },
+		{ value: 'enable', label: __( 'Enable', 'releasecart' ) },
 	];
 }
 
@@ -127,7 +127,7 @@ function bulkSummary( action, count ) {
 				'%d license disabled.',
 				'%d licenses disabled.',
 				count,
-				'tiermint'
+				'releasecart'
 			),
 			count
 		);
@@ -135,7 +135,12 @@ function bulkSummary( action, count ) {
 
 	return sprintf(
 		/* translators: %d: how many licenses were enabled. */
-		_n( '%d license enabled.', '%d licenses enabled.', count, 'tiermint' ),
+		_n(
+			'%d license enabled.',
+			'%d licenses enabled.',
+			count,
+			'releasecart'
+		),
 		count
 	);
 }
@@ -149,7 +154,7 @@ function bulkSummary( action, count ) {
 function idFallback( id ) {
 	return sprintf(
 		/* translators: %d: a numeric record id. */
-		__( '#%d', 'tiermint' ),
+		__( '#%d', 'releasecart' ),
 		id
 	);
 }
@@ -296,17 +301,17 @@ export default function Licenses() {
 	}, [ rowsKey ] );
 
 	return (
-		<section className="tiermint-admin-screen">
-			<ScreenHeader title={ __( 'Licenses', 'tiermint' ) } />
+		<section className="releasecart-admin-screen">
+			<ScreenHeader title={ __( 'Licenses', 'releasecart' ) } />
 
-			<div className="tiermint-toolbar tiermint-licenses-filters">
+			<div className="releasecart-toolbar releasecart-licenses-filters">
 				<SearchControl
 					__nextHasNoMarginBottom
-					label={ __( 'Search licenses', 'tiermint' ) }
+					label={ __( 'Search licenses', 'releasecart' ) }
 					value={ search }
 					placeholder={ __(
 						'Search by license key or email',
-						'tiermint'
+						'releasecart'
 					) }
 					onChange={ handleSearchChange }
 				/>
@@ -314,7 +319,7 @@ export default function Licenses() {
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					hideLabelFromVision
-					label={ __( 'Status', 'tiermint' ) }
+					label={ __( 'Status', 'releasecart' ) }
 					value={ status }
 					options={ STATUS_FILTER_OPTIONS }
 					onChange={ handleStatusChange }
@@ -356,11 +361,11 @@ export default function Licenses() {
 						search || status
 							? __(
 									'No licenses match these filters.',
-									'tiermint'
+									'releasecart'
 							  )
 							: __(
 									'No licenses yet. A license is issued for every purchase of a licensed product.',
-									'tiermint'
+									'releasecart'
 							  )
 					}
 				/>
@@ -368,7 +373,7 @@ export default function Licenses() {
 
 			{ items.length > 0 && (
 				<BulkActionsBar
-					label={ __( 'Bulk actions for licenses', 'tiermint' ) }
+					label={ __( 'Bulk actions for licenses', 'releasecart' ) }
 					actions={ bulkActions() }
 					count={ selection.count }
 					pending={ bulkMutation.isPending }
@@ -382,25 +387,29 @@ export default function Licenses() {
 			) }
 
 			{ items.length > 0 && (
-				<table className="tiermint-licenses-table wp-list-table widefat striped">
+				<table className="releasecart-licenses-table wp-list-table widefat striped">
 					<thead>
 						<tr>
 							<SelectAllHeader selection={ selection } />
 							<th scope="col">
-								{ __( 'License key', 'tiermint' ) }
+								{ __( 'License key', 'releasecart' ) }
 							</th>
-							<th scope="col">{ __( 'Status', 'tiermint' ) }</th>
-							<th scope="col">{ __( 'Product', 'tiermint' ) }</th>
 							<th scope="col">
-								{ __( 'Customer', 'tiermint' ) }
+								{ __( 'Status', 'releasecart' ) }
+							</th>
+							<th scope="col">
+								{ __( 'Product', 'releasecart' ) }
+							</th>
+							<th scope="col">
+								{ __( 'Customer', 'releasecart' ) }
 							</th>
 							<SortableHeader
 								column="expires_at"
-								label={ __( 'Expires', 'tiermint' ) }
+								label={ __( 'Expires', 'releasecart' ) }
 								sort={ sort }
 							/>
 							<th scope="col">
-								{ __( 'Activations', 'tiermint' ) }
+								{ __( 'Activations', 'releasecart' ) }
 							</th>
 						</tr>
 					</thead>
@@ -415,7 +424,7 @@ export default function Licenses() {
 								<td>
 									<a
 										href={ `#/licenses/${ license.id }` }
-										className="tiermint-mono"
+										className="releasecart-mono"
 									>
 										{ license.license_key }
 									</a>
@@ -468,7 +477,7 @@ export default function Licenses() {
  */
 export const route = {
 	path: '#/licenses',
-	title: __( 'Licenses', 'tiermint' ),
-	capability: 'manage_tiermint',
+	title: __( 'Licenses', 'releasecart' ),
+	capability: 'manage_releasecart',
 	component: Licenses,
 };

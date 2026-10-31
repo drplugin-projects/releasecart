@@ -2,29 +2,30 @@
 /**
  * Public REST controller for the checkout intent, quote and status routes.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Catalog\Countries;
-use DrPlugin\WP\TierMint\Customers\Customer;
-use DrPlugin\WP\TierMint\Customers\CustomerValidationException;
-use DrPlugin\WP\TierMint\Frontend\CheckoutFieldSettings;
-use DrPlugin\WP\TierMint\Orders\Order;
-use DrPlugin\WP\TierMint\Orders\OrderPersistenceException;
-use DrPlugin\WP\TierMint\Orders\OrderStatus;
-use DrPlugin\WP\TierMint\Orders\OrderValidationException;
-use DrPlugin\WP\TierMint\Payments\CheckoutService;
-use DrPlugin\WP\TierMint\Payments\GatewayConfigurationException;
-use DrPlugin\WP\TierMint\Payments\GatewayNotFoundException;
-use DrPlugin\WP\TierMint\Payments\PaymentException;
-use DrPlugin\WP\TierMint\Util\RateLimiter;
+use DrPlugin\WP\ReleaseCart\Catalog\Countries;
+use DrPlugin\WP\ReleaseCart\Customers\Customer;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerValidationException;
+use DrPlugin\WP\ReleaseCart\Frontend\CheckoutFieldSettings;
+use DrPlugin\WP\ReleaseCart\Orders\CartService;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Orders\OrderPersistenceException;
+use DrPlugin\WP\ReleaseCart\Orders\OrderStatus;
+use DrPlugin\WP\ReleaseCart\Orders\OrderValidationException;
+use DrPlugin\WP\ReleaseCart\Payments\CheckoutService;
+use DrPlugin\WP\ReleaseCart\Payments\GatewayConfigurationException;
+use DrPlugin\WP\ReleaseCart\Payments\GatewayNotFoundException;
+use DrPlugin\WP\ReleaseCart\Payments\PaymentException;
+use DrPlugin\WP\ReleaseCart\Util\RateLimiter;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -44,28 +45,28 @@ final class CheckoutController extends AbstractRestController {
 	 *
 	 * @var string
 	 */
-	public const TERMS_META = '_tiermint_terms_accepted_at';
+	public const TERMS_META = '_releasecart_terms_accepted_at';
 
 	/**
 	 * Order meta key for the billing address.
 	 *
 	 * @var string
 	 */
-	public const ADDRESS_META = '_tiermint_billing_address';
+	public const ADDRESS_META = '_releasecart_billing_address';
 
 	/**
 	 * Order meta key for a company purchase name.
 	 *
 	 * @var string
 	 */
-	public const COMPANY_META = '_tiermint_company_name';
+	public const COMPANY_META = '_releasecart_company_name';
 
 	/**
 	 * Order meta key for the VAT or tax ID the buyer typed, normalized.
 	 *
 	 * @var string
 	 */
-	public const TAX_ID_META = '_tiermint_tax_id';
+	public const TAX_ID_META = '_releasecart_tax_id';
 
 	/**
 	 * The checkout orchestration service.
@@ -82,6 +83,13 @@ final class CheckoutController extends AbstractRestController {
 	private RateLimiter $limiter;
 
 	/**
+	 * The cart service the checkout reads the visitor's cart through.
+	 *
+	 * @var CartService
+	 */
+	private CartService $carts;
+
+	/**
 	 * Checkout and account settings.
 	 *
 	 * @var CheckoutFieldSettings
@@ -89,17 +97,19 @@ final class CheckoutController extends AbstractRestController {
 	private CheckoutFieldSettings $fields;
 
 	/**
-	 * Wire the controller with the checkout service and the rate limiter.
+	 * Wire the controller with the checkout service, the rate limiter and the cart service.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param CheckoutService            $checkout The checkout orchestration service.
 	 * @param RateLimiter                $limiter  The transient-backed rate limiter.
+	 * @param CartService                $carts    The shared cart service.
 	 * @param CheckoutFieldSettings|null $fields   Which optional fields the checkout collects.
 	 */
-	public function __construct( CheckoutService $checkout, RateLimiter $limiter, ?CheckoutFieldSettings $fields = null ) {
+	public function __construct( CheckoutService $checkout, RateLimiter $limiter, CartService $carts, ?CheckoutFieldSettings $fields = null ) {
 		$this->checkout = $checkout;
 		$this->limiter  = $limiter;
+		$this->carts    = $carts;
 		$this->fields   = $fields ?? new CheckoutFieldSettings();
 	}
 
@@ -118,8 +128,8 @@ final class CheckoutController extends AbstractRestController {
 				array(
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'intent' ),
-					// Public because guests check out; rate limited per client IP.
-					'permission_callback' => '__return_true',
+					// Guests check out, so no login: the callback asks for the visitor's stored cart. Rate limited per client IP.
+					'permission_callback' => array( $this, 'cartPermission' ),
 					'args'                => $this->intentArgs(),
 				),
 			)
@@ -132,8 +142,8 @@ final class CheckoutController extends AbstractRestController {
 				array(
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'quote' ),
-					// Public because guests see the totals before they pay; rate limited per client IP.
-					'permission_callback' => '__return_true',
+					// Guests see the totals before they pay: the callback asks for the visitor's stored cart. Rate limited per client IP.
+					'permission_callback' => array( $this, 'cartPermission' ),
 					'args'                => $this->quoteArgs(),
 				),
 			)
@@ -152,6 +162,23 @@ final class CheckoutController extends AbstractRestController {
 				),
 			)
 		);
+	}
+
+	/**
+	 * Permission check for the intent and quote routes: the visitor's stored cart.
+	 *
+	 * Both routes price or pay for that cart, so its cookie token is the credential.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return true|WP_Error True with a stored cart, or a 403.
+	 */
+	public function cartPermission() {
+		if ( $this->carts->hasStoredCart() ) {
+			return true;
+		}
+
+		return $this->error( 'releasecart_no_cart', __( 'Your cart is empty or has expired. Add the product to your cart again.', 'releasecart' ), 403 );
 	}
 
 	/**
@@ -178,7 +205,7 @@ final class CheckoutController extends AbstractRestController {
 		$buyer = $this->resolveBuyer( $request );
 
 		if ( '' === (string) ( $buyer['email'] ?? '' ) ) {
-			return $this->invalidParams( array( __( 'An email address is required to check out.', 'tiermint' ) ) );
+			return $this->invalidParams( array( __( 'An email address is required to check out.', 'releasecart' ) ) );
 		}
 
 		$compliance = $this->complianceError( $request );
@@ -198,26 +225,26 @@ final class CheckoutController extends AbstractRestController {
 		} catch ( GatewayNotFoundException $e ) {
 			return $this->invalidParams( array( $e->getMessage() ) );
 		} catch ( GatewayConfigurationException $e ) {
-			return $this->error( 'tiermint_gateway_not_configured', $e->getMessage(), 503 );
-		} catch ( \DrPlugin\WP\TierMint\Discounts\DiscountValidationException $e ) {
+			return $this->error( 'releasecart_gateway_not_configured', $e->getMessage(), 503 );
+		} catch ( \DrPlugin\WP\ReleaseCart\Discounts\DiscountValidationException $e ) {
 			// A distinct code so clients can tell a rejected discount from
 			// other validation failures (checkout.js currently announces the
 			// translated message in its shared alert region).
-			return $this->error( 'tiermint_invalid_discount', $e->getMessage(), 400 );
-		} catch ( \DrPlugin\WP\TierMint\Discounts\DiscountPersistenceException $e ) {
-			return $this->serverError( __( 'The discount code could not be checked. Please try again.', 'tiermint' ) );
+			return $this->error( 'releasecart_invalid_discount', $e->getMessage(), 400 );
+		} catch ( \DrPlugin\WP\ReleaseCart\Discounts\DiscountPersistenceException $e ) {
+			return $this->serverError( __( 'The discount code could not be checked. Please try again.', 'releasecart' ) );
 		} catch ( OrderValidationException $e ) {
 			return $this->invalidParams( $e->getErrors() );
 		} catch ( CustomerValidationException $e ) {
 			return $this->invalidParams( $e->getErrors() );
 		} catch ( OrderPersistenceException $e ) {
-			return $this->serverError( __( 'The order could not be created. Please try again.', 'tiermint' ) );
+			return $this->serverError( __( 'The order could not be created. Please try again.', 'releasecart' ) );
 		} catch ( PaymentException $e ) {
 			// The gateway call failed after the order was created (the service already
 			// marked the order failed). The gateway's message is log-only detail.
 			return $this->error(
-				'tiermint_gateway_error',
-				__( 'The payment could not be started. Please try again.', 'tiermint' ),
+				'releasecart_gateway_error',
+				__( 'The payment could not be started. Please try again.', 'releasecart' ),
 				502
 			);
 		}
@@ -226,7 +253,7 @@ final class CheckoutController extends AbstractRestController {
 		 * The pending order and its gateway session.
 		 *
 		 * @var Order                                             $order
-		 * @var \DrPlugin\WP\TierMint\Payments\PaymentSession     $session
+		 * @var \DrPlugin\WP\ReleaseCart\Payments\PaymentSession     $session
 		 */
 		$order   = $result['order'];
 		$session = $result['session'];
@@ -266,7 +293,7 @@ final class CheckoutController extends AbstractRestController {
 				'tax_total'       => $order->taxTotal(),
 				'currency'        => $order->currency(),
 				// Why the money looks the way it does, from
-				// `tiermint_checkout_quote_notices` at charge time. The quote route
+				// `releasecart_checkout_quote_notices` at charge time. The quote route
 				// deliberately never consults a VAT-number checker, so reverse charge
 				// is decided here and the total can legitimately fall between the
 				// preview and this response: these are what let the storefront say so
@@ -316,8 +343,8 @@ final class CheckoutController extends AbstractRestController {
 
 		try {
 			$quote = $this->checkout->quote( $this->requestContext( $request ) );
-		} catch ( \DrPlugin\WP\TierMint\Discounts\DiscountPersistenceException $e ) {
-			return $this->serverError( __( 'The discount code could not be checked. Please try again.', 'tiermint' ) );
+		} catch ( \DrPlugin\WP\ReleaseCart\Discounts\DiscountPersistenceException $e ) {
+			return $this->serverError( __( 'The discount code could not be checked. Please try again.', 'releasecart' ) );
 		} catch ( OrderValidationException $e ) {
 			// An empty cart or a line that is no longer purchasable: the same 400 the
 			// intent route answers, because there is no honest price to quote.
@@ -436,7 +463,7 @@ final class CheckoutController extends AbstractRestController {
 		 *
 		 * @param array<string, array{limit: int, window: int}> $limits The limit map.
 		 */
-		$limits = apply_filters( 'tiermint_rest_rate_limits', $defaults );
+		$limits = apply_filters( 'releasecart_rest_rate_limits', $defaults );
 
 		$fallback   = $defaults[ $scope ] ?? $defaults['checkout_intent'];
 		$configured = is_array( $limits ) && isset( $limits[ $scope ] ) && is_array( $limits[ $scope ] )
@@ -459,8 +486,8 @@ final class CheckoutController extends AbstractRestController {
 	private function tooMany( int $retryAfter ): WP_REST_Response {
 		$response = new WP_REST_Response(
 			array(
-				'code'    => 'tiermint_rate_limited',
-				'message' => __( 'Too many checkout attempts. Please wait a moment and try again.', 'tiermint' ),
+				'code'    => 'releasecart_rate_limited',
+				'message' => __( 'Too many checkout attempts. Please wait a moment and try again.', 'releasecart' ),
 				'data'    => array( 'status' => 429 ),
 			),
 			429
@@ -566,7 +593,7 @@ final class CheckoutController extends AbstractRestController {
 		 *        `discount_code` on the intent route when the buyer submitted one).
 		 * @param WP_REST_Request      $request The incoming checkout request.
 		 */
-		$filtered = apply_filters( 'tiermint_checkout_intent_context', $context, $request );
+		$filtered = apply_filters( 'releasecart_checkout_intent_context', $context, $request );
 
 		if ( ! is_array( $filtered ) ) {
 			return $context;
@@ -700,8 +727,8 @@ final class CheckoutController extends AbstractRestController {
 	private function authError(): ?WP_Error {
 		if ( $this->fields->loginRequired() && ! is_user_logged_in() ) {
 			return $this->error(
-				'tiermint_login_required',
-				__( 'Please log in to complete your purchase.', 'tiermint' ),
+				'releasecart_login_required',
+				__( 'Please log in to complete your purchase.', 'releasecart' ),
 				401
 			);
 		}
@@ -719,15 +746,15 @@ final class CheckoutController extends AbstractRestController {
 	 */
 	private function complianceError( WP_REST_Request $request ): ?WP_Error {
 		if ( $this->fields->requireFirstName() && '' === trim( (string) $request->get_param( 'first_name' ) ) ) {
-			return $this->invalidParams( array( __( 'Please enter your first name to continue.', 'tiermint' ) ) );
+			return $this->invalidParams( array( __( 'Please enter your first name to continue.', 'releasecart' ) ) );
 		}
 
 		if ( $this->fields->requireLastName() && '' === trim( (string) $request->get_param( 'last_name' ) ) ) {
-			return $this->invalidParams( array( __( 'Please enter your last name to continue.', 'tiermint' ) ) );
+			return $this->invalidParams( array( __( 'Please enter your last name to continue.', 'releasecart' ) ) );
 		}
 
 		if ( $this->fields->requireTerms() && '1' !== trim( (string) $request->get_param( 'terms_accepted' ) ) ) {
-			return $this->invalidParams( array( __( 'Please accept the terms and conditions to continue.', 'tiermint' ) ) );
+			return $this->invalidParams( array( __( 'Please accept the terms and conditions to continue.', 'releasecart' ) ) );
 		}
 
 		if ( $this->fields->addressRequired() ) {
@@ -735,7 +762,7 @@ final class CheckoutController extends AbstractRestController {
 			$city = trim( (string) $request->get_param( 'billing_city' ) );
 
 			if ( '' === $line || '' === $city ) {
-				return $this->invalidParams( array( __( 'Please enter your billing address to continue.', 'tiermint' ) ) );
+				return $this->invalidParams( array( __( 'Please enter your billing address to continue.', 'releasecart' ) ) );
 			}
 		}
 
@@ -760,13 +787,13 @@ final class CheckoutController extends AbstractRestController {
 
 		try {
 			if ( $this->fields->requireTerms() && '1' === trim( (string) $request->get_param( 'terms_accepted' ) ) ) {
-				update_metadata( 'tiermint_order', $orderId, self::TERMS_META, gmdate( 'Y-m-d H:i:s' ) );
+				update_metadata( 'releasecart_order', $orderId, self::TERMS_META, gmdate( 'Y-m-d H:i:s' ) );
 			}
 
 			$address = $this->billingAddress( $request );
 
 			if ( array() !== $address ) {
-				update_metadata( 'tiermint_order', $orderId, self::ADDRESS_META, $address );
+				update_metadata( 'releasecart_order', $orderId, self::ADDRESS_META, $address );
 			}
 
 			// Company identity is point-of-sale truth (the same buyer can purchase
@@ -777,7 +804,7 @@ final class CheckoutController extends AbstractRestController {
 				$company = trim( (string) $request->get_param( 'company_name' ) );
 
 				if ( '' !== $company ) {
-					update_metadata( 'tiermint_order', $orderId, self::COMPANY_META, $company );
+					update_metadata( 'releasecart_order', $orderId, self::COMPANY_META, $company );
 				}
 			}
 
@@ -788,7 +815,7 @@ final class CheckoutController extends AbstractRestController {
 				$taxId = $this->normalizeVat( (string) $request->get_param( 'vat_number' ) );
 
 				if ( '' !== $taxId ) {
-					update_metadata( 'tiermint_order', $orderId, self::TAX_ID_META, $taxId );
+					update_metadata( 'releasecart_order', $orderId, self::TAX_ID_META, $taxId );
 				}
 			}
 		} catch ( \Throwable $e ) {
@@ -850,45 +877,45 @@ final class CheckoutController extends AbstractRestController {
 	private function intentArgs(): array {
 		$args = array(
 			'gateway'       => array(
-				'description'       => __( 'The payment gateway to pay through.', 'tiermint' ),
+				'description'       => __( 'The payment gateway to pay through.', 'releasecart' ),
 				'type'              => 'string',
 				'default'           => 'stripe',
 				'sanitize_callback' => 'sanitize_key',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'email'         => array(
-				'description'       => __( 'The buyer email address (required for guests).', 'tiermint' ),
+				'description'       => __( 'The buyer email address (required for guests).', 'releasecart' ),
 				'type'              => 'string',
 				'format'            => 'email',
 				'sanitize_callback' => 'sanitize_email',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'name'          => array(
-				'description'       => __( 'The buyer name (superseded by first_name and last_name).', 'tiermint' ),
+				'description'       => __( 'The buyer name (superseded by first_name and last_name).', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'first_name'    => array(
-				'description'       => __( 'The buyer first name.', 'tiermint' ),
+				'description'       => __( 'The buyer first name.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => static fn ( $value ): string => self::boundText( sanitize_text_field( (string) $value ), 200 ),
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'last_name'     => array(
-				'description'       => __( 'The buyer last name.', 'tiermint' ),
+				'description'       => __( 'The buyer last name.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => static fn ( $value ): string => self::boundText( sanitize_text_field( (string) $value ), 200 ),
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'company_name'  => array(
-				'description'       => __( 'The buyer company name, for a company purchase.', 'tiermint' ),
+				'description'       => __( 'The buyer company name, for a company purchase.', 'releasecart' ),
 				'type'              => 'string',
 				'sanitize_callback' => static fn ( $value ): string => self::boundText( sanitize_text_field( (string) $value ), 200 ),
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'discount_code' => array(
-				'description'       => __( 'A discount code to apply to the order (validated and computed server-side).', 'tiermint' ),
+				'description'       => __( 'A discount code to apply to the order (validated and computed server-side).', 'releasecart' ),
 				'type'              => 'string',
 				'maxLength'         => 50,
 				'sanitize_callback' => 'sanitize_text_field',
@@ -906,7 +933,7 @@ final class CheckoutController extends AbstractRestController {
 		 *
 		 * @param array<string, array<string, mixed>> $args The parameter schema so far.
 		 */
-		$filtered = apply_filters( 'tiermint_checkout_intent_args', $args );
+		$filtered = apply_filters( 'releasecart_checkout_intent_args', $args );
 
 		if ( ! is_array( $filtered ) ) {
 			return $args;
@@ -938,7 +965,7 @@ final class CheckoutController extends AbstractRestController {
 
 		if ( $this->fields->collectCountry() ) {
 			$args['billing_country'] = array(
-				'description'       => __( 'The buyer billing country as an ISO 3166-1 alpha-2 code.', 'tiermint' ),
+				'description'       => __( 'The buyer billing country as an ISO 3166-1 alpha-2 code.', 'releasecart' ),
 				'type'              => 'string',
 				'required'          => false,
 				'sanitize_callback' => static fn ( $value ): string => strtoupper( trim( sanitize_text_field( (string) $value ) ) ),
@@ -947,7 +974,7 @@ final class CheckoutController extends AbstractRestController {
 
 		if ( $this->fields->collectVat() ) {
 			$args['vat_number'] = array(
-				'description'       => __( 'The buyer VAT or tax registration number.', 'tiermint' ),
+				'description'       => __( 'The buyer VAT or tax registration number.', 'releasecart' ),
 				'type'              => 'string',
 				'required'          => false,
 				// Bounded (a real VAT/tax id is under 20 chars) so an oversized
@@ -958,11 +985,11 @@ final class CheckoutController extends AbstractRestController {
 
 		if ( $this->fields->collectsAddress() ) {
 			$addressFields = array(
-				'billing_address_1' => __( 'The billing address, line one.', 'tiermint' ),
-				'billing_address_2' => __( 'The billing address, line two.', 'tiermint' ),
-				'billing_city'      => __( 'The billing city.', 'tiermint' ),
-				'billing_state'     => __( 'The billing state, region or province.', 'tiermint' ),
-				'billing_postcode'  => __( 'The billing postal code.', 'tiermint' ),
+				'billing_address_1' => __( 'The billing address, line one.', 'releasecart' ),
+				'billing_address_2' => __( 'The billing address, line two.', 'releasecart' ),
+				'billing_city'      => __( 'The billing city.', 'releasecart' ),
+				'billing_state'     => __( 'The billing state, region or province.', 'releasecart' ),
+				'billing_postcode'  => __( 'The billing postal code.', 'releasecart' ),
 			);
 
 			foreach ( $addressFields as $param => $description ) {
@@ -977,7 +1004,7 @@ final class CheckoutController extends AbstractRestController {
 
 		if ( $this->fields->requireTerms() ) {
 			$args['terms_accepted'] = array(
-				'description'       => __( 'Whether the buyer accepted the terms and conditions ("1" for accepted).', 'tiermint' ),
+				'description'       => __( 'Whether the buyer accepted the terms and conditions ("1" for accepted).', 'releasecart' ),
 				'type'              => 'string',
 				'required'          => false,
 				'sanitize_callback' => static fn ( $value ): string => substr( sanitize_text_field( (string) $value ), 0, 1 ),
@@ -1034,7 +1061,7 @@ final class CheckoutController extends AbstractRestController {
 	private function uuidArgs(): array {
 		return array(
 			'uuid' => array(
-				'description'       => __( 'The public order identifier issued at checkout.', 'tiermint' ),
+				'description'       => __( 'The public order identifier issued at checkout.', 'releasecart' ),
 				'type'              => 'string',
 				'required'          => true,
 				'sanitize_callback' => 'sanitize_text_field',

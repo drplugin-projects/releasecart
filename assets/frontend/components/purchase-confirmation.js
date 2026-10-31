@@ -1,5 +1,5 @@
 /**
- * TierMint purchase-confirmation enhancement.
+ * ReleaseCart purchase-confirmation enhancement.
  *
  * Poll pending orders until the server can render the receipt.
  */
@@ -9,7 +9,7 @@
  *
  * @type {{apiRoot: string, nonce?: string}}
  */
-const config = window.tierMint || { apiRoot: '/wp-json/tiermint/v1/' };
+const config = window.releaseCart || { apiRoot: '/wp-json/releasecart/v1/' };
 
 /**
  * Maximum status requests before polling stops.
@@ -64,7 +64,7 @@ function pollStatus( panel ) {
 					const confirmed =
 						panel.getAttribute( 'data-msg-confirmed' );
 					const message = panel.querySelector(
-						'.tiermint-purchase-confirmation__processing-message'
+						'.releasecart-purchase-confirmation__processing-message'
 					);
 					if ( confirmed && message ) {
 						message.textContent = confirmed;
@@ -87,6 +87,6 @@ function pollStatus( panel ) {
 	tick();
 }
 
-const panels = document.querySelectorAll( '[data-tiermint-order-status]' );
+const panels = document.querySelectorAll( '[data-releasecart-order-status]' );
 
 panels.forEach( ( panel ) => pollStatus( panel ) );

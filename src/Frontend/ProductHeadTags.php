@@ -2,22 +2,22 @@
 /**
  * Prints the document title and social meta tags for a routed product.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Products\Product;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Products\Product;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
  * Sets the title, canonical link and Open Graph tags for routed products.
  *
- * `tiermint_product_meta_tags` can replace the tag values.
+ * `releasecart_product_meta_tags` can replace the tag values.
  *
  * @since 1.0.0
  */
@@ -185,7 +185,7 @@ class ProductHeadTags implements Hookable {
 		 * @param Product               $product The routed product.
 		 * @param string|null           $url     The product canonical URL, or null.
 		 */
-		$filtered = apply_filters( 'tiermint_product_meta_tags', $tags, $product, $url );
+		$filtered = apply_filters( 'releasecart_product_meta_tags', $tags, $product, $url );
 
 		// Keep defaults for omitted keys and normalize output values to strings.
 		$merged = is_array( $filtered ) ? wp_parse_args( $filtered, $tags ) : $tags;

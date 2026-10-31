@@ -2,16 +2,16 @@
 /**
  * The product name and overview component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Frontend\ProductPageTitle;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Frontend\ProductPageTitle;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -87,7 +87,7 @@ final class ProductOverview extends AbstractProductComponent {
 	 */
 	protected function sampleViewData( Product $product, array $attrs ): array {
 		$data             = $this->viewData( $product, $attrs );
-		$data['overview'] = '<p>' . esc_html__( 'A short, punchy overview of your product goes here. It sits right under the product name to hook a visitor before they read the full description.', 'tiermint' ) . '</p>';
+		$data['overview'] = '<p>' . esc_html__( 'A short, punchy overview of your product goes here. It sits right under the product name to hook a visitor before they read the full description.', 'releasecart' ) . '</p>';
 
 		return $data;
 	}

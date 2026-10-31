@@ -2,18 +2,18 @@
 /**
  * Outbound webhook delivery job handler.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Webhooks;
+namespace DrPlugin\WP\ReleaseCart\Webhooks;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
 
 /**
  * Deliver queued webhooks with a retry ladder and HMAC signature.
@@ -84,7 +84,7 @@ class WebhookDeliverer implements Hookable {
 	 *
 	 * @param string $endpointId The target endpoint id.
 	 * @param string $event      The catalog event name.
-	 * @param string $deliveryId The stable per-delivery uuid (X-TierMint-Delivery).
+	 * @param string $deliveryId The stable per-delivery uuid (X-ReleaseCart-Delivery).
 	 * @param string $body       The frozen JSON body snapshotted at dispatch.
 	 * @param int    $attempt    Zero-based attempt counter.
 	 * @return void
@@ -121,11 +121,11 @@ class WebhookDeliverer implements Hookable {
 				'timeout' => self::TIMEOUT,
 				'body'    => $body,
 				'headers' => array(
-					'Content-Type'         => 'application/json',
-					'X-TierMint-Event'     => $event,
-					'X-TierMint-Delivery'  => $deliveryId,
-					'X-TierMint-Signature' => $this->signer->sign( $body, $secret, time() ),
-					'User-Agent'           => 'TierMint/' . ( defined( 'TIERMINT_VERSION' ) ? TIERMINT_VERSION : 'dev' ),
+					'Content-Type'            => 'application/json',
+					'X-ReleaseCart-Event'     => $event,
+					'X-ReleaseCart-Delivery'  => $deliveryId,
+					'X-ReleaseCart-Signature' => $this->signer->sign( $body, $secret, time() ),
+					'User-Agent'              => 'ReleaseCart/' . ( defined( 'RELEASECART_VERSION' ) ? RELEASECART_VERSION : 'dev' ),
 				),
 			)
 		);
@@ -158,7 +158,7 @@ class WebhookDeliverer implements Hookable {
 				time() + self::RETRY_DELAYS[ $attempt ],
 				WebhookDispatcher::JOB_HOOK,
 				array( $endpointId, $event, $deliveryId, $body, $attempt + 1 ),
-				'tiermint'
+				'releasecart'
 			);
 
 			return;

@@ -2,12 +2,12 @@
 /**
  * Base exception for the Reports domain.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Reports;
+namespace DrPlugin\WP\ReleaseCart\Reports;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;

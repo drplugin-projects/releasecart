@@ -2,12 +2,12 @@
 /**
  * Exception for a payment gateway id that is not registered.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Payments;
+namespace DrPlugin\WP\ReleaseCart\Payments;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -33,7 +33,7 @@ final class GatewayNotFoundException extends PaymentException {
 		return new self(
 			sprintf(
 				/* translators: %s: the requested payment gateway id, e.g. "stripe". */
-				__( 'Unknown payment gateway: %s.', 'tiermint' ),
+				__( 'Unknown payment gateway: %s.', 'releasecart' ),
 				$id
 			)
 		);

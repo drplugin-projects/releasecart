@@ -2,14 +2,14 @@
 /**
  * The product full-description component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\Product;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -65,8 +65,8 @@ final class ProductDescription extends AbstractProductComponent {
 		unset( $product, $attrs );
 
 		return array(
-			'description' => '<p>' . esc_html__( 'This is where your full product description appears. Explain what the product does, who it is for, and what a customer gets when they buy it.', 'tiermint' ) . '</p>'
-				. '<p>' . esc_html__( 'Write as much detail as you like here: features, requirements, and support terms all read well in this space.', 'tiermint' ) . '</p>',
+			'description' => '<p>' . esc_html__( 'This is where your full product description appears. Explain what the product does, who it is for, and what a customer gets when they buy it.', 'releasecart' ) . '</p>'
+				. '<p>' . esc_html__( 'Write as much detail as you like here: features, requirements, and support terms all read well in this space.', 'releasecart' ) . '</p>',
 		);
 	}
 }

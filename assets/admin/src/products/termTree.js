@@ -36,7 +36,7 @@ export function parentOptions( list, excludeId ) {
 		excludeId ? [ excludeId, ...descendantIds( list, excludeId ) ] : []
 	);
 	return [
-		{ label: __( 'None (top level)', 'tiermint' ), value: '0' },
+		{ label: __( 'None (top level)', 'releasecart' ), value: '0' },
 		...list
 			.filter( ( term ) => ! excluded.has( term.id ) )
 			.map( ( term ) => ( {

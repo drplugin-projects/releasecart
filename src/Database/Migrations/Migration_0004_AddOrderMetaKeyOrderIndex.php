@@ -2,18 +2,18 @@
 /**
  * Migration 0004: add the composite meta-key index to the order meta table.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Database\Migrations;
+namespace DrPlugin\WP\ReleaseCart\Database\Migrations;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Database\Migration;
-use DrPlugin\WP\TierMint\Database\Schema;
+use DrPlugin\WP\ReleaseCart\Database\Migration;
+use DrPlugin\WP\ReleaseCart\Database\Schema;
 
 /**
  * Adds the `meta_key_order` composite index to the order meta table.

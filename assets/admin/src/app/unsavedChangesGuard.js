@@ -25,7 +25,7 @@ import { splitHashQuery } from '../router/hashQuery';
 export function unsavedChangesMessage() {
 	return __(
 		'You have unsaved changes on this screen. Leave without saving?',
-		'tiermint'
+		'releasecart'
 	);
 }
 

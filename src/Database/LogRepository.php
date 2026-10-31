@@ -1,13 +1,13 @@
 <?php
 /**
- * Read/anonymize access to the `tiermint_logs` table for privacy tooling.
+ * Read/anonymize access to the `releasecart_logs` table for privacy tooling.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Database;
+namespace DrPlugin\WP\ReleaseCart\Database;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;

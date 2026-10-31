@@ -142,9 +142,9 @@ function AdminShell( { boot } ) {
 							<ProductFieldRendererContext.Provider
 								value={ productFieldRenderers }
 							>
-								<div className="tiermint-admin">
+								<div className="releasecart-admin">
 									<UpsellBanner boot={ boot } />
-									<main className="tiermint-admin-content">
+									<main className="releasecart-admin-content">
 										<ErrorBoundary>
 											{ content }
 										</ErrorBoundary>

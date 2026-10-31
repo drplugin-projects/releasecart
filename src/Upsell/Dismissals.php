@@ -2,12 +2,12 @@
 /**
  * Per-user, per-site record of which upsell notices have been dismissed.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Upsell;
+namespace DrPlugin\WP\ReleaseCart\Upsell;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -27,7 +27,7 @@ class Dismissals {
 	 *
 	 * @var string
 	 */
-	public const OPTION_KEY = 'tiermint_upsell_dismissed';
+	public const OPTION_KEY = 'releasecart_upsell_dismissed';
 
 	/**
 	 * Every topic that may be dismissed.

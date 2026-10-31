@@ -2,9 +2,9 @@
 /**
  * Downloads list template.
  *
- * Theme override: {theme}/tiermint/components/downloads-list.php.
+ * Theme override: {theme}/releasecart/components/downloads-list.php.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  *
  * @var array<string, mixed> $data {
  *     @type string $state View state.
@@ -18,44 +18,44 @@
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<div class="tiermint-component tiermint-downloads-list">
+<div class="releasecart-component releasecart-downloads-list">
 	<?php if ( '' !== $data['title'] ) : ?>
-		<h2 class="tiermint-downloads-list__title"><?php echo esc_html( $data['title'] ); ?></h2>
+		<h2 class="releasecart-downloads-list__title"><?php echo esc_html( $data['title'] ); ?></h2>
 	<?php endif; ?>
 
 	<?php if ( 'logged_out' === $data['state'] ) : ?>
 
-		<p class="tiermint-downloads-list__prompt">
-			<?php echo esc_html__( 'Please log in to view your downloads.', 'tiermint' ); ?>
+		<p class="releasecart-downloads-list__prompt">
+			<?php echo esc_html__( 'Please log in to view your downloads.', 'releasecart' ); ?>
 		</p>
-		<a class="tiermint-downloads-list__login" href="<?php echo esc_url( $data['login_url'] ); ?>">
-			<?php echo esc_html__( 'Log in', 'tiermint' ); ?>
+		<a class="releasecart-downloads-list__login" href="<?php echo esc_url( $data['login_url'] ); ?>">
+			<?php echo esc_html__( 'Log in', 'releasecart' ); ?>
 		</a>
 
 	<?php elseif ( 'empty' === $data['state'] ) : ?>
 
-		<p class="tiermint-downloads-list__empty">
-			<?php echo esc_html__( 'You have no downloads yet.', 'tiermint' ); ?>
+		<p class="releasecart-downloads-list__empty">
+			<?php echo esc_html__( 'You have no downloads yet.', 'releasecart' ); ?>
 		</p>
 
 	<?php else : ?>
 
 		<?php if ( array() !== $data['downloads'] ) : ?>
-			<ul class="tiermint-downloads-list__products">
-				<?php foreach ( $data['downloads'] as $tiermint_entry ) : ?>
-					<li class="tiermint-downloads-list__product">
-						<h3 class="tiermint-downloads-list__product-name">
-							<?php echo esc_html( (string) $tiermint_entry['product_name'] ); ?>
+			<ul class="releasecart-downloads-list__products">
+				<?php foreach ( $data['downloads'] as $releasecart_entry ) : ?>
+					<li class="releasecart-downloads-list__product">
+						<h3 class="releasecart-downloads-list__product-name">
+							<?php echo esc_html( (string) $releasecart_entry['product_name'] ); ?>
 						</h3>
-						<ul class="tiermint-downloads-list__files">
-							<?php foreach ( $tiermint_entry['files'] as $tiermint_file ) : ?>
-								<li class="tiermint-downloads-list__file">
+						<ul class="releasecart-downloads-list__files">
+							<?php foreach ( $releasecart_entry['files'] as $releasecart_file ) : ?>
+								<li class="releasecart-downloads-list__file">
 									<a
-										class="tiermint-downloads-list__file-link"
-										href="<?php echo esc_url( (string) $tiermint_file['download_url'] ); ?>"
+										class="releasecart-downloads-list__file-link"
+										href="<?php echo esc_url( (string) $releasecart_file['download_url'] ); ?>"
 										download
 									>
-										<?php echo esc_html( (string) $tiermint_file['label'] ); ?>
+										<?php echo esc_html( (string) $releasecart_file['label'] ); ?>
 									</a>
 								</li>
 							<?php endforeach; ?>
@@ -66,31 +66,31 @@ defined( 'ABSPATH' ) || exit;
 		<?php endif; ?>
 
 		<?php if ( $data['show_updates'] && array() !== $data['updates'] ) : ?>
-			<section class="tiermint-downloads-list__updates">
-				<h3 class="tiermint-downloads-list__updates-title">
-					<?php echo esc_html__( 'Updates', 'tiermint' ); ?>
+			<section class="releasecart-downloads-list__updates">
+				<h3 class="releasecart-downloads-list__updates-title">
+					<?php echo esc_html__( 'Updates', 'releasecart' ); ?>
 				</h3>
-				<ul class="tiermint-downloads-list__update-items">
-					<?php foreach ( $data['updates'] as $tiermint_update ) : ?>
-						<li class="tiermint-downloads-list__update">
-							<span class="tiermint-downloads-list__update-product">
-								<?php echo esc_html( (string) $tiermint_update['product_name'] ); ?>
+				<ul class="releasecart-downloads-list__update-items">
+					<?php foreach ( $data['updates'] as $releasecart_update ) : ?>
+						<li class="releasecart-downloads-list__update">
+							<span class="releasecart-downloads-list__update-product">
+								<?php echo esc_html( (string) $releasecart_update['product_name'] ); ?>
 							</span>
-							<span class="tiermint-downloads-list__update-version">
+							<span class="releasecart-downloads-list__update-version">
 								<?php
 								printf(
 									/* translators: %s: a release version number, e.g. 1.4.0. */
-									esc_html__( 'Version %s', 'tiermint' ),
-									esc_html( (string) $tiermint_update['version'] )
+									esc_html__( 'Version %s', 'releasecart' ),
+									esc_html( (string) $releasecart_update['version'] )
 								);
 								?>
 							</span>
 							<a
-								class="tiermint-downloads-list__update-link"
-								href="<?php echo esc_url( (string) $tiermint_update['download_url'] ); ?>"
+								class="releasecart-downloads-list__update-link"
+								href="<?php echo esc_url( (string) $releasecart_update['download_url'] ); ?>"
 								download
 							>
-								<?php echo esc_html__( 'Download update', 'tiermint' ); ?>
+								<?php echo esc_html__( 'Download update', 'releasecart' ); ?>
 							</a>
 						</li>
 					<?php endforeach; ?>

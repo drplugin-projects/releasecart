@@ -1,30 +1,30 @@
 <?php
 /**
- * GDPR personal-data exporter for TierMint customers.
+ * GDPR personal-data exporter for ReleaseCart customers.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Privacy;
+namespace DrPlugin\WP\ReleaseCart\Privacy;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Customers\Customer;
-use DrPlugin\WP\TierMint\Customers\CustomerRepository;
-use DrPlugin\WP\TierMint\Database\LogRepository;
-use DrPlugin\WP\TierMint\Licensing\Activation;
-use DrPlugin\WP\TierMint\Licensing\ActivationRepository;
-use DrPlugin\WP\TierMint\Licensing\License;
-use DrPlugin\WP\TierMint\Licensing\LicenseRepository;
-use DrPlugin\WP\TierMint\Orders\Order;
-use DrPlugin\WP\TierMint\Orders\OrderRepository;
-use DrPlugin\WP\TierMint\REST\CheckoutController;
+use DrPlugin\WP\ReleaseCart\Customers\Customer;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerRepository;
+use DrPlugin\WP\ReleaseCart\Database\LogRepository;
+use DrPlugin\WP\ReleaseCart\Licensing\Activation;
+use DrPlugin\WP\ReleaseCart\Licensing\ActivationRepository;
+use DrPlugin\WP\ReleaseCart\Licensing\License;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseRepository;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Orders\OrderRepository;
+use DrPlugin\WP\ReleaseCart\REST\CheckoutController;
 
 /**
- * Export TierMint personal data for the WordPress exporter.
+ * Export ReleaseCart personal data for the WordPress exporter.
  *
  * Orders and downloads are paged. Profile, licenses and activations are on page one.
  *
@@ -37,42 +37,42 @@ class PersonalDataExporter {
 	 *
 	 * @var string
 	 */
-	private const ORDER_META_TYPE = 'tiermint_order';
+	private const ORDER_META_TYPE = 'releasecart_order';
 
 	/**
 	 * The export group id for the customer profile.
 	 *
 	 * @var string
 	 */
-	private const GROUP_CUSTOMER = 'tiermint-customer';
+	private const GROUP_CUSTOMER = 'releasecart-customer';
 
 	/**
 	 * The export group id for orders.
 	 *
 	 * @var string
 	 */
-	private const GROUP_ORDERS = 'tiermint-orders';
+	private const GROUP_ORDERS = 'releasecart-orders';
 
 	/**
 	 * The export group id for licenses.
 	 *
 	 * @var string
 	 */
-	private const GROUP_LICENSES = 'tiermint-licenses';
+	private const GROUP_LICENSES = 'releasecart-licenses';
 
 	/**
 	 * The export group id for activations.
 	 *
 	 * @var string
 	 */
-	private const GROUP_ACTIVATIONS = 'tiermint-activations';
+	private const GROUP_ACTIVATIONS = 'releasecart-activations';
 
 	/**
 	 * The export group id for download log rows.
 	 *
 	 * @var string
 	 */
-	private const GROUP_DOWNLOADS = 'tiermint-downloads';
+	private const GROUP_DOWNLOADS = 'releasecart-downloads';
 
 	/**
 	 * How many orders and download rows to export per page.
@@ -109,11 +109,11 @@ class PersonalDataExporter {
 	 * @return string The translated exporter name.
 	 */
 	public function friendlyName(): string {
-		return __( 'TierMint store data', 'tiermint' );
+		return __( 'ReleaseCart store data', 'releasecart' );
 	}
 
 	/**
-	 * Export one page of a customer's TierMint data.
+	 * Export one page of a customer's ReleaseCart data.
 	 *
 	 * @since 1.0.0
 	 *
@@ -203,36 +203,36 @@ class PersonalDataExporter {
 	private function customerGroup( Customer $customer ): array {
 		$items = array(
 			array(
-				'name'  => __( 'Email', 'tiermint' ),
+				'name'  => __( 'Email', 'releasecart' ),
 				'value' => $customer->email(),
 			),
 		);
 
 		if ( null !== $customer->name() ) {
 			$items[] = array(
-				'name'  => __( 'Name', 'tiermint' ),
+				'name'  => __( 'Name', 'releasecart' ),
 				'value' => $customer->name(),
 			);
 		}
 
 		if ( null !== $customer->firstName() ) {
 			$items[] = array(
-				'name'  => __( 'First name', 'tiermint' ),
+				'name'  => __( 'First name', 'releasecart' ),
 				'value' => $customer->firstName(),
 			);
 		}
 
 		if ( null !== $customer->lastName() ) {
 			$items[] = array(
-				'name'  => __( 'Last name', 'tiermint' ),
+				'name'  => __( 'Last name', 'releasecart' ),
 				'value' => $customer->lastName(),
 			);
 		}
 
 		return $this->group(
 			self::GROUP_CUSTOMER,
-			__( 'TierMint customer profile', 'tiermint' ),
-			'tiermint-customer-' . $customer->id(),
+			__( 'ReleaseCart customer profile', 'releasecart' ),
+			'releasecart-customer-' . $customer->id(),
 			$items
 		);
 	}
@@ -248,31 +248,31 @@ class PersonalDataExporter {
 	private function orderGroup( Order $order ): array {
 		$items = array(
 			array(
-				'name'  => __( 'Order', 'tiermint' ),
+				'name'  => __( 'Order', 'releasecart' ),
 				'value' => $order->uuid(),
 			),
 			array(
-				'name'  => __( 'Email', 'tiermint' ),
+				'name'  => __( 'Email', 'releasecart' ),
 				'value' => $order->email(),
 			),
 			array(
-				'name'  => __( 'Status', 'tiermint' ),
+				'name'  => __( 'Status', 'releasecart' ),
 				'value' => $order->status()->value,
 			),
 			array(
-				'name'  => __( 'Total', 'tiermint' ),
+				'name'  => __( 'Total', 'releasecart' ),
 				/* translators: 1: order total in minor units, 2: uppercased currency code. */
-				'value' => sprintf( __( '%1$d (%2$s, in minor units)', 'tiermint' ), $order->total(), strtoupper( $order->currency() ) ),
+				'value' => sprintf( __( '%1$d (%2$s, in minor units)', 'releasecart' ), $order->total(), strtoupper( $order->currency() ) ),
 			),
 			array(
-				'name'  => __( 'Date', 'tiermint' ),
+				'name'  => __( 'Date', 'releasecart' ),
 				'value' => (string) $order->createdAt(),
 			),
 		);
 
 		if ( null !== $order->ipAddress() ) {
 			$items[] = array(
-				'name'  => __( 'IP address', 'tiermint' ),
+				'name'  => __( 'IP address', 'releasecart' ),
 				'value' => $order->ipAddress(),
 			);
 		}
@@ -281,8 +281,8 @@ class PersonalDataExporter {
 
 		return $this->group(
 			self::GROUP_ORDERS,
-			__( 'TierMint orders', 'tiermint' ),
-			'tiermint-order-' . $order->id(),
+			__( 'ReleaseCart orders', 'releasecart' ),
+			'releasecart-order-' . $order->id(),
 			$items
 		);
 	}
@@ -305,11 +305,11 @@ class PersonalDataExporter {
 
 		if ( is_array( $address ) ) {
 			$labels = array(
-				'address_1' => __( 'Billing address', 'tiermint' ),
-				'address_2' => __( 'Billing address (line 2)', 'tiermint' ),
-				'city'      => __( 'Billing city', 'tiermint' ),
-				'state'     => __( 'Billing state or region', 'tiermint' ),
-				'postcode'  => __( 'Billing postcode', 'tiermint' ),
+				'address_1' => __( 'Billing address', 'releasecart' ),
+				'address_2' => __( 'Billing address (line 2)', 'releasecart' ),
+				'city'      => __( 'Billing city', 'releasecart' ),
+				'state'     => __( 'Billing state or region', 'releasecart' ),
+				'postcode'  => __( 'Billing postcode', 'releasecart' ),
 			);
 
 			foreach ( $labels as $key => $label ) {
@@ -325,9 +325,9 @@ class PersonalDataExporter {
 		}
 
 		$scalarLabels = array(
-			CheckoutController::COMPANY_META => __( 'Company', 'tiermint' ),
-			CheckoutController::TAX_ID_META  => __( 'Tax ID', 'tiermint' ),
-			CheckoutController::TERMS_META   => __( 'Terms accepted', 'tiermint' ),
+			CheckoutController::COMPANY_META => __( 'Company', 'releasecart' ),
+			CheckoutController::TAX_ID_META  => __( 'Tax ID', 'releasecart' ),
+			CheckoutController::TERMS_META   => __( 'Terms accepted', 'releasecart' ),
 		);
 
 		foreach ( $scalarLabels as $metaKey => $label ) {
@@ -355,23 +355,23 @@ class PersonalDataExporter {
 	private function licenseGroup( License $license ): array {
 		$items = array(
 			array(
-				'name'  => __( 'License key', 'tiermint' ),
+				'name'  => __( 'License key', 'releasecart' ),
 				'value' => $license->licenseKey(),
 			),
 			array(
-				'name'  => __( 'Status', 'tiermint' ),
+				'name'  => __( 'Status', 'releasecart' ),
 				'value' => $license->status()->value,
 			),
 			array(
-				'name'  => __( 'Expires', 'tiermint' ),
-				'value' => null === $license->expiresAt() ? __( 'Never', 'tiermint' ) : $license->expiresAt()->format( 'Y-m-d H:i:s' ),
+				'name'  => __( 'Expires', 'releasecart' ),
+				'value' => null === $license->expiresAt() ? __( 'Never', 'releasecart' ) : $license->expiresAt()->format( 'Y-m-d H:i:s' ),
 			),
 		);
 
 		return $this->group(
 			self::GROUP_LICENSES,
-			__( 'TierMint licenses', 'tiermint' ),
-			'tiermint-license-' . $license->id(),
+			__( 'ReleaseCart licenses', 'releasecart' ),
+			'releasecart-license-' . $license->id(),
 			$items
 		);
 	}
@@ -388,23 +388,23 @@ class PersonalDataExporter {
 	private function activationGroup( int $licenseId, Activation $activation ): array {
 		$items = array(
 			array(
-				'name'  => __( 'Site URL', 'tiermint' ),
+				'name'  => __( 'Site URL', 'releasecart' ),
 				'value' => $activation->siteUrl(),
 			),
 			array(
-				'name'  => __( 'Status', 'tiermint' ),
+				'name'  => __( 'Status', 'releasecart' ),
 				'value' => $activation->status()->value,
 			),
 			array(
-				'name'  => __( 'Activated', 'tiermint' ),
+				'name'  => __( 'Activated', 'releasecart' ),
 				'value' => null === $activation->activatedAt() ? '' : $activation->activatedAt()->format( 'Y-m-d H:i:s' ),
 			),
 		);
 
 		return $this->group(
 			self::GROUP_ACTIVATIONS,
-			__( 'TierMint license activations', 'tiermint' ),
-			'tiermint-activation-' . $licenseId . '-' . $activation->id(),
+			__( 'ReleaseCart license activations', 'releasecart' ),
+			'releasecart-activation-' . $licenseId . '-' . $activation->id(),
 			$items
 		);
 	}
@@ -414,32 +414,32 @@ class PersonalDataExporter {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param object $row A `tiermint_logs` download row.
+	 * @param object $row A `releasecart_logs` download row.
 	 * @return array<string, mixed> The export group.
 	 */
 	private function downloadGroup( object $row ): array {
 		$items = array(
 			array(
-				'name'  => __( 'Event', 'tiermint' ),
+				'name'  => __( 'Event', 'releasecart' ),
 				'value' => (string) $row->message,
 			),
 			array(
-				'name'  => __( 'Date', 'tiermint' ),
+				'name'  => __( 'Date', 'releasecart' ),
 				'value' => (string) $row->created_at,
 			),
 		);
 
 		if ( null !== $row->ip_address && '' !== $row->ip_address ) {
 			$items[] = array(
-				'name'  => __( 'IP address', 'tiermint' ),
+				'name'  => __( 'IP address', 'releasecart' ),
 				'value' => (string) $row->ip_address,
 			);
 		}
 
 		return $this->group(
 			self::GROUP_DOWNLOADS,
-			__( 'TierMint downloads', 'tiermint' ),
-			'tiermint-download-' . (int) $row->id,
+			__( 'ReleaseCart downloads', 'releasecart' ),
+			'releasecart-download-' . (int) $row->id,
 			$items
 		);
 	}

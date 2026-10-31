@@ -2,18 +2,18 @@
 /**
  * Public REST receiver for inbound payment gateway webhooks.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Payments\RequestData;
-use DrPlugin\WP\TierMint\Payments\WebhookProcessor;
+use DrPlugin\WP\ReleaseCart\Payments\RequestData;
+use DrPlugin\WP\ReleaseCart\Payments\WebhookProcessor;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -65,7 +65,7 @@ final class WebhooksController extends AbstractRestController {
 					'permission_callback' => '__return_true',
 					'args'                => array(
 						'gateway' => array(
-							'description'       => __( 'The gateway id this delivery comes from.', 'tiermint' ),
+							'description'       => __( 'The gateway id this delivery comes from.', 'releasecart' ),
 							'type'              => 'string',
 							'required'          => true,
 							'sanitize_callback' => 'sanitize_key',
@@ -94,13 +94,13 @@ final class WebhooksController extends AbstractRestController {
 		);
 
 		if ( 404 === $status ) {
-			return $this->notFound( __( 'Unknown payment gateway.', 'tiermint' ) );
+			return $this->notFound( __( 'Unknown payment gateway.', 'releasecart' ) );
 		}
 
 		if ( 400 === $status ) {
 			return $this->error(
-				'tiermint_invalid_signature',
-				__( 'Webhook signature verification failed.', 'tiermint' ),
+				'releasecart_invalid_signature',
+				__( 'Webhook signature verification failed.', 'releasecart' ),
 				400
 			);
 		}
@@ -108,7 +108,7 @@ final class WebhooksController extends AbstractRestController {
 		if ( $status >= 500 ) {
 			// Answering 5xx makes the gateway retry the delivery; the claim protocol
 			// guarantees the retry is reprocessed.
-			return $this->serverError( __( 'Webhook processing failed. The gateway will retry.', 'tiermint' ) );
+			return $this->serverError( __( 'Webhook processing failed. The gateway will retry.', 'releasecart' ) );
 		}
 
 		return new WP_REST_Response( array( 'received' => true ), 200 );

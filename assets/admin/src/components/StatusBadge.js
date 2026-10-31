@@ -29,8 +29,8 @@ function modifierFor( status ) {
 export default function StatusBadge( { status, label, className } ) {
 	const modifier = modifierFor( status );
 	const classes = [
-		'tiermint-badge',
-		modifier ? `tiermint-badge--${ modifier }` : '',
+		'releasecart-badge',
+		modifier ? `releasecart-badge--${ modifier }` : '',
 		className || '',
 	]
 		.filter( Boolean )

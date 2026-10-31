@@ -2,12 +2,12 @@
 /**
  * Product term value object.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Products;
+namespace DrPlugin\WP\ReleaseCart\Products;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -144,7 +144,7 @@ final class Term {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param object $row A `tiermint_terms` row.
+	 * @param object $row A `releasecart_terms` row.
 	 * @return self
 	 */
 	public static function fromRow( object $row ): self {

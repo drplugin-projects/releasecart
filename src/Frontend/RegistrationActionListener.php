@@ -2,18 +2,18 @@
 /**
  * Server-side handler for the no-JS registration form.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Customers\AccountRole;
-use DrPlugin\WP\TierMint\Customers\CustomerService;
-use DrPlugin\WP\TierMint\Util\RateLimiter;
-use DrPlugin\WP\TierMint\Util\RequestUrl;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Customers\AccountRole;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerService;
+use DrPlugin\WP\ReleaseCart\Util\RateLimiter;
+use DrPlugin\WP\ReleaseCart\Util\RequestUrl;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -31,56 +31,56 @@ class RegistrationActionListener implements Hookable {
 	 *
 	 * @var string
 	 */
-	public const NONCE_ACTION = 'tiermint_register';
+	public const NONCE_ACTION = 'releasecart_register';
 
 	/**
 	 * Nonce field name for the registration form.
 	 *
 	 * @var string
 	 */
-	public const NONCE_FIELD = '_tiermint_register_nonce';
+	public const NONCE_FIELD = '_releasecart_register_nonce';
 
 	/**
 	 * The hidden field whose presence marks a registration POST.
 	 *
 	 * @var string
 	 */
-	public const ACTION_FIELD = 'tiermint_register';
+	public const ACTION_FIELD = 'releasecart_register';
 
 	/**
 	 * The email field name.
 	 *
 	 * @var string
 	 */
-	public const EMAIL_FIELD = 'tiermint_email';
+	public const EMAIL_FIELD = 'releasecart_email';
 
 	/**
 	 * The optional name field.
 	 *
 	 * @var string
 	 */
-	public const NAME_FIELD = 'tiermint_name';
+	public const NAME_FIELD = 'releasecart_name';
 
 	/**
 	 * Honeypot field for bot detection.
 	 *
 	 * @var string
 	 */
-	public const HONEYPOT_FIELD = 'tiermint_website';
+	public const HONEYPOT_FIELD = 'releasecart_website';
 
 	/**
 	 * The query marker a successful registration appends.
 	 *
 	 * @var string
 	 */
-	public const SUCCESS_MARKER = 'tiermint_registered';
+	public const SUCCESS_MARKER = 'releasecart_registered';
 
 	/**
 	 * The query marker a failed registration appends, carrying a whitelisted code.
 	 *
 	 * @var string
 	 */
-	public const ERROR_MARKER = 'tiermint_register_error';
+	public const ERROR_MARKER = 'releasecart_register_error';
 
 	/**
 	 * The rate-limit scope for registration submissions.
@@ -201,7 +201,7 @@ class RegistrationActionListener implements Hookable {
 		 * @param string             $email  The submitted email.
 		 * @param string             $name   The submitted name, or ''.
 		 */
-		$errors = (array) apply_filters( 'tiermint_registration_errors', array(), $email, $name );
+		$errors = (array) apply_filters( 'releasecart_registration_errors', array(), $email, $name );
 		if ( array() !== $errors ) {
 			$this->redirect( 'invalid' );
 
@@ -265,7 +265,7 @@ class RegistrationActionListener implements Hookable {
 		 * @param array<string, mixed> $args  The wp_insert_user arguments.
 		 * @param string               $email The submitted email.
 		 */
-		$args = apply_filters( 'tiermint_registration_user_args', $args, $email );
+		$args = apply_filters( 'releasecart_registration_user_args', $args, $email );
 
 		if ( ! is_array( $args ) ) {
 			return 0;
@@ -382,7 +382,7 @@ class RegistrationActionListener implements Hookable {
 		 * @param array{limit: int, window: int} $config The default limit and window.
 		 */
 		$config = apply_filters(
-			'tiermint_registration_rate_limit',
+			'releasecart_registration_rate_limit',
 			array(
 				'limit'  => 10,
 				'window' => 3600,

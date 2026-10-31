@@ -2,18 +2,18 @@
 /**
  * Base class for the routed-product front-end components.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Components;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Components;
 
-use DrPlugin\WP\TierMint\Frontend\AbstractComponent;
-use DrPlugin\WP\TierMint\Frontend\RenderContext;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Products\ProductStatus;
+use DrPlugin\WP\ReleaseCart\Frontend\AbstractComponent;
+use DrPlugin\WP\ReleaseCart\Frontend\RenderContext;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Products\ProductStatus;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -55,8 +55,8 @@ abstract class AbstractProductComponent extends AbstractComponent {
 				'control'     => 'product_select',
 				// Zero means the product routed to the details page.
 				'routed'      => true,
-				'label'       => __( 'Product', 'tiermint' ),
-				'description' => __( 'The product to show. Leave at 0 to render the product the details page is opened on.', 'tiermint' ),
+				'label'       => __( 'Product', 'releasecart' ),
+				'description' => __( 'The product to show. Leave at 0 to render the product the details page is opened on.', 'releasecart' ),
 			),
 		);
 	}
@@ -154,8 +154,8 @@ abstract class AbstractProductComponent extends AbstractComponent {
 	 * @return string Escaped HTML.
 	 */
 	protected function editorPlaceholder(): string {
-		return '<div class="tiermint-component tiermint-product-preview--placeholder">'
-			. '<p>' . esc_html__( 'This block shows product details on the product page.', 'tiermint' ) . '</p>'
+		return '<div class="releasecart-component releasecart-product-preview--placeholder">'
+			. '<p>' . esc_html__( 'This block shows product details on the product page.', 'releasecart' ) . '</p>'
 			. '</div>';
 	}
 }

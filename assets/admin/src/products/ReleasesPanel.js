@@ -40,7 +40,7 @@ function readApiError( error ) {
 			code: 'error',
 			message: error
 				? String( error )
-				: __( 'Upload failed.', 'tiermint' ),
+				: __( 'Upload failed.', 'releasecart' ),
 			errors: null,
 		};
 	}
@@ -50,7 +50,7 @@ function readApiError( error ) {
 		message:
 			typeof error.message === 'string' && error.message !== ''
 				? error.message
-				: __( 'Something went wrong.', 'tiermint' ),
+				: __( 'Something went wrong.', 'releasecart' ),
 		errors: data.errors || null,
 	};
 }
@@ -98,11 +98,11 @@ function legacyCopy( value ) {
 function releaseStatusLabel( status ) {
 	switch ( status ) {
 		case 'published':
-			return __( 'Published', 'tiermint' );
+			return __( 'Published', 'releasecart' );
 		case 'yanked':
-			return __( 'Yanked', 'tiermint' );
+			return __( 'Yanked', 'releasecart' );
 		default:
-			return __( 'Draft', 'tiermint' );
+			return __( 'Draft', 'releasecart' );
 	}
 }
 
@@ -154,7 +154,7 @@ export default function ReleasesPanel( { productId } ) {
 	const extensions = useReleaseRowExtensions();
 	const base = `/products/${ productId }/releases`;
 	// apiFetch needs the plugin namespace for multipart requests.
-	const restBase = `/tiermint/v1${ base }`;
+	const restBase = `/releasecart/v1${ base }`;
 
 	const releasesQuery = useQuery( {
 		queryKey: [ 'releases', productId ],
@@ -378,7 +378,7 @@ export default function ReleasesPanel( { productId } ) {
 						? error.message
 						: __(
 								'The package could not be downloaded.',
-								'tiermint'
+								'releasecart'
 						  ),
 			} ) );
 		} finally {
@@ -428,7 +428,7 @@ export default function ReleasesPanel( { productId } ) {
 	const confirmDelete = ( id ) => {
 		// eslint-disable-next-line no-alert
 		const confirmed = window.confirm(
-			__( 'Delete this release? This cannot be undone.', 'tiermint' )
+			__( 'Delete this release? This cannot be undone.', 'releasecart' )
 		);
 		if ( confirmed ) {
 			deleteMutation.mutate( id );
@@ -449,7 +449,7 @@ export default function ReleasesPanel( { productId } ) {
 			const confirmed = window.confirm(
 				__(
 					'Replace the package for this release? Sites that have already updated keep the current build; new update checks serve the replacement under the same version.',
-					'tiermint'
+					'releasecart'
 				)
 			);
 			if ( ! confirmed ) {
@@ -464,17 +464,17 @@ export default function ReleasesPanel( { productId } ) {
 		: [];
 
 	return (
-		<div className="tiermint-panel tiermint-releases">
+		<div className="releasecart-panel releasecart-releases">
 			<div
 				role="status"
 				aria-live="polite"
 				className="screen-reader-text"
 			>
 				{ null !== copiedId
-					? __( 'SHA-256 checksum copied.', 'tiermint' )
+					? __( 'SHA-256 checksum copied.', 'releasecart' )
 					: '' }
 			</div>
-			<h2>{ __( 'Upload a new release', 'tiermint' ) }</h2>
+			<h2>{ __( 'Upload a new release', 'releasecart' ) }</h2>
 			{ uploadError && (
 				<Notice status="error" isDismissible={ false }>
 					{ uploadError.message }
@@ -483,18 +483,18 @@ export default function ReleasesPanel( { productId } ) {
 			<TextControl
 				__nextHasNoMarginBottom
 				__next40pxDefaultSize
-				label={ __( 'Version', 'tiermint' ) }
+				label={ __( 'Version', 'releasecart' ) }
 				value={ upload.version }
 				onChange={ ( value ) =>
 					setUpload( ( prev ) => ( { ...prev, version: value } ) )
 				}
 			/>
-			<div className="tiermint-file-field">
-				<span>{ __( 'Package (.zip)', 'tiermint' ) }</span>
+			<div className="releasecart-file-field">
+				<span>{ __( 'Package (.zip)', 'releasecart' ) }</span>
 				<input
 					type="file"
 					accept=".zip"
-					aria-label={ __( 'Package (.zip)', 'tiermint' ) }
+					aria-label={ __( 'Package (.zip)', 'releasecart' ) }
 					onChange={ ( event ) =>
 						setUploadFile(
 							event.target.files && event.target.files[ 0 ]
@@ -506,7 +506,7 @@ export default function ReleasesPanel( { productId } ) {
 			</div>
 			<TextareaControl
 				__nextHasNoMarginBottom
-				label={ __( 'Changelog', 'tiermint' ) }
+				label={ __( 'Changelog', 'releasecart' ) }
 				value={ upload.changelog }
 				onChange={ ( value ) =>
 					setUpload( ( prev ) => ( { ...prev, changelog: value } ) )
@@ -515,7 +515,7 @@ export default function ReleasesPanel( { productId } ) {
 			<TextControl
 				__nextHasNoMarginBottom
 				__next40pxDefaultSize
-				label={ __( 'Requires WordPress', 'tiermint' ) }
+				label={ __( 'Requires WordPress', 'releasecart' ) }
 				value={ upload.requires_wp }
 				onChange={ ( value ) =>
 					setUpload( ( prev ) => ( { ...prev, requires_wp: value } ) )
@@ -524,7 +524,7 @@ export default function ReleasesPanel( { productId } ) {
 			<TextControl
 				__nextHasNoMarginBottom
 				__next40pxDefaultSize
-				label={ __( 'Tested up to', 'tiermint' ) }
+				label={ __( 'Tested up to', 'releasecart' ) }
 				value={ upload.tested_up_to }
 				onChange={ ( value ) =>
 					setUpload( ( prev ) => ( {
@@ -536,7 +536,7 @@ export default function ReleasesPanel( { productId } ) {
 			<TextControl
 				__nextHasNoMarginBottom
 				__next40pxDefaultSize
-				label={ __( 'Requires PHP', 'tiermint' ) }
+				label={ __( 'Requires PHP', 'releasecart' ) }
 				value={ upload.requires_php }
 				onChange={ ( value ) =>
 					setUpload( ( prev ) => ( {
@@ -552,10 +552,10 @@ export default function ReleasesPanel( { productId } ) {
 				}
 				onClick={ () => uploadMutation.mutate() }
 			>
-				{ __( 'Upload release', 'tiermint' ) }
+				{ __( 'Upload release', 'releasecart' ) }
 			</Button>
 
-			<h2>{ __( 'Releases', 'tiermint' ) }</h2>
+			<h2>{ __( 'Releases', 'releasecart' ) }</h2>
 			{ firstReadPending( releasesQuery ) && <SkeletonPanel /> }
 			{ releasesQuery.isError && (
 				<Notice status="error" isDismissible={ false }>
@@ -567,15 +567,15 @@ export default function ReleasesPanel( { productId } ) {
 				! releasesQuery.isError &&
 				releases.length === 0 && (
 					<EmptyState
-						className="tiermint-empty-state--panel"
+						className="releasecart-empty-state--panel"
 						message={ __(
 							'No releases yet. Upload one above to start serving updates.',
-							'tiermint'
+							'releasecart'
 						) }
 					/>
 				) }
 
-			<ul className="tiermint-release-list">
+			<ul className="releasecart-release-list">
 				{ releases.map( ( release ) => {
 					const isEditing = editingId === release.id;
 					const fully = release.status === 'draft';
@@ -590,7 +590,7 @@ export default function ReleasesPanel( { productId } ) {
 					// otherwise send a second request, and publish and yank are
 					// a compare-and-swap on release status, so the second one
 					// loses: the controller maps the failed transition to a 409
-					// `tiermint_conflict`, which the panel renders as "Reload
+					// `releasecart_conflict`, which the panel renders as "Reload
 					// and try again" over a write that in fact succeeded.
 					//
 					// Switching tabs and back inside that window clears the
@@ -614,8 +614,11 @@ export default function ReleasesPanel( { productId } ) {
 					// the unit suite would notice if this were dropped; it was
 					// checked in the browser instead.
 					return (
-						<li key={ release.id } className="tiermint-release-row">
-							<div className="tiermint-release-head">
+						<li
+							key={ release.id }
+							className="releasecart-release-row"
+						>
+							<div className="releasecart-release-head">
 								<strong>{ release.version }</strong>
 								<StatusBadge
 									status={ release.status }
@@ -634,20 +637,20 @@ export default function ReleasesPanel( { productId } ) {
 								) }
 							</div>
 
-							<div className="tiermint-release-package">
-								<span className="tiermint-release-package__name">
+							<div className="releasecart-release-package">
+								<span className="releasecart-release-package__name">
 									{ release.package_filename }
 								</span>
-								<span className="tiermint-release-package__size">
+								<span className="releasecart-release-package__size">
 									{ formatBytes( release.filesize ) }
 								</span>
-								<span className="tiermint-release-package__checksum-label">
-									{ __( 'SHA-256', 'tiermint' ) }
+								<span className="releasecart-release-package__checksum-label">
+									{ __( 'SHA-256', 'releasecart' ) }
 								</span>
 								<button
 									type="button"
 									className={
-										'tiermint-release-package__checksum' +
+										'releasecart-release-package__checksum' +
 										( copiedId === release.id
 											? ' is-copied'
 											: '' )
@@ -655,7 +658,7 @@ export default function ReleasesPanel( { productId } ) {
 									title={ release.checksum_sha256 || '' }
 									aria-label={ __(
 										'Copy the SHA-256 checksum',
-										'tiermint'
+										'releasecart'
 									) }
 									onClick={ () => copyChecksum( release ) }
 								>
@@ -663,10 +666,10 @@ export default function ReleasesPanel( { productId } ) {
 								</button>
 								{ copiedId === release.id && (
 									<span
-										className="tiermint-release-package__copied"
+										className="releasecart-release-package__copied"
 										aria-hidden="true"
 									>
-										{ __( 'Copied', 'tiermint' ) }
+										{ __( 'Copied', 'releasecart' ) }
 									</span>
 								) }
 								<Button
@@ -676,7 +679,7 @@ export default function ReleasesPanel( { productId } ) {
 									__experimentalIsFocusable
 									onClick={ () => downloadPackage( release ) }
 								>
-									{ __( 'Download', 'tiermint' ) }
+									{ __( 'Download', 'releasecart' ) }
 								</Button>
 							</div>
 
@@ -687,12 +690,12 @@ export default function ReleasesPanel( { productId } ) {
 							) }
 
 							{ ! isEditing && (
-								<div className="tiermint-release-actions">
+								<div className="releasecart-release-actions">
 									<Button
 										variant="secondary"
 										onClick={ () => startEdit( release ) }
 									>
-										{ __( 'Edit', 'tiermint' ) }
+										{ __( 'Edit', 'releasecart' ) }
 									</Button>
 									{ release.status === 'draft' && (
 										<Button
@@ -707,7 +710,7 @@ export default function ReleasesPanel( { productId } ) {
 												} )
 											}
 										>
-											{ __( 'Publish', 'tiermint' ) }
+											{ __( 'Publish', 'releasecart' ) }
 										</Button>
 									) }
 									{ release.status === 'published' && (
@@ -722,7 +725,7 @@ export default function ReleasesPanel( { productId } ) {
 												)
 											}
 										>
-											{ __( 'Yank', 'tiermint' ) }
+											{ __( 'Yank', 'releasecart' ) }
 										</Button>
 									) }
 									{ ( release.status === 'draft' ||
@@ -737,7 +740,7 @@ export default function ReleasesPanel( { productId } ) {
 												confirmDelete( release.id )
 											}
 										>
-											{ __( 'Delete', 'tiermint' ) }
+											{ __( 'Delete', 'releasecart' ) }
 										</Button>
 									) }
 								</div>
@@ -747,11 +750,11 @@ export default function ReleasesPanel( { productId } ) {
 								<Notice status="error" isDismissible={ false }>
 									<p>{ publishError.message }</p>
 									{ publishError.code ===
-									'tiermint_conflict' ? (
+									'releasecart_conflict' ? (
 										<p>
 											{ __(
 												'Please reload the page and try again.',
-												'tiermint'
+												'releasecart'
 											) }
 										</p>
 									) : (
@@ -769,7 +772,7 @@ export default function ReleasesPanel( { productId } ) {
 										>
 											{ __(
 												'Publish anyway',
-												'tiermint'
+												'releasecart'
 											) }
 										</Button>
 									) }
@@ -777,11 +780,11 @@ export default function ReleasesPanel( { productId } ) {
 							) }
 
 							{ isEditing && (
-								<div className="tiermint-release-edit">
+								<div className="releasecart-release-edit">
 									<TextControl
 										__nextHasNoMarginBottom
 										__next40pxDefaultSize
-										label={ __( 'Version', 'tiermint' ) }
+										label={ __( 'Version', 'releasecart' ) }
 										value={ editForm.version }
 										disabled={ ! fully }
 										onChange={ ( value ) =>
@@ -791,11 +794,11 @@ export default function ReleasesPanel( { productId } ) {
 											} ) )
 										}
 									/>
-									<div className="tiermint-file-field">
+									<div className="releasecart-file-field">
 										<span>
 											{ __(
 												'Replace package (.zip)',
-												'tiermint'
+												'releasecart'
 											) }
 										</span>
 										<input
@@ -803,7 +806,7 @@ export default function ReleasesPanel( { productId } ) {
 											accept=".zip"
 											aria-label={ __(
 												'Replace package (.zip)',
-												'tiermint'
+												'releasecart'
 											) }
 											onChange={ ( event ) =>
 												setEditFile(
@@ -818,7 +821,10 @@ export default function ReleasesPanel( { productId } ) {
 									</div>
 									<TextareaControl
 										__nextHasNoMarginBottom
-										label={ __( 'Changelog', 'tiermint' ) }
+										label={ __(
+											'Changelog',
+											'releasecart'
+										) }
 										value={ editForm.changelog }
 										onChange={ ( value ) =>
 											setEditForm( ( prev ) => ( {
@@ -832,7 +838,7 @@ export default function ReleasesPanel( { productId } ) {
 										__next40pxDefaultSize
 										label={ __(
 											'Requires WordPress',
-											'tiermint'
+											'releasecart'
 										) }
 										value={ editForm.requires_wp }
 										onChange={ ( value ) =>
@@ -847,7 +853,7 @@ export default function ReleasesPanel( { productId } ) {
 										__next40pxDefaultSize
 										label={ __(
 											'Tested up to',
-											'tiermint'
+											'releasecart'
 										) }
 										value={ editForm.tested_up_to }
 										onChange={ ( value ) =>
@@ -862,7 +868,7 @@ export default function ReleasesPanel( { productId } ) {
 										__next40pxDefaultSize
 										label={ __(
 											'Requires PHP',
-											'tiermint'
+											'releasecart'
 										) }
 										value={ editForm.requires_php }
 										onChange={ ( value ) =>
@@ -876,7 +882,7 @@ export default function ReleasesPanel( { productId } ) {
 										<p>
 											{ __(
 												'Only the version is locked once a release is published or yanked.',
-												'tiermint'
+												'releasecart'
 											) }
 										</p>
 									) }
@@ -887,13 +893,13 @@ export default function ReleasesPanel( { productId } ) {
 										__experimentalIsFocusable
 										onClick={ saveEdit }
 									>
-										{ __( 'Save changes', 'tiermint' ) }
+										{ __( 'Save changes', 'releasecart' ) }
 									</Button>
 									<Button
 										variant="secondary"
 										onClick={ () => setEditingId( null ) }
 									>
-										{ __( 'Cancel', 'tiermint' ) }
+										{ __( 'Cancel', 'releasecart' ) }
 									</Button>
 								</div>
 							) }

@@ -1,13 +1,13 @@
 <?php
 /**
- * The product fields and panels TierMint registers itself.
+ * The product fields and panels ReleaseCart registers itself.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Products\Fields;
+namespace DrPlugin\WP\ReleaseCart\Products\Fields;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -34,45 +34,45 @@ final class CoreProductFields {
 				'id'      => 'overview',
 				'panel'   => 'content',
 				'type'    => 'rich_text',
-				'label'   => __( 'Overview', 'tiermint' ),
-				'help'    => __( 'A short rich-text summary shown near the top of the product page.', 'tiermint' ),
+				'label'   => __( 'Overview', 'releasecart' ),
+				'help'    => __( 'A short rich-text summary shown near the top of the product page.', 'releasecart' ),
 				'storage' => 'column',
 			),
 			array(
 				'id'      => 'description',
 				'panel'   => 'content',
 				'type'    => 'rich_text',
-				'label'   => __( 'Full description', 'tiermint' ),
-				'help'    => __( 'The long description with formatting, shown on the product and pricing pages.', 'tiermint' ),
+				'label'   => __( 'Full description', 'releasecart' ),
+				'help'    => __( 'The long description with formatting, shown on the product and pricing pages.', 'releasecart' ),
 				'storage' => 'column',
 			),
 			array(
 				'id'    => 'main_image',
 				'panel' => 'media',
 				'type'  => 'media',
-				'label' => __( 'Main image', 'tiermint' ),
-				'help'  => __( 'The primary product image, from the media library.', 'tiermint' ),
+				'label' => __( 'Main image', 'releasecart' ),
+				'help'  => __( 'The primary product image, from the media library.', 'releasecart' ),
 			),
 			array(
 				'id'    => 'thumbnail',
 				'panel' => 'media',
 				'type'  => 'media',
-				'label' => __( 'Thumbnail', 'tiermint' ),
-				'help'  => __( 'A smaller image for product grids and listings.', 'tiermint' ),
+				'label' => __( 'Thumbnail', 'releasecart' ),
+				'help'  => __( 'A smaller image for product grids and listings.', 'releasecart' ),
 			),
 			array(
 				'id'    => 'og_image',
 				'panel' => 'media',
 				'type'  => 'media',
-				'label' => __( 'Social share image', 'tiermint' ),
-				'help'  => __( 'Shown when the product page is shared on social networks.', 'tiermint' ),
+				'label' => __( 'Social share image', 'releasecart' ),
+				'help'  => __( 'Shown when the product page is shared on social networks.', 'releasecart' ),
 			),
 			array(
 				'id'    => 'screenshots',
 				'panel' => 'media',
 				'type'  => 'media_gallery',
-				'label' => __( 'Screenshots', 'tiermint' ),
-				'help'  => __( 'A gallery of product screenshots, from the media library.', 'tiermint' ),
+				'label' => __( 'Screenshots', 'releasecart' ),
+				'help'  => __( 'A gallery of product screenshots, from the media library.', 'releasecart' ),
 			),
 		);
 	}
@@ -88,11 +88,11 @@ final class CoreProductFields {
 		return array(
 			array(
 				'id'    => 'content',
-				'label' => __( 'Content', 'tiermint' ),
+				'label' => __( 'Content', 'releasecart' ),
 			),
 			array(
 				'id'    => 'media',
-				'label' => __( 'Media', 'tiermint' ),
+				'label' => __( 'Media', 'releasecart' ),
 			),
 		);
 	}

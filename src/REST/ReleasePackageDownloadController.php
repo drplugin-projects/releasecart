@@ -2,23 +2,23 @@
 /**
  * The store owner's release-package download route.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Products\ProductRepository;
-use DrPlugin\WP\TierMint\Storage\StorageException;
-use DrPlugin\WP\TierMint\Storage\StorageManager;
-use DrPlugin\WP\TierMint\Updates\Release;
-use DrPlugin\WP\TierMint\Updates\ReleasePackageName;
-use DrPlugin\WP\TierMint\Updates\ReleaseRepository;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Products\ProductRepository;
+use DrPlugin\WP\ReleaseCart\Storage\StorageException;
+use DrPlugin\WP\ReleaseCart\Storage\StorageManager;
+use DrPlugin\WP\ReleaseCart\Updates\Release;
+use DrPlugin\WP\ReleaseCart\Updates\ReleasePackageName;
+use DrPlugin\WP\ReleaseCart\Updates\ReleaseRepository;
 use Throwable;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -169,8 +169,8 @@ final class ReleasePackageDownloadController extends AbstractRestController {
 
 			if ( ! $provider->exists( $release->storageKey() ) ) {
 				return $this->error(
-					'tiermint_package_missing',
-					__( 'The package for this release is missing from storage. Re-upload the build to restore it.', 'tiermint' ),
+					'releasecart_package_missing',
+					__( 'The package for this release is missing from storage. Re-upload the build to restore it.', 'releasecart' ),
 					404
 				);
 			}

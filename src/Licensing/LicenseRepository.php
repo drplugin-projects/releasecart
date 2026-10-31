@@ -2,19 +2,19 @@
 /**
  * Licenses repository: the only Licensing class that touches the licenses table.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Licensing;
+namespace DrPlugin\WP\ReleaseCart\Licensing;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use DrPlugin\WP\TierMint\Database\Schema;
+use DrPlugin\WP\ReleaseCart\Database\Schema;
 
 /**
  * License storage with cache-backed key lookups.
@@ -30,7 +30,7 @@ class LicenseRepository {
 	 *
 	 * @var string
 	 */
-	private const CACHE_GROUP = 'tiermint_licenses';
+	private const CACHE_GROUP = 'releasecart_licenses';
 
 	/**
 	 * The WordPress database abstraction.
@@ -714,7 +714,7 @@ class LicenseRepository {
 		 *
 		 * @param array<string, mixed> $args The license-query args about to build SQL.
 		 */
-		return (array) apply_filters( 'tiermint_license_query_args', $args );
+		return (array) apply_filters( 'releasecart_license_query_args', $args );
 	}
 
 	/**

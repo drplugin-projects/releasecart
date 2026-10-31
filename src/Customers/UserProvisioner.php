@@ -3,21 +3,21 @@
  * Turns a completed guest order into a WordPress account when auto-registration
  * is on.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Customers;
+namespace DrPlugin\WP\ReleaseCart\Customers;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Frontend\CheckoutFieldSettings;
-use DrPlugin\WP\TierMint\Frontend\PasswordResetLinks;
-use DrPlugin\WP\TierMint\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Frontend\CheckoutFieldSettings;
+use DrPlugin\WP\ReleaseCart\Frontend\PasswordResetLinks;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
 use RuntimeException;
 use Throwable;
 
@@ -83,7 +83,7 @@ final class UserProvisioner implements Hookable {
 	 * @return void
 	 */
 	public function hooks(): void {
-		add_action( 'tiermint_order_completed', array( $this, 'onOrderCompleted' ), 10, 1 );
+		add_action( 'releasecart_order_completed', array( $this, 'onOrderCompleted' ), 10, 1 );
 	}
 
 	/**
@@ -208,7 +208,7 @@ final class UserProvisioner implements Hookable {
 		 * @param array<string, mixed> $args  The wp_insert_user arguments.
 		 * @param Order                $order The completed order the account is for.
 		 */
-		$args = apply_filters( 'tiermint_auto_register_user_args', $args, $order );
+		$args = apply_filters( 'releasecart_auto_register_user_args', $args, $order );
 
 		if ( ! is_array( $args ) ) {
 			return;
@@ -234,7 +234,7 @@ final class UserProvisioner implements Hookable {
 		 * @param int   $userId The new user id.
 		 * @param Order $order  The completed order the account is for.
 		 */
-		if ( (bool) apply_filters( 'tiermint_auto_register_notify', true, $userId, $order ) ) {
+		if ( (bool) apply_filters( 'releasecart_auto_register_notify', true, $userId, $order ) ) {
 			// The 'user' notification sends the set-password link only; no plaintext
 			// password is ever emailed.
 			$send = static function () use ( $userId ): void {

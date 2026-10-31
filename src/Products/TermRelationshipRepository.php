@@ -2,17 +2,17 @@
 /**
  * Term relationship repository: writes the product-assignment join rows.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Products;
+namespace DrPlugin\WP\ReleaseCart\Products;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Database\Schema;
+use DrPlugin\WP\ReleaseCart\Database\Schema;
 
 /**
  * Stores product term assignments one taxonomy at a time.
@@ -146,7 +146,7 @@ class TermRelationshipRepository {
 	}
 
 	/**
-	 * The fully-qualified `tiermint_term_relationships` table name.
+	 * The fully-qualified `releasecart_term_relationships` table name.
 	 *
 	 * @since 1.0.0
 	 *
@@ -157,7 +157,7 @@ class TermRelationshipRepository {
 	}
 
 	/**
-	 * The fully-qualified `tiermint_terms` table name.
+	 * The fully-qualified `releasecart_terms` table name.
 	 *
 	 * @since 1.0.0
 	 *

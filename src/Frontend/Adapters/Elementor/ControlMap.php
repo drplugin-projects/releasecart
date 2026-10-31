@@ -2,12 +2,12 @@
 /**
  * Maps a component schema to Elementor control arguments.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Adapters\Elementor;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor;
 
 defined( 'ABSPATH' ) || exit;
 

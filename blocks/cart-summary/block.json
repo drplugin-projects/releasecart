@@ -1,13 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "tiermint/cart-summary",
+	"name": "releasecart/cart-summary",
 	"title": "Cart Summary",
-	"category": "tiermint",
+	"category": "releasecart",
 	"icon": "cart",
 	"description": "The shopper's cart lines and totals with remove and update controls.",
-	"keywords": [ "cart", "basket", "summary", "tiermint" ],
-	"textdomain": "tiermint",
+	"keywords": [ "cart", "basket", "summary", "releasecart" ],
+	"textdomain": "releasecart",
 	"supports": {
 		"html": false
 	},

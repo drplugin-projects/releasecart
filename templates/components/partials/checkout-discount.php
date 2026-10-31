@@ -4,70 +4,70 @@
  *
  * The forms work without JavaScript.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /* translators: %s: the discount code the buyer applied. */
-$tiermint_discount_applied_tpl = __( 'Code %s applied', 'tiermint' );
+$releasecart_discount_applied_tpl = __( 'Code %s applied', 'releasecart' );
 
-$tiermint_discount       = isset( $data['discount'] ) && is_array( $data['discount'] ) ? $data['discount'] : array();
-$tiermint_discount_state = (string) ( $tiermint_discount['state'] ?? '' );
-$tiermint_is_applied     = 'applied' === $tiermint_discount_state;
-$tiermint_is_invalid     = 'invalid' === $tiermint_discount_state;
-$tiermint_discount_code  = (string) ( $tiermint_discount['code'] ?? '' );
-$tiermint_discount_error = (string) ( $tiermint_discount['error'] ?? '' );
-$tiermint_action_url     = (string) ( $data['action_url'] ?? '' );
+$releasecart_discount       = isset( $data['discount'] ) && is_array( $data['discount'] ) ? $data['discount'] : array();
+$releasecart_discount_state = (string) ( $releasecart_discount['state'] ?? '' );
+$releasecart_is_applied     = 'applied' === $releasecart_discount_state;
+$releasecart_is_invalid     = 'invalid' === $releasecart_discount_state;
+$releasecart_discount_code  = (string) ( $releasecart_discount['code'] ?? '' );
+$releasecart_discount_error = (string) ( $releasecart_discount['error'] ?? '' );
+$releasecart_action_url     = (string) ( $data['action_url'] ?? '' );
 
 ?>
 <section
-	class="tiermint-checkout__discount tiermint-card"
-	aria-label="<?php esc_attr_e( 'Discount code', 'tiermint' ); ?>"
-	data-msg-applied="<?php echo esc_attr( $tiermint_discount_applied_tpl ); ?>"
-	data-msg-error="<?php esc_attr_e( 'The discount could not be applied. Please try again.', 'tiermint' ); ?>"
+	class="releasecart-checkout__discount releasecart-card"
+	aria-label="<?php esc_attr_e( 'Discount code', 'releasecart' ); ?>"
+	data-msg-applied="<?php echo esc_attr( $releasecart_discount_applied_tpl ); ?>"
+	data-msg-error="<?php esc_attr_e( 'The discount could not be applied. Please try again.', 'releasecart' ); ?>"
 >
-	<div class="tiermint-checkout__discount-field tiermint-field">
-		<label for="tiermint-checkout-discount"><?php esc_html_e( 'Discount code', 'tiermint' ); ?></label>
+	<div class="releasecart-checkout__discount-field releasecart-field">
+		<label for="releasecart-checkout-discount"><?php esc_html_e( 'Discount code', 'releasecart' ); ?></label>
 		<?php // A normal POST keeps Apply working without JavaScript. ?>
-		<form class="tiermint-checkout__discount-apply-form" method="post" action="<?php echo esc_url( $tiermint_action_url ); ?>">
-			<input type="hidden" name="tiermint_cart_action" value="apply_discount">
-			<?php wp_nonce_field( \DrPlugin\WP\TierMint\Frontend\CartActionListener::NONCE_ACTION, \DrPlugin\WP\TierMint\Frontend\CartActionListener::NONCE_FIELD ); ?>
-			<div class="tiermint-checkout__discount-row"<?php echo $tiermint_is_applied ? ' hidden' : ''; ?>>
+		<form class="releasecart-checkout__discount-apply-form" method="post" action="<?php echo esc_url( $releasecart_action_url ); ?>">
+			<input type="hidden" name="releasecart_cart_action" value="apply_discount">
+			<?php wp_nonce_field( \DrPlugin\WP\ReleaseCart\Frontend\CartActionListener::NONCE_ACTION, \DrPlugin\WP\ReleaseCart\Frontend\CartActionListener::NONCE_FIELD ); ?>
+			<div class="releasecart-checkout__discount-row"<?php echo $releasecart_is_applied ? ' hidden' : ''; ?>>
 				<input
 					type="text"
-					class="tiermint-input" id="tiermint-checkout-discount"
+					class="releasecart-input" id="releasecart-checkout-discount"
 					name="discount_code"
 					autocomplete="off"
 					autocapitalize="characters"
 					spellcheck="false"
 					maxlength="50"
 				>
-				<button type="submit" class="tiermint-checkout__discount-apply tiermint-button tiermint-button--secondary" data-tiermint-discount-apply>
-					<?php esc_html_e( 'Apply', 'tiermint' ); ?>
+				<button type="submit" class="releasecart-checkout__discount-apply releasecart-button releasecart-button--secondary" data-releasecart-discount-apply>
+					<?php esc_html_e( 'Apply', 'releasecart' ); ?>
 				</button>
 			</div>
 		</form>
 		<?php // Removing a code uses a separate PRG form. ?>
-		<div class="tiermint-checkout__discount-chip" data-tiermint-discount-chip<?php echo $tiermint_is_applied ? '' : ' hidden'; ?>>
-			<span class="tiermint-checkout__discount-chip-label" data-tiermint-discount-chip-label>
+		<div class="releasecart-checkout__discount-chip" data-releasecart-discount-chip<?php echo $releasecart_is_applied ? '' : ' hidden'; ?>>
+			<span class="releasecart-checkout__discount-chip-label" data-releasecart-discount-chip-label>
 				<?php
-				if ( $tiermint_is_applied ) {
-					echo esc_html( sprintf( $tiermint_discount_applied_tpl, $tiermint_discount_code ) );
+				if ( $releasecart_is_applied ) {
+					echo esc_html( sprintf( $releasecart_discount_applied_tpl, $releasecart_discount_code ) );
 				}
 				?>
 			</span>
-			<form class="tiermint-checkout__discount-remove-form" method="post" action="<?php echo esc_url( $tiermint_action_url ); ?>">
-				<input type="hidden" name="tiermint_cart_action" value="remove_discount">
-				<?php wp_nonce_field( \DrPlugin\WP\TierMint\Frontend\CartActionListener::NONCE_ACTION, \DrPlugin\WP\TierMint\Frontend\CartActionListener::NONCE_FIELD ); ?>
-				<button type="submit" class="tiermint-checkout__discount-remove tiermint-button tiermint-button--ghost tiermint-button--small" data-tiermint-discount-remove>
-					<?php esc_html_e( 'Remove', 'tiermint' ); ?>
+			<form class="releasecart-checkout__discount-remove-form" method="post" action="<?php echo esc_url( $releasecart_action_url ); ?>">
+				<input type="hidden" name="releasecart_cart_action" value="remove_discount">
+				<?php wp_nonce_field( \DrPlugin\WP\ReleaseCart\Frontend\CartActionListener::NONCE_ACTION, \DrPlugin\WP\ReleaseCart\Frontend\CartActionListener::NONCE_FIELD ); ?>
+				<button type="submit" class="releasecart-checkout__discount-remove releasecart-button releasecart-button--ghost releasecart-button--small" data-releasecart-discount-remove>
+					<?php esc_html_e( 'Remove', 'releasecart' ); ?>
 				</button>
 			</form>
 		</div>
-		<p class="tiermint-checkout__discount-error" data-tiermint-discount-error role="alert"<?php echo $tiermint_is_invalid ? '' : ' hidden'; ?>><?php echo $tiermint_is_invalid ? esc_html( $tiermint_discount_error ) : ''; ?></p>
+		<p class="releasecart-checkout__discount-error" data-releasecart-discount-error role="alert"<?php echo $releasecart_is_invalid ? '' : ' hidden'; ?>><?php echo $releasecart_is_invalid ? esc_html( $releasecart_discount_error ) : ''; ?></p>
 	</div>
 	<noscript>
-		<p class="tiermint-checkout__discount-note"><?php esc_html_e( 'You can apply or remove a discount code without JavaScript. Completing payment still requires JavaScript.', 'tiermint' ); ?></p>
+		<p class="releasecart-checkout__discount-note"><?php esc_html_e( 'You can apply or remove a discount code without JavaScript. Completing payment still requires JavaScript.', 'releasecart' ); ?></p>
 	</noscript>
 </section>

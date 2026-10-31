@@ -2,12 +2,12 @@
 /**
  * Cart line value object.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Orders;
+namespace DrPlugin\WP\ReleaseCart\Orders;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -87,27 +87,27 @@ final class CartLine {
 	) {
 		if ( $productId <= 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new OrderException( __( 'A cart line requires a valid product id.', 'tiermint' ) );
+			throw new OrderException( __( 'A cart line requires a valid product id.', 'releasecart' ) );
 		}
 
 		if ( $priceId <= 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new OrderException( __( 'A cart line requires a valid price id.', 'tiermint' ) );
+			throw new OrderException( __( 'A cart line requires a valid price id.', 'releasecart' ) );
 		}
 
 		if ( $quantity < 1 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new OrderException( __( 'A cart line quantity must be at least 1.', 'tiermint' ) );
+			throw new OrderException( __( 'A cart line quantity must be at least 1.', 'releasecart' ) );
 		}
 
 		if ( $unitAmount < 0 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new OrderException( __( 'A cart line unit amount cannot be negative.', 'tiermint' ) );
+			throw new OrderException( __( 'A cart line unit amount cannot be negative.', 'releasecart' ) );
 		}
 
 		if ( '' === trim( $productName ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new OrderException( __( 'A cart line requires a product name.', 'tiermint' ) );
+			throw new OrderException( __( 'A cart line requires a product name.', 'releasecart' ) );
 		}
 
 		$this->productId   = $productId;

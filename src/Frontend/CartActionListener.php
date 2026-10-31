@@ -2,23 +2,23 @@
 /**
  * Server-side handler for the no-JS cart forms.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
-use DrPlugin\WP\TierMint\Discounts\DiscountPersistenceException;
-use DrPlugin\WP\TierMint\Discounts\DiscountService;
-use DrPlugin\WP\TierMint\Discounts\DiscountValidationException;
-use DrPlugin\WP\TierMint\Orders\Cart;
-use DrPlugin\WP\TierMint\Orders\CartService;
-use DrPlugin\WP\TierMint\Orders\OrderException;
-use DrPlugin\WP\TierMint\Orders\OrderValidationException;
-use DrPlugin\WP\TierMint\Util\RateLimiter;
-use DrPlugin\WP\TierMint\Util\RequestUrl;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountPersistenceException;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountService;
+use DrPlugin\WP\ReleaseCart\Discounts\DiscountValidationException;
+use DrPlugin\WP\ReleaseCart\Orders\Cart;
+use DrPlugin\WP\ReleaseCart\Orders\CartService;
+use DrPlugin\WP\ReleaseCart\Orders\OrderException;
+use DrPlugin\WP\ReleaseCart\Orders\OrderValidationException;
+use DrPlugin\WP\ReleaseCart\Util\RateLimiter;
+use DrPlugin\WP\ReleaseCart\Util\RequestUrl;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -36,35 +36,35 @@ class CartActionListener implements Hookable {
 	 *
 	 * @var string
 	 */
-	public const NONCE_ACTION = 'tiermint_cart';
+	public const NONCE_ACTION = 'releasecart_cart';
 
 	/**
 	 * Nonce field name for every cart form.
 	 *
 	 * @var string
 	 */
-	public const NONCE_FIELD = '_tiermint_cart_nonce';
+	public const NONCE_FIELD = '_releasecart_cart_nonce';
 
 	/**
 	 * The query marker a successful add appends so the storefront can confirm it.
 	 *
 	 * @var string
 	 */
-	public const ADDED_MARKER = 'tiermint_cart_added';
+	public const ADDED_MARKER = 'releasecart_cart_added';
 
 	/**
 	 * The query marker a failed action appends so the storefront can explain it.
 	 *
 	 * @var string
 	 */
-	public const ERROR_MARKER = 'tiermint_cart_error';
+	public const ERROR_MARKER = 'releasecart_cart_error';
 
 	/**
 	 * The autoloaded settings option carrying the cart-redirect preference.
 	 *
 	 * @var string
 	 */
-	private const SETTINGS_OPTION = 'tiermint_settings';
+	private const SETTINGS_OPTION = 'releasecart_settings';
 
 	/**
 	 * The rate-limit scope guarding the discount probe. Shared with the quote route
@@ -151,7 +151,7 @@ class CartActionListener implements Hookable {
 	 * @return void
 	 */
 	public function maybeHandle(): void {
-		if ( ! isset( $_POST['tiermint_cart_action'] ) ) {
+		if ( ! isset( $_POST['releasecart_cart_action'] ) ) {
 			return;
 		}
 
@@ -160,7 +160,7 @@ class CartActionListener implements Hookable {
 			return;
 		}
 
-		$action = sanitize_key( wp_unslash( $_POST['tiermint_cart_action'] ) );
+		$action = sanitize_key( wp_unslash( $_POST['releasecart_cart_action'] ) );
 
 		if ( ! in_array( $action, array( 'add', 'remove', 'update', 'apply_discount', 'remove_discount' ), true ) ) {
 			return;
@@ -217,7 +217,7 @@ class CartActionListener implements Hookable {
 	 * Refused codes use a shared rate-limit budget and one generic error marker.
 	 *
 	 * @param string $code The typed discount code (already unslashed and trimmed).
-	 * @return string|null The `tiermint_cart_error` marker, or null on success.
+	 * @return string|null The `releasecart_cart_error` marker, or null on success.
 	 */
 	private function applyDiscount( string $code ): ?string {
 		$ip                     = $this->clientIp();
@@ -296,8 +296,8 @@ class CartActionListener implements Hookable {
 			),
 		);
 
-		/** This filter is documented in {@see \DrPlugin\WP\TierMint\REST\CheckoutController::limitFor()}. */
-		$limits = apply_filters( 'tiermint_rest_rate_limits', $defaults );
+		/** This filter is documented in {@see \DrPlugin\WP\ReleaseCart\REST\CheckoutController::limitFor()}. */
+		$limits = apply_filters( 'releasecart_rest_rate_limits', $defaults );
 
 		$fallback   = $defaults[ self::DISCOUNT_SCOPE ];
 		$configured = is_array( $limits ) && isset( $limits[ self::DISCOUNT_SCOPE ] ) && is_array( $limits[ self::DISCOUNT_SCOPE ] )

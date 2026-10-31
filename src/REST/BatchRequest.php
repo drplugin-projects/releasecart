@@ -2,12 +2,12 @@
 /**
  * Shared argument schema and accumulation loop for the bulk-action routes.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -43,7 +43,7 @@ final class BatchRequest {
 	public static function args( array $actions ): array {
 		return array(
 			'ids'    => array(
-				'description'       => __( 'The ids to act on.', 'tiermint' ),
+				'description'       => __( 'The ids to act on.', 'releasecart' ),
 				'type'              => 'array',
 				'required'          => true,
 				'minItems'          => 1,
@@ -56,7 +56,7 @@ final class BatchRequest {
 				'validate_callback' => 'rest_validate_request_arg',
 			),
 			'action' => array(
-				'description'       => __( 'The action to apply to every id.', 'tiermint' ),
+				'description'       => __( 'The action to apply to every id.', 'releasecart' ),
 				'type'              => 'string',
 				'required'          => true,
 				'enum'              => array_values( $actions ),
@@ -84,8 +84,8 @@ final class BatchRequest {
 				$result = $handler( $id );
 			} catch ( Throwable $e ) {
 				$result = new WP_Error(
-					'tiermint_server_error',
-					__( 'The request could not be completed. Please try again.', 'tiermint' )
+					'releasecart_server_error',
+					__( 'The request could not be completed. Please try again.', 'releasecart' )
 				);
 			}
 

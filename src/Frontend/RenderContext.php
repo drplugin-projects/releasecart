@@ -2,15 +2,15 @@
 /**
  * Immutable per-request front-end state.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
-use DrPlugin\WP\TierMint\Customers\Customer;
-use DrPlugin\WP\TierMint\Products\Product;
+use DrPlugin\WP\ReleaseCart\Customers\Customer;
+use DrPlugin\WP\ReleaseCart\Products\Product;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -33,14 +33,14 @@ final class RenderContext {
 	/**
 	 * Deferred license query; invoked at most once by licenses().
 	 *
-	 * @var callable(): array<int, \DrPlugin\WP\TierMint\Licensing\License>
+	 * @var callable(): array<int, \DrPlugin\WP\ReleaseCart\Licensing\License>
 	 */
 	private $licenseLoader;
 
 	/**
 	 * Memoized licenses() result; null until the loader has run.
 	 *
-	 * @var array<int, \DrPlugin\WP\TierMint\Licensing\License>|null
+	 * @var array<int, \DrPlugin\WP\ReleaseCart\Licensing\License>|null
 	 */
 	private ?array $licenses = null;
 
@@ -117,7 +117,7 @@ final class RenderContext {
 	/**
 	 * Get customer licenses.
 	 *
-	 * @return array<int, \DrPlugin\WP\TierMint\Licensing\License>
+	 * @return array<int, \DrPlugin\WP\ReleaseCart\Licensing\License>
 	 */
 	public function licenses(): array {
 		if ( null === $this->customer ) {

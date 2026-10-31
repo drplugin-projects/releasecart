@@ -2,17 +2,17 @@
 /**
  * Customers repository: the only Customers class that touches $wpdb.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Customers;
+namespace DrPlugin\WP\ReleaseCart\Customers;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Database\Schema;
+use DrPlugin\WP\ReleaseCart\Database\Schema;
 
 /**
  * Customer database access and object-cache management.
@@ -28,7 +28,7 @@ class CustomerRepository {
 	 *
 	 * @var string
 	 */
-	private const CACHE_GROUP = 'tiermint_customers';
+	private const CACHE_GROUP = 'releasecart_customers';
 
 	/**
 	 * The WordPress database abstraction.
@@ -239,7 +239,7 @@ class CustomerRepository {
 
 		if ( null === $id ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new CustomerException( __( 'Cannot update a customer that has no id.', 'tiermint' ) );
+			throw new CustomerException( __( 'Cannot update a customer that has no id.', 'releasecart' ) );
 		}
 
 		$wpdb = $this->wpdb;
@@ -642,7 +642,7 @@ class CustomerRepository {
 	}
 
 	/**
-	 * The fully-qualified `tiermint_customers` table name.
+	 * The fully-qualified `releasecart_customers` table name.
 	 *
 	 * @since 1.0.0
 	 *

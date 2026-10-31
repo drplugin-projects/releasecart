@@ -2,12 +2,12 @@
 /**
  * Missing management API key.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST\Auth;
+namespace DrPlugin\WP\ReleaseCart\REST\Auth;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;

@@ -121,18 +121,18 @@ function formatWindow( discount ) {
 	const expires = discount.expires_at;
 
 	if ( ! starts && ! expires ) {
-		return __( 'Always available', 'tiermint' );
+		return __( 'Always available', 'releasecart' );
 	}
 	if ( starts && ! expires ) {
 		/* translators: %s: the UTC date and time the discount becomes available. */
-		return sprintf( __( 'From %s UTC', 'tiermint' ), starts );
+		return sprintf( __( 'From %s UTC', 'releasecart' ), starts );
 	}
 	if ( ! starts && expires ) {
 		/* translators: %s: the UTC date and time the discount stops being available. */
-		return sprintf( __( 'Until %s UTC', 'tiermint' ), expires );
+		return sprintf( __( 'Until %s UTC', 'releasecart' ), expires );
 	}
 	/* translators: 1: the UTC start date and time. 2: the UTC end date and time. */
-	return sprintf( __( '%1$s to %2$s UTC', 'tiermint' ), starts, expires );
+	return sprintf( __( '%1$s to %2$s UTC', 'releasecart' ), starts, expires );
 }
 
 /**
@@ -145,7 +145,7 @@ function formatWindow( discount ) {
  */
 function fixedAmountRadioLabel( currency ) {
 	/* translators: %s: the store's currency code, for example USD. */
-	return sprintf( __( 'Fixed amount (%s)', 'tiermint' ), currency );
+	return sprintf( __( 'Fixed amount (%s)', 'releasecart' ), currency );
 }
 
 /**
@@ -156,7 +156,7 @@ function fixedAmountRadioLabel( currency ) {
  */
 function amountFixedFieldLabel( currency ) {
 	/* translators: %s: the store's currency code, for example USD. */
-	return sprintf( __( 'Amount (%s)', 'tiermint' ), currency );
+	return sprintf( __( 'Amount (%s)', 'releasecart' ), currency );
 }
 
 /**
@@ -167,7 +167,7 @@ function amountFixedFieldLabel( currency ) {
  */
 function minTotalFieldLabel( currency ) {
 	/* translators: %s: the store's currency code, for example USD. */
-	return sprintf( __( 'Minimum order total (%s)', 'tiermint' ), currency );
+	return sprintf( __( 'Minimum order total (%s)', 'releasecart' ), currency );
 }
 
 /**
@@ -178,7 +178,7 @@ function minTotalFieldLabel( currency ) {
  */
 function timesUsedText( useCount ) {
 	/* translators: %d: the number of times the discount has been used. */
-	return sprintf( __( 'Times used: %d', 'tiermint' ), useCount || 0 );
+	return sprintf( __( 'Times used: %d', 'releasecart' ), useCount || 0 );
 }
 
 /**
@@ -189,7 +189,7 @@ function timesUsedText( useCount ) {
  */
 function editButtonLabel( code ) {
 	/* translators: %s: the discount code. */
-	return sprintf( __( 'Edit %s', 'tiermint' ), code );
+	return sprintf( __( 'Edit %s', 'releasecart' ), code );
 }
 
 /**
@@ -200,7 +200,7 @@ function editButtonLabel( code ) {
  */
 function deleteButtonLabel( code ) {
 	/* translators: %s: the discount code. */
-	return sprintf( __( 'Delete %s', 'tiermint' ), code );
+	return sprintf( __( 'Delete %s', 'releasecart' ), code );
 }
 
 /**
@@ -213,7 +213,7 @@ function deleteButtonLabel( code ) {
 function statusErrorText( code, message ) {
 	return sprintf(
 		/* translators: 1: the discount code. 2: the error message. */
-		__( 'Could not update %1$s. %2$s', 'tiermint' ),
+		__( 'Could not update %1$s. %2$s', 'releasecart' ),
 		code,
 		message
 	);
@@ -227,7 +227,7 @@ function statusErrorText( code, message ) {
  */
 function deactivateButtonLabel( code ) {
 	/* translators: %s: the discount code. */
-	return sprintf( __( 'Deactivate %s', 'tiermint' ), code );
+	return sprintf( __( 'Deactivate %s', 'releasecart' ), code );
 }
 
 /**
@@ -238,7 +238,7 @@ function deactivateButtonLabel( code ) {
  */
 function activateButtonLabel( code ) {
 	/* translators: %s: the discount code. */
-	return sprintf( __( 'Activate %s', 'tiermint' ), code );
+	return sprintf( __( 'Activate %s', 'releasecart' ), code );
 }
 
 /**
@@ -254,7 +254,7 @@ function deleteConfirmText( count ) {
 			'Delete %d discount permanently? This cannot be undone.',
 			'Delete %d discounts permanently? This cannot be undone.',
 			count,
-			'tiermint'
+			'releasecart'
 		),
 		count
 	);
@@ -270,12 +270,12 @@ function singleDeleteQuestion( code ) {
 	if ( ! code ) {
 		return __(
 			'Delete this discount permanently? This cannot be undone.',
-			'tiermint'
+			'releasecart'
 		);
 	}
 	return sprintf(
 		/* translators: %s: the discount code. */
-		__( 'Delete %s permanently? This cannot be undone.', 'tiermint' ),
+		__( 'Delete %s permanently? This cannot be undone.', 'releasecart' ),
 		code
 	);
 }
@@ -287,11 +287,11 @@ function singleDeleteQuestion( code ) {
  */
 function bulkActions() {
 	return [
-		{ value: 'activate', label: __( 'Activate', 'tiermint' ) },
-		{ value: 'deactivate', label: __( 'Deactivate', 'tiermint' ) },
+		{ value: 'activate', label: __( 'Activate', 'releasecart' ) },
+		{ value: 'deactivate', label: __( 'Deactivate', 'releasecart' ) },
 		{
 			value: 'delete',
-			label: __( 'Delete', 'tiermint' ),
+			label: __( 'Delete', 'releasecart' ),
 			isDestructive: true,
 			confirmText: deleteConfirmText,
 		},
@@ -317,7 +317,7 @@ function bulkSummary( action, count ) {
 				'%d discount activated.',
 				'%d discounts activated.',
 				count,
-				'tiermint'
+				'releasecart'
 			),
 			count
 		);
@@ -330,7 +330,7 @@ function bulkSummary( action, count ) {
 				'%d discount deactivated.',
 				'%d discounts deactivated.',
 				count,
-				'tiermint'
+				'releasecart'
 			),
 			count
 		);
@@ -342,7 +342,7 @@ function bulkSummary( action, count ) {
 			'%d discount deleted.',
 			'%d discounts deleted.',
 			count,
-			'tiermint'
+			'releasecart'
 		),
 		count
 	);
@@ -519,10 +519,10 @@ function validateForm( form ) {
 
 	// The service creates a code for automatic discounts when needed.
 	if ( ! form.auto && ! form.code.trim() ) {
-		errors.code = __( 'A code is required.', 'tiermint' );
+		errors.code = __( 'A code is required.', 'releasecart' );
 	}
 	if ( ! form.name.trim() ) {
-		errors.name = __( 'A name is required.', 'tiermint' );
+		errors.name = __( 'A name is required.', 'releasecart' );
 	}
 
 	if ( form.type === 'percent' ) {
@@ -530,13 +530,13 @@ function validateForm( form ) {
 			form.amountPercent === '' ||
 			Number.isNaN( parseFloat( form.amountPercent ) )
 		) {
-			errors.amount = __( 'Enter a percent amount.', 'tiermint' );
+			errors.amount = __( 'Enter a percent amount.', 'releasecart' );
 		}
 	} else if (
 		form.amountFixed === '' ||
 		Number.isNaN( parseFloat( form.amountFixed ) )
 	) {
-		errors.amount = __( 'Enter an amount.', 'tiermint' );
+		errors.amount = __( 'Enter an amount.', 'releasecart' );
 	}
 
 	if (
@@ -544,14 +544,17 @@ function validateForm( form ) {
 		form.scopeType === 'products' &&
 		form.productIds.length === 0
 	) {
-		errors.productIds = __( 'Choose at least one product.', 'tiermint' );
+		errors.productIds = __( 'Choose at least one product.', 'releasecart' );
 	}
 	if (
 		form.auto &&
 		form.scopeType === 'categories' &&
 		form.categoryIds.length === 0
 	) {
-		errors.categoryIds = __( 'Choose at least one category.', 'tiermint' );
+		errors.categoryIds = __(
+			'Choose at least one category.',
+			'releasecart'
+		);
 	}
 
 	return errors;
@@ -576,7 +579,7 @@ function mapServerErrors( error ) {
 			: String( messages );
 	} );
 
-	if ( error.code === 'tiermint_duplicate_code' && ! fieldErrors.code ) {
+	if ( error.code === 'releasecart_duplicate_code' && ! fieldErrors.code ) {
 		fieldErrors.code = error.message;
 	}
 
@@ -665,7 +668,7 @@ function DiscountModal( { discount, currency, onClose, onSaved } ) {
 		fieldErrors.code ||
 		__(
 			'Customers enter this at checkout. Letters and numbers only.',
-			'tiermint'
+			'releasecart'
 		);
 
 	// A code discount always offers the product picker (it replaces the old raw id
@@ -681,20 +684,20 @@ function DiscountModal( { discount, currency, onClose, onSaved } ) {
 	 * @return {(string|undefined)} The modifier class, or undefined when the field is valid.
 	 */
 	const invalidClass = ( key ) =>
-		fieldErrors[ key ] ? 'tiermint-field--invalid' : undefined;
+		fieldErrors[ key ] ? 'releasecart-field--invalid' : undefined;
 
 	return (
 		<Modal
-			className="tiermint-modal"
+			className="releasecart-modal"
 			title={
 				discount
-					? __( 'Edit discount', 'tiermint' )
-					: __( 'Add discount', 'tiermint' )
+					? __( 'Edit discount', 'releasecart' )
+					: __( 'Add discount', 'releasecart' )
 			}
 			onRequestClose={ onClose }
 		>
 			{ /* This class supplies the modal field spacing. */ }
-			<form className="tiermint-form-stack" onSubmit={ handleSubmit }>
+			<form className="releasecart-form-stack" onSubmit={ handleSubmit }>
 				{ generalError && (
 					<Notice status="error" isDismissible={ false }>
 						{ generalError }
@@ -705,13 +708,13 @@ function DiscountModal( { discount, currency, onClose, onSaved } ) {
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					className={ invalidClass( 'name' ) }
-					label={ __( 'Name', 'tiermint' ) }
+					label={ __( 'Name', 'releasecart' ) }
 					value={ form.name }
 					help={
 						fieldErrors.name ||
 						__(
 							'A short label so you can find this discount.',
-							'tiermint'
+							'releasecart'
 						)
 					}
 					onChange={ ( value ) => setField( 'name', value ) }
@@ -719,10 +722,10 @@ function DiscountModal( { discount, currency, onClose, onSaved } ) {
 
 				<ToggleControl
 					__nextHasNoMarginBottom
-					label={ __( 'Automatic (no code)', 'tiermint' ) }
+					label={ __( 'Automatic (no code)', 'releasecart' ) }
 					help={ __(
 						'Apply this discount automatically to every matching cart, with no code to type.',
-						'tiermint'
+						'releasecart'
 					) }
 					checked={ form.auto }
 					onChange={ ( value ) => setField( 'auto', value ) }
@@ -734,7 +737,7 @@ function DiscountModal( { discount, currency, onClose, onSaved } ) {
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
 						className={ invalidClass( 'code' ) }
-						label={ __( 'Code', 'tiermint' ) }
+						label={ __( 'Code', 'releasecart' ) }
 						value={ form.code }
 						help={ codeHelp }
 						onChange={ ( value ) => setField( 'code', value ) }
@@ -743,11 +746,11 @@ function DiscountModal( { discount, currency, onClose, onSaved } ) {
 
 				<RadioControl
 					__nextHasNoMarginBottom
-					label={ __( 'Discount type', 'tiermint' ) }
+					label={ __( 'Discount type', 'releasecart' ) }
 					selected={ form.type }
 					options={ [
 						{
-							label: __( 'Percent off', 'tiermint' ),
+							label: __( 'Percent off', 'releasecart' ),
 							value: 'percent',
 						},
 						{
@@ -766,7 +769,7 @@ function DiscountModal( { discount, currency, onClose, onSaved } ) {
 						min="0"
 						step="0.01"
 						className={ invalidClass( 'amount' ) }
-						label={ __( 'Amount (%)', 'tiermint' ) }
+						label={ __( 'Amount (%)', 'releasecart' ) }
 						value={ form.amountPercent }
 						help={ fieldErrors.amount }
 						onChange={ ( value ) =>
@@ -793,19 +796,19 @@ function DiscountModal( { discount, currency, onClose, onSaved } ) {
 				{ form.auto && (
 					<RadioControl
 						__nextHasNoMarginBottom
-						label={ __( 'Applies to', 'tiermint' ) }
+						label={ __( 'Applies to', 'releasecart' ) }
 						selected={ form.scopeType }
 						options={ [
 							{
-								label: __( 'All products', 'tiermint' ),
+								label: __( 'All products', 'releasecart' ),
 								value: 'all',
 							},
 							{
-								label: __( 'Chosen products', 'tiermint' ),
+								label: __( 'Chosen products', 'releasecart' ),
 								value: 'products',
 							},
 							{
-								label: __( 'Chosen categories', 'tiermint' ),
+								label: __( 'Chosen categories', 'releasecart' ),
 								value: 'categories',
 							},
 						] }
@@ -815,18 +818,18 @@ function DiscountModal( { discount, currency, onClose, onSaved } ) {
 
 				{ showProductPicker && (
 					<ProductTokenField
-						label={ __( 'Products', 'tiermint' ) }
+						label={ __( 'Products', 'releasecart' ) }
 						value={ form.productIds }
 						help={
 							fieldErrors.productIds ||
 							( form.auto
 								? __(
 										'The products this automatic discount applies to.',
-										'tiermint'
+										'releasecart'
 								  )
 								: __(
 										'The products this discount applies to. Leave empty to apply it to all products.',
-										'tiermint'
+										'releasecart'
 								  ) )
 						}
 						onChange={ ( ids ) => setField( 'productIds', ids ) }
@@ -835,13 +838,13 @@ function DiscountModal( { discount, currency, onClose, onSaved } ) {
 
 				{ showCategoryPicker && (
 					<CategoryTokenField
-						label={ __( 'Categories', 'tiermint' ) }
+						label={ __( 'Categories', 'releasecart' ) }
 						value={ form.categoryIds }
 						help={
 							fieldErrors.categoryIds ||
 							__(
 								'Products in these categories get the discount.',
-								'tiermint'
+								'releasecart'
 							)
 						}
 						onChange={ ( ids ) => setField( 'categoryIds', ids ) }
@@ -868,18 +871,21 @@ function DiscountModal( { discount, currency, onClose, onSaved } ) {
 					min="0"
 					step="1"
 					className={ invalidClass( 'maxUses' ) }
-					label={ __( 'Maximum uses', 'tiermint' ) }
+					label={ __( 'Maximum uses', 'releasecart' ) }
 					value={ form.maxUses }
 					help={
 						fieldErrors.maxUses ||
-						__( 'Set to 0 for unlimited uses.', 'tiermint' )
+						__( 'Set to 0 for unlimited uses.', 'releasecart' )
 					}
 					onChange={ ( value ) => setField( 'maxUses', value ) }
 				/>
 
 				<ToggleControl
 					__nextHasNoMarginBottom
-					label={ __( 'Limit to one use per customer', 'tiermint' ) }
+					label={ __(
+						'Limit to one use per customer',
+						'releasecart'
+					) }
 					checked={ form.oncePerCustomer }
 					onChange={ ( value ) =>
 						setField( 'oncePerCustomer', value )
@@ -891,13 +897,13 @@ function DiscountModal( { discount, currency, onClose, onSaved } ) {
 					__next40pxDefaultSize
 					type="datetime-local"
 					className={ invalidClass( 'startsAt' ) }
-					label={ __( 'Starts at', 'tiermint' ) }
+					label={ __( 'Starts at', 'releasecart' ) }
 					value={ form.startsAt }
 					help={
 						fieldErrors.startsAt ||
 						__(
 							'Times are in UTC, not your local time zone. Leave blank to start immediately.',
-							'tiermint'
+							'releasecart'
 						)
 					}
 					onChange={ ( value ) => setField( 'startsAt', value ) }
@@ -908,13 +914,13 @@ function DiscountModal( { discount, currency, onClose, onSaved } ) {
 					__next40pxDefaultSize
 					type="datetime-local"
 					className={ invalidClass( 'expiresAt' ) }
-					label={ __( 'Expires at', 'tiermint' ) }
+					label={ __( 'Expires at', 'releasecart' ) }
 					value={ form.expiresAt }
 					help={
 						fieldErrors.expiresAt ||
 						__(
 							'Times are in UTC, not your local time zone. Leave blank for no expiry.',
-							'tiermint'
+							'releasecart'
 						)
 					}
 					onChange={ ( value ) => setField( 'expiresAt', value ) }
@@ -922,7 +928,7 @@ function DiscountModal( { discount, currency, onClose, onSaved } ) {
 
 				<ToggleControl
 					__nextHasNoMarginBottom
-					label={ __( 'Active', 'tiermint' ) }
+					label={ __( 'Active', 'releasecart' ) }
 					checked={ form.status === 'active' }
 					onChange={ ( checked ) =>
 						setField( 'status', checked ? 'active' : 'inactive' )
@@ -931,16 +937,16 @@ function DiscountModal( { discount, currency, onClose, onSaved } ) {
 
 				{ discount && <p>{ timesUsedText( discount.use_count ) }</p> }
 
-				<div className="tiermint-modal-actions">
+				<div className="releasecart-modal-actions">
 					<Button variant="tertiary" onClick={ onClose }>
-						{ __( 'Cancel', 'tiermint' ) }
+						{ __( 'Cancel', 'releasecart' ) }
 					</Button>
 					<Button
 						variant="primary"
 						type="submit"
 						isBusy={ saveMutation.isPending }
 					>
-						{ __( 'Save discount', 'tiermint' ) }
+						{ __( 'Save discount', 'releasecart' ) }
 					</Button>
 				</div>
 			</form>
@@ -1178,7 +1184,7 @@ export default function Discounts( { boot } ) {
 
 	const addDiscountButton = (
 		<Button variant="primary" onClick={ () => setModalTarget( 'create' ) }>
-			{ __( 'Add discount', 'tiermint' ) }
+			{ __( 'Add discount', 'releasecart' ) }
 		</Button>
 	);
 
@@ -1203,17 +1209,20 @@ export default function Discounts( { boot } ) {
 	}
 
 	return (
-		<section className="tiermint-admin-screen">
+		<section className="releasecart-admin-screen">
 			<ScreenHeader
-				title={ __( 'Discounts', 'tiermint' ) }
+				title={ __( 'Discounts', 'releasecart' ) }
 				actions={ addDiscountButton }
 			/>
 
-			<div className="tiermint-toolbar tiermint-discounts-toolbar">
+			<div className="releasecart-toolbar releasecart-discounts-toolbar">
 				<SearchControl
 					__nextHasNoMarginBottom
-					label={ __( 'Search discounts', 'tiermint' ) }
-					placeholder={ __( 'Search by code or name', 'tiermint' ) }
+					label={ __( 'Search discounts', 'releasecart' ) }
+					placeholder={ __(
+						'Search by code or name',
+						'releasecart'
+					) }
 					value={ search }
 					onChange={ handleSearchChange }
 				/>
@@ -1221,13 +1230,19 @@ export default function Discounts( { boot } ) {
 					__nextHasNoMarginBottom
 					__next40pxDefaultSize
 					hideLabelFromVision
-					label={ __( 'Status', 'tiermint' ) }
+					label={ __( 'Status', 'releasecart' ) }
 					value={ status }
 					options={ [
-						{ label: __( 'All statuses', 'tiermint' ), value: '' },
-						{ label: __( 'Active', 'tiermint' ), value: 'active' },
 						{
-							label: __( 'Inactive', 'tiermint' ),
+							label: __( 'All statuses', 'releasecart' ),
+							value: '',
+						},
+						{
+							label: __( 'Active', 'releasecart' ),
+							value: 'active',
+						},
+						{
+							label: __( 'Inactive', 'releasecart' ),
 							value: 'inactive',
 						},
 					] }
@@ -1284,11 +1299,11 @@ export default function Discounts( { boot } ) {
 						search || status
 							? __(
 									'No discounts match these filters.',
-									'tiermint'
+									'releasecart'
 							  )
 							: __(
 									'No discounts yet. Discount codes you create appear here.',
-									'tiermint'
+									'releasecart'
 							  )
 					}
 					action={ search || status ? undefined : addDiscountButton }
@@ -1297,7 +1312,7 @@ export default function Discounts( { boot } ) {
 
 			{ items.length > 0 && (
 				<BulkActionsBar
-					label={ __( 'Bulk actions for discounts', 'tiermint' ) }
+					label={ __( 'Bulk actions for discounts', 'releasecart' ) }
 					actions={ bulkActions() }
 					count={ selection.count }
 					pending={ bulkMutation.isPending }
@@ -1313,22 +1328,30 @@ export default function Discounts( { boot } ) {
 			{ items.length > 0 && (
 				<table
 					className="wp-list-table widefat striped"
-					aria-label={ __( 'Discounts', 'tiermint' ) }
+					aria-label={ __( 'Discounts', 'releasecart' ) }
 				>
 					<thead>
 						<tr>
 							<SelectAllHeader selection={ selection } />
-							<th scope="col">{ __( 'Name', 'tiermint' ) }</th>
+							<th scope="col">{ __( 'Name', 'releasecart' ) }</th>
 							<SortableHeader
 								column="code"
-								label={ __( 'Code', 'tiermint' ) }
+								label={ __( 'Code', 'releasecart' ) }
 								sort={ sort }
 							/>
-							<th scope="col">{ __( 'Amount', 'tiermint' ) }</th>
-							<th scope="col">{ __( 'Uses', 'tiermint' ) }</th>
-							<th scope="col">{ __( 'Window', 'tiermint' ) }</th>
-							<th scope="col">{ __( 'Status', 'tiermint' ) }</th>
-							<th scope="col">{ __( 'Actions', 'tiermint' ) }</th>
+							<th scope="col">
+								{ __( 'Amount', 'releasecart' ) }
+							</th>
+							<th scope="col">{ __( 'Uses', 'releasecart' ) }</th>
+							<th scope="col">
+								{ __( 'Window', 'releasecart' ) }
+							</th>
+							<th scope="col">
+								{ __( 'Status', 'releasecart' ) }
+							</th>
+							<th scope="col">
+								{ __( 'Actions', 'releasecart' ) }
+							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -1355,8 +1378,11 @@ export default function Discounts( { boot } ) {
 										}
 										label={
 											discount.status === 'active'
-												? __( 'Active', 'tiermint' )
-												: __( 'Inactive', 'tiermint' )
+												? __( 'Active', 'releasecart' )
+												: __(
+														'Inactive',
+														'releasecart'
+												  )
 										}
 									/>
 								</td>
@@ -1370,7 +1396,7 @@ export default function Discounts( { boot } ) {
 											setModalTarget( discount )
 										}
 									>
-										{ __( 'Edit', 'tiermint' ) }
+										{ __( 'Edit', 'releasecart' ) }
 									</Button>
 									<Button
 										variant="tertiary"
@@ -1389,8 +1415,8 @@ export default function Discounts( { boot } ) {
 										onClick={ () => flipStatus( discount ) }
 									>
 										{ isActive( discount )
-											? __( 'Deactivate', 'tiermint' )
-											: __( 'Activate', 'tiermint' ) }
+											? __( 'Deactivate', 'releasecart' )
+											: __( 'Activate', 'releasecart' ) }
 									</Button>
 									<Button
 										variant="tertiary"
@@ -1409,7 +1435,7 @@ export default function Discounts( { boot } ) {
 											);
 										} }
 									>
-										{ __( 'Delete', 'tiermint' ) }
+										{ __( 'Delete', 'releasecart' ) }
 									</Button>
 								</td>
 							</tr>
@@ -1429,8 +1455,8 @@ export default function Discounts( { boot } ) {
 
 			{ confirmingDeleteId !== null && (
 				<Modal
-					className="tiermint-modal tiermint-modal--confirm"
-					title={ __( 'Delete discount', 'tiermint' ) }
+					className="releasecart-modal releasecart-modal--confirm"
+					title={ __( 'Delete discount', 'releasecart' ) }
 					onRequestClose={ () => {
 						setDeleteError( '' );
 						setConfirmingDeleteId( null );
@@ -1448,7 +1474,7 @@ export default function Discounts( { boot } ) {
 							)?.code
 						) }
 					</p>
-					<div className="tiermint-modal-actions">
+					<div className="releasecart-modal-actions">
 						<Button
 							variant="tertiary"
 							onClick={ () => {
@@ -1456,7 +1482,7 @@ export default function Discounts( { boot } ) {
 								setConfirmingDeleteId( null );
 							} }
 						>
-							{ __( 'Cancel', 'tiermint' ) }
+							{ __( 'Cancel', 'releasecart' ) }
 						</Button>
 						<Button
 							variant="primary"
@@ -1468,7 +1494,7 @@ export default function Discounts( { boot } ) {
 								deleteMutation.mutate( confirmingDeleteId )
 							}
 						>
-							{ __( 'Confirm delete', 'tiermint' ) }
+							{ __( 'Confirm delete', 'releasecart' ) }
 						</Button>
 					</div>
 				</Modal>
@@ -1494,7 +1520,7 @@ export default function Discounts( { boot } ) {
  */
 export const route = {
 	path: '#/discounts',
-	title: __( 'Discounts', 'tiermint' ),
-	capability: 'manage_tiermint',
+	title: __( 'Discounts', 'releasecart' ),
+	capability: 'manage_releasecart',
 	component: Discounts,
 };

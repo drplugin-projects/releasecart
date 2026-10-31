@@ -2,18 +2,18 @@
 /**
  * Checkout payment service.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Payments;
+namespace DrPlugin\WP\ReleaseCart\Payments;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Orders\Order;
-use DrPlugin\WP\TierMint\Orders\OrderService;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Orders\OrderService;
 
 /**
  * Creates a pending order and gateway payment session.
@@ -69,7 +69,7 @@ class CheckoutService {
 
 		if ( ! $gateway->isConfigured() ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new GatewayConfigurationException( __( 'This payment method is not available right now.', 'tiermint' ) );
+			throw new GatewayConfigurationException( __( 'This payment method is not available right now.', 'releasecart' ) );
 		}
 
 		$notices   = array();

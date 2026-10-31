@@ -2,38 +2,38 @@
 /**
  * Signed download delivery REST endpoints.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\REST;
+namespace DrPlugin\WP\ReleaseCart\REST;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use DrPlugin\WP\TierMint\Customers\CustomerRepository;
-use DrPlugin\WP\TierMint\Database\Logger;
-use DrPlugin\WP\TierMint\Licensing\License;
-use DrPlugin\WP\TierMint\Licensing\LicensePersistenceException;
-use DrPlugin\WP\TierMint\Licensing\LicenseRepository;
-use DrPlugin\WP\TierMint\Licensing\LicenseService;
-use DrPlugin\WP\TierMint\Licensing\LicenseStatus;
-use DrPlugin\WP\TierMint\Orders\Order;
-use DrPlugin\WP\TierMint\Orders\OrderRepository;
-use DrPlugin\WP\TierMint\Orders\OrderStatus;
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductRepository;
-use DrPlugin\WP\TierMint\Storage\StorageException;
-use DrPlugin\WP\TierMint\Storage\StorageManager;
-use DrPlugin\WP\TierMint\Updates\CustomerDownloads;
-use DrPlugin\WP\TierMint\Updates\PackageSigner;
-use DrPlugin\WP\TierMint\Updates\Release;
-use DrPlugin\WP\TierMint\Updates\ReleasePackageName;
-use DrPlugin\WP\TierMint\Updates\ReleaseRepository;
-use DrPlugin\WP\TierMint\Updates\ReleaseStatus;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerRepository;
+use DrPlugin\WP\ReleaseCart\Database\Logger;
+use DrPlugin\WP\ReleaseCart\Licensing\License;
+use DrPlugin\WP\ReleaseCart\Licensing\LicensePersistenceException;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseRepository;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseService;
+use DrPlugin\WP\ReleaseCart\Licensing\LicenseStatus;
+use DrPlugin\WP\ReleaseCart\Orders\Order;
+use DrPlugin\WP\ReleaseCart\Orders\OrderRepository;
+use DrPlugin\WP\ReleaseCart\Orders\OrderStatus;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductRepository;
+use DrPlugin\WP\ReleaseCart\Storage\StorageException;
+use DrPlugin\WP\ReleaseCart\Storage\StorageManager;
+use DrPlugin\WP\ReleaseCart\Updates\CustomerDownloads;
+use DrPlugin\WP\ReleaseCart\Updates\PackageSigner;
+use DrPlugin\WP\ReleaseCart\Updates\Release;
+use DrPlugin\WP\ReleaseCart\Updates\ReleasePackageName;
+use DrPlugin\WP\ReleaseCart\Updates\ReleaseRepository;
+use DrPlugin\WP\ReleaseCart\Updates\ReleaseStatus;
 use Throwable;
 use WP_Error;
 use WP_REST_Request;
@@ -387,7 +387,7 @@ final class DownloadController extends AbstractRestController {
 		 * @param Release $release The release being delivered.
 		 * @param License $license The license the grant was verified against.
 		 */
-		do_action( 'tiermint_package_downloaded', $release, $license );
+		do_action( 'releasecart_package_downloaded', $release, $license );
 
 		return $staged;
 	}
@@ -687,16 +687,16 @@ final class DownloadController extends AbstractRestController {
 	private function verdictError( string $verdict ): ?WP_Error {
 		if ( PackageSigner::VERDICT_INVALID_SIGNATURE === $verdict ) {
 			return $this->error(
-				'tiermint_invalid_signature',
-				__( 'This download link is not valid.', 'tiermint' ),
+				'releasecart_invalid_signature',
+				__( 'This download link is not valid.', 'releasecart' ),
 				403
 			);
 		}
 
 		if ( PackageSigner::VERDICT_EXPIRED === $verdict ) {
 			return $this->error(
-				'tiermint_expired_url',
-				__( 'This download link has expired. Please retry the download to receive a fresh link.', 'tiermint' ),
+				'releasecart_expired_url',
+				__( 'This download link has expired. Please retry the download to receive a fresh link.', 'releasecart' ),
 				403
 			);
 		}
@@ -711,8 +711,8 @@ final class DownloadController extends AbstractRestController {
 	 */
 	private function forbidden(): WP_Error {
 		return $this->error(
-			'tiermint_forbidden',
-			__( 'This download is not available for this license or order.', 'tiermint' ),
+			'releasecart_forbidden',
+			__( 'This download is not available for this license or order.', 'releasecart' ),
 			403
 		);
 	}

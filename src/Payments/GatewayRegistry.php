@@ -2,12 +2,12 @@
 /**
  * Registry resolving the active payment gateways.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Payments;
+namespace DrPlugin\WP\ReleaseCart\Payments;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -61,7 +61,7 @@ class GatewayRegistry {
 		 *
 		 * @param array<string, GatewayInterface> $gateways The gateway map, seeded with the core defaults keyed by id.
 		 */
-		$filtered = apply_filters( 'tiermint_payment_gateways', $this->defaults );
+		$filtered = apply_filters( 'releasecart_payment_gateways', $this->defaults );
 
 		$this->resolved = array();
 

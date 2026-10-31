@@ -2,12 +2,12 @@
 /**
  * Customer aggregate value object.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Customers;
+namespace DrPlugin\WP\ReleaseCart\Customers;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -126,7 +126,7 @@ final class Customer {
 
 		if ( '' === $normalizedEmail || false === filter_var( $normalizedEmail, FILTER_VALIDATE_EMAIL ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new CustomerException( __( 'A customer requires a valid email address.', 'tiermint' ) );
+			throw new CustomerException( __( 'A customer requires a valid email address.', 'releasecart' ) );
 		}
 
 		$name = null === $name ? null : trim( $name );
@@ -194,7 +194,7 @@ final class Customer {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param object $row A `tiermint_customers` row.
+	 * @param object $row A `releasecart_customers` row.
 	 * @return self
 	 *
 	 * @throws CustomerException When the stored email is malformed.

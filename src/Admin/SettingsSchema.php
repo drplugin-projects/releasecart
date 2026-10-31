@@ -2,17 +2,17 @@
 /**
  * The settings field schema served to the admin SPA.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Admin;
+namespace DrPlugin\WP\ReleaseCart\Admin;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Frontend\CheckoutFieldSettings;
+use DrPlugin\WP\ReleaseCart\Frontend\CheckoutFieldSettings;
 
 /**
  * Defines settings fields for the admin SPA.
@@ -52,31 +52,31 @@ final class SettingsSchema {
 		$core = array(
 			array(
 				'id'    => 'general',
-				'title' => __( 'General', 'tiermint' ),
+				'title' => __( 'General', 'releasecart' ),
 			),
 			array(
 				'id'    => 'appearance',
-				'title' => __( 'Appearance', 'tiermint' ),
+				'title' => __( 'Appearance', 'releasecart' ),
 			),
 			array(
 				'id'    => 'emails',
-				'title' => __( 'Emails', 'tiermint' ),
+				'title' => __( 'Emails', 'releasecart' ),
 			),
 			array(
 				'id'    => 'payments',
-				'title' => __( 'Payments', 'tiermint' ),
+				'title' => __( 'Payments', 'releasecart' ),
 			),
 			array(
 				'id'    => 'discounts',
-				'title' => __( 'Discounts', 'tiermint' ),
+				'title' => __( 'Discounts', 'releasecart' ),
 			),
 			array(
 				'id'    => 'webhooks',
-				'title' => __( 'Webhooks', 'tiermint' ),
+				'title' => __( 'Webhooks', 'releasecart' ),
 			),
 			array(
 				'id'    => 'integrations',
-				'title' => __( 'Integrations', 'tiermint' ),
+				'title' => __( 'Integrations', 'releasecart' ),
 			),
 		);
 
@@ -89,7 +89,7 @@ final class SettingsSchema {
 		 *
 		 * @param array<int, array<string, string>> $sections Section rows.
 		 */
-		$sections = apply_filters( 'tiermint_settings_sections', $core );
+		$sections = apply_filters( 'releasecart_settings_sections', $core );
 
 		$byId = array();
 		foreach ( (array) $sections as $section ) {
@@ -128,7 +128,7 @@ final class SettingsSchema {
 		 *
 		 * @param array<int, array<string, mixed>> $fields Field definitions.
 		 */
-		$fields = apply_filters( 'tiermint_settings_fields', $this->coreFields() );
+		$fields = apply_filters( 'releasecart_settings_fields', $this->coreFields() );
 
 		$byId = array();
 		foreach ( (array) $fields as $field ) {
@@ -212,10 +212,10 @@ final class SettingsSchema {
 	 */
 	private function addressDescription(): string {
 		if ( $this->checkout->addressRequiredByExtension() ) {
-			return __( 'Whether to ask the buyer for a full billing address at checkout. The address is currently required by another setting, so this choice takes effect only when that setting is turned off.', 'tiermint' );
+			return __( 'Whether to ask the buyer for a full billing address at checkout. The address is currently required by another setting, so this choice takes effect only when that setting is turned off.', 'releasecart' );
 		}
 
-		return __( 'Whether to ask the buyer for a full billing address at checkout.', 'tiermint' );
+		return __( 'Whether to ask the buyer for a full billing address at checkout.', 'releasecart' );
 	}
 
 	/**
@@ -228,10 +228,10 @@ final class SettingsSchema {
 	 */
 	private function countryDescription(): string {
 		if ( $this->checkout->collectedByExtension( 'billing_country' ) ) {
-			return __( 'Ask the buyer for their country at checkout. The country is currently collected for another setting, so this choice takes effect only when that setting is turned off.', 'tiermint' );
+			return __( 'Ask the buyer for their country at checkout. The country is currently collected for another setting, so this choice takes effect only when that setting is turned off.', 'releasecart' );
 		}
 
-		return __( 'Ask the buyer for their country at checkout.', 'tiermint' );
+		return __( 'Ask the buyer for their country at checkout.', 'releasecart' );
 	}
 
 	/**
@@ -244,10 +244,10 @@ final class SettingsSchema {
 	 */
 	private function vatDescription(): string {
 		if ( $this->checkout->collectedByExtension( 'vat_number' ) ) {
-			return __( 'Ask the buyer for a VAT, GST, or tax registration number at checkout. The number is currently collected for another setting, so this choice takes effect only when that setting is turned off.', 'tiermint' );
+			return __( 'Ask the buyer for a VAT, GST, or tax registration number at checkout. The number is currently collected for another setting, so this choice takes effect only when that setting is turned off.', 'releasecart' );
 		}
 
-		return __( 'Ask the buyer for a VAT, GST, or tax registration number at checkout.', 'tiermint' );
+		return __( 'Ask the buyer for a VAT, GST, or tax registration number at checkout.', 'releasecart' );
 	}
 
 	/**
@@ -264,8 +264,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'store',
 				'type'        => 'currency',
-				'label'       => __( 'Store currency', 'tiermint' ),
-				'description' => __( 'The currency used for all prices. Pick it from the list.', 'tiermint' ),
+				'label'       => __( 'Store currency', 'releasecart' ),
+				'description' => __( 'The currency used for all prices. Pick it from the list.', 'releasecart' ),
 				'path'        => 'currency',
 				'default'     => 'USD',
 			),
@@ -274,8 +274,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'pages',
 				'type'        => 'page',
-				'label'       => __( 'Store page', 'tiermint' ),
-				'description' => __( 'The page listing your products. Set automatically when the store is provisioned.', 'tiermint' ),
+				'label'       => __( 'Store page', 'releasecart' ),
+				'description' => __( 'The page listing your products. Set automatically when the store is provisioned.', 'releasecart' ),
 				'path'        => 'pages.store',
 				'default'     => 0,
 			),
@@ -284,8 +284,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'pages',
 				'type'        => 'page',
-				'label'       => __( 'Product details page', 'tiermint' ),
-				'description' => __( 'The page a single product opens on from the store grid.', 'tiermint' ),
+				'label'       => __( 'Product details page', 'releasecart' ),
+				'description' => __( 'The page a single product opens on from the store grid.', 'releasecart' ),
 				'path'        => 'pages.product',
 				'default'     => 0,
 			),
@@ -294,8 +294,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'pages',
 				'type'        => 'page',
-				'label'       => __( 'Checkout page', 'tiermint' ),
-				'description' => __( 'The page with the checkout block or shortcode. Cart links and links to buy a new license open it.', 'tiermint' ),
+				'label'       => __( 'Checkout page', 'releasecart' ),
+				'description' => __( 'The page with the checkout block or shortcode. Cart links and links to buy a new license open it.', 'releasecart' ),
 				'path'        => 'pages.checkout',
 				'default'     => 0,
 			),
@@ -304,8 +304,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'pages',
 				'type'        => 'page',
-				'label'       => __( 'Account page', 'tiermint' ),
-				'description' => __( 'Where customers manage their purchases, downloads, and license keys.', 'tiermint' ),
+				'label'       => __( 'Account page', 'releasecart' ),
+				'description' => __( 'Where customers manage their purchases, downloads, and license keys.', 'releasecart' ),
 				'path'        => 'pages.account',
 				'default'     => 0,
 			),
@@ -314,8 +314,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'pages',
 				'type'        => 'page',
-				'label'       => __( 'Sign-in page', 'tiermint' ),
-				'description' => __( 'The page carrying the sign-in form. Leave unset to use the WordPress login screen.', 'tiermint' ),
+				'label'       => __( 'Sign-in page', 'releasecart' ),
+				'description' => __( 'The page carrying the sign-in form. Leave unset to use the WordPress login screen.', 'releasecart' ),
 				'path'        => 'pages.login',
 				'default'     => 0,
 			),
@@ -324,8 +324,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'pages',
 				'type'        => 'page',
-				'label'       => __( 'Registration page', 'tiermint' ),
-				'description' => __( 'The page carrying the account registration form.', 'tiermint' ),
+				'label'       => __( 'Registration page', 'releasecart' ),
+				'description' => __( 'The page carrying the account registration form.', 'releasecart' ),
 				'path'        => 'pages.register',
 				'default'     => 0,
 			),
@@ -334,8 +334,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'pages',
 				'type'        => 'page',
-				'label'       => __( 'Password reset page', 'tiermint' ),
-				'description' => __( 'The page carrying the lost-password and set-new-password form. While it is published, TierMint\'s own forms and emails link to it, and WordPress password emails do too when wp-login is replaced. Unset it to use the WordPress screens. wp-login.php?tiermint_wp_login=1 always reaches the WordPress screen.', 'tiermint' ),
+				'label'       => __( 'Password reset page', 'releasecart' ),
+				'description' => __( 'The page carrying the lost-password and set-new-password form. While it is published, ReleaseCart\'s own forms and emails link to it, and WordPress password emails do too when wp-login is replaced. Unset it to use the WordPress screens. wp-login.php?releasecart_wp_login=1 always reaches the WordPress screen.', 'releasecart' ),
 				'path'        => 'pages.password_reset',
 				'default'     => 0,
 			),
@@ -344,8 +344,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'pages',
 				'type'        => 'page',
-				'label'       => __( 'Terms page', 'tiermint' ),
-				'description' => __( 'Your terms and conditions page, linked from checkout.', 'tiermint' ),
+				'label'       => __( 'Terms page', 'releasecart' ),
+				'description' => __( 'Your terms and conditions page, linked from checkout.', 'releasecart' ),
 				'path'        => 'pages.terms',
 				'default'     => 0,
 			),
@@ -354,8 +354,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'pages',
 				'type'        => 'page',
-				'label'       => __( 'Privacy policy page', 'tiermint' ),
-				'description' => __( 'Your privacy policy page. Falls back to the WordPress privacy policy page when left unset.', 'tiermint' ),
+				'label'       => __( 'Privacy policy page', 'releasecart' ),
+				'description' => __( 'Your privacy policy page. Falls back to the WordPress privacy policy page when left unset.', 'releasecart' ),
 				'path'        => 'pages.privacy',
 				'default'     => 0,
 			),
@@ -364,8 +364,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'frontend',
 				'type'        => 'toggle',
-				'label'       => __( 'Hide the admin toolbar for customers', 'tiermint' ),
-				'description' => __( 'Hide the WordPress toolbar on the front end for logged-in users who cannot edit posts. Administrators and editors always keep it.', 'tiermint' ),
+				'label'       => __( 'Hide the admin toolbar for customers', 'releasecart' ),
+				'description' => __( 'Hide the WordPress toolbar on the front end for logged-in users who cannot edit posts. Administrators and editors always keep it.', 'releasecart' ),
 				'path'        => 'frontend.hide_admin_bar',
 				'default'     => false,
 			),
@@ -374,8 +374,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'frontend',
 				'type'        => 'toggle',
-				'label'       => __( 'Use the sign-in page instead of wp-login', 'tiermint' ),
-				'description' => __( 'Redirect front-end sign-in and password-reset requests, and the links in WordPress password emails, to your pages. Requires published pages; logout, confirmations and admin logins keep working, and wp-login.php?tiermint_wp_login=1 always shows the WordPress screen.', 'tiermint' ),
+				'label'       => __( 'Use the sign-in page instead of wp-login', 'releasecart' ),
+				'description' => __( 'Redirect front-end sign-in and password-reset requests, and the links in WordPress password emails, to your pages. Requires published pages; logout, confirmations and admin logins keep working, and wp-login.php?releasecart_wp_login=1 always shows the WordPress screen.', 'releasecart' ),
 				'path'        => 'frontend.replace_wp_login',
 				'default'     => false,
 			),
@@ -384,8 +384,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'frontend',
 				'type'        => 'toggle',
-				'label'       => __( 'Show buy buttons in the product grid', 'tiermint' ),
-				'description' => __( 'The store-wide default for add-to-cart buttons on product grid cards. A block or shortcode can still override it.', 'tiermint' ),
+				'label'       => __( 'Show buy buttons in the product grid', 'releasecart' ),
+				'description' => __( 'The store-wide default for add-to-cart buttons on product grid cards. A block or shortcode can still override it.', 'releasecart' ),
 				'path'        => 'storefront.grid_buy_buttons',
 				'default'     => true,
 			),
@@ -394,16 +394,16 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'frontend',
 				'type'        => 'select',
-				'label'       => __( 'After adding to the cart', 'tiermint' ),
-				'description' => __( 'What happens after a shopper adds a product to the cart.', 'tiermint' ),
+				'label'       => __( 'After adding to the cart', 'releasecart' ),
+				'description' => __( 'What happens after a shopper adds a product to the cart.', 'releasecart' ),
 				'options'     => array(
 					array(
 						'value' => 'stay',
-						'label' => __( 'Stay on the page and show a confirmation', 'tiermint' ),
+						'label' => __( 'Stay on the page and show a confirmation', 'releasecart' ),
 					),
 					array(
 						'value' => 'checkout',
-						'label' => __( 'Go straight to the checkout page', 'tiermint' ),
+						'label' => __( 'Go straight to the checkout page', 'releasecart' ),
 					),
 				),
 				'path'        => 'storefront.cart_redirect',
@@ -414,16 +414,16 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'frontend',
 				'type'        => 'select',
-				'label'       => __( 'Product page heading', 'tiermint' ),
-				'description' => __( 'Where the product name shows as the heading on the product details page. Show it in the block keeps the theme page title hidden there so the block is the only heading. Use the theme page title puts the product name in the theme title instead (so a Post Title block and breadcrumbs show it), and the block hides its own; pick this only if your theme renders the page title.', 'tiermint' ),
+				'label'       => __( 'Product page heading', 'releasecart' ),
+				'description' => __( 'Where the product name shows as the heading on the product details page. Show it in the block keeps the theme page title hidden there so the block is the only heading. Use the theme page title puts the product name in the theme title instead (so a Post Title block and breadcrumbs show it), and the block hides its own; pick this only if your theme renders the page title.', 'releasecart' ),
 				'options'     => array(
 					array(
 						'value' => 'block',
-						'label' => __( 'Show the product name in the block', 'tiermint' ),
+						'label' => __( 'Show the product name in the block', 'releasecart' ),
 					),
 					array(
 						'value' => 'theme',
-						'label' => __( 'Use the theme page title for the product name', 'tiermint' ),
+						'label' => __( 'Use the theme page title for the product name', 'releasecart' ),
 					),
 				),
 				'path'        => 'storefront.product_title_source',
@@ -434,8 +434,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'checkout',
 				'type'        => 'toggle',
-				'label'       => __( 'Require terms acceptance at checkout', 'tiermint' ),
-				'description' => __( 'Show a checkbox the buyer must tick to accept your terms and privacy policy before paying.', 'tiermint' ),
+				'label'       => __( 'Require terms acceptance at checkout', 'releasecart' ),
+				'description' => __( 'Show a checkbox the buyer must tick to accept your terms and privacy policy before paying.', 'releasecart' ),
 				'path'        => 'checkout.require_terms',
 				'default'     => false,
 			),
@@ -444,7 +444,7 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'checkout',
 				'type'        => 'toggle',
-				'label'       => __( 'Collect a billing country', 'tiermint' ),
+				'label'       => __( 'Collect a billing country', 'releasecart' ),
 				'description' => $this->countryDescription(),
 				'path'        => 'checkout.collect_country',
 				'default'     => false,
@@ -454,7 +454,7 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'checkout',
 				'type'        => 'toggle',
-				'label'       => __( 'Collect a VAT or tax ID', 'tiermint' ),
+				'label'       => __( 'Collect a VAT or tax ID', 'releasecart' ),
 				'description' => $this->vatDescription(),
 				'path'        => 'checkout.collect_vat',
 				'default'     => false,
@@ -464,20 +464,20 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'checkout',
 				'type'        => 'select',
-				'label'       => __( 'Collect a billing address', 'tiermint' ),
+				'label'       => __( 'Collect a billing address', 'releasecart' ),
 				'description' => $this->addressDescription(),
 				'options'     => array(
 					array(
 						'value' => 'none',
-						'label' => __( 'Do not collect an address', 'tiermint' ),
+						'label' => __( 'Do not collect an address', 'releasecart' ),
 					),
 					array(
 						'value' => 'optional',
-						'label' => __( 'Collect an optional address', 'tiermint' ),
+						'label' => __( 'Collect an optional address', 'releasecart' ),
 					),
 					array(
 						'value' => 'required',
-						'label' => __( 'Require an address', 'tiermint' ),
+						'label' => __( 'Require an address', 'releasecart' ),
 					),
 				),
 				'path'        => 'checkout.collect_address',
@@ -488,8 +488,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'checkout',
 				'type'        => 'toggle',
-				'label'       => __( 'Show a login panel at checkout', 'tiermint' ),
-				'description' => __( 'Let existing customers log in from the checkout page before they pay.', 'tiermint' ),
+				'label'       => __( 'Show a login panel at checkout', 'releasecart' ),
+				'description' => __( 'Let existing customers log in from the checkout page before they pay.', 'releasecart' ),
 				'path'        => 'checkout.show_login',
 				'default'     => true,
 			),
@@ -498,8 +498,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'checkout',
 				'type'        => 'toggle',
-				'label'       => __( 'Create an account for guests', 'tiermint' ),
-				'description' => __( 'When a guest completes a purchase, create a WordPress account for them (or link one that already uses their email) so their orders and licenses appear in the account area. They set a password from a link emailed to them.', 'tiermint' ),
+				'label'       => __( 'Create an account for guests', 'releasecart' ),
+				'description' => __( 'When a guest completes a purchase, create a WordPress account for them (or link one that already uses their email) so their orders and licenses appear in the account area. They set a password from a link emailed to them.', 'releasecart' ),
 				'path'        => 'checkout.auto_register',
 				'default'     => false,
 			),
@@ -508,8 +508,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'checkout',
 				'type'        => 'toggle',
-				'label'       => __( 'Allow guest checkout', 'tiermint' ),
-				'description' => __( 'Let buyers check out without an account. Turn this off to require an account, through login, auto-registration, or a registration page. Without a registration page or auto-registration, only existing users can buy.', 'tiermint' ),
+				'label'       => __( 'Allow guest checkout', 'releasecart' ),
+				'description' => __( 'Let buyers check out without an account. Turn this off to require an account, through login, auto-registration, or a registration page. Without a registration page or auto-registration, only existing users can buy.', 'releasecart' ),
 				'path'        => 'checkout.guest_checkout',
 				'default'     => true,
 			),
@@ -518,8 +518,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'checkout',
 				'type'        => 'toggle',
-				'label'       => __( 'Require a first name at checkout', 'tiermint' ),
-				'description' => __( 'Make the first name field mandatory. Left off, it is offered but optional.', 'tiermint' ),
+				'label'       => __( 'Require a first name at checkout', 'releasecart' ),
+				'description' => __( 'Make the first name field mandatory. Left off, it is offered but optional.', 'releasecart' ),
 				'path'        => 'checkout.require_first_name',
 				'default'     => false,
 			),
@@ -528,8 +528,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'checkout',
 				'type'        => 'toggle',
-				'label'       => __( 'Require a last name at checkout', 'tiermint' ),
-				'description' => __( 'Make the last name field mandatory. Left off, it is offered but optional.', 'tiermint' ),
+				'label'       => __( 'Require a last name at checkout', 'releasecart' ),
+				'description' => __( 'Make the last name field mandatory. Left off, it is offered but optional.', 'releasecart' ),
 				'path'        => 'checkout.require_last_name',
 				'default'     => false,
 			),
@@ -538,8 +538,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'checkout',
 				'type'        => 'toggle',
-				'label'       => __( 'Offer a company purchase option', 'tiermint' ),
-				'description' => __( 'Show an "I am buying as a company" checkbox that reveals a company name field and the tax ID field. Turn off to always show the tax ID field on its own instead.', 'tiermint' ),
+				'label'       => __( 'Offer a company purchase option', 'releasecart' ),
+				'description' => __( 'Show an "I am buying as a company" checkbox that reveals a company name field and the tax ID field. Turn off to always show the tax ID field on its own instead.', 'releasecart' ),
 				'path'        => 'checkout.collect_company',
 				'default'     => true,
 			),
@@ -548,8 +548,8 @@ final class SettingsSchema {
 				'section'     => 'general',
 				'group'       => 'advanced',
 				'type'        => 'toggle',
-				'label'       => __( 'Delete all data on uninstall', 'tiermint' ),
-				'description' => __( 'When enabled, deleting the plugin removes every TierMint table, option, capability, and stored package file. Leave off to keep customer and license data.', 'tiermint' ),
+				'label'       => __( 'Delete all data on uninstall', 'releasecart' ),
+				'description' => __( 'When enabled, deleting the plugin removes every ReleaseCart table, option, capability, and stored package file. Leave off to keep customer and license data.', 'releasecart' ),
 				'path'        => 'delete_data_on_uninstall',
 				'default'     => false,
 			),
@@ -557,16 +557,16 @@ final class SettingsSchema {
 				'id'          => 'discount_code_combination',
 				'section'     => 'discounts',
 				'type'        => 'select',
-				'label'       => __( 'Codes and automatic discounts', 'tiermint' ),
-				'description' => __( 'What happens when a shopper has a discount code and an automatic discount also matches their cart.', 'tiermint' ),
+				'label'       => __( 'Codes and automatic discounts', 'releasecart' ),
+				'description' => __( 'What happens when a shopper has a discount code and an automatic discount also matches their cart.', 'releasecart' ),
 				'options'     => array(
 					array(
 						'value' => 'code_replaces_auto',
-						'label' => __( 'A discount code replaces automatic discounts', 'tiermint' ),
+						'label' => __( 'A discount code replaces automatic discounts', 'releasecart' ),
 					),
 					array(
 						'value' => 'stack',
-						'label' => __( 'A discount code stacks with automatic discounts', 'tiermint' ),
+						'label' => __( 'A discount code stacks with automatic discounts', 'releasecart' ),
 					),
 				),
 				'path'        => 'discounts.code_combination',
@@ -576,8 +576,8 @@ final class SettingsSchema {
 				'id'          => 'discount_strikethrough',
 				'section'     => 'discounts',
 				'type'        => 'toggle',
-				'label'       => __( 'Show the original price struck through', 'tiermint' ),
-				'description' => __( 'When an automatic discount applies, show the original price struck through with the discounted price next to it on product pages and the store grid.', 'tiermint' ),
+				'label'       => __( 'Show the original price struck through', 'releasecart' ),
+				'description' => __( 'When an automatic discount applies, show the original price struck through with the discounted price next to it on product pages and the store grid.', 'releasecart' ),
 				'path'        => 'storefront.discount_strikethrough',
 				'default'     => true,
 			),
@@ -585,10 +585,10 @@ final class SettingsSchema {
 				'id'          => 'appearance_primary',
 				'section'     => 'appearance',
 				'type'        => 'color',
-				'label'       => __( 'Primary color', 'tiermint' ),
+				'label'       => __( 'Primary color', 'releasecart' ),
 				'description' => sprintf(
 					/* translators: %s: the shipped default colour, a hex code. */
-					__( 'The main accent for buttons, links, and selected states. Its hover, soft, and focus shades are derived automatically, so pick a reasonably dark colour for readable button labels. Leave empty for the default (%s).', 'tiermint' ),
+					__( 'The main accent for buttons, links, and selected states. Its hover, soft, and focus shades are derived automatically, so pick a reasonably dark colour for readable button labels. Leave empty for the default (%s).', 'releasecart' ),
 					'#2563eb'
 				),
 				'path'        => 'appearance.primary',
@@ -598,10 +598,10 @@ final class SettingsSchema {
 				'id'          => 'appearance_text',
 				'section'     => 'appearance',
 				'type'        => 'color',
-				'label'       => __( 'Text color', 'tiermint' ),
+				'label'       => __( 'Text color', 'releasecart' ),
 				'description' => sprintf(
 					/* translators: %s: the shipped default colour, a hex code. */
-					__( 'The body text colour inside storefront components. Leave empty for the default (%s).', 'tiermint' ),
+					__( 'The body text colour inside storefront components. Leave empty for the default (%s).', 'releasecart' ),
 					'#111827'
 				),
 				'path'        => 'appearance.text',
@@ -611,10 +611,10 @@ final class SettingsSchema {
 				'id'          => 'appearance_surface',
 				'section'     => 'appearance',
 				'type'        => 'color',
-				'label'       => __( 'Surface color', 'tiermint' ),
+				'label'       => __( 'Surface color', 'releasecart' ),
 				'description' => sprintf(
 					/* translators: %s: the shipped default colour, a hex code. */
-					__( 'The background for cards, panels, and form fields. Leave empty for the default (%s).', 'tiermint' ),
+					__( 'The background for cards, panels, and form fields. Leave empty for the default (%s).', 'releasecart' ),
 					'#ffffff'
 				),
 				'path'        => 'appearance.surface',
@@ -624,10 +624,10 @@ final class SettingsSchema {
 				'id'          => 'appearance_page',
 				'section'     => 'appearance',
 				'type'        => 'color',
-				'label'       => __( 'Page background', 'tiermint' ),
+				'label'       => __( 'Page background', 'releasecart' ),
 				'description' => sprintf(
 					/* translators: %s: the shipped default colour, a hex code. */
-					__( 'The page wash behind full-page surfaces such as the checkout and account areas. Leave empty for the default (%s).', 'tiermint' ),
+					__( 'The page wash behind full-page surfaces such as the checkout and account areas. Leave empty for the default (%s).', 'releasecart' ),
 					'#f6f7f9'
 				),
 				'path'        => 'appearance.page',
@@ -637,10 +637,10 @@ final class SettingsSchema {
 				'id'          => 'appearance_border',
 				'section'     => 'appearance',
 				'type'        => 'color',
-				'label'       => __( 'Border color', 'tiermint' ),
+				'label'       => __( 'Border color', 'releasecart' ),
 				'description' => sprintf(
 					/* translators: %s: the shipped default colour, a hex code. */
-					__( 'Borders and dividers. The stronger control border is derived from it. Leave empty for the default (%s).', 'tiermint' ),
+					__( 'Borders and dividers. The stronger control border is derived from it. Leave empty for the default (%s).', 'releasecart' ),
 					'#e5e7eb'
 				),
 				'path'        => 'appearance.border',
@@ -650,10 +650,10 @@ final class SettingsSchema {
 				'id'          => 'appearance_success',
 				'section'     => 'appearance',
 				'type'        => 'color',
-				'label'       => __( 'Success color', 'tiermint' ),
+				'label'       => __( 'Success color', 'releasecart' ),
 				'description' => sprintf(
 					/* translators: %s: the shipped default colour, a hex code. */
-					__( 'The accent for success notices and badges; its tinted background is derived. Leave empty for the default (%s).', 'tiermint' ),
+					__( 'The accent for success notices and badges; its tinted background is derived. Leave empty for the default (%s).', 'releasecart' ),
 					'#15803d'
 				),
 				'path'        => 'appearance.success',
@@ -663,10 +663,10 @@ final class SettingsSchema {
 				'id'          => 'appearance_error',
 				'section'     => 'appearance',
 				'type'        => 'color',
-				'label'       => __( 'Error color', 'tiermint' ),
+				'label'       => __( 'Error color', 'releasecart' ),
 				'description' => sprintf(
 					/* translators: %s: the shipped default colour, a hex code. */
-					__( 'The accent for error notices and badges; its tinted background is derived. Leave empty for the default (%s).', 'tiermint' ),
+					__( 'The accent for error notices and badges; its tinted background is derived. Leave empty for the default (%s).', 'releasecart' ),
 					'#b91c1c'
 				),
 				'path'        => 'appearance.error',
@@ -676,20 +676,20 @@ final class SettingsSchema {
 				'id'          => 'appearance_radius',
 				'section'     => 'appearance',
 				'type'        => 'select',
-				'label'       => __( 'Corner radius', 'tiermint' ),
-				'description' => __( 'How rounded corners are on buttons, inputs, and cards.', 'tiermint' ),
+				'label'       => __( 'Corner radius', 'releasecart' ),
+				'description' => __( 'How rounded corners are on buttons, inputs, and cards.', 'releasecart' ),
 				'options'     => array(
 					array(
 						'value' => '',
-						'label' => __( 'Default', 'tiermint' ),
+						'label' => __( 'Default', 'releasecart' ),
 					),
 					array(
 						'value' => 'small',
-						'label' => __( 'Small', 'tiermint' ),
+						'label' => __( 'Small', 'releasecart' ),
 					),
 					array(
 						'value' => 'large',
-						'label' => __( 'Large', 'tiermint' ),
+						'label' => __( 'Large', 'releasecart' ),
 					),
 				),
 				'path'        => 'appearance.radius',
@@ -699,8 +699,8 @@ final class SettingsSchema {
 				'id'          => 'appearance_font',
 				'section'     => 'appearance',
 				'type'        => 'font_stack',
-				'label'       => __( 'Font family', 'tiermint' ),
-				'description' => __( 'A CSS font-family stack for every storefront component, for example: Inter, Arial, sans-serif. Leave empty for the built-in system font.', 'tiermint' ),
+				'label'       => __( 'Font family', 'releasecart' ),
+				'description' => __( 'A CSS font-family stack for every storefront component, for example: Inter, Arial, sans-serif. Leave empty for the built-in system font.', 'releasecart' ),
 				'path'        => 'appearance.font',
 				'default'     => '',
 			),
@@ -708,8 +708,8 @@ final class SettingsSchema {
 				'id'          => 'email_from_name',
 				'section'     => 'emails',
 				'type'        => 'text',
-				'label'       => __( 'From name', 'tiermint' ),
-				'description' => __( 'The sender name on store emails. Defaults to the site title when empty.', 'tiermint' ),
+				'label'       => __( 'From name', 'releasecart' ),
+				'description' => __( 'The sender name on store emails. Defaults to the site title when empty.', 'releasecart' ),
 				'path'        => 'emails.from_name',
 				'default'     => '',
 			),
@@ -717,8 +717,8 @@ final class SettingsSchema {
 				'id'          => 'email_from_address',
 				'section'     => 'emails',
 				'type'        => 'email',
-				'label'       => __( 'From address', 'tiermint' ),
-				'description' => __( 'The sender address on store emails. Defaults to the site admin address when empty.', 'tiermint' ),
+				'label'       => __( 'From address', 'releasecart' ),
+				'description' => __( 'The sender address on store emails. Defaults to the site admin address when empty.', 'releasecart' ),
 				'path'        => 'emails.from_address',
 				'default'     => '',
 			),
@@ -726,8 +726,8 @@ final class SettingsSchema {
 				'id'          => 'email_enabled_purchase_receipt',
 				'section'     => 'emails',
 				'type'        => 'toggle',
-				'label'       => __( 'Send purchase receipts', 'tiermint' ),
-				'description' => __( 'Email buyers a receipt with their downloads and license keys after a completed purchase.', 'tiermint' ),
+				'label'       => __( 'Send purchase receipts', 'releasecart' ),
+				'description' => __( 'Email buyers a receipt with their downloads and license keys after a completed purchase.', 'releasecart' ),
 				'path'        => 'emails.enabled_purchase_receipt',
 				'default'     => true,
 			),
@@ -735,8 +735,8 @@ final class SettingsSchema {
 				'id'          => 'email_enabled_license_delivery',
 				'section'     => 'emails',
 				'type'        => 'toggle',
-				'label'       => __( 'Send license delivery emails', 'tiermint' ),
-				'description' => __( 'Email keys that are generated after the receipt already went out.', 'tiermint' ),
+				'label'       => __( 'Send license delivery emails', 'releasecart' ),
+				'description' => __( 'Email keys that are generated after the receipt already went out.', 'releasecart' ),
 				'path'        => 'emails.enabled_license_delivery',
 				'default'     => true,
 			),
@@ -744,18 +744,18 @@ final class SettingsSchema {
 				'id'            => 'stripe_mode',
 				'section'       => 'payments',
 				'gateway'       => 'stripe',
-				'gateway_label' => __( 'Stripe', 'tiermint' ),
+				'gateway_label' => __( 'Stripe', 'releasecart' ),
 				'type'          => 'select',
-				'label'         => __( 'Stripe mode', 'tiermint' ),
-				'description'   => __( 'Test mode uses your test keys and charges nothing real.', 'tiermint' ),
+				'label'         => __( 'Stripe mode', 'releasecart' ),
+				'description'   => __( 'Test mode uses your test keys and charges nothing real.', 'releasecart' ),
 				'options'       => array(
 					array(
 						'value' => 'test',
-						'label' => __( 'Test', 'tiermint' ),
+						'label' => __( 'Test', 'releasecart' ),
 					),
 					array(
 						'value' => 'live',
-						'label' => __( 'Live', 'tiermint' ),
+						'label' => __( 'Live', 'releasecart' ),
 					),
 				),
 				'path'          => 'payments.stripe.mode',
@@ -765,11 +765,11 @@ final class SettingsSchema {
 				'id'            => 'stripe_publishable_key_test',
 				'section'       => 'payments',
 				'gateway'       => 'stripe',
-				'gateway_label' => __( 'Stripe', 'tiermint' ),
+				'gateway_label' => __( 'Stripe', 'releasecart' ),
 				'group'         => 'test',
 				'type'          => 'text',
-				'label'         => __( 'Test publishable key', 'tiermint' ),
-				'description'   => __( 'Starts with pk_test_.', 'tiermint' ),
+				'label'         => __( 'Test publishable key', 'releasecart' ),
+				'description'   => __( 'Starts with pk_test_.', 'releasecart' ),
 				'path'          => 'payments.stripe.publishable_key_test',
 				'default'       => '',
 			),
@@ -777,11 +777,11 @@ final class SettingsSchema {
 				'id'            => 'stripe_publishable_key_live',
 				'section'       => 'payments',
 				'gateway'       => 'stripe',
-				'gateway_label' => __( 'Stripe', 'tiermint' ),
+				'gateway_label' => __( 'Stripe', 'releasecart' ),
 				'group'         => 'live',
 				'type'          => 'text',
-				'label'         => __( 'Live publishable key', 'tiermint' ),
-				'description'   => __( 'Starts with pk_live_.', 'tiermint' ),
+				'label'         => __( 'Live publishable key', 'releasecart' ),
+				'description'   => __( 'Starts with pk_live_.', 'releasecart' ),
 				'path'          => 'payments.stripe.publishable_key_live',
 				'default'       => '',
 			),
@@ -789,11 +789,11 @@ final class SettingsSchema {
 				'id'            => 'stripe_secret_key_test',
 				'section'       => 'payments',
 				'gateway'       => 'stripe',
-				'gateway_label' => __( 'Stripe', 'tiermint' ),
+				'gateway_label' => __( 'Stripe', 'releasecart' ),
 				'group'         => 'test',
 				'type'          => 'secret',
-				'label'         => __( 'Test secret key', 'tiermint' ),
-				'description'   => __( 'Starts with sk_test_ or rk_test_. Stored encrypted; only the last characters are ever shown again.', 'tiermint' ),
+				'label'         => __( 'Test secret key', 'releasecart' ),
+				'description'   => __( 'Starts with sk_test_ or rk_test_. Stored encrypted; only the last characters are ever shown again.', 'releasecart' ),
 				'storage'       => 'stripe',
 				'stripe'        => array(
 					'kind' => 'secret',
@@ -804,11 +804,11 @@ final class SettingsSchema {
 				'id'            => 'stripe_secret_key_live',
 				'section'       => 'payments',
 				'gateway'       => 'stripe',
-				'gateway_label' => __( 'Stripe', 'tiermint' ),
+				'gateway_label' => __( 'Stripe', 'releasecart' ),
 				'group'         => 'live',
 				'type'          => 'secret',
-				'label'         => __( 'Live secret key', 'tiermint' ),
-				'description'   => __( 'Starts with sk_live_ or rk_live_. Stored encrypted; only the last characters are ever shown again.', 'tiermint' ),
+				'label'         => __( 'Live secret key', 'releasecart' ),
+				'description'   => __( 'Starts with sk_live_ or rk_live_. Stored encrypted; only the last characters are ever shown again.', 'releasecart' ),
 				'storage'       => 'stripe',
 				'stripe'        => array(
 					'kind' => 'secret',
@@ -819,11 +819,11 @@ final class SettingsSchema {
 				'id'            => 'stripe_webhook_secret_test',
 				'section'       => 'payments',
 				'gateway'       => 'stripe',
-				'gateway_label' => __( 'Stripe', 'tiermint' ),
+				'gateway_label' => __( 'Stripe', 'releasecart' ),
 				'group'         => 'test',
 				'type'          => 'secret',
-				'label'         => __( 'Test webhook signing secret', 'tiermint' ),
-				'description'   => __( 'Starts with whsec_. From the Stripe dashboard webhook endpoint.', 'tiermint' ),
+				'label'         => __( 'Test webhook signing secret', 'releasecart' ),
+				'description'   => __( 'Starts with whsec_. From the Stripe dashboard webhook endpoint.', 'releasecart' ),
 				'storage'       => 'stripe',
 				'stripe'        => array(
 					'kind' => 'webhook_secret',
@@ -834,11 +834,11 @@ final class SettingsSchema {
 				'id'            => 'stripe_webhook_secret_live',
 				'section'       => 'payments',
 				'gateway'       => 'stripe',
-				'gateway_label' => __( 'Stripe', 'tiermint' ),
+				'gateway_label' => __( 'Stripe', 'releasecart' ),
 				'group'         => 'live',
 				'type'          => 'secret',
-				'label'         => __( 'Live webhook signing secret', 'tiermint' ),
-				'description'   => __( 'Starts with whsec_. From the Stripe dashboard webhook endpoint.', 'tiermint' ),
+				'label'         => __( 'Live webhook signing secret', 'releasecart' ),
+				'description'   => __( 'Starts with whsec_. From the Stripe dashboard webhook endpoint.', 'releasecart' ),
 				'storage'       => 'stripe',
 				'stripe'        => array(
 					'kind' => 'webhook_secret',
@@ -849,8 +849,8 @@ final class SettingsSchema {
 				'id'          => 'integrations_elementor',
 				'section'     => 'integrations',
 				'type'        => 'toggle',
-				'label'       => __( 'Elementor widgets', 'tiermint' ),
-				'description' => __( 'Add the TierMint widgets and dynamic tags to the Elementor editor. Turn off to remove them without deactivating Elementor.', 'tiermint' ),
+				'label'       => __( 'Elementor widgets', 'releasecart' ),
+				'description' => __( 'Add the ReleaseCart widgets and dynamic tags to the Elementor editor. Turn off to remove them without deactivating Elementor.', 'releasecart' ),
 				'path'        => 'integrations.elementor',
 				'default'     => true,
 			),

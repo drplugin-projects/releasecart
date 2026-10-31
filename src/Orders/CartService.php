@@ -2,20 +2,20 @@
 /**
  * Cart domain service: the single entry point for cart operations.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Orders;
+namespace DrPlugin\WP\ReleaseCart\Orders;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Products\Product;
-use DrPlugin\WP\TierMint\Products\ProductPrice;
-use DrPlugin\WP\TierMint\Products\ProductService;
-use DrPlugin\WP\TierMint\Products\ProductStatus;
+use DrPlugin\WP\ReleaseCart\Products\Product;
+use DrPlugin\WP\ReleaseCart\Products\ProductPrice;
+use DrPlugin\WP\ReleaseCart\Products\ProductService;
+use DrPlugin\WP\ReleaseCart\Products\ProductStatus;
 
 /**
  * Cart operations for shortcodes, blocks, REST and checkout.
@@ -81,6 +81,21 @@ class CartService {
 	}
 
 	/**
+	 * Whether the current visitor has a stored cart.
+	 *
+	 * A token minted earlier in this request counts. An empty cart is never stored.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool True when the current token has a stored cart.
+	 */
+	public function hasStoredCart(): bool {
+		$token = $this->currentToken();
+
+		return null !== $token && $this->repository->has( $token );
+	}
+
+	/**
 	 * Add a product price tier and save the cart.
 	 *
 	 * @since 1.0.0
@@ -96,7 +111,7 @@ class CartService {
 	public function addItem( int $productId, int $priceId, int $quantity = 1 ): Cart {
 		if ( $quantity < 1 ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw OrderValidationException::withErrors( array( __( 'A quantity must be at least 1.', 'tiermint' ) ) );
+			throw OrderValidationException::withErrors( array( __( 'A quantity must be at least 1.', 'releasecart' ) ) );
 		}
 
 		list( $product, $price ) = $this->resolvePurchasable( $productId, $priceId );
@@ -253,7 +268,7 @@ class CartService {
 
 		if ( null === $product ) {
 			/* translators: %d: the product id. */
-			$message = sprintf( __( 'Product %d was not found.', 'tiermint' ), $productId );
+			$message = sprintf( __( 'Product %d was not found.', 'releasecart' ), $productId );
 
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
 			throw OrderValidationException::withErrors( array( $message ) );
@@ -261,7 +276,7 @@ class CartService {
 
 		if ( ProductStatus::Published !== $product->status() ) {
 			/* translators: %d: the product id. */
-			$message = sprintf( __( 'Product %d is not available for purchase.', 'tiermint' ), $productId );
+			$message = sprintf( __( 'Product %d is not available for purchase.', 'releasecart' ), $productId );
 
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
 			throw OrderValidationException::withErrors( array( $message ) );
@@ -271,7 +286,7 @@ class CartService {
 
 		if ( null === $price ) {
 			/* translators: 1: the price id, 2: the product id. */
-			$message = sprintf( __( 'Price %1$d is not available for product %2$d.', 'tiermint' ), $priceId, $productId );
+			$message = sprintf( __( 'Price %1$d is not available for product %2$d.', 'releasecart' ), $priceId, $productId );
 
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
 			throw OrderValidationException::withErrors( array( $message ) );

@@ -151,7 +151,7 @@ export default function TermsPanel( { selectedIds, onAdd, onRemove } ) {
 			setError(
 				sprintf(
 					/* translators: %s: the tag name a merchant tried to create. */
-					__( 'A tag named "%s" already exists.', 'tiermint' ),
+					__( 'A tag named "%s" already exists.', 'releasecart' ),
 					name
 				)
 			);
@@ -178,16 +178,16 @@ export default function TermsPanel( { selectedIds, onAdd, onRemove } ) {
 					__next40pxDefaultSize
 					__experimentalExpandOnFocus
 					__experimentalValidateInput={ validateInput }
-					label={ __( 'Tags', 'tiermint' ) }
+					label={ __( 'Tags', 'releasecart' ) }
 					value={ tokens }
 					suggestions={ suggestions }
 					onChange={ onFieldChange }
 				/>
-				<div className="tiermint-term-field__add">
+				<div className="releasecart-term-field__add">
 					<TextControl
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
-						label={ __( 'Add a new tag', 'tiermint' ) }
+						label={ __( 'Add a new tag', 'releasecart' ) }
 						value={ newName }
 						onChange={ ( value ) => {
 							setNewName( value );
@@ -205,11 +205,11 @@ export default function TermsPanel( { selectedIds, onAdd, onRemove } ) {
 						__experimentalIsFocusable
 						onClick={ onCreate }
 					>
-						{ __( 'Add tag', 'tiermint' ) }
+						{ __( 'Add tag', 'releasecart' ) }
 					</Button>
 				</div>
 				{ error && (
-					<p className="tiermint-term-field__error" role="alert">
+					<p className="releasecart-term-field__error" role="alert">
 						{ error }
 					</p>
 				) }
@@ -218,8 +218,8 @@ export default function TermsPanel( { selectedIds, onAdd, onRemove } ) {
 	}
 
 	return (
-		<div className="tiermint-panel tiermint-product-edit__box tiermint-term-field">
-			<h2>{ __( 'Product tags', 'tiermint' ) }</h2>
+		<div className="releasecart-panel releasecart-product-edit__box releasecart-term-field">
+			<h2>{ __( 'Product tags', 'releasecart' ) }</h2>
 			{ body }
 		</div>
 	);

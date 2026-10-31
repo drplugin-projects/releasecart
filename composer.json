@@ -1,11 +1,10 @@
 {
-    "name": "drplugin/tiermint",
-    "description": "TierMint: sell digital products, licenses, and updates from WordPress (free core).",
+    "name": "drplugin/releasecart",
+    "description": "ReleaseCart: sell digital products, licenses, and updates from WordPress (free core).",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "require": {
         "php": ">=8.1",
-        "composer/installers": "^2",
         "woocommerce/action-scheduler": "4.2.0"
     },
     "require-dev": {
@@ -18,12 +17,12 @@
     },
     "autoload": {
         "psr-4": {
-            "DrPlugin\\WP\\TierMint\\": "src/"
+            "DrPlugin\\WP\\ReleaseCart\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "DrPlugin\\WP\\TierMint\\Tests\\": "tests/"
+            "DrPlugin\\WP\\ReleaseCart\\Tests\\": "tests/"
         }
     },
     "config": {
@@ -31,17 +30,7 @@
             "php": "8.1"
         },
         "sort-packages": true,
-        "optimize-autoloader": true,
-        "allow-plugins": {
-            "composer/installers": true
-        }
-    },
-    "extra": {
-        "installer-paths": {
-            "lib/{$name}/": [
-                "woocommerce/action-scheduler"
-            ]
-        }
+        "optimize-autoloader": true
     },
     "scripts": {
         "test:unit": "@php vendor/bin/phpunit --configuration phpunit-unit.xml.dist",

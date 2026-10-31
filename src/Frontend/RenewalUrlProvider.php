@@ -2,14 +2,14 @@
 /**
  * The storefront renewal-URL filter target.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
-use DrPlugin\WP\TierMint\Core\Hookable;
+use DrPlugin\WP\ReleaseCart\Core\Hookable;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -44,7 +44,7 @@ class RenewalUrlProvider implements Hookable {
 	 * @return void
 	 */
 	public function hooks(): void {
-		add_filter( 'tiermint_license_renewal_url', array( $this, 'renewalUrl' ), 10, 2 );
+		add_filter( 'releasecart_license_renewal_url', array( $this, 'renewalUrl' ), 10, 2 );
 	}
 
 	/**
@@ -66,6 +66,6 @@ class RenewalUrlProvider implements Hookable {
 			return $url;
 		}
 
-		return add_query_arg( 'tiermint_renew', $licenseKey, $checkout );
+		return add_query_arg( 'releasecart_renew', $licenseKey, $checkout );
 	}
 }

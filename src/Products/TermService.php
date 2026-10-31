@@ -2,12 +2,12 @@
 /**
  * Term domain service: all product-taxonomy business logic and validation.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Products;
+namespace DrPlugin\WP\ReleaseCart\Products;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -67,7 +67,7 @@ class TermService {
 		$name     = trim( (string) ( $data['name'] ?? '' ) );
 
 		if ( '' === $name ) {
-			$errors[] = __( 'A term name is required.', 'tiermint' );
+			$errors[] = __( 'A term name is required.', 'releasecart' );
 		}
 
 		// Validate taxonomy and name before resolving a parent.
@@ -102,7 +102,7 @@ class TermService {
 		 *
 		 * @param Term $term The newly created term, reloaded from storage.
 		 */
-		do_action( 'tiermint_term_created', $created );
+		do_action( 'releasecart_term_created', $created );
 
 		return $created;
 	}
@@ -134,7 +134,7 @@ class TermService {
 
 		$name = array_key_exists( 'name', $data ) ? trim( (string) $data['name'] ) : $existing->name();
 		if ( '' === $name ) {
-			$errors[] = __( 'A term name cannot be empty.', 'tiermint' );
+			$errors[] = __( 'A term name cannot be empty.', 'releasecart' );
 		}
 
 		$slug = ( isset( $data['slug'] ) && '' !== trim( (string) $data['slug'] ) )
@@ -170,7 +170,7 @@ class TermService {
 		 *
 		 * @param Term $term The updated term, reloaded from storage.
 		 */
-		do_action( 'tiermint_term_updated', $updated );
+		do_action( 'releasecart_term_updated', $updated );
 
 		return $updated;
 	}
@@ -207,7 +207,7 @@ class TermService {
 		 *
 		 * @param Term $term The term as it was immediately before deletion.
 		 */
-		do_action( 'tiermint_term_deleted', $existing );
+		do_action( 'releasecart_term_deleted', $existing );
 	}
 
 	/**
@@ -268,7 +268,7 @@ class TermService {
 		 * @param string  $taxonomy The taxonomy value ('category' or 'tag').
 		 * @param int[]   $termIds  The normalized, de-duplicated assigned term ids.
 		 */
-		do_action( 'tiermint_product_terms_set', $product, $taxonomy->value, $normalized );
+		do_action( 'releasecart_product_terms_set', $product, $taxonomy->value, $normalized );
 	}
 
 	/**
@@ -290,7 +290,7 @@ class TermService {
 
 			if ( null === $term || $term->taxonomy() !== $taxonomy ) {
 				/* translators: 1: the term id, 2: the taxonomy value. */
-				$errors[] = sprintf( __( 'Term %1$d is not a valid %2$s.', 'tiermint' ), $termId, $taxonomy->value );
+				$errors[] = sprintf( __( 'Term %1$d is not a valid %2$s.', 'releasecart' ), $termId, $taxonomy->value );
 			}
 		}
 
@@ -368,7 +368,7 @@ class TermService {
 	 */
 	private function resolveTaxonomy( $value, array &$errors ): ProductTaxonomy {
 		if ( null === $value || '' === (string) $value ) {
-			$errors[] = __( 'A term taxonomy is required.', 'tiermint' );
+			$errors[] = __( 'A term taxonomy is required.', 'releasecart' );
 
 			return ProductTaxonomy::Category;
 		}
@@ -377,7 +377,7 @@ class TermService {
 
 		if ( null === $taxonomy ) {
 			/* translators: %s: the submitted term taxonomy value. */
-			$errors[] = sprintf( __( '"%s" is not a valid term taxonomy.', 'tiermint' ), (string) $value );
+			$errors[] = sprintf( __( '"%s" is not a valid term taxonomy.', 'releasecart' ), (string) $value );
 
 			return ProductTaxonomy::Category;
 		}
@@ -423,7 +423,7 @@ class TermService {
 		}
 
 		if ( null !== $selfId && $requested === $selfId ) {
-			$errors[] = __( 'A category cannot be its own parent.', 'tiermint' );
+			$errors[] = __( 'A category cannot be its own parent.', 'releasecart' );
 
 			return 0;
 		}
@@ -432,7 +432,7 @@ class TermService {
 
 		if ( null === $parent || ProductTaxonomy::Category !== $parent->taxonomy() ) {
 			/* translators: %d: the parent category id. */
-			$errors[] = sprintf( __( 'Parent category %d does not exist.', 'tiermint' ), $requested );
+			$errors[] = sprintf( __( 'Parent category %d does not exist.', 'releasecart' ), $requested );
 
 			return 0;
 		}
@@ -440,7 +440,7 @@ class TermService {
 		// A descendant cannot become the parent.
 		if ( null !== $selfId && $this->isDescendantOf( $requested, $selfId ) ) {
 			/* translators: 1: the category id, 2: the descendant category id. */
-			$errors[] = sprintf( __( 'Category %1$d cannot be moved under its own descendant %2$d.', 'tiermint' ), $selfId, $requested );
+			$errors[] = sprintf( __( 'Category %1$d cannot be moved under its own descendant %2$d.', 'releasecart' ), $selfId, $requested );
 
 			return 0;
 		}

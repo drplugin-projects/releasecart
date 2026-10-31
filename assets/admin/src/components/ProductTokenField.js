@@ -143,7 +143,7 @@ export default function ProductTokenField( { label, value, onChange, help } ) {
 	};
 
 	return (
-		<div className="tiermint-field tiermint-token-field">
+		<div className="releasecart-field releasecart-token-field">
 			<FormTokenField
 				__nextHasNoMarginBottom
 				__next40pxDefaultSize
@@ -155,7 +155,7 @@ export default function ProductTokenField( { label, value, onChange, help } ) {
 				onInputChange={ setTerm }
 				onChange={ onFieldChange }
 			/>
-			{ help && <p className="tiermint-field__help">{ help }</p> }
+			{ help && <p className="releasecart-field__help">{ help }</p> }
 		</div>
 	);
 }

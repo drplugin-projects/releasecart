@@ -2,12 +2,12 @@
 /**
  * The registry of transactional emails.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Emails;
+namespace DrPlugin\WP\ReleaseCart\Emails;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -87,7 +87,7 @@ class EmailRegistry {
 		 *
 		 * @param array<int, Email> $emails The registered email instances.
 		 */
-		$emails = apply_filters( 'tiermint_emails', $this->defaultEmails );
+		$emails = apply_filters( 'releasecart_emails', $this->defaultEmails );
 
 		$this->emails = array();
 
@@ -98,7 +98,7 @@ class EmailRegistry {
 					esc_html(
 						sprintf(
 							/* translators: %s: the Email base class name. */
-							__( 'An entry added via tiermint_emails must be an instance of %s.', 'tiermint' ),
+							__( 'An entry added via releasecart_emails must be an instance of %s.', 'releasecart' ),
 							Email::class
 						)
 					),

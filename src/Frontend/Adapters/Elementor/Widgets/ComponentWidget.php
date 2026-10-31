@@ -1,17 +1,17 @@
 <?php
 /**
- * The generic Elementor widget over a TierMint component.
+ * The generic Elementor widget over a ReleaseCart component.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Widgets;
+namespace DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Widgets;
 
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\Registrar;
-use DrPlugin\WP\TierMint\Frontend\Adapters\Elementor\WidgetRenderer;
-use DrPlugin\WP\TierMint\Frontend\Kses;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\Registrar;
+use DrPlugin\WP\ReleaseCart\Frontend\Adapters\Elementor\WidgetRenderer;
+use DrPlugin\WP\ReleaseCart\Frontend\Kses;
 use Elementor\Controls_Manager;
 use Elementor\Widget_Base;
 use RuntimeException;
@@ -19,7 +19,7 @@ use RuntimeException;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Base widget for each TierMint component.
+ * Base widget for each ReleaseCart component.
  *
  * Elementor rebuilds saved widgets without injected services. The registrar
  * sets the shared renderer through a static accessor.
@@ -53,14 +53,14 @@ abstract class ComponentWidget extends Widget_Base {
 	 */
 	protected static function renderer(): WidgetRenderer {
 		if ( null === self::$renderer ) {
-			throw new RuntimeException( 'TierMint Elementor widgets need their render delegate; the adapter sets it on register.' );
+			throw new RuntimeException( 'ReleaseCart Elementor widgets need their render delegate; the adapter sets it on register.' );
 		}
 
 		return self::$renderer;
 	}
 
 	/**
-	 * The TierMint component slug this widget renders.
+	 * The ReleaseCart component slug this widget renders.
 	 *
 	 * @return string
 	 */
@@ -72,7 +72,7 @@ abstract class ComponentWidget extends Widget_Base {
 	 * @return string
 	 */
 	public function get_name(): string {
-		return 'tiermint-' . $this->componentSlug();
+		return 'releasecart-' . $this->componentSlug();
 	}
 
 	/**
@@ -93,9 +93,9 @@ abstract class ComponentWidget extends Widget_Base {
 		$slug = $this->componentSlug();
 
 		$this->start_controls_section(
-			'tiermint_content',
+			'releasecart_content',
 			array(
-				'label' => __( 'Content', 'tiermint' ),
+				'label' => __( 'Content', 'releasecart' ),
 				'tab'   => Controls_Manager::TAB_CONTENT,
 			)
 		);
@@ -107,9 +107,9 @@ abstract class ComponentWidget extends Widget_Base {
 		$this->end_controls_section();
 
 		$this->start_controls_section(
-			'tiermint_style',
+			'releasecart_style',
 			array(
-				'label' => __( 'Style', 'tiermint' ),
+				'label' => __( 'Style', 'releasecart' ),
 				'tab'   => Controls_Manager::TAB_STYLE,
 			)
 		);

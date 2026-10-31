@@ -2,12 +2,12 @@
 /**
  * The cookie that carries the reset credential between the link click and the set POST.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Frontend;
+namespace DrPlugin\WP\ReleaseCart\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -28,7 +28,7 @@ class PasswordResetCookie {
 	 *
 	 * @var string
 	 */
-	public const NAME_PREFIX = 'tiermint_rp_';
+	public const NAME_PREFIX = 'releasecart_rp_';
 
 	/**
 	 * Writes the cookie, taking ( name, value, options ). Injected for tests.

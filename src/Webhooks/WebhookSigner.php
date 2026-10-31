@@ -2,12 +2,12 @@
 /**
  * Outbound webhook payload signer.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Webhooks;
+namespace DrPlugin\WP\ReleaseCart\Webhooks;
 
 defined( 'ABSPATH' ) || exit;
 

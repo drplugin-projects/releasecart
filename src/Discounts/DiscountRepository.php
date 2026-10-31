@@ -2,17 +2,17 @@
 /**
  * Discounts repository: the only Discounts class that touches $wpdb.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Discounts;
+namespace DrPlugin\WP\ReleaseCart\Discounts;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
 
-use DrPlugin\WP\TierMint\Database\Schema;
+use DrPlugin\WP\ReleaseCart\Database\Schema;
 
 /**
  * Store discounts and cache their IDs and codes.
@@ -26,7 +26,7 @@ class DiscountRepository {
 	 *
 	 * @var string
 	 */
-	private const CACHE_GROUP = 'tiermint_discounts';
+	private const CACHE_GROUP = 'releasecart_discounts';
 
 	/**
 	 * The WordPress database abstraction.
@@ -103,7 +103,7 @@ class DiscountRepository {
 
 		if ( null === $id ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
-			throw new DiscountException( __( 'Cannot update a discount that has no id.', 'tiermint' ) );
+			throw new DiscountException( __( 'Cannot update a discount that has no id.', 'releasecart' ) );
 		}
 
 		$previous = $this->find( $id );
@@ -500,7 +500,7 @@ class DiscountRepository {
 	}
 
 	/**
-	 * The fully-qualified `tiermint_discounts` table name.
+	 * The fully-qualified `releasecart_discounts` table name.
 	 *
 	 * @since 1.0.0
 	 *

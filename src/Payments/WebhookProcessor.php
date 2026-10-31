@@ -2,12 +2,12 @@
 /**
  * Gateway webhook processor.
  *
- * @package DrPlugin\WP\TierMint
+ * @package DrPlugin\WP\ReleaseCart
  */
 
 declare(strict_types=1);
 
-namespace DrPlugin\WP\TierMint\Payments;
+namespace DrPlugin\WP\ReleaseCart\Payments;
 
 // Prevent direct file access.
 defined( 'ABSPATH' ) || exit;
@@ -65,7 +65,7 @@ class WebhookProcessor {
 		 *
 		 * @param array<string, array<string, callable>> $handlers The handler map seeded with core's handlers.
 		 */
-		$filtered = apply_filters( 'tiermint_webhook_handlers', $coreHandlers );
+		$filtered = apply_filters( 'releasecart_webhook_handlers', $coreHandlers );
 
 		if ( ! is_array( $filtered ) ) {
 			return $coreHandlers;
