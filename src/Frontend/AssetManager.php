@@ -111,8 +111,8 @@ class AssetManager implements Hookable {
 		wp_register_script( self::BOOTSTRAP_HANDLE, false, array(), RELEASECART_VERSION, true );
 		wp_add_inline_script( self::BOOTSTRAP_HANDLE, $this->bootstrapConfig(), 'before' );
 
-		// Stripe requires its evergreen v3 URL.
-		wp_register_script( self::STRIPE_JS_HANDLE, 'https://js.stripe.com/v3/', array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- Stripe requires the evergreen v3 URL, never a pinned copy.
+		// Stripe.js from the same release train as StripeApiClient::API_VERSION.
+		wp_register_script( self::STRIPE_JS_HANDLE, 'https://js.stripe.com/endive/stripe.js', array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- Stripe.js must load from js.stripe.com as served; the path carries its version.
 
 		foreach ( $this->registry->all() as $slug => $component ) {
 			if ( $this->componentAssetExists( 'assets/frontend/components/' . $slug . '.css' ) ) {

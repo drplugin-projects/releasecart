@@ -32,13 +32,15 @@ class StripeEventHandlers {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param OrderService      $orders  The orders domain service.
-	 * @param RefundCoordinator $refunds The gateway/ledger refund coordinator.
-	 * @param Logger            $logger  The audit logger.
+	 * @param OrderService      $orders     The orders domain service.
+	 * @param RefundCoordinator $refunds    The gateway/ledger refund coordinator.
+	 * @param StripeRefunds     $refundList Reads a charge's refunds from Stripe.
+	 * @param Logger            $logger     The audit logger.
 	 */
 	public function __construct(
 		private readonly OrderService $orders,
 		private readonly RefundCoordinator $refunds,
+		private readonly StripeRefunds $refundList,
 		private readonly Logger $logger
 	) {
 	}
@@ -181,7 +183,28 @@ class StripeEventHandlers {
 			return false;
 		}
 
-		return $this->refunds->reconcile( $order, $charge );
+		$chargeId = trim( (string) ( $charge['id'] ?? '' ) );
+		$orderId  = (int) $order->id();
+
+		return $this->refunds->reconcile(
+			$order,
+			$charge,
+			function () use ( $chargeId, $orderId ): ?array {
+				$entries = $this->refundList->forCharge( $chargeId );
+
+				if ( null === $entries ) {
+					$this->logger->log(
+						'payment',
+						sprintf( 'Could not read the refunds of Stripe charge %s; order %d records the refund without its Stripe id.', $chargeId, $orderId ),
+						array(),
+						'order',
+						$orderId
+					);
+				}
+
+				return $entries;
+			}
+		);
 	}
 
 	/**

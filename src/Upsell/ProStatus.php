@@ -22,13 +22,13 @@ defined( 'ABSPATH' ) || exit;
 class ProStatus {
 
 	/**
-	 * The site every upgrade link points at.
+	 * The ReleaseCart Pro page every upgrade link points at.
 	 *
 	 * It carries no query string, so the link tracks no referral.
 	 *
 	 * @var string
 	 */
-	private const UPGRADE_URL = 'https://drplugin.com';
+	private const UPGRADE_URL = 'https://drplugin.com/plugins/releasecart';
 
 	/**
 	 * Whether the Pro add-on is active.
@@ -46,7 +46,7 @@ class ProStatus {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return string The site URL.
+	 * @return string The page URL.
 	 */
 	public function upgradeUrl(): string {
 		return self::UPGRADE_URL;

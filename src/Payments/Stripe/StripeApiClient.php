@@ -31,6 +31,15 @@ class StripeApiClient {
 	public const API_BASE = 'https://api.stripe.com';
 
 	/**
+	 * Stripe API version sent with every request.
+	 *
+	 * Core and Pro read this version's shapes, so it has no filter.
+	 *
+	 * @var string
+	 */
+	public const API_VERSION = '2026-10-28.endive';
+
+	/**
 	 * Send a Stripe request and decode its JSON response.
 	 *
 	 * Never include the secret key in an exception.
@@ -50,7 +59,8 @@ class StripeApiClient {
 		$url    = self::API_BASE . $path;
 
 		$headers = array(
-			'Authorization' => 'Bearer ' . $secretKey,
+			'Authorization'  => 'Bearer ' . $secretKey,
+			'Stripe-Version' => self::API_VERSION,
 		);
 
 		if ( null !== $idempotencyKey ) {

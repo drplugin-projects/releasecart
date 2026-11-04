@@ -16,6 +16,8 @@ use DrPlugin\WP\ReleaseCart\Core\Container;
 use DrPlugin\WP\ReleaseCart\Core\ServiceProvider;
 use DrPlugin\WP\ReleaseCart\Frontend\Appearance;
 use DrPlugin\WP\ReleaseCart\Frontend\CheckoutFieldSettings;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeAccountLookup;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeExportRequirement;
 use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeSettings;
 use DrPlugin\WP\ReleaseCart\Upsell\Dismissals;
 use DrPlugin\WP\ReleaseCart\Upsell\ProFeatures;
@@ -41,7 +43,10 @@ final class AdminServiceProvider implements ServiceProvider {
 	public function register( Container $container ): void {
 		$container->singleton(
 			SettingsSchema::class,
-			static fn ( Container $c ): SettingsSchema => new SettingsSchema( $c->get( CheckoutFieldSettings::class ) )
+			static fn ( Container $c ): SettingsSchema => new SettingsSchema(
+				$c->get( CheckoutFieldSettings::class ),
+				$c->get( StripeExportRequirement::class )
+			)
 		);
 		$container->singleton(
 			SettingsController::class,
@@ -49,7 +54,8 @@ final class AdminServiceProvider implements ServiceProvider {
 				$c->get( SettingsSchema::class ),
 				$c->get( StripeSettings::class ),
 				$c->get( WebhookEndpoints::class ),
-				$c->get( Appearance::class )
+				$c->get( Appearance::class ),
+				$c->get( StripeAccountLookup::class )
 			)
 		);
 		$container->singleton(

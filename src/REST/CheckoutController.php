@@ -69,6 +69,20 @@ final class CheckoutController extends AbstractRestController {
 	public const TAX_ID_META = '_releasecart_tax_id';
 
 	/**
+	 * Order meta key for the first name typed at checkout.
+	 *
+	 * @var string
+	 */
+	public const FIRST_NAME_META = '_releasecart_first_name';
+
+	/**
+	 * Order meta key for the last name typed at checkout.
+	 *
+	 * @var string
+	 */
+	public const LAST_NAME_META = '_releasecart_last_name';
+
+	/**
 	 * The checkout orchestration service.
 	 *
 	 * @var CheckoutService
@@ -220,7 +234,9 @@ final class CheckoutController extends AbstractRestController {
 			$result = $this->checkout->createIntent(
 				(string) $request->get_param( 'gateway' ),
 				$buyer,
-				$context
+				$context,
+				// Store the buyer details before the gateway call, which sends them on.
+				fn ( Order $order ) => $this->recordCompliance( $order, $request )
 			);
 		} catch ( GatewayNotFoundException $e ) {
 			return $this->invalidParams( array( $e->getMessage() ) );
@@ -257,8 +273,6 @@ final class CheckoutController extends AbstractRestController {
 		 */
 		$order   = $result['order'];
 		$session = $result['session'];
-
-		$this->recordCompliance( $order, $request );
 
 		// Defensive: a checkout service double (or a future one) that reports no
 		// notices degrades to an empty list, so the key is always present and
@@ -646,9 +660,9 @@ final class CheckoutController extends AbstractRestController {
 		$collected = array();
 
 		if ( $this->fields->collectCountry() ) {
-			$country = strtoupper( trim( (string) $request->get_param( 'billing_country' ) ) );
+			$country = $this->billingCountry( $request );
 
-			if ( 1 === preg_match( '/\A[A-Z]{2}\z/', $country ) && Countries::has( $country ) ) {
+			if ( '' !== $country ) {
 				$collected['billing_country'] = $country;
 				$collected['country']         = $country;
 			}
@@ -669,6 +683,20 @@ final class CheckoutController extends AbstractRestController {
 		}
 
 		return $collected;
+	}
+
+	/**
+	 * Get the submitted billing country as a known ISO code.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WP_REST_Request $request The incoming request.
+	 * @return string The uppercase code, or an empty string when missing or unknown.
+	 */
+	private function billingCountry( WP_REST_Request $request ): string {
+		$country = strtoupper( trim( (string) $request->get_param( 'billing_country' ) ) );
+
+		return 1 === preg_match( '/\A[A-Z]{2}\z/', $country ) && Countries::has( $country ) ? $country : '';
 	}
 
 	/**
@@ -757,6 +785,10 @@ final class CheckoutController extends AbstractRestController {
 			return $this->invalidParams( array( __( 'Please accept the terms and conditions to continue.', 'releasecart' ) ) );
 		}
 
+		if ( $this->fields->requireCountry() && '' === $this->billingCountry( $request ) ) {
+			return $this->invalidParams( array( __( 'Please choose your country to continue.', 'releasecart' ) ) );
+		}
+
 		if ( $this->fields->addressRequired() ) {
 			$line = trim( (string) $request->get_param( 'billing_address_1' ) );
 			$city = trim( (string) $request->get_param( 'billing_city' ) );
@@ -818,10 +850,25 @@ final class CheckoutController extends AbstractRestController {
 					update_metadata( 'releasecart_order', $orderId, self::TAX_ID_META, $taxId );
 				}
 			}
+
+			// The names typed at this checkout, kept on the order. The customer
+			// record can change on a later purchase.
+			$names = array(
+				self::FIRST_NAME_META => 'first_name',
+				self::LAST_NAME_META  => 'last_name',
+			);
+
+			foreach ( $names as $metaKey => $param ) {
+				$name = trim( (string) $request->get_param( $param ) );
+
+				if ( '' !== $name ) {
+					update_metadata( 'releasecart_order', $orderId, $metaKey, $name );
+				}
+			}
 		} catch ( \Throwable $e ) {
-			// The order and its payment session already exist. Losing a compliance
-			// meta write is a merchant-side convenience gone missing, never a reason
-			// to 500 a checkout the buyer is one click from paying.
+			// The order already exists. Losing a compliance meta write is a
+			// merchant-side convenience gone missing, never a reason to 500 a
+			// checkout the buyer is one click from paying.
 			return;
 		}
 	}

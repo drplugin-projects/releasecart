@@ -104,7 +104,7 @@ final class PrivacyRegistrar implements Hookable {
 
 		$content = wp_kses_post(
 			wpautop(
-				__( 'When you buy from this store, ReleaseCart records your email address, order details, billing address, company name, tax ID, license keys, the sites where you activate a license, and the IP address used to download files. Order records are kept for tax and accounting purposes even after an erasure request; their personal fields are removed or anonymized rather than the record being deleted.', 'releasecart' )
+				__( 'When you buy from this store, ReleaseCart records your name, email address, order details, billing address, company name, tax ID, license keys, the sites where you activate a license, and the IP address used to place an order and to download files. When you pay through Stripe, Stripe receives your card details, name, email address, billing address and the products you buy. Order records are kept for tax and accounting purposes even after an erasure request; their personal fields are removed or anonymized rather than the record being deleted.', 'releasecart' )
 			)
 		);
 

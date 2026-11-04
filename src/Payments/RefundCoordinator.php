@@ -124,18 +124,22 @@ class RefundCoordinator {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param Order                $order  The purchase order the charge belongs to.
-	 * @param array<string, mixed> $charge The Stripe charge payload (amount_refunded, refunds.data).
+	 * @param Order                $order    The purchase order the charge belongs to.
+	 * @param array<string, mixed> $charge   The Stripe charge payload (amount_refunded, refunds.data).
+	 * @param callable|null        $provider Returns the gateway's current refund entries (`id`,
+	 *                                       `amount`), newest first, or null. Asked only when
+	 *                                       the charge has no refunds list and the ledger is
+	 *                                       short. Their sum can raise the event's total.
 	 * @return bool True: the event was addressed to this install and is now reconciled.
 	 *
 	 * @throws \DrPlugin\WP\ReleaseCart\Orders\OrderPersistenceException When a ledger write fails
 	 *         (the processor marks the event failed so the gateway retries).
 	 * @throws RefundLockException When another refund for the same order holds the lock.
 	 */
-	public function reconcile( Order $order, array $charge ): bool {
+	public function reconcile( Order $order, array $charge, ?callable $provider = null ): bool {
 		return $this->lock->withOrderLock(
 			(int) $order->id(),
-			fn (): bool => $this->doReconcile( $order, $charge )
+			fn (): bool => $this->doReconcile( $order, $charge, $provider )
 		);
 	}
 
@@ -144,11 +148,12 @@ class RefundCoordinator {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param Order                $order  The purchase order the charge belongs to.
-	 * @param array<string, mixed> $charge The Stripe charge payload.
+	 * @param Order                $order    The purchase order the charge belongs to.
+	 * @param array<string, mixed> $charge   The Stripe charge payload.
+	 * @param callable|null        $provider The refund entries provider, if any.
 	 * @return bool Always true once reconciled.
 	 */
-	private function doReconcile( Order $order, array $charge ): bool {
+	private function doReconcile( Order $order, array $charge, ?callable $provider ): bool {
 		$orderId  = (int) $order->id();
 		$recorded = $this->orders->sumRefundedForOrder( $orderId );
 		$reported = (int) ( $charge['amount_refunded'] ?? 0 );
@@ -157,7 +162,18 @@ class RefundCoordinator {
 			return true;
 		}
 
-		$entries     = $charge['refunds']['data'] ?? null;
+		$entries = $charge['refunds']['data'] ?? null;
+
+		// From API version 2022-11-15 Stripe no longer lists refunds on the charge.
+		if ( ! is_array( $entries ) && null !== $provider ) {
+			$entries = $provider();
+
+			// The list is newer than a late event, so book every refund it holds by id.
+			if ( is_array( $entries ) ) {
+				$reported = max( $reported, $this->sumEntries( $entries ) );
+			}
+		}
+
 		$newlyBooked = 0;
 		$gatewayId   = (string) $order->gateway();
 
@@ -197,6 +213,28 @@ class RefundCoordinator {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Sum the amounts of the usable refund entries.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array<int, mixed> $entries Refund entries with `id` and `amount`.
+	 * @return int The total in minor units.
+	 */
+	private function sumEntries( array $entries ): int {
+		$total = 0;
+
+		foreach ( $entries as $entry ) {
+			if ( ! is_array( $entry ) || '' === trim( (string) ( $entry['id'] ?? '' ) ) ) {
+				continue;
+			}
+
+			$total += max( 0, (int) ( $entry['amount'] ?? 0 ) );
+		}
+
+		return $total;
 	}
 
 	/**

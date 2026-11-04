@@ -45,10 +45,13 @@ class CheckoutService {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string               $gatewayId The gateway to pay through, e.g. 'stripe'.
-	 * @param array<string, mixed> $buyer     Buyer identity for CustomerService::findOrCreate
-	 *                                        (`email`, optional `user_id`, `name`).
-	 * @param array<string, mixed> $context   Optional request context (`ip_address`, `country`).
+	 * @param string               $gatewayId     The gateway to pay through, e.g. 'stripe'.
+	 * @param array<string, mixed> $buyer         Buyer identity for CustomerService::findOrCreate
+	 *                                            (`email`, optional `user_id`, `name`).
+	 * @param array<string, mixed> $context       Optional request context (`ip_address`, `country`).
+	 * @param callable|null        $beforePayment Called with the saved order before the gateway call,
+	 *                                            so details stored on it reach the gateway. It must
+	 *                                            not throw: a throw leaves the order pending.
 	 * @return array{order: Order, session: PaymentSession, notices: array<int, string>} The
 	 *               stamped pending order, the session, and the buyer-facing advisories the
 	 *               charge-time seam produced (empty when nothing is hooked). The notices
@@ -64,7 +67,7 @@ class CheckoutService {
 	 *                                       was created (the order is marked failed first,
 	 *                                       then the gateway exception is rethrown).
 	 */
-	public function createIntent( string $gatewayId, array $buyer, array $context = array() ): array {
+	public function createIntent( string $gatewayId, array $buyer, array $context = array(), ?callable $beforePayment = null ): array {
 		$gateway = $this->gateways->get( $gatewayId );
 
 		if ( ! $gateway->isConfigured() ) {
@@ -75,6 +78,10 @@ class CheckoutService {
 		$notices   = array();
 		$breakdown = array();
 		$order     = $this->orders->createFromCart( $buyer, $context, $notices, $breakdown );
+
+		if ( null !== $beforePayment ) {
+			$beforePayment( $order );
+		}
 
 		try {
 			$session = $gateway->createPayment( $order );

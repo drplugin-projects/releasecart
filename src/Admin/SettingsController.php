@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit;
 
 use DrPlugin\WP\ReleaseCart\Frontend\Appearance;
 use DrPlugin\WP\ReleaseCart\Payments\PaymentException;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeAccountLookup;
 use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeSettings;
 use DrPlugin\WP\ReleaseCart\REST\AbstractRestController;
 use DrPlugin\WP\ReleaseCart\Util\CryptoException;
@@ -76,20 +77,29 @@ final class SettingsController extends AbstractRestController {
 	private Appearance $appearance;
 
 	/**
+	 * Reads the Stripe account country when a secret key is saved.
+	 *
+	 * @var StripeAccountLookup
+	 */
+	private StripeAccountLookup $accountLookup;
+
+	/**
 	 * Wire the controller with its collaborators.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param SettingsSchema   $schema     The settings field schema.
-	 * @param StripeSettings   $stripe     The Stripe credential store.
-	 * @param WebhookEndpoints $webhooks   The outbound webhook endpoint registry.
-	 * @param Appearance       $appearance The appearance override validator.
+	 * @param SettingsSchema      $schema        The settings field schema.
+	 * @param StripeSettings      $stripe        The Stripe credential store.
+	 * @param WebhookEndpoints    $webhooks      The outbound webhook endpoint registry.
+	 * @param Appearance          $appearance    The appearance override validator.
+	 * @param StripeAccountLookup $accountLookup The Stripe account country lookup.
 	 */
-	public function __construct( SettingsSchema $schema, StripeSettings $stripe, WebhookEndpoints $webhooks, Appearance $appearance ) {
-		$this->schema     = $schema;
-		$this->stripe     = $stripe;
-		$this->webhooks   = $webhooks;
-		$this->appearance = $appearance;
+	public function __construct( SettingsSchema $schema, StripeSettings $stripe, WebhookEndpoints $webhooks, Appearance $appearance, StripeAccountLookup $accountLookup ) {
+		$this->schema        = $schema;
+		$this->stripe        = $stripe;
+		$this->webhooks      = $webhooks;
+		$this->appearance    = $appearance;
+		$this->accountLookup = $accountLookup;
 	}
 
 	/**
@@ -184,6 +194,10 @@ final class SettingsController extends AbstractRestController {
 			'sets'   => array(),
 			'clears' => array(),
 		);
+		$keyModes     = array(
+			'sets'   => array(),
+			'clears' => array(),
+		);
 
 		foreach ( $values as $fieldId => $value ) {
 			$field = $this->schema->field( (string) $fieldId );
@@ -195,7 +209,7 @@ final class SettingsController extends AbstractRestController {
 			}
 
 			if ( 'stripe' === $field['storage'] ) {
-				$this->stageStripeWrite( $field, $value, $stripeWrites, $errors );
+				$this->stageStripeWrite( $field, $value, $stripeWrites, $errors, $keyModes );
 				continue;
 			}
 
@@ -245,6 +259,15 @@ final class SettingsController extends AbstractRestController {
 			return $this->serverError();
 		} catch ( Throwable $e ) {
 			return $this->serverError();
+		}
+
+		// Only after the whole save went through, and before the payload, so
+		// the response describes the result. The lookup never throws.
+		foreach ( $keyModes['sets'] as $mode ) {
+			$this->accountLookup->refresh( $mode );
+		}
+		foreach ( $keyModes['clears'] as $mode ) {
+			$this->stripe->clearAccountCountry( $mode );
 		}
 
 		return new WP_REST_Response( $this->settingsPayload(), 200 );
@@ -428,13 +451,14 @@ final class SettingsController extends AbstractRestController {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array<string, mixed>                $field  The field definition.
-	 * @param mixed                               $value  The submitted value.
-	 * @param array<string, array<int, callable>> $writes The staged writes grouped into sets and clears, by reference.
-	 * @param array<int, string>                  $errors The validation error list, by reference.
+	 * @param array<string, mixed>                $field    The field definition.
+	 * @param mixed                               $value    The submitted value.
+	 * @param array<string, array<int, callable>> $writes   The staged writes grouped into sets and clears, by reference.
+	 * @param array<int, string>                  $errors   The validation error list, by reference.
+	 * @param array<string, array<int, string>>   $keyModes The modes whose secret key is set or cleared, by reference.
 	 * @return void
 	 */
-	private function stageStripeWrite( array $field, $value, array &$writes, array &$errors ): void {
+	private function stageStripeWrite( array $field, $value, array &$writes, array &$errors, array &$keyModes ): void {
 		if ( null !== $value && ! is_string( $value ) ) {
 			/* translators: %s: the settings field label. */
 			$errors[] = sprintf( __( '%s must be a text value (or null to clear it).', 'releasecart' ), (string) $field['label'] );
@@ -469,6 +493,10 @@ final class SettingsController extends AbstractRestController {
 		// the execution loop can run every throw-capable write before any
 		// irreversible-but-quiet one: a crypto failure then persists nothing.
 		$writes[ '' === $plaintext ? 'clears' : 'sets' ][] = $write;
+
+		if ( 'secret' === $kind ) {
+			$keyModes[ '' === $plaintext ? 'clears' : 'sets' ][] = $mode;
+		}
 	}
 
 	/**

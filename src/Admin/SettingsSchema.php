@@ -13,6 +13,9 @@ namespace DrPlugin\WP\ReleaseCart\Admin;
 defined( 'ABSPATH' ) || exit;
 
 use DrPlugin\WP\ReleaseCart\Frontend\CheckoutFieldSettings;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeExportRequirement;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeSettings;
+use DrPlugin\WP\ReleaseCart\Util\Crypto;
 
 /**
  * Defines settings fields for the admin SPA.
@@ -31,14 +34,23 @@ final class SettingsSchema {
 	private CheckoutFieldSettings $checkout;
 
 	/**
-	 * Wire the schema to the checkout field settings.
+	 * The Stripe India rule, for copy that depends on it.
+	 *
+	 * @var StripeExportRequirement
+	 */
+	private StripeExportRequirement $stripeRule;
+
+	/**
+	 * Wire the schema to the checkout field settings and the Stripe India rule.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param CheckoutFieldSettings|null $checkout The checkout field settings, or null for the default.
+	 * @param CheckoutFieldSettings|null   $checkout   The checkout field settings, or null for the default.
+	 * @param StripeExportRequirement|null $stripeRule The Stripe India rule, or null for the default.
 	 */
-	public function __construct( ?CheckoutFieldSettings $checkout = null ) {
-		$this->checkout = $checkout ?? new CheckoutFieldSettings();
+	public function __construct( ?CheckoutFieldSettings $checkout = null, ?StripeExportRequirement $stripeRule = null ) {
+		$this->checkout   = $checkout ?? new CheckoutFieldSettings();
+		$this->stripeRule = $stripeRule ?? new StripeExportRequirement( new StripeSettings( new Crypto() ) );
 	}
 
 	/**
@@ -211,6 +223,10 @@ final class SettingsSchema {
 	 * @return string The field description.
 	 */
 	private function addressDescription(): string {
+		if ( $this->stripeRule->inForce() ) {
+			return $this->withStripeRule( __( 'Whether to ask the buyer for a full billing address at checkout.', 'releasecart' ) );
+		}
+
 		if ( $this->checkout->addressRequiredByExtension() ) {
 			return __( 'Whether to ask the buyer for a full billing address at checkout. The address is currently required by another setting, so this choice takes effect only when that setting is turned off.', 'releasecart' );
 		}
@@ -227,11 +243,67 @@ final class SettingsSchema {
 	 * @return string The field description.
 	 */
 	private function countryDescription(): string {
+		if ( $this->stripeRule->inForce() ) {
+			return $this->withStripeRule( __( 'Ask the buyer for their country at checkout.', 'releasecart' ) );
+		}
+
 		if ( $this->checkout->collectedByExtension( 'billing_country' ) ) {
 			return __( 'Ask the buyer for their country at checkout. The country is currently collected for another setting, so this choice takes effect only when that setting is turned off.', 'releasecart' );
 		}
 
 		return __( 'Ask the buyer for their country at checkout.', 'releasecart' );
+	}
+
+	/**
+	 * Describe a name toggle, giving the reason when something other than the
+	 * toggle requires the name. The Stripe India rule names itself.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $key       The field key: `first_name` or `last_name`.
+	 * @param string $mandatory The first sentence, used with a reason.
+	 * @param string $plain     The description while only the toggle decides.
+	 * @return string The field description.
+	 */
+	private function nameDescription( string $key, string $mandatory, string $plain ): string {
+		if ( $this->stripeRule->inForce() ) {
+			return $this->withStripeRule( $mandatory );
+		}
+
+		if ( $this->checkout->requiredByExtension( $key ) ) {
+			return $mandatory . ' ' . __( 'The name is currently required by another setting, so this choice takes effect only when that setting is turned off.', 'releasecart' );
+		}
+
+		return $plain;
+	}
+
+	/**
+	 * Describe a secret key, saying so when the account lookup for its mode failed.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $mode  Either 'test' or 'live'.
+	 * @param string $plain The description when the lookup worked or never ran.
+	 * @return string The field description.
+	 */
+	private function secretKeyDescription( string $mode, string $plain ): string {
+		if ( ! $this->stripeRule->countryUnknown( $mode ) ) {
+			return $plain;
+		}
+
+		return $plain . ' ' . __( "ReleaseCart could not read this Stripe account's country. If the account is in India, save the key again so checkout asks for what Stripe needs. A restricted key needs Accounts read access.", 'releasecart' );
+	}
+
+	/**
+	 * Add the Stripe India reason to a description's first sentence.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $sentence The field's first sentence.
+	 * @return string The field description.
+	 */
+	private function withStripeRule( string $sentence ): string {
+		return $sentence . ' ' . __( "Your Stripe account is in India, so checkout requires this. Stripe needs the buyer's name and billing address for payments with cards issued outside India.", 'releasecart' );
 	}
 
 	/**
@@ -519,7 +591,11 @@ final class SettingsSchema {
 				'group'       => 'checkout',
 				'type'        => 'toggle',
 				'label'       => __( 'Require a first name at checkout', 'releasecart' ),
-				'description' => __( 'Make the first name field mandatory. Left off, it is offered but optional.', 'releasecart' ),
+				'description' => $this->nameDescription(
+					'first_name',
+					__( 'Make the first name field mandatory.', 'releasecart' ),
+					__( 'Make the first name field mandatory. Left off, it is offered but optional.', 'releasecart' )
+				),
 				'path'        => 'checkout.require_first_name',
 				'default'     => false,
 			),
@@ -529,7 +605,11 @@ final class SettingsSchema {
 				'group'       => 'checkout',
 				'type'        => 'toggle',
 				'label'       => __( 'Require a last name at checkout', 'releasecart' ),
-				'description' => __( 'Make the last name field mandatory. Left off, it is offered but optional.', 'releasecart' ),
+				'description' => $this->nameDescription(
+					'last_name',
+					__( 'Make the last name field mandatory.', 'releasecart' ),
+					__( 'Make the last name field mandatory. Left off, it is offered but optional.', 'releasecart' )
+				),
 				'path'        => 'checkout.require_last_name',
 				'default'     => false,
 			),
@@ -793,7 +873,7 @@ final class SettingsSchema {
 				'group'         => 'test',
 				'type'          => 'secret',
 				'label'         => __( 'Test secret key', 'releasecart' ),
-				'description'   => __( 'Starts with sk_test_ or rk_test_. Stored encrypted; only the last characters are ever shown again.', 'releasecart' ),
+				'description'   => $this->secretKeyDescription( 'test', __( 'Starts with sk_test_ or rk_test_. Stored encrypted; only the last characters are ever shown again.', 'releasecart' ) ),
 				'storage'       => 'stripe',
 				'stripe'        => array(
 					'kind' => 'secret',
@@ -808,7 +888,7 @@ final class SettingsSchema {
 				'group'         => 'live',
 				'type'          => 'secret',
 				'label'         => __( 'Live secret key', 'releasecart' ),
-				'description'   => __( 'Starts with sk_live_ or rk_live_. Stored encrypted; only the last characters are ever shown again.', 'releasecart' ),
+				'description'   => $this->secretKeyDescription( 'live', __( 'Starts with sk_live_ or rk_live_. Stored encrypted; only the last characters are ever shown again.', 'releasecart' ) ),
 				'storage'       => 'stripe',
 				'stripe'        => array(
 					'kind' => 'secret',

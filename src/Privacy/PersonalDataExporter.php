@@ -21,6 +21,7 @@ use DrPlugin\WP\ReleaseCart\Licensing\License;
 use DrPlugin\WP\ReleaseCart\Licensing\LicenseRepository;
 use DrPlugin\WP\ReleaseCart\Orders\Order;
 use DrPlugin\WP\ReleaseCart\Orders\OrderRepository;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeCustomers;
 use DrPlugin\WP\ReleaseCart\REST\CheckoutController;
 
 /**
@@ -325,9 +326,13 @@ class PersonalDataExporter {
 		}
 
 		$scalarLabels = array(
-			CheckoutController::COMPANY_META => __( 'Company', 'releasecart' ),
-			CheckoutController::TAX_ID_META  => __( 'Tax ID', 'releasecart' ),
-			CheckoutController::TERMS_META   => __( 'Terms accepted', 'releasecart' ),
+			CheckoutController::FIRST_NAME_META => __( 'First name', 'releasecart' ),
+			CheckoutController::LAST_NAME_META  => __( 'Last name', 'releasecart' ),
+			CheckoutController::COMPANY_META    => __( 'Company', 'releasecart' ),
+			CheckoutController::TAX_ID_META     => __( 'Tax ID', 'releasecart' ),
+			CheckoutController::TERMS_META      => __( 'Terms accepted', 'releasecart' ),
+			StripeCustomers::META_KEYS['live']  => __( 'Stripe customer ID', 'releasecart' ),
+			StripeCustomers::META_KEYS['test']  => __( 'Stripe customer ID (test mode)', 'releasecart' ),
 		);
 
 		foreach ( $scalarLabels as $metaKey => $label ) {

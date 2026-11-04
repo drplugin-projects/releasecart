@@ -16,7 +16,7 @@ use DrPlugin\WP\ReleaseCart\Catalog\Countries;
 /**
  * Reads checkout field and account settings.
  *
- * An extension can turn the billing country and VAT on through a filter.
+ * Extensions can turn the billing country and VAT on, and require fields, through filters.
  *
  * @since 1.0.0
  */
@@ -37,6 +37,16 @@ class CheckoutFieldSettings {
 	private const COLLECT_TOGGLES = array(
 		'billing_country' => 'collect_country',
 		'vat_number'      => 'collect_vat',
+	);
+
+	/**
+	 * The toggle behind each name the required seam answers for.
+	 *
+	 * @var array<string, string>
+	 */
+	private const NAME_TOGGLES = array(
+		'first_name' => 'require_first_name',
+		'last_name'  => 'require_last_name',
 	);
 
 	/**
@@ -102,7 +112,7 @@ class CheckoutFieldSettings {
 	 * @return bool
 	 */
 	public function requireFirstName(): bool {
-		return $this->toggle( 'require_first_name' );
+		return $this->required( 'first_name', $this->toggle( self::NAME_TOGGLES['first_name'] ) );
 	}
 
 	/**
@@ -113,7 +123,38 @@ class CheckoutFieldSettings {
 	 * @return bool
 	 */
 	public function requireLastName(): bool {
-		return $this->toggle( 'require_last_name' );
+		return $this->required( 'last_name', $this->toggle( self::NAME_TOGGLES['last_name'] ) );
+	}
+
+	/**
+	 * Whether checkout requires the billing country. Only a listener on the
+	 * required seam can ask for it, and only while the country is collected.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return bool
+	 */
+	public function requireCountry(): bool {
+		return $this->collectCountry() && $this->required( 'billing_country', false );
+	}
+
+	/**
+	 * Whether a name is required only because an extension asked for it.
+	 *
+	 * The settings screen uses this to say the merchant's toggle is not what is
+	 * in force.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $key The field key: `first_name` or `last_name`.
+	 * @return bool
+	 */
+	public function requiredByExtension( string $key ): bool {
+		if ( ! isset( self::NAME_TOGGLES[ $key ] ) ) {
+			return false;
+		}
+
+		return ! $this->toggle( self::NAME_TOGGLES[ $key ] ) && $this->required( $key, false );
 	}
 
 	/**
@@ -304,6 +345,35 @@ class CheckoutFieldSettings {
 		$collect = (bool) apply_filters( 'releasecart_checkout_collect_field', $stored, $key );
 
 		return $stored || $collect;
+	}
+
+	/**
+	 * Whether a checkout field is required: the stored requirement, or the seam.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $key    The field key: `first_name`, `last_name` or `billing_country`.
+	 * @param bool   $stored Whether the merchant's settings require the field.
+	 * @return bool
+	 */
+	private function required( string $key, bool $stored ): bool {
+		/**
+		 * Filters whether checkout requires a field.
+		 *
+		 * Seeded with the merchant's setting. A listener can require the field,
+		 * not relax a requirement the merchant set. Answer for your own need and
+		 * pass the value on otherwise. The country is required only while it is
+		 * collected. A listener must not read this object's require getters,
+		 * which fire this filter.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param bool   $required Whether the merchant's settings require the field.
+		 * @param string $key      The field key: `first_name`, `last_name` or `billing_country`.
+		 */
+		$required = (bool) apply_filters( 'releasecart_checkout_field_required', $stored, $key );
+
+		return $stored || $required;
 	}
 
 	/**

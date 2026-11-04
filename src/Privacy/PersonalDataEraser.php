@@ -20,6 +20,7 @@ use DrPlugin\WP\ReleaseCart\Licensing\LicenseService;
 use DrPlugin\WP\ReleaseCart\Licensing\LicenseStatus;
 use DrPlugin\WP\ReleaseCart\Orders\OrderRepository;
 use DrPlugin\WP\ReleaseCart\Payments\GatewayEventRepository;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeCustomers;
 use DrPlugin\WP\ReleaseCart\REST\CheckoutController;
 
 /**
@@ -50,7 +51,8 @@ class PersonalDataEraser {
 	 *
 	 * The closed-world classification is enforced by a reflection test: every
 	 * {@see CheckoutController} `*_META` constant must sit in exactly one of this
-	 * list or {@see self::ORDER_META_RETAIN}.
+	 * list or {@see self::ORDER_META_RETAIN}. Erasing the Stripe Customer links
+	 * means the next purchase makes a new Customer; the old one stays at Stripe.
 	 *
 	 * @var array<int, string>
 	 */
@@ -58,6 +60,10 @@ class PersonalDataEraser {
 		CheckoutController::ADDRESS_META,
 		CheckoutController::COMPANY_META,
 		CheckoutController::TAX_ID_META,
+		CheckoutController::FIRST_NAME_META,
+		CheckoutController::LAST_NAME_META,
+		StripeCustomers::META_KEYS['test'],
+		StripeCustomers::META_KEYS['live'],
 	);
 
 	/**
@@ -155,8 +161,9 @@ class PersonalDataEraser {
 			$orderIds[] = $orderId;
 			$this->orders->anonymize( $orderId, $anonEmail );
 
-			// Drop the PII order-meta the checkout collected (billing address,
-			// company name, tax ID). The consent timestamp is retained.
+			// Drop the PII order-meta the checkout collected (names, billing
+			// address, company name, tax ID, Stripe Customer links). The consent
+			// timestamp is retained.
 			foreach ( self::ORDER_META_ERASE as $metaKey ) {
 				delete_metadata( self::ORDER_META_TYPE, $orderId, $metaKey );
 			}
@@ -212,7 +219,7 @@ class PersonalDataEraser {
 		$this->customers->anonymize( $customerId, $anonEmail );
 		$removed = true;
 
-		$messages[] = __( 'ReleaseCart kept your order records for tax and accounting reasons, but removed the personal data from them (email address, IP address, billing address, company name and tax ID).', 'releasecart' );
+		$messages[] = __( 'ReleaseCart kept your order records for tax and accounting reasons, but removed the personal data from them (email address, IP address, name, billing address, company name, tax ID and Stripe customer link).', 'releasecart' );
 		$messages[] = __( 'ReleaseCart kept your license and download records for audit purposes, with the licenses revoked and all personal data (website addresses and IP addresses) removed.', 'releasecart' );
 		$messages[] = __( 'Payment notification records were kept for bookkeeping, with their personal data redacted. Your payment provider (for example Stripe) holds its own records under its own privacy policy.', 'releasecart' );
 		$messages[] = __( 'If you accepted the store terms at checkout, ReleaseCart kept the date of that acceptance as a record of your consent. With your other personal data removed, this date no longer identifies you.', 'releasecart' );

@@ -490,6 +490,42 @@ class OrderRepository {
 	}
 
 	/**
+	 * Get one meta value from the customer's newest order that holds the key.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int    $customerId The customer id.
+	 * @param string $metaKey    The order meta key.
+	 * @return string|null The value, or null when no order holds it.
+	 *
+	 * @throws OrderPersistenceException When the read faults at the database.
+	 */
+	public function latestMetaForCustomer( int $customerId, string $metaKey ): ?string {
+		$wpdb             = $this->wpdb;
+		$wpdb->last_error = '';
+
+		$value = $this->fetchVar(
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table; this class decides what to cache.
+			fn () => $wpdb->get_var(
+				$wpdb->prepare(
+					'SELECT m.meta_value FROM %i m INNER JOIN %i o ON o.id = m.releasecart_order_id WHERE o.customer_id = %d AND m.meta_key = %s ORDER BY o.id DESC, m.meta_id DESC LIMIT 1',
+					$this->orderMetaTable(),
+					$this->ordersTable(),
+					$customerId,
+					$metaKey
+				)
+			)
+		);
+
+		if ( '' !== $wpdb->last_error ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Not HTML output here; escaped where printed.
+			throw new OrderPersistenceException( 'Failed to read customer order meta from ' . $this->orderMetaTable() . '.' );
+		}
+
+		return $value;
+	}
+
+	/**
 	 * Remove buyer data but keep the transaction record.
 	 *
 	 * @since 1.0.0
@@ -946,6 +982,17 @@ class OrderRepository {
 	 */
 	private function itemsTable(): string {
 		return Schema::tableName( $this->wpdb, 'order_items' );
+	}
+
+	/**
+	 * The fully-qualified `releasecart_order_meta` table name.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The table name.
+	 */
+	private function orderMetaTable(): string {
+		return Schema::tableName( $this->wpdb, 'order_meta' );
 	}
 
 	/**

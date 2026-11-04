@@ -47,6 +47,13 @@ class StripeSettings {
 	private const WEBHOOK_SECRET_OPTION_PREFIX = 'releasecart_secret_stripe_whsec_';
 
 	/**
+	 * The stored account country when the account lookup failed.
+	 *
+	 * @var string
+	 */
+	public const ACCOUNT_COUNTRY_UNKNOWN = 'unknown';
+
+	/**
 	 * Store the crypto collaborator used for secrets at rest.
 	 *
 	 * @since 1.0.0
@@ -220,6 +227,75 @@ class StripeSettings {
 	public function setWebhookSecret( string $mode, string $key ): void {
 		$this->assertValidMode( $mode );
 		$this->writeSecret( self::WEBHOOK_SECRET_OPTION_PREFIX . $mode, $key );
+	}
+
+	/**
+	 * Get the Stripe account country stored for a mode.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $mode Either 'test' or 'live'.
+	 * @return string|null An ISO 3166-1 alpha-2 code, `unknown` when the lookup failed, or null when it never ran.
+	 * @throws PaymentException When $mode is invalid.
+	 */
+	public function accountCountry( string $mode ): ?string {
+		$this->assertValidMode( $mode );
+
+		$countries = $this->stripeSettings()['account_country'] ?? array();
+
+		if ( ! is_array( $countries ) || ! array_key_exists( $mode, $countries ) ) {
+			return null;
+		}
+
+		$country = $countries[ $mode ];
+
+		return is_string( $country ) && 1 === preg_match( '/\A[A-Z]{2}\z/', $country )
+			? $country
+			: self::ACCOUNT_COUNTRY_UNKNOWN;
+	}
+
+	/**
+	 * Store the Stripe account country for a mode.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $mode  Either 'test' or 'live'.
+	 * @param string $value An uppercase ISO 3166-1 alpha-2 code, or `unknown`.
+	 * @return void
+	 * @throws PaymentException When $mode is invalid.
+	 */
+	public function setAccountCountry( string $mode, string $value ): void {
+		$this->assertValidMode( $mode );
+
+		$countries = $this->stripeSettings()['account_country'] ?? array();
+		$countries = is_array( $countries ) ? $countries : array();
+
+		$countries[ $mode ] = $value;
+
+		$this->writeStripeSetting( 'account_country', $countries );
+	}
+
+	/**
+	 * Forget the Stripe account country for a mode.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $mode Either 'test' or 'live'.
+	 * @return void
+	 * @throws PaymentException When $mode is invalid.
+	 */
+	public function clearAccountCountry( string $mode ): void {
+		$this->assertValidMode( $mode );
+
+		$countries = $this->stripeSettings()['account_country'] ?? array();
+
+		if ( ! is_array( $countries ) || ! array_key_exists( $mode, $countries ) ) {
+			return;
+		}
+
+		unset( $countries[ $mode ] );
+
+		$this->writeStripeSetting( 'account_country', $countries );
 	}
 
 	/**

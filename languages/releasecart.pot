@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-31T14:51:26+00:00\n"
+"POT-Creation-Date: 2026-11-02T18:08:54+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: releasecart\n"
@@ -46,7 +46,7 @@ msgid "https://drplugin.com"
 msgstr ""
 
 #: patterns/account-page.php:13
-#: src/Admin/SettingsSchema.php:307
+#: src/Admin/SettingsSchema.php:379
 msgid "Account page"
 msgstr ""
 
@@ -55,7 +55,7 @@ msgid "A complete customer account page: purchase receipt (after checkout), purc
 msgstr ""
 
 #: patterns/checkout-page.php:13
-#: src/Admin/SettingsSchema.php:297
+#: src/Admin/SettingsSchema.php:369
 #: src/Frontend/Components/CartSummary.php:114
 msgid "Checkout page"
 msgstr ""
@@ -146,7 +146,7 @@ msgid "Licenses"
 msgstr ""
 
 #: src/Admin/Menu.php:184
-#: src/Admin/SettingsSchema.php:71
+#: src/Admin/SettingsSchema.php:83
 #: assets/admin/build/index.js:61
 #: assets/admin/build/index.js:64
 #: assets/admin/src/screens/Discounts.js:1214
@@ -172,446 +172,468 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: src/Admin/SettingsController.php:178
+#: src/Admin/SettingsController.php:188
 msgid "No settings values were submitted."
 msgstr ""
 
 #. translators: %s: the unknown settings field id.
-#: src/Admin/SettingsController.php:193
+#: src/Admin/SettingsController.php:207
 #, php-format
 msgid "Unknown setting: %s."
 msgstr ""
 
 #. translators: %s: the settings field label.
-#: src/Admin/SettingsController.php:208
+#: src/Admin/SettingsController.php:222
 #, php-format
 msgid "%s is not writable through this endpoint."
 msgstr ""
 
-#: src/Admin/SettingsController.php:309
-#: src/Admin/SettingsController.php:331
+#: src/Admin/SettingsController.php:332
+#: src/Admin/SettingsController.php:354
 msgid "No such webhook endpoint."
 msgstr ""
 
 #. translators: %s: the settings field label.
-#: src/Admin/SettingsController.php:440
+#: src/Admin/SettingsController.php:464
 #, php-format
 msgid "%s must be a text value (or null to clear it)."
 msgstr ""
 
 #. translators: %s: the settings field label.
-#: src/Admin/SettingsController.php:451
+#: src/Admin/SettingsController.php:475
 #, php-format
 msgid "%s has an invalid credential mode."
 msgstr ""
 
 #. translators: %s: the settings field label.
-#: src/Admin/SettingsController.php:492
+#: src/Admin/SettingsController.php:520
 #, php-format
 msgid "%s received an invalid value type."
 msgstr ""
 
 #. translators: %s: the settings field label.
-#: src/Admin/SettingsController.php:502
+#: src/Admin/SettingsController.php:530
 #, php-format
 msgid "%s must be a three-letter ISO currency code."
 msgstr ""
 
 #. translators: %s: the settings field label.
-#: src/Admin/SettingsController.php:520
+#: src/Admin/SettingsController.php:548
 #, php-format
 msgid "%s received a value outside its allowed choices."
 msgstr ""
 
 #. translators: %s: the settings field label.
-#: src/Admin/SettingsController.php:531
+#: src/Admin/SettingsController.php:559
 #, php-format
 msgid "%s must be a valid email address."
 msgstr ""
 
 #. translators: %s: the settings field label.
-#: src/Admin/SettingsController.php:542
+#: src/Admin/SettingsController.php:570
 #, php-format
 msgid "%s must be a hex colour such as #2563eb."
 msgstr ""
 
 #. translators: %s: the settings field label.
-#: src/Admin/SettingsController.php:553
+#: src/Admin/SettingsController.php:581
 #, php-format
 msgid "%s must be a list of font names, for example Inter, Arial, sans-serif."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:55
+#: src/Admin/SettingsSchema.php:67
 msgid "General"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:59
+#: src/Admin/SettingsSchema.php:71
 msgid "Appearance"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:63
+#: src/Admin/SettingsSchema.php:75
 msgid "Emails"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:67
+#: src/Admin/SettingsSchema.php:79
 msgid "Payments"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:75
+#: src/Admin/SettingsSchema.php:87
 msgid "Webhooks"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:79
+#: src/Admin/SettingsSchema.php:91
 msgid "Integrations"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:215
-msgid "Whether to ask the buyer for a full billing address at checkout. The address is currently required by another setting, so this choice takes effect only when that setting is turned off."
-msgstr ""
-
-#: src/Admin/SettingsSchema.php:218
+#: src/Admin/SettingsSchema.php:227
+#: src/Admin/SettingsSchema.php:234
 msgid "Whether to ask the buyer for a full billing address at checkout."
 msgstr ""
 
 #: src/Admin/SettingsSchema.php:231
-msgid "Ask the buyer for their country at checkout. The country is currently collected for another setting, so this choice takes effect only when that setting is turned off."
-msgstr ""
-
-#: src/Admin/SettingsSchema.php:234
-msgid "Ask the buyer for their country at checkout."
+msgid "Whether to ask the buyer for a full billing address at checkout. The address is currently required by another setting, so this choice takes effect only when that setting is turned off."
 msgstr ""
 
 #: src/Admin/SettingsSchema.php:247
+#: src/Admin/SettingsSchema.php:254
+msgid "Ask the buyer for their country at checkout."
+msgstr ""
+
+#: src/Admin/SettingsSchema.php:251
+msgid "Ask the buyer for their country at checkout. The country is currently collected for another setting, so this choice takes effect only when that setting is turned off."
+msgstr ""
+
+#: src/Admin/SettingsSchema.php:274
+msgid "The name is currently required by another setting, so this choice takes effect only when that setting is turned off."
+msgstr ""
+
+#: src/Admin/SettingsSchema.php:294
+msgid "ReleaseCart could not read this Stripe account's country. If the account is in India, save the key again so checkout asks for what Stripe needs. A restricted key needs Accounts read access."
+msgstr ""
+
+#: src/Admin/SettingsSchema.php:306
+msgid "Your Stripe account is in India, so checkout requires this. Stripe needs the buyer's name and billing address for payments with cards issued outside India."
+msgstr ""
+
+#: src/Admin/SettingsSchema.php:319
 msgid "Ask the buyer for a VAT, GST, or tax registration number at checkout. The number is currently collected for another setting, so this choice takes effect only when that setting is turned off."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:250
+#: src/Admin/SettingsSchema.php:322
 msgid "Ask the buyer for a VAT, GST, or tax registration number at checkout."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:267
+#: src/Admin/SettingsSchema.php:339
 msgid "Store currency"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:268
+#: src/Admin/SettingsSchema.php:340
 msgid "The currency used for all prices. Pick it from the list."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:277
+#: src/Admin/SettingsSchema.php:349
 msgid "Store page"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:278
+#: src/Admin/SettingsSchema.php:350
 msgid "The page listing your products. Set automatically when the store is provisioned."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:287
+#: src/Admin/SettingsSchema.php:359
 msgid "Product details page"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:288
+#: src/Admin/SettingsSchema.php:360
 msgid "The page a single product opens on from the store grid."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:298
+#: src/Admin/SettingsSchema.php:370
 msgid "The page with the checkout block or shortcode. Cart links and links to buy a new license open it."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:308
+#: src/Admin/SettingsSchema.php:380
 msgid "Where customers manage their purchases, downloads, and license keys."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:317
+#: src/Admin/SettingsSchema.php:389
 msgid "Sign-in page"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:318
+#: src/Admin/SettingsSchema.php:390
 msgid "The page carrying the sign-in form. Leave unset to use the WordPress login screen."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:327
+#: src/Admin/SettingsSchema.php:399
 msgid "Registration page"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:328
+#: src/Admin/SettingsSchema.php:400
 msgid "The page carrying the account registration form."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:337
+#: src/Admin/SettingsSchema.php:409
 msgid "Password reset page"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:338
+#: src/Admin/SettingsSchema.php:410
 msgid "The page carrying the lost-password and set-new-password form. While it is published, ReleaseCart's own forms and emails link to it, and WordPress password emails do too when wp-login is replaced. Unset it to use the WordPress screens. wp-login.php?releasecart_wp_login=1 always reaches the WordPress screen."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:347
+#: src/Admin/SettingsSchema.php:419
 msgid "Terms page"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:348
+#: src/Admin/SettingsSchema.php:420
 msgid "Your terms and conditions page, linked from checkout."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:357
+#: src/Admin/SettingsSchema.php:429
 msgid "Privacy policy page"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:358
+#: src/Admin/SettingsSchema.php:430
 msgid "Your privacy policy page. Falls back to the WordPress privacy policy page when left unset."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:367
+#: src/Admin/SettingsSchema.php:439
 msgid "Hide the admin toolbar for customers"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:368
+#: src/Admin/SettingsSchema.php:440
 msgid "Hide the WordPress toolbar on the front end for logged-in users who cannot edit posts. Administrators and editors always keep it."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:377
+#: src/Admin/SettingsSchema.php:449
 msgid "Use the sign-in page instead of wp-login"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:378
+#: src/Admin/SettingsSchema.php:450
 msgid "Redirect front-end sign-in and password-reset requests, and the links in WordPress password emails, to your pages. Requires published pages; logout, confirmations and admin logins keep working, and wp-login.php?releasecart_wp_login=1 always shows the WordPress screen."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:387
+#: src/Admin/SettingsSchema.php:459
 msgid "Show buy buttons in the product grid"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:388
+#: src/Admin/SettingsSchema.php:460
 msgid "The store-wide default for add-to-cart buttons on product grid cards. A block or shortcode can still override it."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:397
+#: src/Admin/SettingsSchema.php:469
 msgid "After adding to the cart"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:398
+#: src/Admin/SettingsSchema.php:470
 msgid "What happens after a shopper adds a product to the cart."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:402
+#: src/Admin/SettingsSchema.php:474
 msgid "Stay on the page and show a confirmation"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:406
+#: src/Admin/SettingsSchema.php:478
 msgid "Go straight to the checkout page"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:417
+#: src/Admin/SettingsSchema.php:489
 msgid "Product page heading"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:418
+#: src/Admin/SettingsSchema.php:490
 msgid "Where the product name shows as the heading on the product details page. Show it in the block keeps the theme page title hidden there so the block is the only heading. Use the theme page title puts the product name in the theme title instead (so a Post Title block and breadcrumbs show it), and the block hides its own; pick this only if your theme renders the page title."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:422
+#: src/Admin/SettingsSchema.php:494
 msgid "Show the product name in the block"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:426
+#: src/Admin/SettingsSchema.php:498
 msgid "Use the theme page title for the product name"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:437
+#: src/Admin/SettingsSchema.php:509
 msgid "Require terms acceptance at checkout"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:438
+#: src/Admin/SettingsSchema.php:510
 msgid "Show a checkbox the buyer must tick to accept your terms and privacy policy before paying."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:447
+#: src/Admin/SettingsSchema.php:519
 msgid "Collect a billing country"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:457
+#: src/Admin/SettingsSchema.php:529
 msgid "Collect a VAT or tax ID"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:467
+#: src/Admin/SettingsSchema.php:539
 msgid "Collect a billing address"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:472
+#: src/Admin/SettingsSchema.php:544
 msgid "Do not collect an address"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:476
+#: src/Admin/SettingsSchema.php:548
 msgid "Collect an optional address"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:480
+#: src/Admin/SettingsSchema.php:552
 msgid "Require an address"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:491
+#: src/Admin/SettingsSchema.php:563
 msgid "Show a login panel at checkout"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:492
+#: src/Admin/SettingsSchema.php:564
 msgid "Let existing customers log in from the checkout page before they pay."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:501
+#: src/Admin/SettingsSchema.php:573
 msgid "Create an account for guests"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:502
+#: src/Admin/SettingsSchema.php:574
 msgid "When a guest completes a purchase, create a WordPress account for them (or link one that already uses their email) so their orders and licenses appear in the account area. They set a password from a link emailed to them."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:511
+#: src/Admin/SettingsSchema.php:583
 msgid "Allow guest checkout"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:512
+#: src/Admin/SettingsSchema.php:584
 msgid "Let buyers check out without an account. Turn this off to require an account, through login, auto-registration, or a registration page. Without a registration page or auto-registration, only existing users can buy."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:521
+#: src/Admin/SettingsSchema.php:593
 msgid "Require a first name at checkout"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:522
+#: src/Admin/SettingsSchema.php:596
+msgid "Make the first name field mandatory."
+msgstr ""
+
+#: src/Admin/SettingsSchema.php:597
 msgid "Make the first name field mandatory. Left off, it is offered but optional."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:531
+#: src/Admin/SettingsSchema.php:607
 msgid "Require a last name at checkout"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:532
+#: src/Admin/SettingsSchema.php:610
+msgid "Make the last name field mandatory."
+msgstr ""
+
+#: src/Admin/SettingsSchema.php:611
 msgid "Make the last name field mandatory. Left off, it is offered but optional."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:541
+#: src/Admin/SettingsSchema.php:621
 msgid "Offer a company purchase option"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:542
+#: src/Admin/SettingsSchema.php:622
 msgid "Show an \"I am buying as a company\" checkbox that reveals a company name field and the tax ID field. Turn off to always show the tax ID field on its own instead."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:551
+#: src/Admin/SettingsSchema.php:631
 msgid "Delete all data on uninstall"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:552
+#: src/Admin/SettingsSchema.php:632
 msgid "When enabled, deleting the plugin removes every ReleaseCart table, option, capability, and stored package file. Leave off to keep customer and license data."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:560
+#: src/Admin/SettingsSchema.php:640
 msgid "Codes and automatic discounts"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:561
+#: src/Admin/SettingsSchema.php:641
 msgid "What happens when a shopper has a discount code and an automatic discount also matches their cart."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:565
+#: src/Admin/SettingsSchema.php:645
 msgid "A discount code replaces automatic discounts"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:569
+#: src/Admin/SettingsSchema.php:649
 msgid "A discount code stacks with automatic discounts"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:579
+#: src/Admin/SettingsSchema.php:659
 msgid "Show the original price struck through"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:580
+#: src/Admin/SettingsSchema.php:660
 msgid "When an automatic discount applies, show the original price struck through with the discounted price next to it on product pages and the store grid."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:588
+#: src/Admin/SettingsSchema.php:668
 #: src/Frontend/Adapters/Elementor/StyleControlMap.php:40
 msgid "Primary color"
 msgstr ""
 
 #. translators: %s: the shipped default colour, a hex code.
-#: src/Admin/SettingsSchema.php:591
+#: src/Admin/SettingsSchema.php:671
 #, php-format
 msgid "The main accent for buttons, links, and selected states. Its hover, soft, and focus shades are derived automatically, so pick a reasonably dark colour for readable button labels. Leave empty for the default (%s)."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:601
+#: src/Admin/SettingsSchema.php:681
 #: src/Frontend/Adapters/Elementor/StyleControlMap.php:45
 msgid "Text color"
 msgstr ""
 
 #. translators: %s: the shipped default colour, a hex code.
-#: src/Admin/SettingsSchema.php:604
+#: src/Admin/SettingsSchema.php:684
 #, php-format
 msgid "The body text colour inside storefront components. Leave empty for the default (%s)."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:614
+#: src/Admin/SettingsSchema.php:694
 #: src/Frontend/Adapters/Elementor/StyleControlMap.php:50
 msgid "Surface color"
 msgstr ""
 
 #. translators: %s: the shipped default colour, a hex code.
-#: src/Admin/SettingsSchema.php:617
+#: src/Admin/SettingsSchema.php:697
 #, php-format
 msgid "The background for cards, panels, and form fields. Leave empty for the default (%s)."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:627
+#: src/Admin/SettingsSchema.php:707
 msgid "Page background"
 msgstr ""
 
 #. translators: %s: the shipped default colour, a hex code.
-#: src/Admin/SettingsSchema.php:630
+#: src/Admin/SettingsSchema.php:710
 #, php-format
 msgid "The page wash behind full-page surfaces such as the checkout and account areas. Leave empty for the default (%s)."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:640
+#: src/Admin/SettingsSchema.php:720
 msgid "Border color"
 msgstr ""
 
 #. translators: %s: the shipped default colour, a hex code.
-#: src/Admin/SettingsSchema.php:643
+#: src/Admin/SettingsSchema.php:723
 #, php-format
 msgid "Borders and dividers. The stronger control border is derived from it. Leave empty for the default (%s)."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:653
+#: src/Admin/SettingsSchema.php:733
 msgid "Success color"
 msgstr ""
 
 #. translators: %s: the shipped default colour, a hex code.
-#: src/Admin/SettingsSchema.php:656
+#: src/Admin/SettingsSchema.php:736
 #, php-format
 msgid "The accent for success notices and badges; its tinted background is derived. Leave empty for the default (%s)."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:666
+#: src/Admin/SettingsSchema.php:746
 msgid "Error color"
 msgstr ""
 
 #. translators: %s: the shipped default colour, a hex code.
-#: src/Admin/SettingsSchema.php:669
+#: src/Admin/SettingsSchema.php:749
 #, php-format
 msgid "The accent for error notices and badges; its tinted background is derived. Leave empty for the default (%s)."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:679
+#: src/Admin/SettingsSchema.php:759
 #: src/Frontend/Adapters/Elementor/StyleControlMap.php:55
 msgid "Corner radius"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:680
+#: src/Admin/SettingsSchema.php:760
 msgid "How rounded corners are on buttons, inputs, and cards."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:684
+#: src/Admin/SettingsSchema.php:764
 #: src/Frontend/Adapters/Elementor/ControlOptions.php:164
 #: assets/admin/build/index.js:76
 #: assets/admin/src/screens/Settings.js:166
@@ -620,137 +642,137 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:688
+#: src/Admin/SettingsSchema.php:768
 msgid "Small"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:692
+#: src/Admin/SettingsSchema.php:772
 msgid "Large"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:702
+#: src/Admin/SettingsSchema.php:782
 msgid "Font family"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:703
+#: src/Admin/SettingsSchema.php:783
 msgid "A CSS font-family stack for every storefront component, for example: Inter, Arial, sans-serif. Leave empty for the built-in system font."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:711
+#: src/Admin/SettingsSchema.php:791
 msgid "From name"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:712
+#: src/Admin/SettingsSchema.php:792
 msgid "The sender name on store emails. Defaults to the site title when empty."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:720
+#: src/Admin/SettingsSchema.php:800
 msgid "From address"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:721
+#: src/Admin/SettingsSchema.php:801
 msgid "The sender address on store emails. Defaults to the site admin address when empty."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:729
+#: src/Admin/SettingsSchema.php:809
 msgid "Send purchase receipts"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:730
+#: src/Admin/SettingsSchema.php:810
 msgid "Email buyers a receipt with their downloads and license keys after a completed purchase."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:738
+#: src/Admin/SettingsSchema.php:818
 msgid "Send license delivery emails"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:739
+#: src/Admin/SettingsSchema.php:819
 msgid "Email keys that are generated after the receipt already went out."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:747
-#: src/Admin/SettingsSchema.php:768
-#: src/Admin/SettingsSchema.php:780
-#: src/Admin/SettingsSchema.php:792
-#: src/Admin/SettingsSchema.php:807
-#: src/Admin/SettingsSchema.php:822
-#: src/Admin/SettingsSchema.php:837
-#: src/Payments/Stripe/StripeGateway.php:67
+#: src/Admin/SettingsSchema.php:827
+#: src/Admin/SettingsSchema.php:848
+#: src/Admin/SettingsSchema.php:860
+#: src/Admin/SettingsSchema.php:872
+#: src/Admin/SettingsSchema.php:887
+#: src/Admin/SettingsSchema.php:902
+#: src/Admin/SettingsSchema.php:917
+#: src/Payments/Stripe/StripeGateway.php:69
 msgid "Stripe"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:749
+#: src/Admin/SettingsSchema.php:829
 msgid "Stripe mode"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:750
+#: src/Admin/SettingsSchema.php:830
 msgid "Test mode uses your test keys and charges nothing real."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:754
+#: src/Admin/SettingsSchema.php:834
 msgid "Test"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:758
+#: src/Admin/SettingsSchema.php:838
 msgid "Live"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:771
-#: src/Payments/Stripe/StripeGateway.php:239
+#: src/Admin/SettingsSchema.php:851
+#: src/Payments/Stripe/StripeGateway.php:248
 msgid "Test publishable key"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:772
+#: src/Admin/SettingsSchema.php:852
 msgid "Starts with pk_test_."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:783
-#: src/Payments/Stripe/StripeGateway.php:257
+#: src/Admin/SettingsSchema.php:863
+#: src/Payments/Stripe/StripeGateway.php:266
 msgid "Live publishable key"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:784
+#: src/Admin/SettingsSchema.php:864
 msgid "Starts with pk_live_."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:795
-#: src/Payments/Stripe/StripeGateway.php:245
+#: src/Admin/SettingsSchema.php:875
+#: src/Payments/Stripe/StripeGateway.php:254
 msgid "Test secret key"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:796
+#: src/Admin/SettingsSchema.php:876
 msgid "Starts with sk_test_ or rk_test_. Stored encrypted; only the last characters are ever shown again."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:810
-#: src/Payments/Stripe/StripeGateway.php:263
+#: src/Admin/SettingsSchema.php:890
+#: src/Payments/Stripe/StripeGateway.php:272
 msgid "Live secret key"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:811
+#: src/Admin/SettingsSchema.php:891
 msgid "Starts with sk_live_ or rk_live_. Stored encrypted; only the last characters are ever shown again."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:825
-#: src/Payments/Stripe/StripeGateway.php:251
+#: src/Admin/SettingsSchema.php:905
+#: src/Payments/Stripe/StripeGateway.php:260
 msgid "Test webhook signing secret"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:826
-#: src/Admin/SettingsSchema.php:841
+#: src/Admin/SettingsSchema.php:906
+#: src/Admin/SettingsSchema.php:921
 msgid "Starts with whsec_. From the Stripe dashboard webhook endpoint."
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:840
-#: src/Payments/Stripe/StripeGateway.php:269
+#: src/Admin/SettingsSchema.php:920
+#: src/Payments/Stripe/StripeGateway.php:278
 msgid "Live webhook signing secret"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:852
+#: src/Admin/SettingsSchema.php:932
 msgid "Elementor widgets"
 msgstr ""
 
-#: src/Admin/SettingsSchema.php:853
+#: src/Admin/SettingsSchema.php:933
 msgid "Add the ReleaseCart widgets and dynamic tags to the Elementor editor. Turn off to remove them without deactivating Elementor."
 msgstr ""
 
@@ -2472,7 +2494,7 @@ msgid "Show each line's license length and activation limit under the product na
 msgstr ""
 
 #: src/Frontend/Components/CartSummary.php:200
-#: src/Privacy/PersonalDataExporter.php:263
+#: src/Privacy/PersonalDataExporter.php:264
 #: templates/components/cart-summary.php:156
 #: templates/components/checkout.php:556
 #: templates/components/purchase-confirmation.php:121
@@ -2943,7 +2965,7 @@ msgid "Which product field to sort by."
 msgstr ""
 
 #: src/Frontend/Components/ProductGrid.php:201
-#: src/Privacy/PersonalDataExporter.php:251
+#: src/Privacy/PersonalDataExporter.php:252
 #: templates/components/purchase-confirmation.php:97
 #: assets/admin/build/index.js:4
 #: assets/admin/build/index.js:31
@@ -3451,7 +3473,7 @@ msgstr ""
 msgid "The refund amount (%1$d) exceeds the remaining refundable balance (%2$d)."
 msgstr ""
 
-#: src/Payments/CheckoutService.php:72
+#: src/Payments/CheckoutService.php:75
 msgid "This payment method is not available right now."
 msgstr ""
 
@@ -3461,42 +3483,64 @@ msgstr ""
 msgid "Unknown payment gateway: %s."
 msgstr ""
 
-#: src/Payments/Stripe/StripeGateway.php:108
-#: src/Payments/Stripe/StripeGateway.php:190
+#. translators: 1: a primary label, 2: a secondary detail shown in parentheses.
+#: src/Payments/Stripe/StripeDescription.php:52
+#: assets/admin/build/index.js:2
+#: assets/admin/build/index.js:35
+#: assets/admin/src/screens/Customers.js:90
+#: assets/admin/src/utils/orderPresentation.js:44
+#, php-format,js-format
+msgid "%1$s (%2$s)"
+msgstr ""
+
+#. translators: 1: quantity, 2: product and tier label.
+#: src/Payments/Stripe/StripeDescription.php:71
+#, php-format
+msgid "%1$d x %2$s"
+msgstr ""
+
+#. translators: 1: order number, 2: list of products.
+#: src/Payments/Stripe/StripeDescription.php:80
+#, php-format
+msgid "Order %1$s: %2$s"
+msgstr ""
+
+#: src/Payments/Stripe/StripeGateway.php:113
+#: src/Payments/Stripe/StripeGateway.php:199
 msgid "Stripe is not configured for the current mode. Enter your Stripe keys in the payment settings."
 msgstr ""
 
-#: src/Payments/Stripe/StripeGateway.php:233
+#: src/Payments/Stripe/StripeGateway.php:242
 msgid "Mode"
 msgstr ""
 
-#: src/Payments/Stripe/StripeSettings.php:325
+#: src/Payments/Stripe/StripeSettings.php:401
 msgid "Stripe mode must be \"test\" or \"live\"."
 msgstr ""
 
-#: src/Privacy/PersonalDataEraser.php:108
-#: src/Privacy/PersonalDataExporter.php:112
+#: src/Privacy/PersonalDataEraser.php:114
+#: src/Privacy/PersonalDataExporter.php:113
 msgid "ReleaseCart store data"
 msgstr ""
 
-#: src/Privacy/PersonalDataEraser.php:215
-msgid "ReleaseCart kept your order records for tax and accounting reasons, but removed the personal data from them (email address, IP address, billing address, company name and tax ID)."
+#: src/Privacy/PersonalDataEraser.php:222
+msgid "ReleaseCart kept your order records for tax and accounting reasons, but removed the personal data from them (email address, IP address, name, billing address, company name, tax ID and Stripe customer link)."
 msgstr ""
 
-#: src/Privacy/PersonalDataEraser.php:216
+#: src/Privacy/PersonalDataEraser.php:223
 msgid "ReleaseCart kept your license and download records for audit purposes, with the licenses revoked and all personal data (website addresses and IP addresses) removed."
 msgstr ""
 
-#: src/Privacy/PersonalDataEraser.php:217
+#: src/Privacy/PersonalDataEraser.php:224
 msgid "Payment notification records were kept for bookkeeping, with their personal data redacted. Your payment provider (for example Stripe) holds its own records under its own privacy policy."
 msgstr ""
 
-#: src/Privacy/PersonalDataEraser.php:218
+#: src/Privacy/PersonalDataEraser.php:225
 msgid "If you accepted the store terms at checkout, ReleaseCart kept the date of that acceptance as a record of your consent. With your other personal data removed, this date no longer identifies you."
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:206
-#: src/Privacy/PersonalDataExporter.php:255
+#: src/Privacy/PersonalDataExporter.php:207
+#: src/Privacy/PersonalDataExporter.php:256
 #: assets/admin/build/index.js:38
 #: assets/admin/build/index.js:39
 #: assets/admin/src/screens/Customers.js:405
@@ -3504,7 +3548,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:213
+#: src/Privacy/PersonalDataExporter.php:214
 #: assets/admin/build/index.js:16
 #: assets/admin/build/index.js:23
 #: assets/admin/build/index.js:30
@@ -3525,23 +3569,25 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:220
+#: src/Privacy/PersonalDataExporter.php:221
+#: src/Privacy/PersonalDataExporter.php:329
 #: templates/components/checkout.php:145
 msgid "First name"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:227
+#: src/Privacy/PersonalDataExporter.php:228
+#: src/Privacy/PersonalDataExporter.php:330
 #: templates/components/checkout.php:157
 msgid "Last name"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:234
+#: src/Privacy/PersonalDataExporter.php:235
 msgid "ReleaseCart customer profile"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:259
-#: src/Privacy/PersonalDataExporter.php:362
-#: src/Privacy/PersonalDataExporter.php:395
+#: src/Privacy/PersonalDataExporter.php:260
+#: src/Privacy/PersonalDataExporter.php:367
+#: src/Privacy/PersonalDataExporter.php:400
 #: assets/admin/build/index.js:4
 #: assets/admin/build/index.js:13
 #: assets/admin/build/index.js:16
@@ -3572,13 +3618,13 @@ msgid "Status"
 msgstr ""
 
 #. translators: 1: order total in minor units, 2: uppercased currency code.
-#: src/Privacy/PersonalDataExporter.php:265
+#: src/Privacy/PersonalDataExporter.php:266
 #, php-format
 msgid "%1$d (%2$s, in minor units)"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:268
-#: src/Privacy/PersonalDataExporter.php:427
+#: src/Privacy/PersonalDataExporter.php:269
+#: src/Privacy/PersonalDataExporter.php:432
 #: templates/components/purchase-confirmation.php:110
 #: assets/admin/build/index.js:4
 #: assets/admin/build/index.js:31
@@ -3589,59 +3635,67 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:275
-#: src/Privacy/PersonalDataExporter.php:434
+#: src/Privacy/PersonalDataExporter.php:276
+#: src/Privacy/PersonalDataExporter.php:439
 #: assets/admin/build/index.js:34
 #: assets/admin/src/screens/OrderDetail.js:532
 msgid "IP address"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:284
+#: src/Privacy/PersonalDataExporter.php:285
 msgid "ReleaseCart orders"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:308
+#: src/Privacy/PersonalDataExporter.php:309
 #: templates/components/checkout.php:271
 #: assets/admin/build/index.js:34
 #: assets/admin/src/screens/OrderDetail.js:510
 msgid "Billing address"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:309
+#: src/Privacy/PersonalDataExporter.php:310
 msgid "Billing address (line 2)"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:310
+#: src/Privacy/PersonalDataExporter.php:311
 msgid "Billing city"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:311
+#: src/Privacy/PersonalDataExporter.php:312
 msgid "Billing state or region"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:312
+#: src/Privacy/PersonalDataExporter.php:313
 msgid "Billing postcode"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:328
+#: src/Privacy/PersonalDataExporter.php:331
 #: assets/admin/build/index.js:34
 #: assets/admin/src/screens/OrderDetail.js:520
 msgid "Company"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:329
+#: src/Privacy/PersonalDataExporter.php:332
 #: assets/admin/build/index.js:34
 #: assets/admin/src/screens/OrderDetail.js:526
 msgid "Tax ID"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:330
+#: src/Privacy/PersonalDataExporter.php:333
 #: assets/admin/build/index.js:34
 #: assets/admin/src/screens/OrderDetail.js:502
 msgid "Terms accepted"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:358
+#: src/Privacy/PersonalDataExporter.php:334
+msgid "Stripe customer ID"
+msgstr ""
+
+#: src/Privacy/PersonalDataExporter.php:335
+msgid "Stripe customer ID (test mode)"
+msgstr ""
+
+#: src/Privacy/PersonalDataExporter.php:363
 #: templates/components/license-manager.php:78
 #: assets/admin/build/index.js:43
 #: assets/admin/src/screens/LicenseDetail.js:219
@@ -3649,7 +3703,7 @@ msgstr ""
 msgid "License key"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:366
+#: src/Privacy/PersonalDataExporter.php:371
 #: templates/components/license-manager.php:85
 #: assets/admin/build/index.js:43
 #: assets/admin/src/screens/LicenseDetail.js:249
@@ -3657,7 +3711,7 @@ msgstr ""
 msgid "Expires"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:367
+#: src/Privacy/PersonalDataExporter.php:372
 #: assets/admin/build/index.js:39
 #: assets/admin/build/index.js:43
 #: assets/admin/build/index.js:46
@@ -3667,34 +3721,34 @@ msgstr ""
 msgid "Never"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:373
+#: src/Privacy/PersonalDataExporter.php:378
 msgid "ReleaseCart licenses"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:391
+#: src/Privacy/PersonalDataExporter.php:396
 msgid "Site URL"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:399
+#: src/Privacy/PersonalDataExporter.php:404
 #: assets/admin/build/index.js:46
 #: assets/admin/src/screens/LicenseDetail.js:303
 msgid "Activated"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:406
+#: src/Privacy/PersonalDataExporter.php:411
 msgid "ReleaseCart license activations"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:423
+#: src/Privacy/PersonalDataExporter.php:428
 msgid "Event"
 msgstr ""
 
-#: src/Privacy/PersonalDataExporter.php:441
+#: src/Privacy/PersonalDataExporter.php:446
 msgid "ReleaseCart downloads"
 msgstr ""
 
 #: src/Privacy/PrivacyRegistrar.php:107
-msgid "When you buy from this store, ReleaseCart records your email address, order details, billing address, company name, tax ID, license keys, the sites where you activate a license, and the IP address used to download files. Order records are kept for tax and accounting purposes even after an erasure request; their personal fields are removed or anonymized rather than the record being deleted."
+msgid "When you buy from this store, ReleaseCart records your name, email address, order details, billing address, company name, tax ID, license keys, the sites where you activate a license, and the IP address used to place an order and to download files. When you pay through Stripe, Stripe receives your card details, name, email address, billing address and the products you buy. Order records are kept for tax and accounting purposes even after an erasure request; their personal fields are removed or anonymized rather than the record being deleted."
 msgstr ""
 
 #: src/Products/BundleItem.php:67
@@ -4023,112 +4077,116 @@ msgstr ""
 msgid "The action to apply to every id."
 msgstr ""
 
-#: src/REST/CheckoutController.php:181
+#: src/REST/CheckoutController.php:195
 msgid "Your cart is empty or has expired. Add the product to your cart again."
 msgstr ""
 
-#: src/REST/CheckoutController.php:208
+#: src/REST/CheckoutController.php:222
 msgid "An email address is required to check out."
 msgstr ""
 
-#: src/REST/CheckoutController.php:235
-#: src/REST/CheckoutController.php:347
+#: src/REST/CheckoutController.php:251
+#: src/REST/CheckoutController.php:361
 msgid "The discount code could not be checked. Please try again."
 msgstr ""
 
-#: src/REST/CheckoutController.php:241
+#: src/REST/CheckoutController.php:257
 msgid "The order could not be created. Please try again."
 msgstr ""
 
-#: src/REST/CheckoutController.php:247
+#: src/REST/CheckoutController.php:263
 msgid "The payment could not be started. Please try again."
 msgstr ""
 
-#: src/REST/CheckoutController.php:490
+#: src/REST/CheckoutController.php:504
 msgid "Too many checkout attempts. Please wait a moment and try again."
 msgstr ""
 
-#: src/REST/CheckoutController.php:731
+#: src/REST/CheckoutController.php:759
 msgid "Please log in to complete your purchase."
 msgstr ""
 
-#: src/REST/CheckoutController.php:749
+#: src/REST/CheckoutController.php:777
 msgid "Please enter your first name to continue."
 msgstr ""
 
-#: src/REST/CheckoutController.php:753
+#: src/REST/CheckoutController.php:781
 msgid "Please enter your last name to continue."
 msgstr ""
 
-#: src/REST/CheckoutController.php:757
+#: src/REST/CheckoutController.php:785
 msgid "Please accept the terms and conditions to continue."
 msgstr ""
 
-#: src/REST/CheckoutController.php:765
+#: src/REST/CheckoutController.php:789
+msgid "Please choose your country to continue."
+msgstr ""
+
+#: src/REST/CheckoutController.php:797
 msgid "Please enter your billing address to continue."
 msgstr ""
 
-#: src/REST/CheckoutController.php:880
+#: src/REST/CheckoutController.php:927
 msgid "The payment gateway to pay through."
 msgstr ""
 
-#: src/REST/CheckoutController.php:887
+#: src/REST/CheckoutController.php:934
 msgid "The buyer email address (required for guests)."
 msgstr ""
 
-#: src/REST/CheckoutController.php:894
+#: src/REST/CheckoutController.php:941
 msgid "The buyer name (superseded by first_name and last_name)."
 msgstr ""
 
-#: src/REST/CheckoutController.php:900
+#: src/REST/CheckoutController.php:947
 msgid "The buyer first name."
 msgstr ""
 
-#: src/REST/CheckoutController.php:906
+#: src/REST/CheckoutController.php:953
 msgid "The buyer last name."
 msgstr ""
 
-#: src/REST/CheckoutController.php:912
+#: src/REST/CheckoutController.php:959
 msgid "The buyer company name, for a company purchase."
 msgstr ""
 
-#: src/REST/CheckoutController.php:918
+#: src/REST/CheckoutController.php:965
 msgid "A discount code to apply to the order (validated and computed server-side)."
 msgstr ""
 
-#: src/REST/CheckoutController.php:968
+#: src/REST/CheckoutController.php:1015
 msgid "The buyer billing country as an ISO 3166-1 alpha-2 code."
 msgstr ""
 
-#: src/REST/CheckoutController.php:977
+#: src/REST/CheckoutController.php:1024
 msgid "The buyer VAT or tax registration number."
 msgstr ""
 
-#: src/REST/CheckoutController.php:988
+#: src/REST/CheckoutController.php:1035
 msgid "The billing address, line one."
 msgstr ""
 
-#: src/REST/CheckoutController.php:989
+#: src/REST/CheckoutController.php:1036
 msgid "The billing address, line two."
 msgstr ""
 
-#: src/REST/CheckoutController.php:990
+#: src/REST/CheckoutController.php:1037
 msgid "The billing city."
 msgstr ""
 
-#: src/REST/CheckoutController.php:991
+#: src/REST/CheckoutController.php:1038
 msgid "The billing state, region or province."
 msgstr ""
 
-#: src/REST/CheckoutController.php:992
+#: src/REST/CheckoutController.php:1039
 msgid "The billing postal code."
 msgstr ""
 
-#: src/REST/CheckoutController.php:1007
+#: src/REST/CheckoutController.php:1054
 msgid "Whether the buyer accepted the terms and conditions (\"1\" for accepted)."
 msgstr ""
 
-#: src/REST/CheckoutController.php:1064
+#: src/REST/CheckoutController.php:1111
 msgid "The public order identifier issued at checkout."
 msgstr ""
 
@@ -5528,15 +5586,6 @@ msgstr ""
 #: assets/admin/src/screens/OrderDetail.js:430
 #: assets/admin/src/utils/orderPresentation.js:27
 msgid "Refund"
-msgstr ""
-
-#. translators: 1: a primary label, 2: a secondary detail shown in parentheses.
-#: assets/admin/build/index.js:2
-#: assets/admin/build/index.js:35
-#: assets/admin/src/screens/Customers.js:90
-#: assets/admin/src/utils/orderPresentation.js:44
-#, js-format
-msgid "%1$s (%2$s)"
 msgstr ""
 
 #: assets/admin/build/index.js:2

@@ -478,7 +478,7 @@ class Checkout extends AbstractComponent {
 			'country' => $this->refineBillingField(
 				array(
 					'show'        => $collectCountry,
-					'required'    => false,
+					'required'    => $this->collection->requireCountry(),
 					'options'     => $collectCountry ? $this->collection->countryOptions() : array(),
 					'value'       => '',
 					'label'       => __( 'Country', 'releasecart' ),

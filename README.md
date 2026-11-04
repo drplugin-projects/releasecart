@@ -2,7 +2,7 @@
 
 ReleaseCart is a WordPress plugin for selling plugins, themes and other digital products from your own site. It takes card payments through Stripe, issues license keys and runs an update server for the plugins you sell.
 
-This repository holds the source of the free plugin. Setup and usage are in the [documentation](https://drplugin.com/docs).
+This repository holds the source of the free plugin. To install it, use [ReleaseCart on WordPress.org](https://wordpress.org/plugins/releasecart/). Setup and usage are in the [documentation](https://drplugin.com/docs/releasecart).
 
 ## Build
 

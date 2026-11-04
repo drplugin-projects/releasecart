@@ -34,14 +34,16 @@ final class StripeGateway implements GatewayInterface {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param StripeApiClient       $client   Transport to the Stripe REST API.
-	 * @param StripeSettings        $settings Stored keys and mode for the gateway.
-	 * @param StripeWebhookVerifier $verifier Signature verifier for inbound webhooks.
+	 * @param StripeApiClient       $client    Transport to the Stripe REST API.
+	 * @param StripeSettings        $settings  Stored keys and mode for the gateway.
+	 * @param StripeWebhookVerifier $verifier  Signature verifier for inbound webhooks.
+	 * @param StripeCustomers       $customers The buyer's Stripe Customer for each payment.
 	 */
 	public function __construct(
 		private readonly StripeApiClient $client,
 		private readonly StripeSettings $settings,
-		private readonly StripeWebhookVerifier $verifier
+		private readonly StripeWebhookVerifier $verifier,
+		private readonly StripeCustomers $customers
 	) {
 	}
 
@@ -93,12 +95,15 @@ final class StripeGateway implements GatewayInterface {
 	/**
 	 * Create an idempotent Stripe payment intent for a pending order.
 	 *
+	 * The intent carries the buyer's Stripe Customer and a description, which an
+	 * Indian Stripe account needs for cards issued abroad.
+	 *
 	 * @since 1.0.0
 	 *
 	 * @param Order $order The pending order to collect payment for.
 	 * @return PaymentSession
 	 * @throws GatewayConfigurationException When no secret key is configured for the active mode.
-	 * @throws GatewayRequestException       When the API call fails or the response lacks an intent id or client secret.
+	 * @throws GatewayRequestException       When a Stripe call fails or the response lacks an intent id or client secret.
 	 */
 	public function createPayment( Order $order ): PaymentSession {
 		$secretKey = $this->settings->secretKey();
@@ -108,12 +113,16 @@ final class StripeGateway implements GatewayInterface {
 			throw new GatewayConfigurationException( __( 'Stripe is not configured for the current mode. Enter your Stripe keys in the payment settings.', 'releasecart' ) );
 		}
 
+		$customer = $this->customers->forOrder( $order, $secretKey );
+
 		$response = $this->client->post(
 			$secretKey,
 			'/v1/payment_intents',
 			array(
 				'amount'                    => $order->total(),
 				'currency'                  => strtolower( $order->currency() ),
+				'customer'                  => $customer,
+				'description'               => StripeDescription::forOrder( $order ),
 				'automatic_payment_methods' => array( 'enabled' => 'true' ),
 				'metadata'                  => array(
 					'releasecart_order_id'   => (string) $order->id(),

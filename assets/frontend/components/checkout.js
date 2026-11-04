@@ -913,9 +913,25 @@ function wireForm( form, state ) {
 				state.elements = state.stripe.elements( {
 					clientSecret: body.client_secret,
 				} );
-				state.elements
-					.create( 'payment' )
-					.mount( '#releasecart-checkout-payment' );
+
+				const elements = state.elements;
+				const paymentElement = elements.create( 'payment', {
+					layout: 'tabs',
+				} );
+
+				// Stripe refuses the secret of a settled intent, which leaves an empty box.
+				// Drop the element so the next click asks the server, not a dead form.
+				paymentElement.on( 'loaderror', () => {
+					paymentElement.destroy();
+					if ( state.elements === elements ) {
+						state.elements = null;
+					}
+					showError(
+						form,
+						form.getAttribute( 'data-msg-error' ) || ''
+					);
+				} );
+				paymentElement.mount( '#releasecart-checkout-payment' );
 
 				showError( form, '' );
 				reconcileTotal( form, body, state );

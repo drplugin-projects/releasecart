@@ -14,13 +14,18 @@ defined( 'ABSPATH' ) || exit;
 
 use DrPlugin\WP\ReleaseCart\Core\Container;
 use DrPlugin\WP\ReleaseCart\Core\ServiceProvider;
+use DrPlugin\WP\ReleaseCart\Customers\CustomerRepository;
 use DrPlugin\WP\ReleaseCart\Database\Logger;
 use DrPlugin\WP\ReleaseCart\Orders\OrderRepository;
 use DrPlugin\WP\ReleaseCart\Orders\OrderService;
 use DrPlugin\WP\ReleaseCart\Orders\RefundService;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeAccountLookup;
 use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeApiClient;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeCustomers;
 use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeEventHandlers;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeExportRequirement;
 use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeGateway;
+use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeRefunds;
 use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeSettings;
 use DrPlugin\WP\ReleaseCart\Payments\Stripe\StripeWebhookVerifier;
 use DrPlugin\WP\ReleaseCart\Util\Crypto;
@@ -59,11 +64,43 @@ final class PaymentsServiceProvider implements ServiceProvider {
 		);
 
 		$container->singleton(
+			StripeCustomers::class,
+			static fn ( Container $c ): StripeCustomers => new StripeCustomers(
+				$c->get( StripeApiClient::class ),
+				$c->get( StripeSettings::class ),
+				$c->get( OrderRepository::class ),
+				$c->get( CustomerRepository::class )
+			)
+		);
+
+		$container->singleton(
+			StripeAccountLookup::class,
+			static fn ( Container $c ): StripeAccountLookup => new StripeAccountLookup(
+				$c->get( StripeApiClient::class ),
+				$c->get( StripeSettings::class )
+			)
+		);
+
+		$container->singleton(
+			StripeRefunds::class,
+			static fn ( Container $c ): StripeRefunds => new StripeRefunds(
+				$c->get( StripeApiClient::class ),
+				$c->get( StripeSettings::class )
+			)
+		);
+
+		$container->singleton(
+			StripeExportRequirement::class,
+			static fn ( Container $c ): StripeExportRequirement => new StripeExportRequirement( $c->get( StripeSettings::class ) )
+		);
+
+		$container->singleton(
 			StripeGateway::class,
 			static fn ( Container $c ): StripeGateway => new StripeGateway(
 				$c->get( StripeApiClient::class ),
 				$c->get( StripeSettings::class ),
-				$c->get( StripeWebhookVerifier::class )
+				$c->get( StripeWebhookVerifier::class ),
+				$c->get( StripeCustomers::class )
 			)
 		);
 
@@ -107,6 +144,7 @@ final class PaymentsServiceProvider implements ServiceProvider {
 			static fn ( Container $c ): StripeEventHandlers => new StripeEventHandlers(
 				$c->get( OrderService::class ),
 				$c->get( RefundCoordinator::class ),
+				$c->get( StripeRefunds::class ),
 				$c->get( Logger::class )
 			)
 		);
@@ -131,7 +169,7 @@ final class PaymentsServiceProvider implements ServiceProvider {
 	}
 
 	/**
-	 * No payment service registers WordPress hooks.
+	 * Hook the Stripe checkout field rule.
 	 *
 	 * @since 1.0.0
 	 *
@@ -139,5 +177,6 @@ final class PaymentsServiceProvider implements ServiceProvider {
 	 * @return void
 	 */
 	public function boot( Container $container ): void {
+		$container->get( StripeExportRequirement::class )->hooks();
 	}
 }

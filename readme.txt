@@ -1,4 +1,4 @@
-=== ReleaseCart ===
+=== ReleaseCart: Digital Downloads and Software Licensing ===
 Contributors: drplugin
 Tags: digital downloads, sell digital products, software licensing, license keys, stripe
 Requires at least: 6.9
@@ -26,7 +26,7 @@ Your plugin talks to the store through a public REST API to activate, validate a
 
 Upload a release with its version number and changelog. Sites with a valid license see it on their Plugins screen, read the changelog under View details and update like any other plugin. Every download goes through a signed link that expires, and the license key never appears in it.
 
-Add the free [update client](https://drplugin.com/docs) to the plugin you sell to connect it to your store.
+Add the free [update client](https://drplugin.com/docs/releasecart/licensing/update-client) to the plugin you sell to connect it to your store.
 
 = Store features =
 
@@ -49,23 +49,23 @@ The storefront comes as 20 blocks, each with a matching shortcode, and five bloc
 
 = Documentation =
 
-Guides for setup, license keys, the update client and the licensing REST API are in the [ReleaseCart documentation](https://drplugin.com/docs).
+Guides for setup, license keys, the update client and the licensing REST API are in the [ReleaseCart documentation](https://drplugin.com/docs/releasecart).
 
 = ReleaseCart Pro =
 
-[ReleaseCart Pro](https://drplugin.com) is a separate plugin that adds to this one, so both stay active. It adds subscriptions through Stripe and PayPal, plan changes for Stripe subscribers, failed payment reminders, abandoned cart emails, EU and UK VAT on one-time sales, PDF invoices, signed license answers, offline and team licenses, release channels, an analytics dashboard, an affiliate program and imports from other stores.
+[ReleaseCart Pro](https://drplugin.com/plugins/releasecart) is a separate plugin that adds to this one, so both stay active. It adds subscriptions through Stripe and PayPal, plan changes for Stripe subscribers, failed payment reminders, abandoned cart emails, EU and UK VAT on one-time sales, PDF invoices, signed license answers, offline and team licenses, release channels, an analytics dashboard, an affiliate program and imports from other stores.
 
 = External services =
 
 ReleaseCart connects to Stripe, and to webhook endpoints you add yourself. It makes no other outbound requests and sends no telemetry.
 
-**Stripe (payments).** When you connect a Stripe account, your server calls the Stripe API at api.stripe.com to create and refund payments. It sends the amount, the currency and ReleaseCart's order identifiers. On checkout pages the buyer's browser loads Stripe.js from js.stripe.com, so Stripe collects the card details directly. Both happen only after you add Stripe keys, and only during checkout or a refund. See the [Stripe terms of service](https://stripe.com/legal) and [privacy policy](https://stripe.com/privacy).
+**Stripe (payments).** When you connect a Stripe account, your server calls the Stripe API at api.stripe.com to read the account's country, save each buyer as a Stripe customer, and create and refund payments. It sends the buyer's name, email and billing address, the products bought, the amount, the currency and ReleaseCart's order and customer identifiers. On checkout pages the buyer's browser loads Stripe.js from js.stripe.com, so Stripe collects the card details directly. This happens only after you add Stripe keys: when you save them, at checkout or for a refund. See the [Stripe terms of service](https://stripe.com/legal) and [privacy policy](https://stripe.com/privacy).
 
 **Your webhook endpoints (optional).** If you add endpoints under ReleaseCart > Settings > Webhooks, ReleaseCart sends signed JSON notifications about orders, refunds, licenses and new customers to those URLs. They include customer email addresses and full license keys. Nothing is sent until you add an endpoint.
 
 = Source code =
 
-The JavaScript and CSS in `assets/admin/build` and `assets/blocks/build` are compiled with `@wordpress/scripts`. The source and build setup are at [github.com/drplugin-projects/releasecart](https://github.com/drplugin-projects/releasecart). To rebuild, run `npm install`, then `npm run build`.
+The JavaScript and CSS in `assets/admin/build` and the JavaScript in `assets/blocks/build` are compiled with `@wordpress/scripts`. The source and build setup are at [github.com/drplugin-projects/releasecart](https://github.com/drplugin-projects/releasecart). To rebuild, run `npm install`, then `npm run build`.
 
 Bundled libraries: Action Scheduler 4.2.0 (GPLv3 or later), installed by Composer in `vendor/woocommerce/action-scheduler`, and TanStack Query 5.101.2 (MIT), compiled into the admin JavaScript.
 
@@ -78,17 +78,17 @@ Bundled libraries: Action Scheduler 4.2.0 (GPLv3 or later), installed by Compose
 5. Add a product with at least one pricing tier. Turn on Licensed product if you sell software.
 6. Buy it with a Stripe test card, then check that the receipt email and the license key arrive.
 
-You need WordPress 6.9 or newer, PHP 8.1 or newer, and HTTPS for live card payments.
+Live card payments need HTTPS.
 
 == Frequently Asked Questions ==
 
 = Does ReleaseCart charge a commission on sales? =
 
-No. Payments go to your own Stripe account, and you pay only Stripe's own fees. The plugin needs no license key of its own.
+No. You pay only Stripe's own fees.
 
 = How do my customers get updates for the plugins I sell? =
 
-Add the ReleaseCart update client to each plugin you sell. It asks your store for new versions, and WordPress shows them on the Plugins screen like any other update. A site with an expired or unknown license still sees the new version, but gets no download link. The client works for plugins, not themes.
+Add the ReleaseCart update client to each plugin you sell. It asks your store for new versions, and WordPress shows them on the Plugins screen like any other update. A site with an expired or unknown license still sees the new version, but gets no download link.
 
 = Can I sell themes, ebooks or templates? =
 
@@ -104,7 +104,7 @@ The update client keeps using its last good answer for up to 72 hours. After tha
 
 = Do I need a Stripe account? =
 
-Yes, for card payments. Card details go from the buyer's browser to Stripe and never reach your server. Stripe handles 3D Secure. ReleaseCart Pro adds PayPal.
+Yes, for card payments. Stripe handles 3D Secure. ReleaseCart Pro adds PayPal.
 
 = Can buyers check out as guests? =
 
