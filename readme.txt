@@ -1,10 +1,10 @@
-=== ReleaseCart: Digital Downloads and Software Licensing ===
+=== ReleaseCart: Sell Digital Downloads and Software License Keys ===
 Contributors: drplugin
-Tags: digital downloads, sell digital products, software licensing, license keys, stripe
+Tags: digital downloads, sell digital products, software licensing, license keys, license manager
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,7 +120,7 @@ Only on its own admin screens, and only while Pro is not active: a ReleaseCart P
 
 = What happens to my data when I delete ReleaseCart? =
 
-ReleaseCart keeps it unless you turn on Delete all data on uninstall under ReleaseCart > Settings > General before you delete the plugin. That setting removes its tables, options, capabilities, package files and the pages it created. On multisite, each site's own setting decides.
+ReleaseCart keeps it unless you turn on Delete all data on uninstall under ReleaseCart > Settings > General before you delete the plugin. That setting removes its tables, options, capabilities, package files and the pages it created, and data that add-ons keep under the ReleaseCart name. On multisite, each site's own setting decides.
 
 = How does ReleaseCart handle personal data? =
 
@@ -144,6 +144,16 @@ Yes, under `releasecart/v1`. The licensing routes are public and take the licens
 10. Stripe settings in test mode, with saved secrets masked.
 
 == Changelog ==
+
+= 1.0.1 =
+* No IIS web.config in the packages folder. The update deletes the 1.0.0 file unless you changed it. The update server guide has IIS and NGINX rules.
+* Deactivation removes the product rewrite rule.
+* The orders and sales CSV exports add an apostrophe before a formula that follows a semicolon, and before a number of two or more digits that starts with 0, such as 0123.
+* The order screen shows the name typed at checkout and an automatic discount used with a code. The license screen shows the product and the bundle it came with. The order and license detail REST responses add these fields.
+* The personal data export adds the billing country and what an activating site reports. The suggested privacy text says what a site reports when it activates a license.
+* Saving a customer no longer undoes a purchase count or total that a payment just added.
+* The uninstall setting says it also removes add-on data.
+* The Stripe key help says to paste the key again.
 
 = 1.0.0 =
 * First release.

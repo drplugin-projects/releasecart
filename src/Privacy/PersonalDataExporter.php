@@ -242,6 +242,7 @@ class PersonalDataExporter {
 	 * Build an order export group.
 	 *
 	 * @since 1.0.0
+	 * @since 1.0.1 Adds the billing country.
 	 *
 	 * @param Order $order The order.
 	 * @return array<string, mixed> The export group.
@@ -275,6 +276,13 @@ class PersonalDataExporter {
 			$items[] = array(
 				'name'  => __( 'IP address', 'releasecart' ),
 				'value' => $order->ipAddress(),
+			);
+		}
+
+		if ( null !== $order->country() && '' !== $order->country() ) {
+			$items[] = array(
+				'name'  => __( 'Billing country', 'releasecart' ),
+				'value' => $order->country(),
 			);
 		}
 
@@ -385,6 +393,7 @@ class PersonalDataExporter {
 	 * Build an activation export group.
 	 *
 	 * @since 1.0.0
+	 * @since 1.0.1 Adds the reported environment and the device fingerprint.
 	 *
 	 * @param int        $licenseId  The owning license id.
 	 * @param Activation $activation The activation.
@@ -406,12 +415,48 @@ class PersonalDataExporter {
 			),
 		);
 
+		$environment = $this->environmentLine( $activation->environment() );
+
+		if ( '' !== $environment ) {
+			$items[] = array(
+				'name'  => __( 'Reported environment', 'releasecart' ),
+				'value' => $environment,
+			);
+		}
+
+		if ( null !== $activation->fingerprint() && '' !== $activation->fingerprint() ) {
+			$items[] = array(
+				'name'  => __( 'Device ID', 'releasecart' ),
+				'value' => $activation->fingerprint(),
+			);
+		}
+
 		return $this->group(
 			self::GROUP_ACTIVATIONS,
 			__( 'ReleaseCart license activations', 'releasecart' ),
 			'releasecart-activation-' . $licenseId . '-' . $activation->id(),
 			$items
 		);
+	}
+
+	/**
+	 * Write the reported environment as one `key: value` list, as the license screen does.
+	 *
+	 * @since 1.0.1
+	 *
+	 * @param array<string, mixed>|null $environment The stored report, or null.
+	 * @return string The line, or '' when nothing was reported.
+	 */
+	private function environmentLine( ?array $environment ): string {
+		$parts = array();
+
+		foreach ( (array) $environment as $key => $value ) {
+			if ( is_scalar( $value ) && '' !== trim( (string) $value ) ) {
+				$parts[] = $key . ': ' . $value;
+			}
+		}
+
+		return implode( wp_get_list_item_separator(), $parts );
 	}
 
 	/**

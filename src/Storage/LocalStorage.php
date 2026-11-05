@@ -26,8 +26,8 @@ final class LocalStorage implements StorageProvider {
 	 * @var string
 	 */
 	private const HTACCESS_CONTENTS = <<<'HTACCESS'
-# Deny direct access to ReleaseCart package files; downloads only ever go
-# through the signed /package/download REST endpoint.
+# Deny direct access to ReleaseCart package files. Downloads go only
+# through ReleaseCart's signed download links.
 <IfModule mod_authz_core.c>
 	Require all denied
 </IfModule>
@@ -37,11 +37,13 @@ final class LocalStorage implements StorageProvider {
 HTACCESS;
 
 	/**
-	 * IIS guard file contents.
+	 * The web.config that version 1.0.0 wrote. Used only to find that file and delete it.
+	 *
+	 * @since 1.0.1
 	 *
 	 * @var string
 	 */
-	private const WEB_CONFIG_CONTENTS = <<<'WEBCONFIG'
+	private const LEGACY_WEB_CONFIG = <<<'WEBCONFIG'
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	<system.webServer>
@@ -60,7 +62,7 @@ WEBCONFIG;
 	private const INDEX_HTML_CONTENTS = '';
 
 	/**
-	 * Guard-file names blocked at the packages root.
+	 * Guard-file names blocked at the packages root. A package never takes the name web.config.
 	 *
 	 * @var array<int, string>
 	 */
@@ -208,6 +210,30 @@ WEBCONFIG;
 	}
 
 	/**
+	 * Delete the web.config that version 1.0.0 wrote into the packages root.
+	 *
+	 * Only a byte-for-byte match goes. Any other web.config is the site owner's.
+	 *
+	 * @since 1.0.1
+	 *
+	 * @return void
+	 */
+	public function removeLegacyWebConfig(): void {
+		// Not root(): this runs on plugins_loaded, before a theme can filter upload_dir.
+		$path = $this->packagesRoot() . '/web.config';
+
+		if ( ! is_file( $path ) ) {
+			return;
+		}
+
+		$filesystem = $this->directFilesystem();
+
+		if ( null !== $filesystem && self::LEGACY_WEB_CONFIG === $filesystem->get_contents( $path ) ) {
+			wp_delete_file( $path );
+		}
+	}
+
+	/**
 	 * Resolve and cache the packages root.
 	 *
 	 * @since 1.0.0
@@ -216,15 +242,29 @@ WEBCONFIG;
 	 */
 	private function root(): string {
 		if ( null === $this->root ) {
-			$uploadDir  = wp_upload_dir();
-			$this->root = rtrim( (string) $uploadDir['basedir'], '/\\' ) . '/releasecart/packages';
+			$this->root = $this->packagesRoot();
 		}
 
 		return $this->root;
 	}
 
 	/**
+	 * The packages root as uploads resolves it now. Creates no folder.
+	 *
+	 * @since 1.0.1
+	 *
+	 * @return string Absolute path of the packages root, no trailing slash.
+	 */
+	private function packagesRoot(): string {
+		$uploadDir = wp_upload_dir( null, false );
+
+		return rtrim( (string) $uploadDir['basedir'], '/\\' ) . '/releasecart/packages';
+	}
+
+	/**
 	 * Create the packages root and its guard files.
+	 *
+	 * Also deletes the 1.0.0 web.config, in case the update step could not.
 	 *
 	 * @since 1.0.0
 	 *
@@ -237,15 +277,15 @@ WEBCONFIG;
 		wp_mkdir_p( $root );
 
 		$this->writeGuardFileIfMissing( $filesystem, $root . '/.htaccess', self::HTACCESS_CONTENTS );
-		$this->writeGuardFileIfMissing( $filesystem, $root . '/web.config', self::WEB_CONFIG_CONTENTS );
 		$this->writeGuardFileIfMissing( $filesystem, $root . '/index.html', self::INDEX_HTML_CONTENTS );
+		$this->removeLegacyWebConfig();
 	}
 
 	/**
 	 * Put an index.html in each folder of a key's path below the root.
 	 *
-	 * The root's .htaccess and web.config cover these folders on Apache and IIS.
-	 * The index.html stops a folder listing on servers that ignore both.
+	 * The root's .htaccess covers these folders on Apache.
+	 * The index.html stops a folder listing on other servers.
 	 *
 	 * @since 1.0.0
 	 *
@@ -302,7 +342,7 @@ WEBCONFIG;
 
 		// WordPress picks the method by writing a test file in this folder, so it
 		// must exist. The packages root does not, before the first upload.
-		$context = $this->root();
+		$context = $this->packagesRoot();
 
 		while ( ! is_dir( $context ) && dirname( $context ) !== $context ) {
 			$context = dirname( $context );

@@ -13,7 +13,7 @@ namespace DrPlugin\WP\ReleaseCart\Core;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Clears runtime scheduling on deactivation.
+ * Clears runtime scheduling and the product URL rule on deactivation.
  *
  * Data deletion is only available through the opt-in uninstall path.
  *
@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
 final class Deactivator {
 
 	/**
-	 * Clear recurring maintenance jobs.
+	 * Clear recurring maintenance jobs and the product URL rule.
 	 *
 	 * Keep mint retries queued. They complete paid orders after reactivation.
 	 *
@@ -36,7 +36,7 @@ final class Deactivator {
 		as_unschedule_all_actions( \DrPlugin\WP\ReleaseCart\Jobs\ActionSchedulerPruner::PRUNE_HOOK, array(), 'releasecart' );
 		as_unschedule_all_actions( \DrPlugin\WP\ReleaseCart\Jobs\AbandonedOrdersSweep::SWEEP_HOOK, array(), 'releasecart' );
 
-		// Rebuild product rewrites after the next activation.
+		// The next activation adds the product rule back.
 		\DrPlugin\WP\ReleaseCart\Frontend\ProductRewrites::clearOnDeactivate();
 	}
 }

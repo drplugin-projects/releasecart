@@ -14,14 +14,15 @@ defined( 'ABSPATH' ) || exit;
 
 use DrPlugin\WP\ReleaseCart\Core\Container;
 use DrPlugin\WP\ReleaseCart\Core\ServiceProvider;
+use DrPlugin\WP\ReleaseCart\Core\VersionUpgrade;
 use DrPlugin\WP\ReleaseCart\Database\Migrations\Migration_0001_CreateCoreTables;
 use DrPlugin\WP\ReleaseCart\Database\Migrations\Migration_0002_AddReportIndexes;
 use DrPlugin\WP\ReleaseCart\Database\Migrations\Migration_0004_AddOrderMetaKeyOrderIndex;
 
 /**
- * Registers database services and runs pending migrations.
+ * Registers database services, runs pending migrations, then the plugin version check.
  *
- * The boot-time check also covers upgrades that skip plugin activation.
+ * The boot-time checks cover updates, which skip plugin activation.
  *
  * @since 1.0.0
  */
@@ -67,11 +68,12 @@ final class DatabaseServiceProvider implements ServiceProvider {
 	}
 
 	/**
-	 * Apply pending migrations once the plugin has booted.
+	 * Apply pending migrations and update steps once the plugin has booted.
 	 *
-	 * Maps metadata tables and runs pending migrations.
+	 * Maps metadata tables, runs pending migrations, then the version check.
 	 *
 	 * @since 1.0.0
+	 * @since 1.0.1 Runs the plugin version check.
 	 *
 	 * @param Container $container The shared plugin container.
 	 * @return void
@@ -83,6 +85,9 @@ final class DatabaseServiceProvider implements ServiceProvider {
 		MetaTables::register( $wpdb );
 
 		$container->get( Migrator::class )->migrate();
+
+		// Runs on plugins_loaded, so before any request can write a package.
+		$container->get( VersionUpgrade::class )->maybeUpgrade();
 	}
 
 	/**

@@ -8,7 +8,7 @@
  * External dependencies
  */
 import { useState } from '@wordpress/element';
-import { __, sprintf } from '@wordpress/i18n';
+import { __, _x, sprintf } from '@wordpress/i18n';
 import { Button, Modal, Notice, TextControl } from '@wordpress/components';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -177,6 +177,28 @@ function formatBillingAddress( address ) {
 		parts.filter(
 			( part ) => 'string' === typeof part && '' !== part.trim()
 		)
+	);
+}
+
+/**
+ * Join the first and last name typed at checkout.
+ *
+ * @param {Object} order The order detail response.
+ * @return {string} The full name, one part alone, or an empty string.
+ */
+function checkoutName( order ) {
+	const first = order.first_name || '';
+	const last = order.last_name || '';
+
+	if ( ! first || ! last ) {
+		return first || last;
+	}
+
+	return sprintf(
+		/* translators: 1: first name, 2: last name. */
+		_x( '%1$s %2$s', 'full name', 'releasecart' ),
+		first,
+		last
 	);
 }
 
@@ -406,6 +428,7 @@ export default function OrderDetail( { params, boot } ) {
 
 	const order = query.data;
 	const items = Array.isArray( order.items ) ? order.items : [];
+	const nameAtCheckout = checkoutName( order );
 	const canRefund =
 		order.status === 'completed' || order.status === 'partially_refunded';
 
@@ -467,6 +490,14 @@ export default function OrderDetail( { params, boot } ) {
 						<dt>{ __( 'Customer', 'releasecart' ) }</dt>
 						<dd>{ order.email }</dd>
 					</div>
+					{ /* The customer record can hold a name from a later
+					   checkout, so this one comes from the order. */ }
+					{ nameAtCheckout && (
+						<div>
+							<dt>{ __( 'Name at checkout', 'releasecart' ) }</dt>
+							<dd>{ nameAtCheckout }</dd>
+						</div>
+					) }
 					<div>
 						<dt>{ __( 'Gateway', 'releasecart' ) }</dt>
 						<dd>{ order.gateway }</dd>
@@ -481,6 +512,21 @@ export default function OrderDetail( { params, boot } ) {
 						<div>
 							<dt>{ __( 'Discount code', 'releasecart' ) }</dt>
 							<dd>{ order.discount_code }</dd>
+						</div>
+					) }
+					{ /* The automatic part of the Discount total, set only
+					   when a code stacked on an automatic discount. */ }
+					{ Number.isInteger( order.auto_discount_total ) && (
+						<div>
+							<dt>
+								{ __( 'Automatic discount', 'releasecart' ) }
+							</dt>
+							<dd>
+								{ formatMinor(
+									order.auto_discount_total,
+									order.currency
+								) }
+							</dd>
 						</div>
 					) }
 					<div>

@@ -150,14 +150,43 @@ class ProductRewrites implements Hookable {
 	}
 
 	/**
-	 * Clear the stored signature during deactivation.
+	 * Clear the stored signature and remove the product rule from the stored rules.
+	 *
+	 * The rule is still registered in the deactivation request, so a plain flush
+	 * would store it again. The filter keeps it out of this flush and any later one
+	 * in this request.
 	 *
 	 * @since 1.0.0
+	 * @since 1.0.1 Removes the product rule.
 	 *
 	 * @return void
 	 */
 	public static function clearOnDeactivate(): void {
 		delete_option( self::SIGNATURE_OPTION );
+
+		add_filter( 'rewrite_rules_array', array( self::class, 'withoutProductRule' ) );
+		flush_rewrite_rules( false );
+	}
+
+	/**
+	 * Drop the product rule from a rewrite rule set.
+	 *
+	 * @since 1.0.1
+	 *
+	 * @param mixed $rules Rewrite rules, regex to query. Another filter may have broken the value.
+	 * @return mixed The rules without the product rule, or the value as given when it is not an array.
+	 */
+	public static function withoutProductRule( $rules ) {
+		if ( ! is_array( $rules ) ) {
+			return $rules;
+		}
+
+		$marker = '&' . ProductUrlProvider::QUERY_VAR . '=';
+
+		return array_filter(
+			$rules,
+			static fn ( $query ): bool => ! str_contains( (string) $query, $marker )
+		);
 	}
 
 	/**

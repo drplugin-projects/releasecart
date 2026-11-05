@@ -503,7 +503,10 @@ final class LicensesController extends AbstractRestController {
 	/**
 	 * Build an admin license detail response.
 	 *
+	 * A deleted product or bundle keeps its id and has a null name.
+	 *
 	 * @since 1.0.0
+	 * @since 1.0.1 Adds the product name and the bundle the license came with.
 	 *
 	 * @param License $license The license to present.
 	 * @return array<string, mixed> The detail representation.
@@ -511,10 +514,17 @@ final class LicensesController extends AbstractRestController {
 	 * @throws LicensePersistenceException When the activation read faults at the database.
 	 */
 	private function presentDetail( License $license ): array {
-		$detail                   = $this->baseFields( $license );
-		$detail['license_key']    = $license->licenseKey();
-		$detail['customer_email'] = $this->ownerEmail( $license );
-		$detail['activations']    = array_map(
+		$bundleId = (int) get_metadata( 'releasecart_license', (int) $license->id(), LicenseService::META_BUNDLE_PRODUCT, true );
+		$bundleId = $bundleId > 0 ? $bundleId : null;
+		$names    = $this->products->namesFor( array( (int) $license->productId(), (int) $bundleId ) );
+
+		$detail                        = $this->baseFields( $license );
+		$detail['license_key']         = $license->licenseKey();
+		$detail['customer_email']      = $this->ownerEmail( $license );
+		$detail['product_name']        = $names[ (int) $license->productId() ] ?? null;
+		$detail['bundle_product_id']   = $bundleId;
+		$detail['bundle_product_name'] = null !== $bundleId ? ( $names[ $bundleId ] ?? null ) : null;
+		$detail['activations']         = array_map(
 			array( $this, 'presentActivation' ),
 			$this->activationService->listForLicense( $license )
 		);

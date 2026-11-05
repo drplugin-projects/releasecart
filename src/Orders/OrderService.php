@@ -29,6 +29,15 @@ use DrPlugin\WP\ReleaseCart\Products\ProductStatus;
 class OrderService {
 
 	/**
+	 * Order meta for the automatic discount's share when a code stacked on it, in minor units.
+	 *
+	 * @since 1.0.1
+	 *
+	 * @var string
+	 */
+	public const AUTO_DISCOUNT_META = '_releasecart_auto_discount';
+
+	/**
 	 * The repository orders are read from and written through.
 	 *
 	 * @var OrderRepository
@@ -307,7 +316,7 @@ class OrderService {
 		// Save the stacked automatic component before order-created listeners run.
 		if ( null !== $autoMeta ) {
 			update_metadata( 'releasecart_order', (int) $saved->id(), '_releasecart_auto_discount_id', $autoMeta['id'] );
-			update_metadata( 'releasecart_order', (int) $saved->id(), '_releasecart_auto_discount', $autoMeta['amount'] );
+			update_metadata( 'releasecart_order', (int) $saved->id(), self::AUTO_DISCOUNT_META, $autoMeta['amount'] );
 		}
 
 		// Only empty the cart once the order is safely persisted.

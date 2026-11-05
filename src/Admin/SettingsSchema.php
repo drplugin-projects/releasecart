@@ -291,7 +291,7 @@ final class SettingsSchema {
 			return $plain;
 		}
 
-		return $plain . ' ' . __( "ReleaseCart could not read this Stripe account's country. If the account is in India, save the key again so checkout asks for what Stripe needs. A restricted key needs Accounts read access.", 'releasecart' );
+		return $plain . ' ' . __( "ReleaseCart could not read this Stripe account's country. If the account is in India, paste the key into this field again and save, so checkout asks for what Stripe needs. A restricted key needs Accounts read access.", 'releasecart' );
 	}
 
 	/**
@@ -629,7 +629,7 @@ final class SettingsSchema {
 				'group'       => 'advanced',
 				'type'        => 'toggle',
 				'label'       => __( 'Delete all data on uninstall', 'releasecart' ),
-				'description' => __( 'When enabled, deleting the plugin removes every ReleaseCart table, option, capability, and stored package file. Leave off to keep customer and license data.', 'releasecart' ),
+				'description' => __( 'When enabled, deleting the plugin removes every ReleaseCart table, option, capability, and stored package file, including data that add-ons keep under the ReleaseCart name. Leave off to keep customer and license data.', 'releasecart' ),
 				'path'        => 'delete_data_on_uninstall',
 				'default'     => false,
 			),

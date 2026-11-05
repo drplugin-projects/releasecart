@@ -94,6 +94,7 @@ final class PrivacyRegistrar implements Hookable {
 	 * ReleaseCart stores, for the WordPress privacy-policy guide.
 	 *
 	 * @since 1.0.0
+	 * @since 1.0.1 Names what a site reports when it activates a license.
 	 *
 	 * @return void
 	 */
@@ -102,9 +103,12 @@ final class PrivacyRegistrar implements Hookable {
 			return;
 		}
 
+		// Two strings, so the first keeps its existing translations.
 		$content = wp_kses_post(
 			wpautop(
 				__( 'When you buy from this store, ReleaseCart records your name, email address, order details, billing address, company name, tax ID, license keys, the sites where you activate a license, and the IP address used to place an order and to download files. When you pay through Stripe, Stripe receives your card details, name, email address, billing address and the products you buy. Order records are kept for tax and accounting purposes even after an erasure request; their personal fields are removed or anonymized rather than the record being deleted.', 'releasecart' )
+				. "\n\n"
+				. __( 'When you activate a license, ReleaseCart also records the details your site reports, such as its PHP, WordPress and product versions, and a device ID if the software provides one.', 'releasecart' )
 			)
 		);
 

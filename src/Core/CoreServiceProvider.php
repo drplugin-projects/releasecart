@@ -13,6 +13,7 @@ namespace DrPlugin\WP\ReleaseCart\Core;
 defined( 'ABSPATH' ) || exit;
 
 use DrPlugin\WP\ReleaseCart\Database\Migrator;
+use DrPlugin\WP\ReleaseCart\Storage\LocalStorage;
 
 /**
  * Registers core lifecycle services.
@@ -31,8 +32,12 @@ final class CoreServiceProvider implements ServiceProvider {
 	 */
 	public function register( Container $container ): void {
 		$container->singleton(
+			VersionUpgrade::class,
+			static fn ( Container $c ): VersionUpgrade => new VersionUpgrade( $c->get( LocalStorage::class ), RELEASECART_VERSION )
+		);
+		$container->singleton(
 			Activator::class,
-			static fn ( Container $c ): Activator => new Activator( $c->get( Migrator::class ) )
+			static fn ( Container $c ): Activator => new Activator( $c->get( Migrator::class ), $c->get( VersionUpgrade::class ) )
 		);
 		$container->singleton(
 			Deactivator::class,

@@ -142,7 +142,7 @@ final class CheckoutController extends AbstractRestController {
 				array(
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'intent' ),
-					// Guests check out, so no login: the callback asks for the visitor's stored cart. Rate limited per client IP.
+					// Guests check out, so no login: the permission callback checks the visitor's stored cart. Rate limited per client IP.
 					'permission_callback' => array( $this, 'cartPermission' ),
 					'args'                => $this->intentArgs(),
 				),
@@ -156,7 +156,7 @@ final class CheckoutController extends AbstractRestController {
 				array(
 					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'quote' ),
-					// Guests see the totals before they pay: the callback asks for the visitor's stored cart. Rate limited per client IP.
+					// Guests see the totals before they pay: the permission callback checks the visitor's stored cart. Rate limited per client IP.
 					'permission_callback' => array( $this, 'cartPermission' ),
 					'args'                => $this->quoteArgs(),
 				),
@@ -306,12 +306,9 @@ final class CheckoutController extends AbstractRestController {
 				'auto_discount'   => isset( $breakdown['auto_discount'] ) ? $breakdown['auto_discount'] : null,
 				'tax_total'       => $order->taxTotal(),
 				'currency'        => $order->currency(),
-				// Why the money looks the way it does, from
-				// `releasecart_checkout_quote_notices` at charge time. The quote route
-				// deliberately never consults a VAT-number checker, so reverse charge
-				// is decided here and the total can legitimately fall between the
-				// preview and this response: these are what let the storefront say so
-				// instead of reporting a price change nobody made.
+				// Buyer notices from `releasecart_checkout_quote_notices` at charge time:
+				// a quantity clamp, a dropped discount code, and what extensions add. They
+				// let the storefront explain a total that changed since the quote.
 				'notices'         => $notices,
 				'client_secret'   => $session->clientSecret(),
 				'publishable_key' => $session->publishableKey(),
@@ -841,8 +838,7 @@ final class CheckoutController extends AbstractRestController {
 			}
 
 			// The tax ID follows the same rule: written only when the field is
-			// on and the buyer typed one, so an invoice can print a number no
-			// tax extension checked (a GSTIN, an ABN).
+			// on and the buyer typed one. It is normalized, not validated.
 			if ( $this->fields->collectVat() ) {
 				$taxId = $this->normalizeVat( (string) $request->get_param( 'vat_number' ) );
 

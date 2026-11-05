@@ -32,14 +32,24 @@ final class Activator {
 	private Migrator $migrator;
 
 	/**
+	 * The plugin version check.
+	 *
+	 * @var VersionUpgrade
+	 */
+	private VersionUpgrade $versionUpgrade;
+
+	/**
 	 * Wire the activator with its dependencies.
 	 *
 	 * @since 1.0.0
+	 * @since 1.0.1 Takes the version check.
 	 *
-	 * @param Migrator $migrator The schema migrations runner.
+	 * @param Migrator       $migrator       The schema migrations runner.
+	 * @param VersionUpgrade $versionUpgrade The plugin version check.
 	 */
-	public function __construct( Migrator $migrator ) {
-		$this->migrator = $migrator;
+	public function __construct( Migrator $migrator, VersionUpgrade $versionUpgrade ) {
+		$this->migrator       = $migrator;
+		$this->versionUpgrade = $versionUpgrade;
 	}
 
 	/**
@@ -52,6 +62,9 @@ final class Activator {
 	public function activate(): void {
 		// Migrate first so later steps can use the tables.
 		$this->migrator->migrate();
+
+		// Always run, so a reinstall over kept data also gets the update steps.
+		$this->versionUpgrade->upgrade();
 
 		// Grant the custom management capabilities to administrators.
 		Capabilities::ensure();

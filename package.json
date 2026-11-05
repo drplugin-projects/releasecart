@@ -1,6 +1,6 @@
 {
 	"name": "releasecart",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"private": true,
 	"description": "Build tooling for the ReleaseCart WordPress plugin.",
 	"homepage": "https://drplugin.com/docs/releasecart",

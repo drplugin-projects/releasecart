@@ -223,9 +223,11 @@ class CustomerRepository {
 	/**
 	 * Update mutable customer columns with a UTC timestamp.
 	 *
-	 * Clear old and new cache keys if the email or user link changed.
+	 * Clear old and new cache keys if the email or user link changed. The purchase stats
+	 * are not written, so a stale object cannot undo an increment.
 	 *
 	 * @since 1.0.0
+	 * @since 1.0.1 No longer writes purchase_count or purchase_total.
 	 *
 	 * @param Customer $customer The customer to persist (must carry an id).
 	 * @return void
@@ -252,14 +254,12 @@ class CustomerRepository {
 		$this->updateWhere(
 			$this->customersTable(),
 			array(
-				'user_id'        => $row['user_id'],
-				'email'          => $row['email'],
-				'name'           => $row['name'],
-				'first_name'     => $row['first_name'],
-				'last_name'      => $row['last_name'],
-				'purchase_count' => $row['purchase_count'],
-				'purchase_total' => $row['purchase_total'],
-				'updated_at'     => gmdate( 'Y-m-d H:i:s' ),
+				'user_id'    => $row['user_id'],
+				'email'      => $row['email'],
+				'name'       => $row['name'],
+				'first_name' => $row['first_name'],
+				'last_name'  => $row['last_name'],
+				'updated_at' => gmdate( 'Y-m-d H:i:s' ),
 			),
 			array( 'id' => $id )
 		);

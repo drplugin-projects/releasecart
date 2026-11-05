@@ -3,7 +3,7 @@
  * Plugin Name:       ReleaseCart
  * Plugin URI:        https://github.com/drplugin-projects/releasecart
  * Description:       Sell digital products with licensing, updates, and Stripe payments, right from WordPress.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 6.9
  * Requires PHP:      8.1
  * Author:            DrPlugin
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Keep RELEASECART_VERSION equal to the plugin header version.
-define( 'RELEASECART_VERSION', '1.0.0' );
+define( 'RELEASECART_VERSION', '1.0.1' );
 define( 'RELEASECART_FILE', __FILE__ );
 define( 'RELEASECART_PATH', plugin_dir_path( __FILE__ ) );
 define( 'RELEASECART_URL', plugin_dir_url( __FILE__ ) );

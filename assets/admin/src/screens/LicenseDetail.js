@@ -235,6 +235,31 @@ export default function LicenseDetail( { params } ) {
 
 				<dl className="releasecart-license-meta">
 					<div>
+						<dt>{ __( 'Product', 'releasecart' ) }</dt>
+						<dd>
+							{ /* Use the id when the product no longer exists. */ }
+							{ data.product_name ||
+								sprintf(
+									/* translators: %d: a numeric record id. */
+									__( '#%d', 'releasecart' ),
+									data.product_id
+								) }
+						</dd>
+					</div>
+					{ data.bundle_product_id > 0 && (
+						<div>
+							<dt>{ __( 'Bundle', 'releasecart' ) }</dt>
+							<dd>
+								{ data.bundle_product_name ||
+									sprintf(
+										/* translators: %d: a numeric record id. */
+										__( '#%d', 'releasecart' ),
+										data.bundle_product_id
+									) }
+							</dd>
+						</div>
+					) }
+					<div>
 						<dt>{ __( 'Status', 'releasecart' ) }</dt>
 						<dd>
 							<StatusBadge
@@ -314,57 +339,67 @@ export default function LicenseDetail( { params } ) {
 							</td>
 						</tr>
 					) }
-					{ data.activations.map( ( activation ) => (
-						<tr key={ activation.id }>
-							<td>
-								{ activation.site_url }
-								{ formatEnvironment(
-									activation.environment
-								) && (
-									<div className="description">
-										{ formatEnvironment(
-											activation.environment
-										) }
-									</div>
-								) }
-							</td>
-							<td>
-								<StatusBadge
-									status={ activation.status }
-									label={
-										ACTIVATION_STATUS_LABELS[
-											activation.status
-										] || activation.status
-									}
-								/>
-							</td>
-							<td>{ formatDate( activation.activated_at ) }</td>
-							<td>
-								{ formatDate( activation.deactivated_at, '-' ) }
-							</td>
-							<td>
-								{ formatDate(
-									activation.last_checked_at,
-									__( 'Never', 'releasecart' )
-								) }
-							</td>
-							<td>
-								{ activation.status === 'active' && (
-									<Button
-										variant="secondary"
-										isDestructive
-										onClick={ () =>
-											setConfirmActivationId(
-												activation.id
-											)
+					{ data.activations.map( ( activation ) => {
+						const environment = formatEnvironment(
+							activation.environment
+						);
+
+						return (
+							<tr key={ activation.id }>
+								<td>
+									{ activation.site_url }
+									{ environment && (
+										<div className="description">
+											{ environment }
+										</div>
+									) }
+								</td>
+								<td>
+									<StatusBadge
+										status={ activation.status }
+										label={
+											ACTIVATION_STATUS_LABELS[
+												activation.status
+											] || activation.status
 										}
-									>
-										{ __( 'Deactivate', 'releasecart' ) }
-									</Button>
-								) }
-							</td>
-						</tr>
-					) ) }
+									/>
+								</td>
+								<td>
+									{ formatDate( activation.activated_at ) }
+								</td>
+								<td>
+									{ formatDate(
+										activation.deactivated_at,
+										'-'
+									) }
+								</td>
+								<td>
+									{ formatDate(
+										activation.last_checked_at,
+										__( 'Never', 'releasecart' )
+									) }
+								</td>
+								<td>
+									{ activation.status === 'active' && (
+										<Button
+											variant="secondary"
+											isDestructive
+											onClick={ () =>
+												setConfirmActivationId(
+													activation.id
+												)
+											}
+										>
+											{ __(
+												'Deactivate',
+												'releasecart'
+											) }
+										</Button>
+									) }
+								</td>
+							</tr>
+						);
+					} ) }
 				</tbody>
 			</table>
 

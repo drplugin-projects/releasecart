@@ -201,7 +201,7 @@ final class OrdersController extends AbstractRestController {
 			return $this->notFound();
 		}
 
-		return new WP_REST_Response( $this->presentOrder( $order ), 200 );
+		return new WP_REST_Response( $this->presentDetail( $order ), 200 );
 	}
 
 	/**
@@ -260,7 +260,7 @@ final class OrdersController extends AbstractRestController {
 			);
 		}
 
-		return new WP_REST_Response( $this->presentOrder( $order ), 200 );
+		return new WP_REST_Response( $this->presentDetail( $order ), 200 );
 	}
 
 	/**
@@ -392,9 +392,30 @@ final class OrdersController extends AbstractRestController {
 	}
 
 	/**
+	 * Shape one order for the detail and refund responses.
+	 *
+	 * The refund response replaces the screen's cached detail, so both carry the same fields.
+	 *
+	 * @since 1.0.1
+	 *
+	 * @param Order $order The order to present.
+	 * @return array<string, mixed> The response representation.
+	 */
+	private function presentDetail( Order $order ): array {
+		$data                        = $this->presentOrder( $order );
+		$data['auto_discount_total'] = $this->autoDiscountTotal( $order );
+
+		// The names typed at this checkout. The customer record can hold a later one.
+		$data['first_name'] = $this->orderMeta( $order, CheckoutController::FIRST_NAME_META );
+		$data['last_name']  = $this->orderMeta( $order, CheckoutController::LAST_NAME_META );
+
+		return $data;
+	}
+
+	/**
 	 * Shape an order and its line items for JSON.
 	 *
-	 * The collection adds buyer fields.
+	 * The collection adds buyer fields, the detail the automatic discount and checkout names.
 	 *
 	 * @since 1.0.0
 	 *
@@ -430,6 +451,22 @@ final class OrdersController extends AbstractRestController {
 			'ip_address'        => $order->ipAddress(),
 			'items'             => array_map( array( $this, 'presentItem' ), $order->items() ),
 		);
+	}
+
+	/**
+	 * The automatic discount's share of a stacked discount, or null.
+	 *
+	 * Checkout stores it only when a code and an automatic discount both applied.
+	 *
+	 * @since 1.0.1
+	 *
+	 * @param Order $order The order.
+	 * @return int|null The amount in minor units, or null.
+	 */
+	private function autoDiscountTotal( Order $order ): ?int {
+		$value = $this->orderMeta( $order, OrderService::AUTO_DISCOUNT_META );
+
+		return is_numeric( $value ) ? (int) $value : null;
 	}
 
 	/**
